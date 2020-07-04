@@ -8,7 +8,7 @@
 		<version>2.3.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.neonkingkong</groupId>
+	<groupId>com.mersiades</groupId>
 	<artifactId>awc-web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>awc-web</name>
@@ -20,7 +20,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.neonkingkong</groupId>
+			<groupId>com.mersiades</groupId>
 			<artifactId>awc-data</artifactId>
 			<version>${project.version}</version>
 		</dependency>

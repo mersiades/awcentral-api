@@ -1,4 +1,4 @@
-package com.example.awcentral.model;
+package com.mersiades.awcdata.models;
 
 import java.io.Serializable;
 
