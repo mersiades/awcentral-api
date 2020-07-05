@@ -1,6 +1,7 @@
 package com.mersiades.awcdata.services.map;
 
 import com.mersiades.awcdata.models.Game;
+import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.services.GameService;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,10 @@ public class GameServiceMap extends AbstractMapService<Game, Long> implements Ga
     @Override
     public void deleteById(Long id) {
 
+    }
+
+    @Override
+    public GameRole addGameRole(Long playerId, Long gameId, GameRole.Role role) {
+        return new GameRole(playerId, gameId, role);
     }
 }
