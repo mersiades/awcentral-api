@@ -49,7 +49,8 @@ public class GameMapService implements GameService {
     }
 
     @Override
-    public GameRole addGameRole(Long playerId, Long gameId, GameRole.Role role) {
-        return new GameRole(playerId, gameId, role);
+    public GameRole findGameRoleByUserId(Long id) {
+        // TODO: Figure out how to reach into a Game and pull out the GameRole that matches the id
+        return null;
     }
 }

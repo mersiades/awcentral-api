@@ -1,5 +1,8 @@
 package com.mersiades.awcdata.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Game {
 
     /*
@@ -10,6 +13,8 @@ public class Game {
     /* textChannelId is provided by Discord when the Game's channels are created. */
     private Long voiceChannelId;
     private String name;
+
+    private Set<GameRole> gameRoles = new HashSet<>();
 
     public Game(Long textChannelId, Long voiceChannelId, String name) {
         this.textChannelId = textChannelId;
@@ -27,5 +32,9 @@ public class Game {
 
     public String getName() {
         return name;
+    }
+
+    public Set<GameRole> getGameRoles() {
+        return gameRoles;
     }
 }

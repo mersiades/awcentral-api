@@ -39,7 +39,7 @@ public class GameRoleMapService extends AbstractMapService<GameRole, Long> imple
     public Set<GameRole> findByUserId(Long id) {
         Set<GameRole> usersGameRoles = new HashSet<>();
         for (GameRole gameRole : super.map.values()) {
-            if (gameRole.getPlayerId().equals(id)) {
+            if (gameRole.getUser().getId().equals(id)) {
                 usersGameRoles.add(gameRole);
             }
         }
