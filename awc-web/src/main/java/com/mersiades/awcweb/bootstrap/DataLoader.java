@@ -2,6 +2,7 @@ package com.mersiades.awcweb.bootstrap;
 
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
+import com.mersiades.awcdata.models.Npc;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import org.springframework.boot.CommandLineRunner;
@@ -85,6 +86,11 @@ public class DataLoader implements CommandLineRunner {
                 gameRoleService.save(gameRole);
             }
         }
+
+        Npc mockNpc1 = new Npc("Vision", "Badass truck driver");
+        Npc mockNpc2 = new Npc("Nbeke");
+        Npc mockNpc3 = new Npc("Batty", "Overly polite gun for hire");
+        Npc mockNpc4 = new Npc("Farley");
 
         // Print User info
         for (MockDiscordUser mockUser : mockUsers) {

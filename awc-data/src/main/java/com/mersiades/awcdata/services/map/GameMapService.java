@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Service
-public class GameServiceMap implements GameService {
+public class GameMapService implements GameService {
 
     private Map<Long, Game> gamesMap = new HashMap<>();
 

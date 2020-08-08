@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class GameRoleServiceMap extends AbstractMapService<GameRole, Long> implements GameRoleService {
+public class GameRoleMapService extends AbstractMapService<GameRole, Long> implements GameRoleService {
 
     @Override
     public Set<GameRole> findAll() {
