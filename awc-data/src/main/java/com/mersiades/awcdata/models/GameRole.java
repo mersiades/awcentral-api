@@ -2,13 +2,13 @@ package com.mersiades.awcdata.models;
 
 public class GameRole extends BaseEntity {
 
-    private Long player;
-    private Long game;
+    private Long playerId;
+    private Long gameId;
     private Role role;
 
-    public GameRole(Long player, Long game, Role role) {
-        this.player = player;
-        this.game = game;
+    public GameRole(Long playerId, Long gameId, Role role) {
+        this.playerId = playerId;
+        this.gameId = gameId;
         this.role = role;
     }
 
@@ -17,12 +17,12 @@ public class GameRole extends BaseEntity {
         PLAYER
     }
 
-    public Long getPlayer() {
-        return player;
+    public Long getPlayerId() {
+        return playerId;
     }
 
-    public Long getGame() {
-        return game;
+    public Long getGameId() {
+        return gameId;
     }
 
     public Role getRole() {

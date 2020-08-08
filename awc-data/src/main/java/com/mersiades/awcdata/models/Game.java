@@ -1,11 +1,17 @@
 package com.mersiades.awcdata.models;
 
-public class Game extends BaseEntity {
+public class Game {
 
+    private Long id;
     private String name;
 
-    public Game(String name) {
+    public Game(Long id, String name) {
+        this.id = id;
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
