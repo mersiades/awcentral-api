@@ -28,10 +28,10 @@ public class GameServiceMap implements GameService {
     @Override
     public Game save(Game game) {
         if (game != null) {
-            if (game.getId() == null) {
+            if (game.getTextChannelId() == null) {
                 throw new RuntimeException("Game must have id");
             }
-            gamesMap.put(game.getId(), game);
+            gamesMap.put(game.getTextChannelId(), game);
         } else {
             throw new RuntimeException("Game cannot be null");
         }

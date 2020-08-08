@@ -2,16 +2,27 @@ package com.mersiades.awcdata.models;
 
 public class Game {
 
-    private Long id;
+    /*
+     * textChannelId is provided by Discord when the Game's channels are created.
+     * textChannelId acts as the Game's id
+     */
+    private Long textChannelId;
+    /* textChannelId is provided by Discord when the Game's channels are created. */
+    private Long voiceChannelId;
     private String name;
 
-    public Game(Long id, String name) {
-        this.id = id;
+    public Game(Long textChannelId, Long voiceChannelId, String name) {
+        this.textChannelId = textChannelId;
+        this.voiceChannelId = voiceChannelId;
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
+    public Long getTextChannelId() {
+        return textChannelId;
+    }
+
+    public Long getVoiceChannelId() {
+        return voiceChannelId;
     }
 
     public String getName() {
