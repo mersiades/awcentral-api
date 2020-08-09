@@ -1,9 +1,12 @@
 package com.mersiades.awcdata.models;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
@@ -30,27 +33,4 @@ public class User extends BaseEntity {
         this.username = username;
     }
 
-    public Long getDiscourseID() {
-        return discourseID;
-    }
-
-    public void setDiscourseID(Long discourseID) {
-        this.discourseID = discourseID;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Set<Game> getGames() {
-        return games;
-    }
-
-    public Set<GameRole> getGameRoles() {
-        return gameRoles;
-    }
 }
