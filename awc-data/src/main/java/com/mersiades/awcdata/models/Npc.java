@@ -1,7 +1,10 @@
 package com.mersiades.awcdata.models;
 
+import lombok.*;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "npcs")
 public class Npc extends BaseEntity {
@@ -27,27 +30,4 @@ public class Npc extends BaseEntity {
         this.description = description;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public GameRole getGameRole() {
-        return gameRole;
-    }
-
-    public void setGameRole(GameRole gameRole) {
-        this.gameRole = gameRole;
-    }
 }

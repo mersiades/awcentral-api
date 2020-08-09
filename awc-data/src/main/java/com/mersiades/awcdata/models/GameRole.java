@@ -1,9 +1,14 @@
 package com.mersiades.awcdata.models;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
+@EqualsAndHashCode(exclude = {"game", "user"}, callSuper = false)
 @Entity
 @Table(name = "game_roles")
 public class GameRole extends BaseEntity {
@@ -22,9 +27,6 @@ public class GameRole extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameRole")
     private final Set<Npc> npcs = new HashSet<>();
 
-    public GameRole() {
-    }
-
     public GameRole(Role role, Game game, User user) {
         this.role = role;
         this.game = game;
@@ -34,22 +36,6 @@ public class GameRole extends BaseEntity {
     public enum Role {
         MC,
         PLAYER
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public Set<Npc> getNpcs() {
-        return npcs;
     }
 
 }
