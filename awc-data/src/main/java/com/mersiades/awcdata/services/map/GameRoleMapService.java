@@ -4,7 +4,6 @@ import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.services.GameRoleService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -33,16 +32,5 @@ public class GameRoleMapService extends AbstractMapService<GameRole, Long> imple
     @Override
     public void deleteById(Long id) {
 
-    }
-
-    @Override
-    public Set<GameRole> findByUserId(Long id) {
-        Set<GameRole> usersGameRoles = new HashSet<>();
-        for (GameRole gameRole : super.map.values()) {
-            if (gameRole.getUser().getId().equals(id)) {
-                usersGameRoles.add(gameRole);
-            }
-        }
-        return usersGameRoles;
     }
 }

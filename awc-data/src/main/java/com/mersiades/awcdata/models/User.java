@@ -17,10 +17,10 @@ public class User extends BaseEntity {
     @ManyToMany
     @JoinTable(name = "user_games", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "game_id"))
-    private Set<Game> games = new HashSet<>();
+    private final Set<Game> games = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
-    private Set<GameRole> gameRoles = new HashSet<>();
+    private final Set<GameRole> gameRoles = new HashSet<>();
 
     public User() {
     }
