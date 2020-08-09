@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan({"com.mersiades.awcdata", "com.mersiades.awcweb"})
+@ComponentScan(basePackages = {"com.mersiades.awcdata", "com.mersiades.awcweb"})
 @SpringBootApplication
 public class AwcWebApplication {
 
