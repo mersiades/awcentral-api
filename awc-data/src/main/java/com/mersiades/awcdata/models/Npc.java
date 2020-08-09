@@ -1,9 +1,22 @@
 package com.mersiades.awcdata.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "npcs")
 public class Npc extends BaseEntity {
-    private GameRole gameRole;
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "description")
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "game_role_id")
+    private GameRole gameRole;
+
+    public Npc() {
+    }
 
     public Npc(GameRole gameRole, String name) {
         this.name = name;

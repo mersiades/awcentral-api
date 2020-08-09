@@ -5,47 +5,34 @@ import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.services.GameService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Service
-public class GameMapService implements GameService {
-
-    private Map<Long, Game> gamesMap = new HashMap<>();
+public class GameMapService extends AbstractMapService<Game, Long> implements GameService {
 
     @Override
     public Set<Game> findAll() {
-        return new HashSet<>(gamesMap.values());
+        return super.findAll();
     }
 
     @Override
     public Game findById(Long id) {
-        return gamesMap.get(id);
+        return super.findById(id);
     }
 
     @Override
     public Game save(Game game) {
-        if (game != null) {
-            if (game.getTextChannelId() == null) {
-                throw new RuntimeException("Game must have id");
-            }
-            gamesMap.put(game.getTextChannelId(), game);
-        } else {
-            throw new RuntimeException("Game cannot be null");
-        }
-        return game;
+        return super.save(game);
     }
 
     @Override
     public void delete(Game game) {
-       gamesMap.entrySet().removeIf(entry -> entry.getValue() == game);
+        super.delete(game);
     }
 
     @Override
     public void deleteById(Long id) {
-       gamesMap.remove(id);
+        super.deleteById(id);
     }
 
     @Override

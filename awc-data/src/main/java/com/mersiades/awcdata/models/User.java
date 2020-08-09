@@ -1,28 +1,49 @@
 package com.mersiades.awcdata.models;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class User {
-    private Long id;
-    private String userName;
+@Entity
+@Table(name = "users")
+public class User extends BaseEntity {
+
+    @Column(name = "discourse_id")
+    private Long discourseID;
+
+    @Column(name = "username")
+    private String username;
+
+    @ManyToMany
+    @JoinTable(name = "user_games", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id"))
     private Set<Game> games = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
     private Set<GameRole> gameRoles = new HashSet<>();
 
-    public User(Long id) {
-        this.id = id;
+    public User() {
     }
 
-    public Long getId() {
-        return id;
+    public User(Long discourseID, String username) {
+        this.discourseID = discourseID;
+        this.username = username;
     }
 
-    public String getUserName() {
-        return userName;
+    public Long getDiscourseID() {
+        return discourseID;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setDiscourseID(Long discourseID) {
+        this.discourseID = discourseID;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Set<Game> getGames() {

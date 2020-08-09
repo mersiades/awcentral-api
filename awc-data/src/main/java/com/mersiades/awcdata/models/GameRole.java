@@ -1,14 +1,29 @@
 package com.mersiades.awcdata.models;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name = "game_roles")
 public class GameRole extends BaseEntity {
 
+    @Column(name = "role")
     private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "game_id")
     private Game game;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
-    private Set<Npc> npcs = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game_role")
+    private final Set<Npc> npcs = new HashSet<>();
+
+    public GameRole() {
+    }
 
     public GameRole(Role role, Game game, User user) {
         this.role = role;

@@ -39,10 +39,12 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadData() {
-        User mockUser1 = new User(DISCORD_USER_ID_1);
-        mockUser1.setUserName("Dave");
-        User mockUser2 = new User(DISCORD_USER_ID_2);
-        mockUser2.setUserName("Sarah");
+        User mockUser1 = new User();
+        mockUser1.setUsername("Dave");
+        mockUser1.setDiscourseID(DISCORD_USER_ID_1);
+        User mockUser2 = new User();
+        mockUser2.setUsername("Sarah");
+        mockUser2.setDiscourseID(DISCORD_USER_ID_2);
 
         Game mockGame1 = new Game(DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
 
@@ -123,10 +125,11 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void printUser(User user) {
-        System.out.println("| ------------- " + user.getUserName().toUpperCase() + " -------------- |");
+        System.out.println("| ------------- " + user.getUsername().toUpperCase() + " -------------- |");
         System.out.println("ID: " + user.getId());
+        System.out.println("Discord ID: " + user.getDiscourseID());
         Set<Game> davesGames = user.getGames();
-        System.out.println(user.getUserName() + " is playing in " + davesGames.size() + " games");
+        System.out.println(user.getUsername() + " is playing in " + davesGames.size() + " games");
         printUsersGame(davesGames);
         System.out.println("\n");
     }
@@ -136,7 +139,8 @@ public class DataLoader implements CommandLineRunner {
         for (Game game : games) {
             System.out.println("\t ********** Game " + i + " **********");
             i++;
-            System.out.println("\t * Game ID & text channel: " + game.getTextChannelId());
+            System.out.println("\t * Game ID : " + game.getId());
+            System.out.println("\t * Game text channel: " + game.getTextChannelId());
             System.out.println("\t * Game voice channel: " + game.getVoiceChannelId());
             System.out.println("\t * Game name: " + game.getName());
             if (i != games.size()) {

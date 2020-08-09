@@ -4,46 +4,33 @@ import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.services.UserService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Service
-public class UserMapService implements UserService {
-
-    private Map<Long, User> usersMap = new HashMap<>();
+public class UserMapService extends AbstractMapService<User, Long> implements UserService {
 
     @Override
     public Set<User> findAll() {
-        return new HashSet<>(usersMap.values());
+        return super.findAll();
     }
 
     @Override
     public User findById(Long id) {
-        return usersMap.get(id);
+        return super.findById(id);
     }
 
     @Override
     public User save(User user) {
-        if (user != null) {
-            if (user.getId() == null) {
-                throw new RuntimeException("User must have id");
-            }
-            usersMap.put(user.getId(), user);
-        } else {
-            throw new RuntimeException("User cannot be null");
-        }
-        return user;
+        return super.save(user);
     }
 
     @Override
     public void delete(User user) {
-        usersMap.entrySet().removeIf((entry -> entry.getValue() == user));
+        super.delete(user);
     }
 
     @Override
     public void deleteById(Long id) {
-        usersMap.remove(id);
+        super.deleteById(id);
     }
 }

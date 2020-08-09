@@ -15,22 +15,22 @@ public class NpcMapService extends AbstractMapService<Npc, Long> implements NpcS
     }
 
     @Override
-    public Npc findById(Long aLong) {
-        return super.findById(aLong);
+    public Npc findById(Long id) {
+        return super.findById(id);
     }
 
     @Override
-    public Npc save(Npc object) {
-        return super.save(object);
+    public Npc save(Npc npc) {
+        return super.save(npc);
     }
 
     @Override
-    public void delete(Npc object) {
-        super.delete(object);
+    public void delete(Npc npc) {
+        super.delete(npc);
     }
 
     @Override
-    public void deleteById(Long aLong) {
-        super.deleteById(aLong);
+    public void deleteById(Long id) {
+        super.deleteById(id);
     }
 }
