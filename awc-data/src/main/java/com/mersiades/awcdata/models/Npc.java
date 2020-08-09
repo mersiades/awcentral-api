@@ -42,4 +42,12 @@ public class Npc extends BaseEntity {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public GameRole getGameRole() {
+        return gameRole;
+    }
+
+    public void setGameRole(GameRole gameRole) {
+        this.gameRole = gameRole;
+    }
 }

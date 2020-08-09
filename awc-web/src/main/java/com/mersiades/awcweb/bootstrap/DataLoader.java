@@ -39,13 +39,19 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadData() {
+        // -------------------------------------- Set up mock Users -------------------------------------- //
         User mockUser1 = new User();
         mockUser1.setUsername("Dave");
         mockUser1.setDiscourseID(DISCORD_USER_ID_1);
+
         User mockUser2 = new User();
         mockUser2.setUsername("Sarah");
         mockUser2.setDiscourseID(DISCORD_USER_ID_2);
 
+        userService.save(mockUser1);
+        userService.save(mockUser2);
+
+        // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
         Game mockGame1 = new Game(DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
 
         GameRole daveAsMC = new GameRole(GameRole.Role.MC, mockGame1, mockUser1);
@@ -60,6 +66,9 @@ public class DataLoader implements CommandLineRunner {
         mockGame1.getGameRoles().add(sarahAsPlayer);
         mockUser2.getGameRoles().add(sarahAsPlayer);
 
+        gameService.save(mockGame1);
+
+        // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
         Game mockGame2 = new Game(DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
 
         GameRole daveAsPlayer = new GameRole(GameRole.Role.PLAYER, mockGame2, mockUser1);
@@ -74,35 +83,32 @@ public class DataLoader implements CommandLineRunner {
         mockGame2.getGameRoles().add(sarahAsMC);
         mockUser2.getGameRoles().add(sarahAsMC);
 
+        gameService.save(mockGame2);
+
+        // ----------------------------------------------------------------------------------------------- //
         mockUser1.getGames().add(mockGame1);
         mockUser1.getGames().add(mockGame2);
         mockUser2.getGames().add(mockGame1);
         mockUser2.getGames().add(mockGame2);
-
         npcService.save(mockNpc1);
         npcService.save(mockNpc2);
         npcService.save(mockNpc3);
         npcService.save(mockNpc4);
-        userService.save(mockUser1);
-        userService.save(mockUser2);
-        gameService.save(mockGame2);
-        gameService.save(mockGame1);
 
-
-        // ----------------------------------- Print MockUser1 ----------------------------------- //
+        // -------------------------------------- Print MockUser1 -------------------------------------- //
         printUser(mockUser1);
         System.out.println("\t ********** Game Role 1 **********");
         printGameRole(daveAsMC);
         System.out.println("\t ********** Game Role 2 **********");
         printGameRole(daveAsPlayer);
-        // ----------------------------------- Print MockUser2 ----------------------------------- //
+        // -------------------------------------- Print MockUser2 -------------------------------------- //
         printUser(mockUser2);
         System.out.println("\t ********** Game Role 1 **********");
         printGameRole(sarahAsPlayer);
         System.out.println("\t ********** Game Role 2 **********");
         printGameRole(sarahAsMC);
-        // ----------------------------------- Print MockGame1 ----------------------------------- //
-        // ----------------------------------- Print MockGame2 ----------------------------------- //
+        // -------------------------------------- Print MockGame1 -------------------------------------- //
+        // -------------------------------------- Print MockGame2 -------------------------------------- //
     }
 
     private void printGameRole(GameRole role) {
