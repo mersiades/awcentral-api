@@ -1,13 +1,14 @@
 package com.mersiades.awcdata.services.map;
 
 import com.mersiades.awcdata.models.Game;
-import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.services.GameService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
+@Profile({ "default", "map"})
 public class GameMapService extends AbstractMapService<Game, Long> implements GameService {
 
     @Override
@@ -33,11 +34,5 @@ public class GameMapService extends AbstractMapService<Game, Long> implements Ga
     @Override
     public void deleteById(Long id) {
         super.deleteById(id);
-    }
-
-    @Override
-    public GameRole findGameRoleByUserId(Long id) {
-        // TODO: Figure out how to reach into a Game and pull out the GameRole that matches the id
-        return null;
     }
 }

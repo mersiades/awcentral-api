@@ -2,11 +2,13 @@ package com.mersiades.awcdata.services.map;
 
 import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.services.UserService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
+@Profile({ "default", "map"})
 public class UserMapService extends AbstractMapService<User, Long> implements UserService {
 
     @Override
