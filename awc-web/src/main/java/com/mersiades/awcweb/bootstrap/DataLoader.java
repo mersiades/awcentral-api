@@ -45,7 +45,8 @@ public class DataLoader implements CommandLineRunner {
         User mockUser2 = new User();
         mockUser2.setUsername("Sarah");
         mockUser2.setDiscourseID(DISCORD_USER_ID_2);
-
+        userService.save(mockUser1);
+        userService.save(mockUser2);
         Game mockGame1 = new Game(DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
 
         GameRole daveAsMC = new GameRole(GameRole.Role.MC, mockGame1, mockUser1);
@@ -61,7 +62,8 @@ public class DataLoader implements CommandLineRunner {
         mockUser2.getGameRoles().add(sarahAsPlayer);
 
         Game mockGame2 = new Game(DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
-
+        gameService.save(mockGame2);
+        gameService.save(mockGame1);
         GameRole daveAsPlayer = new GameRole(GameRole.Role.PLAYER, mockGame2, mockUser1);
         mockGame2.getGameRoles().add(daveAsPlayer);
         mockUser1.getGameRoles().add(daveAsPlayer);
@@ -83,10 +85,9 @@ public class DataLoader implements CommandLineRunner {
         npcService.save(mockNpc2);
         npcService.save(mockNpc3);
         npcService.save(mockNpc4);
-        userService.save(mockUser1);
-        userService.save(mockUser2);
-        gameService.save(mockGame2);
-        gameService.save(mockGame1);
+
+//        gameService.save(mockGame2);
+//        gameService.save(mockGame1);
 
 
         // ----------------------------------- Print MockUser1 ----------------------------------- //

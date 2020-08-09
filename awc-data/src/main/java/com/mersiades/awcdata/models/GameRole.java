@@ -19,7 +19,7 @@ public class GameRole extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game_role")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameRole")
     private final Set<Npc> npcs = new HashSet<>();
 
     public GameRole() {
