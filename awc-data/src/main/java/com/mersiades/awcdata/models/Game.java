@@ -30,6 +30,9 @@ public class Game extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private final Set<GameRole> gameRoles = new HashSet<>();
 
+    public Game() {
+    }
+
     public Game(Long textChannelId, Long voiceChannelId, String name) {
         this.textChannelId = textChannelId;
         this.voiceChannelId = voiceChannelId;

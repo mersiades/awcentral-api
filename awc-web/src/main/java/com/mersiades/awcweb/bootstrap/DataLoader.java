@@ -1,11 +1,11 @@
 package com.mersiades.awcweb.bootstrap;
 
-import com.mersiades.awcdata.models.Game;
-import com.mersiades.awcdata.models.GameRole;
-import com.mersiades.awcdata.models.Npc;
-import com.mersiades.awcdata.models.User;
+import com.mersiades.awcdata.enums.Roles;
+import com.mersiades.awcdata.enums.Threats;
+import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.NpcService;
+import com.mersiades.awcdata.services.ThreatService;
 import com.mersiades.awcdata.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -25,12 +25,14 @@ public class DataLoader implements CommandLineRunner {
     private final UserService userService;
     private final GameService gameService;
     private final NpcService npcService;
+    private final ThreatService threatService;
 
     public DataLoader(UserService userService, GameService gameService,
-                      NpcService npcService) {
+                      NpcService npcService, ThreatService threatService) {
         this.userService = userService;
         this.gameService = gameService;
         this.npcService = npcService;
+        this.threatService = threatService;
     }
 
     @Override
@@ -54,15 +56,20 @@ public class DataLoader implements CommandLineRunner {
         // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
         Game mockGame1 = new Game(DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
 
-        GameRole daveAsMC = new GameRole(GameRole.Role.MC, mockGame1, mockUser1);
+        GameRole daveAsMC = new GameRole(Roles.MC, mockGame1, mockUser1);
         Npc mockNpc1 = new Npc(daveAsMC, "Vision", "Badass truck driver");
         Npc mockNpc2 = new Npc(daveAsMC, "Nbeke");
         daveAsMC.getNpcs().add(mockNpc1);
         daveAsMC.getNpcs().add(mockNpc2);
+        Threat mockThreat1 = new Threat(daveAsMC, "Tum Tum", Threats.WARLORD, "Slaver: to own and sell people");
+        Threat mockThreat2 = new Threat(daveAsMC, "Gnarly", Threats.GROTESQUE, "Cannibal: craves satiety and plenty");
+        daveAsMC.getThreats().add(mockThreat1);
+        daveAsMC.getThreats().add(mockThreat2);
+
         mockGame1.getGameRoles().add(daveAsMC);
         mockUser1.getGameRoles().add(daveAsMC);
 
-        GameRole sarahAsPlayer = new GameRole(GameRole.Role.PLAYER, mockGame1, mockUser2);
+        GameRole sarahAsPlayer = new GameRole(Roles.PLAYER, mockGame1, mockUser2);
         mockGame1.getGameRoles().add(sarahAsPlayer);
         mockUser2.getGameRoles().add(sarahAsPlayer);
 
@@ -71,15 +78,20 @@ public class DataLoader implements CommandLineRunner {
         // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
         Game mockGame2 = new Game(DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
 
-        GameRole daveAsPlayer = new GameRole(GameRole.Role.PLAYER, mockGame2, mockUser1);
+        GameRole daveAsPlayer = new GameRole(Roles.PLAYER, mockGame2, mockUser1);
         mockGame2.getGameRoles().add(daveAsPlayer);
         mockUser1.getGameRoles().add(daveAsPlayer);
 
-        GameRole sarahAsMC = new GameRole(GameRole.Role.MC, mockGame2, mockUser2);
+        GameRole sarahAsMC = new GameRole(Roles.MC, mockGame2, mockUser2);
         Npc mockNpc3 = new Npc(sarahAsMC, "Batty", "Overly polite gun for hire");
         Npc mockNpc4 = new Npc(sarahAsMC, "Farley");
         sarahAsMC.getNpcs().add(mockNpc3);
         sarahAsMC.getNpcs().add(mockNpc4);
+        Threat mockThreat3 = new Threat(sarahAsMC, "Fleece", Threats.BRUTE, "Hunting pack: to victimize anyone vulnerable");
+        Threat mockThreat4 = new Threat(sarahAsMC, "Wet Rot", Threats.AFFLICTION, "Condition: to expose people to danger");
+        sarahAsMC.getThreats().add(mockThreat3);
+        sarahAsMC.getThreats().add(mockThreat4);
+
         mockGame2.getGameRoles().add(sarahAsMC);
         mockUser2.getGameRoles().add(sarahAsMC);
 
@@ -94,6 +106,11 @@ public class DataLoader implements CommandLineRunner {
         npcService.save(mockNpc2);
         npcService.save(mockNpc3);
         npcService.save(mockNpc4);
+        threatService.save(mockThreat1);
+        threatService.save(mockThreat2);
+        threatService.save(mockThreat3);
+        threatService.save(mockThreat4);
+
 
         // -------------------------------------- Print MockUser1 -------------------------------------- //
         printUser(mockUser1);
@@ -113,10 +130,11 @@ public class DataLoader implements CommandLineRunner {
 
     private void printGameRole(GameRole role) {
         System.out.println("\t Game: " + role.getGame().getName());
-        GameRole.Role roleType = role.getRole();
+        Roles roleType = role.getRole();
         System.out.println("\t Role: " + role.getRole());
-        if (roleType == GameRole.Role.MC) {
+        if (roleType == Roles.MC) {
             Set<Npc> npcs = role.getNpcs();
+            Set<Threat> threats = role.getThreats();
             System.out.println("\t This role has " + npcs.size() + " NPCs");
             if (npcs.size() > 0) {
                 for (Npc npc: npcs) {
@@ -124,6 +142,15 @@ public class DataLoader implements CommandLineRunner {
                     if (npc.getDescription() != null) {
                         System.out.println("\t\t NPC description: " + npc.getDescription());
                     }
+                    System.out.println("\n");
+                }
+            }
+            System.out.println("\t This role has " + threats.size() + " threats");
+            if (threats.size() > 0) {
+                for (Threat threat: threats) {
+                    System.out.println("\t\t Threat name: " + threat.getName());
+                    System.out.println("\t\t Threat kind: " + threat.getThreatKind());
+                    System.out.println("\t\t Threat impulse: " + threat.getImpulse());
                     System.out.println("\n");
                 }
             }

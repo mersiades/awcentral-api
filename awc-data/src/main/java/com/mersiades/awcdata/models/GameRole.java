@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.models;
 
+import com.mersiades.awcdata.enums.Roles;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +15,7 @@ import java.util.Set;
 public class GameRole extends BaseEntity {
 
     @Column(name = "role")
-    private Role role;
+    private Roles role;
 
     @ManyToOne
     @JoinColumn(name = "game_id")
@@ -27,15 +28,15 @@ public class GameRole extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameRole")
     private final Set<Npc> npcs = new HashSet<>();
 
-    public GameRole(Role role, Game game, User user) {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameRole")
+    private final Set<Threat> threats = new HashSet<>();
+
+    public GameRole() {
+    }
+
+    public GameRole(Roles role, Game game, User user) {
         this.role = role;
         this.game = game;
         this.user = user;
     }
-
-    public enum Role {
-        MC,
-        PLAYER
-    }
-
 }
