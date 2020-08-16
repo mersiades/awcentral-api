@@ -39,4 +39,11 @@ public class GameRole extends BaseEntity {
         this.game = game;
         this.user = user;
     }
+
+    public GameRole(Long id, Roles role, Game game, User user) {
+        super(id);
+        this.role = role;
+        this.game = game;
+        this.user = user;
+    }
 }

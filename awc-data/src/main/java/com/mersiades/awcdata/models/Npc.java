@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "npcs")
@@ -22,6 +23,11 @@ public class Npc extends BaseEntity {
     }
 
     public Npc(GameRole gameRole, String name) {
+        this.name = name;
+    }
+
+    public Npc(Long id, String name) {
+        super(id);
         this.name = name;
     }
 

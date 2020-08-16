@@ -28,11 +28,11 @@ public class GameRoleMapService extends AbstractMapService<GameRole, Long> imple
 
     @Override
     public void delete(GameRole gameRole) {
-
+        super.delete(gameRole);
     }
 
     @Override
     public void deleteById(Long id) {
-
+        super.deleteById(id);
     }
 }
