@@ -39,4 +39,11 @@ public class Game extends BaseEntity {
         this.name = name;
     }
 
+    public Game(Long id, Long textChannelId, Long voiceChannelId, String name) {
+        super(id);
+        this.textChannelId = textChannelId;
+        this.voiceChannelId = voiceChannelId;
+        this.name = name;
+    }
+
 }
