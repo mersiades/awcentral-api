@@ -28,6 +28,10 @@ public class User extends BaseEntity {
     public User() {
     }
 
+    public User(Long id) {
+        super(id);
+    }
+
     public User(Long discourseID, String username) {
         this.discourseID = discourseID;
         this.username = username;
