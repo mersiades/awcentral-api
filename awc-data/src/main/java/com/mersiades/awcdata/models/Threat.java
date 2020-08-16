@@ -35,6 +35,10 @@ public class Threat extends BaseEntity {
     public Threat() {
     }
 
+    public Threat(Long id) {
+        super(id);
+    }
+
     public Threat(GameRole gameRole, String name, Threats threatKind, String impulse) {
         this.gameRole = gameRole;
         this.name = name;
