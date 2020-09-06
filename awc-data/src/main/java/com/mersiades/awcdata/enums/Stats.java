@@ -5,11 +5,12 @@ public enum Stats {
     HARD("HARD"),
     HOT("HOT"),
     SHARP("SHARP"),
-    WEIRD("WEIRD");
+    WEIRD("WEIRD"),
+    HX("HX");
 
-    private String code;
+    private final String code;
 
-    private Stats(String code) {
+    Stats(String code) {
         this.code = code;
     }
 

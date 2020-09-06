@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @EqualsAndHashCode(callSuper = true)
@@ -19,6 +20,7 @@ public class Move extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    @Lob
     @Column(name = "description")
     private String description;
 
