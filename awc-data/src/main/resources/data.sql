@@ -1,0 +1,1 @@
+INSERT INTO moves (id, name, description, stat, kind, playbook) VALUES (1, 'Do something under fire', 'When you do something under fire, or dig in to endure fire, roll+cool', 'COOL', 'BASIC', null);
