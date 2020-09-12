@@ -208,6 +208,60 @@ INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('CAT OR MOUS
 On a 10+, you take +1forward as well.
 
 On a miss, you’re the mouse.', 'SHARP', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('BOARD A MOVING VEHICLE', 'To _**board a moving vehicle**_, roll+cool, minus its speed. To board one moving vehicle from another, roll+cool, minus the difference between their speeds.
+
+On a 10+, you’re on and you made it look easy. Take +1forward.
+
+On a 7–9, you’re on, but jesus.
+
+On a miss, the MC chooses: you’re hanging on for dear life, or you’re down and good luck to you.', 'COOL', 'ROAD_WAR', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('OUTDISTANCE ANOTHER VEHICLE', 'When you try to outdistance another vehicle, roll+cool, modified by the vehicles’ relative speed.
+
+On a 10+, you outdistance them and break away.
+
+On a 7–9, choose 1:
+
+- *You outdistance them and break away, but your vehicle suffers 1-harm ap from the strain.*
+- *You don’t escape them, but you can go to ground in a place you choose.*
+- *They overtake you, but their vehicle suffers 1-harm ap from the strain.*
+
+On a miss, your counterpart chooses 1 against you.', 'COOL', 'ROAD_WAR', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('OVERTAKE ANOTHER VEHICLE', 'When you _**try to overtake another vehicle**_, roll+cool, modified by the vehicles’ relative speed.
+
+On a 10+, you overtake them and draw alongside.
+
+On a 7–9, choose 1:
+
+- *You overtake them, but your vehicle suffers 1-harm ap the same.*
+- *You don’t overtake them, but you can drive them into a place you choose.*
+- *They outdistance you, but their vehicle suffers 1-harm ap the same.*
+
+On a miss, your counterpart chooses 1 against you.', 'COOL', 'ROAD_WAR', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('DEAL WITH BAD TERRAIN', 'When you have to _**deal with bad terrain**_, roll+cool, plus your vehicle’s handling.
+
+On a 10+, you fly through untouched.
+
+On a 7–9, choose 1:
+
+- *You slow down and pick your way forward.*
+- *You push too hard and your vehicle suffers harm as established.*
+- *You ditch out and go back or try to find another way.*
+
+On a miss, the MC chooses 1 for you; the others are impossible.', 'COOL', 'ROAD_WAR', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('SHOULDER ANOTHER VEHICLE', 'To _**shoulder another vehicle**_, roll+cool. On a hit, you shoulder it aside, inflicting v-harm as established.
+
+On a 10+, you inflict v-harm+1.
+
+On a miss, it shoulders you instead, inflicting v-harm as established.', 'COOL', 'ROAD_WAR', null);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
