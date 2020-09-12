@@ -1,59 +1,213 @@
-INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('DO SOMETHING UNDER FIRE', 'When you **do something under fire**, or dig in to endure fire, roll+cool. On a 10+, you do it. On a 7–9, you flinch, hesitate, or stall: the MC can offer you a worse outcome, a hard bargain, or an ugly choice. On a miss, be prepared for the worst.', 'COOL', 'BASIC', null);
-INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('GO AGGRO ON SOMEONE', 'When you **go aggro on someone**, make it clear what you want them to do and what you’ll do to them. Roll+hard. On a 10+, they have to choose:
+-- Basic moves
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('DO SOMETHING UNDER FIRE', 'When you _**do something under fire**_, or dig in to endure fire, roll+cool. On a 10+, you do it. On a 7–9, you flinch, hesitate, or stall: the MC can offer you a worse outcome, a hard bargain, or an ugly choice. On a miss, be prepared for the worst.', 'COOL', 'BASIC', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('GO AGGRO ON SOMEONE', 'When you _**go aggro on someone**_, make it clear what you want them to do and what you’ll do to them. Roll+hard. On a 10+, they have to choose:
 
-* *Force your hand and suck it up.*
-* *Cave and do what you want.*
+- *Force your hand and suck it up.*
+- *Cave and do what you want.*
 
 On a 7–9, they can choose 1 of the above, or 1 of the following:
 
-* *Get the hell out of your way.*
-* *Barricade themselves securely in.*
-* *Give you something they think you want, or tell you what you want to hear.*
-* *Back off calmly, hands where you can see.*
+- *Get the hell out of your way.*
+- *Barricade themselves securely in.*
+- *Give you something they think you want, or tell you what you want to hear.*
+- *Back off calmly, hands where you can see.*
 
 On a miss, be prepared for the worst.', 'HARD', 'BASIC', null);
-INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('SUCKER SOMEONE', 'When you **attack someone unsuspecting or helpless**, ask the MC if you could miss. If you could, treat it as going aggro, but your victim has no choice to cave and do what you want. If you couldn’t, you simply inflict harm as established.', null, 'BASIC', null);
-INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('DO BATTLE', 'When you’re **in battle**, you can bring the battle moves into play.', null, 'BASIC', null);
-INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('SEDUCE OR MANIPULATE SOMEONE', 'When you **try to seduce, manipulate, bluff, fast-talk, or lie to someone**, tell them what you want them to do, give them a reason, and roll+hot. **For NPCs**: on a 10+, they’ll go along with you, unless or until some fact or action betrays the reason you gave them. On a 7–9, they’ll go along with you, but they need some concrete assurance, corroboration, or evidence first. **For PCs**: on a 10+, both. On a 7–9, choose 1:
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('SUCKER SOMEONE', 'When you _**attack someone unsuspecting or helpless**_, ask the MC if you could miss. If you could, treat it as going aggro, but your victim has no choice to cave and do what you want. If you couldn’t, you simply inflict harm as established.', null, 'BASIC', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('DO BATTLE', 'When you’re _**in battle**_, you can bring the battle moves into play.', null, 'BASIC', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('SEDUCE OR MANIPULATE SOMEONE', 'When you _**try to seduce, manipulate, bluff, fast-talk, or lie to someone**_, tell them what you want them to do, give them a reason, and roll+hot. **For NPCs**: on a 10+, they’ll go along with you, unless or until some fact or action betrays the reason you gave them. On a 7–9, they’ll go along with you, but they need some concrete assurance, corroboration, or evidence first. **For PCs**: on a 10+, both. On a 7–9, choose 1:
 
-* *If they go along with you, they mark experience.*
-* *If they refuse, erase one of their stat highlights for the remainder of the session.*
+- *If they go along with you, they mark experience.*
+- *If they refuse, erase one of their stat highlights for the remainder of the session.*
 
 What they do then is up to them.
 
 On a miss, for either NPCs or PCs, be prepared for the worst.', 'HOT', 'BASIC', null);
-INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('HELP OR INTERFERE WITH SOMEONE', 'When you **help** or **interfere** with someone who’s making a roll, roll+Hx. On a 10+, they take +2 (help) or -2 (interfere) to their roll. On a 7–9, they take +1 (help) or -1 (interfere) to their roll. On a miss, be prepared for the worst.', 'HX', 'BASIC', null);
-INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('READ A SITCH', 'When you **read a charged situation**, roll+sharp. On a hit, you can ask the MC questions. Whenever you act on one of the MC’s answers, take +1. On a 10+, ask 3. On a 7–9, ask 1:
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('HELP OR INTERFERE WITH SOMEONE', 'When you _**help**_ or _**interfere**_ with someone who’s making a roll, roll+Hx. On a 10+, they take +2 (help) or -2 (interfere) to their roll. On a 7–9, they take +1 (help) or -1 (interfere) to their roll. On a miss, be prepared for the worst.', 'HX', 'BASIC', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('READ A SITCH', 'When you _**read a charged situation**_, roll+sharp. On a hit, you can ask the MC questions. Whenever you act on one of the MC’s answers, take +1. On a 10+, ask 3. On a 7–9, ask 1:
 
-* *Where’s my best escape route / way in / way past?*
-* *Which enemy is most vulnerable to me?*
-* *Which enemy is the biggest threat?*
-* *What should I be on the lookout for?*
-* *What’s my enemy’s true position?*
-* *Who’s in control here?*
-
-On a miss, ask 1 anyway, but be prepared for the worst.', 'SHARP', 'BASIC', null);
-INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('READ A PERSON', 'When you **read a person** in a charged interaction, roll+sharp. On a 10+, hold 3. On a 7–9, hold 1. While you’re interacting with them, spend your hold to ask their player questions, 1 for 1:
-
-* *Is your character telling the truth?*
-* *What’s your character really feeling?*
-* *What does your character intend to do?*
-* *What does your character wish I’d do?*
-* *How could I get your character to__?*
+- *Where’s my best escape route / way in / way past?*
+- *Which enemy is most vulnerable to me?*
+- *Which enemy is the biggest threat?*
+- *What should I be on the lookout for?*
+- *What’s my enemy’s true position?*
+- *Who’s in control here?*
 
 On a miss, ask 1 anyway, but be prepared for the worst.', 'SHARP', 'BASIC', null);
-INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('OPEN YOUR BRAIN', 'When you **open your brain to the world’s psychic maelstrom**, roll+weird. On a hit, the MC tells you something new and interesting about the current situation, and might ask you a question or two; answer them. On a 10+, the MC gives you good detail. On a 7–9, the MC gives you an impression. If you already know all there is to know, the MC will tell you that. On a miss, be prepared for the worst.', 'WEIRD', 'BASIC', null);
-INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('LIFESTYLE AND GIGS', '**At the beginning of the session**, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions. If you need jingle during a session, tell the MC you’d like to work a gig.', null, 'BASIC', null);
-INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('SESSION END', '**At the end of every session**, choose a character who knows you better than they used to. If there’s more than one, choose one at your whim. Tell that player to add +1 to their Hx with you on their sheet. If this brings them to Hx+4, they reset to Hx+1 (and therefore mark experience). If no one knows you better, choose a character who doesn’t know you as well as they thought, or choose any character at your whim. Tell that player to take -1 to their Hx with you on their sheet. If this brings them to Hx -3, they reset to Hx=0 (and therefore mark experience).', null, 'BASIC', null);
--- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
--- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
--- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
--- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
--- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
--- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
--- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
--- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
--- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('READ A PERSON', 'When you _**read a person**_ in a charged interaction, roll+sharp. On a 10+, hold 3. On a 7–9, hold 1. While you’re interacting with them, spend your hold to ask their player questions, 1 for 1:
+
+- *Is your character telling the truth?*
+- *What’s your character really feeling?*
+- *What does your character intend to do?*
+- *What does your character wish I’d do?*
+- *How could I get your character to__?*
+
+On a miss, ask 1 anyway, but be prepared for the worst.', 'SHARP', 'BASIC', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('OPEN YOUR BRAIN', 'When you _**open your brain to the world’s psychic maelstrom**_, roll+weird. On a hit, the MC tells you something new and interesting about the current situation, and might ask you a question or two; answer them. On a 10+, the MC gives you good detail. On a 7–9, the MC gives you an impression. If you already know all there is to know, the MC will tell you that. On a miss, be prepared for the worst.', 'WEIRD', 'BASIC', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('LIFESTYLE AND GIGS', '_**At the beginning of the session**_, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions. If you need jingle during a session, tell the MC you’d like to work a gig.', null, 'BASIC', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('SESSION END', '_**At the end of every session**_, choose a character who knows you better than they used to. If there’s more than one, choose one at your whim. Tell that player to add +1 to their Hx with you on their sheet. If this brings them to Hx+4, they reset to Hx+1 (and therefore mark experience). If no one knows you better, choose a character who doesn’t know you as well as they thought, or choose any character at your whim. Tell that player to take -1 to their Hx with you on their sheet. If this brings them to Hx -3, they reset to Hx=0 (and therefore mark experience).', null, 'BASIC', null);
+
+-- Peripheral moves
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('SUFFER HARM', 'When you _**suffer harm**_, roll+harm suffered (after armor, if you’re wearing any).
+
+On a 10+, the MC can choose 1:
+
+- *You’re out of action: unconscious, trapped, incoherent or panicked.*
+- *It’s worse than it seemed. Take an additional 1-harm.*
+- *Choose 2 from the 7–9 list below.*
+
+On a 7–9, the MC can choose 1:
+
+- *You lose your footing.*
+- *You lose your grip on whatever you’re holding.*
+- *You lose track of someone or something you’re attending to.*
+- *You miss noticing something important.*
+
+On a miss, the MC can nevertheless choose something from the 7–9 list above. If she does, though, it’s instead of some of the harm you’re suffering, so you take -1harm.', null, 'PERIPHERAL', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('INFLICT HARM ON PC', 'When you _**inflict harm on another player’s character**_, the other character gets +1Hx with you (on their sheet) for every segment of harm you inflict. If this brings them to Hx+4, they reset to Hx+1 as usual, and therefore mark experience.', 'HX', 'PERIPHERAL', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('HEAL PC HARM', 'When you _**heal another player’s character’s harm**_, you get +1Hx with them (on your sheet) for every segment of harm you heal. If this brings you to Hx+4, you reset to Hx+1 as usual, and therefore mark experience.', 'HX', 'PERIPHERAL', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('GIVE BARTER', 'When you _**give 1-barter to someone, but with strings attached**_, it counts as manipulating them and hitting the roll with a 10+, no leverage or roll required.', null, 'PERIPHERAL', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('GO TO THE MARKET', 'When you _**go into a holding’s bustling market**_, looking for some particular thing to buy, and it’s not obvious whether you should be able to just go buy one like that, roll+sharp.
+
+On a 10+, yes, you can just go buy it like that.
+
+On a 7–9, the MC chooses 1:
+
+- *It costs 1-barter more than you’d expect.*
+- *It’s not openly for sale, but you find someone who can lead you to someone selling it.*
+- *It’s not openly for sale, but you find someone who sold it recently, who may be willing to introduce you to their previous buyer.*
+- *It’s not available for sale, but you find something similar. Will it do?*
+
+On a miss, the MC chooses 1, plus it costs 1-barter more.', 'SHARP', 'PERIPHERAL', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('MAKE WANT KNOWN', 'When you _**make known that you want a thing and drop jingle to speed it on its way**_, roll+barter spent (max roll+3). It has to be a thing you could legitimately get this way. On a 10+ it comes to you, no strings attached. On a 7–9 it comes to you, or something pretty close. On a miss, it comes to you, but with strings very much attached.', null, 'PERIPHERAL', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('INSIGHT', 'When you are able to go to someone for _**insight**_, ask them what they think your best course is, and the MC will tell you. If you pursue that course, take +1 to any rolls you make in the pursuit. If you pursue that course but don’t accomplish your ends, you mark experience.', null, 'PERIPHERAL', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('AUGURY', 'When you are able to use something for _**augury**_, roll+weird.
+
+On a hit, you can choose 1:
+
+- *Reach through the world’s psychic maelstrom to something or someone connected to it.*
+- *Isolate and protect a person or thing from the world’s psychic maelstrom.*
+- *Isolate and contain a fragment of the world’s psychic maelstrom itself.*
+- *Insert information into the world’s psychic maelstrom.*
+- *Open a window into the world’s psychic maelstrom.*
+
+By default, the effect will last only as long as you maintain it, will reach only shallowly into the world’s psychic maelstrom as it is local to you, and will bleed instability.
+
+On a 10+, choose 2; on a 7–9, choose 1:
+
+- *It’ll persist (for a while) without your actively maintaining it.*
+- *It reaches deep into the world’s psychic maelstrom.*
+- *It reaches broadly throughout the world’s psychic maelstrom.*
+- *It’s stable and contained, no bleeding.*
+
+On a miss, whatever bad happens, your antenna takes the brunt of it.', 'WEIRD', 'PERIPHERAL', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('CHANGE HIGHLIGHTED STATS', '_**At the beginning of any session**_, or at the end if you forgot, anyone can say, “hey, let’s change highlighted stats.” When someone says it, do it. Go around the circle again, following the same procedure you used to highlight them in the first place: the high-Hx player highlights one stat, and the MC highlight another.', null, 'PERIPHERAL', null);
+
+-- Battle moves
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('EXCHANGE HARM', 'When you _**exchange harm**_, both sides simultaneously inflict and suffer harm as established:
+
+- *You inflict harm equal to the harm rating of your weapon, minus the armor rating of your enemy’s armor.*
+- *You suffer harm equal to the harm rating of your enemy’s weapon, minus the armor rating of your own armor.*', null, 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('SEIZE BY FORCE', 'To _**seize something by force**_, exchange harm, but first roll+hard.
+
+On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:
+
+- *You inflict terrible harm (+1harm).*
+- *You suffer little harm (-1harm).*
+- *You take definite and undeniable control of it.*
+- *You impress, dismay, or frighten your enemy.*', 'HARD', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('ASSAULT A POSITION', 'To _**assault a secure position**_, exchange harm, but first roll+hard.
+
+On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:
+
+- *You inflict terrible harm (+1harm).*
+- *You suffer little harm (-1harm).*
+- *You force your way into your enemy’s position.*
+- *You impress, dismay, or frighten your enemy.*', 'HARD', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('KEEP HOLD OF SOMETHING', 'To _**keep hold of something you have**_, exchange harm, but first roll+hard.
+
+On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:
+
+- *You inflict terrible harm (+1harm).*
+- *You suffer little harm (-1harm).*
+- *You keep definite control of it.*
+- *You impress, dismay, or frighten your enemy.*', 'HARD', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('FIGHT FREE', 'To _**fight your way free**_, exchange harm, but first roll+hard.
+
+On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:
+
+- *You inflict terrible harm (+1harm).*
+- *You suffer little harm (-1harm).*
+- *You win free and get away.*
+- *You impress, dismay, or frighten your enemy.*', 'HARD', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('DEFEND SOMEONE', 'To _**defend someone else from attack**_, exchange harm, but first roll+hard.
+
+On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:
+
+- *You inflict terrible harm (+1harm).*
+- *You suffer little harm (-1harm).*
+- *You protect them from harm.*
+- *You impress, dismay, or frighten your enemy.*', 'HARD', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('DO SINGLE COMBAT', 'When you _**do single combat with someone**_, no quarters, exchange harm, but first roll+hard.
+
+On a 10+, both. On a 7–9, choose 1. On a miss, your opponent chooses 1 against you:
+
+- *You inflict terrible harm (+1harm).*
+- *You suffer little harm (-1harm).*
+
+After you exchange harm, do you prefer to end the fight now, or fight on? If both of you prefer to end the fight now, it ends. If both of you prefer to fight on, it continues, and you must make the move again. If one of you prefers to end the fight, though, and the other prefers to fight on, then the former must choose: flee, submit to the latter‘s mercy, or fight on after all.', 'HARD', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('LAY DOWN FIRE', 'When you _**lay down fire**_, roll+hard.
+
+On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:
+
+- *You provide covering fire, allowing another character to move or act freely.*
+- *You provide supporting fire, giving another PC +1choice to their own battle move.*
+- *You provide suppressing fire, denying another character to move or act freely. (If a PC, they may still act under fire.)*
+- *You take an opportune shot, inflicting harm (but -1harm) on an enemy within your reach.*', 'HARD', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('STAND OVERWATCH', 'When you _**stand overwatch**_ for an ally, roll+cool. On a hit, if anyone attacks or interferes with your ally, you attack them and inflict harm as established, as well as warning your ally.
+
+On a 10+, choose 1:
+
+- *...And you inflict your harm before they can carry out their attack or interference.*
+- *...And you inflict terrible harm (+1harm).*
+
+On a miss, you are able to warn your ally but not attack your enemy.', 'COOL', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('KEEP AN EYE OUT', 'When you _**keep an eye out**_ for what’s coming, roll+sharp.
+
+On a 10+, hold 3. On a 7–9, hold 2. On a miss, hold 1. During the battle, spend your hold, 1 for 1, to ask the MC what’s coming and choose 1:
+
+- *Direct a PC ally’s attention to an enemy. If they make a battle move against that enemy, they get +1choice to their move.*
+- *Give a PC ally an order, instruction, or suggestion. If they do it, they get +1 to any rolls they make in the effort.*
+- *Direct any ally’s attention to an enemy. If they attack that enemy, they inflict +1harm.*
+- *Direct any ally’s attention to a danger. They take -1harm from that danger.*', 'SHARP', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('BE THE BAIT', 'When _**you’re the bait**_, roll+cool.
+
+On a 10+, choose 2. On a 7–9, choose 1:
+
+- *You draw your prey all the way into the trap. Otherwise, they only approach.*
+- *Your prey doesn’t suspect you. Otherwise, they’re wary and alert.*
+- *You don’t expose yourself to extra risk. Otherwise, any harm your prey inflicts is +1.*
+
+On a miss, the MC chooses 1 for you.', 'COOL', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('BE THE CAT', 'When _**you’re the cat**_, roll+cool. On a hit, you catch your prey out.
+
+On a 10+, you’ve driven them first to a place of your choosing; say where.
+
+On a 7–9, you’ve had to follow them where they wanted to go; they say where.
+
+On a miss, your prey escapes you.', 'COOL', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('BE THE MOUSE', 'When _**you’re the mouse**_, roll+cool.
+
+On a 10+, you escape clean and leave your hunter hunting.
+
+On a 7–9, your hunter catches you out, but only after you’ve led them to a place of your choosing; say where.
+
+On a miss, your hunter catches you out and the MC says where.', 'COOL', 'BATTLE', null);
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('CAT OR MOUSE', 'When _**it’s not certain whether you’re the cat or the mouse**_, roll+sharp. On a hit, you decide which you are.
+
+On a 10+, you take +1forward as well.
+
+On a miss, you’re the mouse.', 'SHARP', 'BATTLE', null);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
