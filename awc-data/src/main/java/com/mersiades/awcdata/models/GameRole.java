@@ -31,6 +31,9 @@ public class GameRole extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameRole")
     private final Set<Threat> threats = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameRole")
+    private Set<Character> characters = new HashSet<>();
+
     public GameRole() {
     }
 
@@ -45,5 +48,10 @@ public class GameRole extends BaseEntity {
         this.role = role;
         this.game = game;
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "GameRole [role= " + this.role + ", Game= " + this.getGame().getId() + ", User= " + this.getUser().getUsername() + "]";
     }
 }

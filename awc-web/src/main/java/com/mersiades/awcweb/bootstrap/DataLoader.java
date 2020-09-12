@@ -1,12 +1,11 @@
 package com.mersiades.awcweb.bootstrap;
 
+import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.enums.Roles;
 import com.mersiades.awcdata.enums.Threats;
+import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
-import com.mersiades.awcdata.services.GameService;
-import com.mersiades.awcdata.services.NpcService;
-import com.mersiades.awcdata.services.ThreatService;
-import com.mersiades.awcdata.services.UserService;
+import com.mersiades.awcdata.services.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -26,13 +25,15 @@ public class DataLoader implements CommandLineRunner {
     private final GameService gameService;
     private final NpcService npcService;
     private final ThreatService threatService;
+    private final CharacterService characterService;
 
     public DataLoader(UserService userService, GameService gameService,
-                      NpcService npcService, ThreatService threatService) {
+                      NpcService npcService, ThreatService threatService, CharacterService characterService) {
         this.userService = userService;
         this.gameService = gameService;
         this.npcService = npcService;
         this.threatService = threatService;
+        this.characterService = characterService;
     }
 
     @Override
@@ -97,6 +98,16 @@ public class DataLoader implements CommandLineRunner {
 
         gameService.save(mockGame2);
 
+        // ---------------------------------- Add Characters to Players --------------------------------- //
+        Character mockCharacter1 = new Character("October", sarahAsPlayer, Playbooks.ANGEL, "not much gear");
+        sarahAsPlayer.getCharacters().add(mockCharacter1);
+
+        Character mockCharacter2 = new Character("Leah", daveAsPlayer, Playbooks.SAVVYHEAD, "workshop with tools");
+        daveAsPlayer.getCharacters().add(mockCharacter2);
+
+        characterService.save(mockCharacter1);
+        characterService.save(mockCharacter2);
+
         // ----------------------------------------------------------------------------------------------- //
         mockUser1.getGames().add(mockGame1);
         mockUser1.getGames().add(mockGame2);
@@ -137,7 +148,7 @@ public class DataLoader implements CommandLineRunner {
             Set<Threat> threats = role.getThreats();
             System.out.println("\t This role has " + npcs.size() + " NPCs");
             if (npcs.size() > 0) {
-                for (Npc npc: npcs) {
+                for (Npc npc : npcs) {
                     System.out.println("\t\t NPC name: " + npc.getName());
                     if (npc.getDescription() != null) {
                         System.out.println("\t\t NPC description: " + npc.getDescription());
@@ -147,10 +158,21 @@ public class DataLoader implements CommandLineRunner {
             }
             System.out.println("\t This role has " + threats.size() + " threats");
             if (threats.size() > 0) {
-                for (Threat threat: threats) {
+                for (Threat threat : threats) {
                     System.out.println("\t\t Threat name: " + threat.getName());
                     System.out.println("\t\t Threat kind: " + threat.getThreatKind());
                     System.out.println("\t\t Threat impulse: " + threat.getImpulse());
+                    System.out.println("\n");
+                }
+            }
+        } else if (roleType == Roles.PLAYER) {
+            Set<Character> characters = role.getCharacters();
+            System.out.println("\t This role has " + characters.size() + " characters");
+            if (characters.size() > 0) {
+                for (Character character : characters) {
+                    System.out.println("\t\t Character name: " + character.getName());
+                    System.out.println("\t\t Playbook: " + character.getPlaybook());
+                    System.out.println("\t\t Gear: " + character.getGear());
                     System.out.println("\n");
                 }
             }
