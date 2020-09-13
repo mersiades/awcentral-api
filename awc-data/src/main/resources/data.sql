@@ -256,6 +256,35 @@ On a 10+, you inflict v-harm+1.
 On a miss, it shoulders you instead, inflicting v-harm as established.', 'COOL', 'ROAD_WAR', null);
 
 -- Playbook moves
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('ANGEL SPECIAL', 'If you and another character have sex, your Hx with them on your sheet goes immediately to +3, and they immediately get +1 to their Hx with you on their sheet. If that brings their Hx with you to +4, they reset it to +1 instead, as usual, and so mark experience.
+', null, 'CHARACTER', 'ANGEL');
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('SIXTH SENSE', '_**Sixth sense**_: when you open your brain to the world’s psychic maelstrom, roll+sharp instead of +weird.', null, 'CHARACTER', 'ANGEL');
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('INFIRMARY', '_**Infirmary**_: you get an infirmary, a workspace with life support, a drug lab and a crew of 2 (Shigusa & Mox, maybe). Get patients into it and you can work on them like a savvyhead on tech (_cf_).', null, 'CHARACTER', 'ANGEL');
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('PROFESSIONAL COMPASSION', '_**Professional compassion**_: you can roll+sharp instead of roll+Hx when you help someone who’s rolling.', null, 'CHARACTER', 'ANGEL');
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('BATTLEFIELD GRACE', '_**Battlefield grace**_: while you are caring for people, not fighting, you get +1armor.', null, 'CHARACTER', 'ANGEL');
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('HEALING TOUCH', '_**Healing touch**_: when you put your hands skin-to-skin on a wounded person and open your brain to them, roll+weird.
+
+On a 10+, heal 1 segment.
+
+On a 7–9, heal 1 segment, but you’re also opening your brain, so roll that move next.
+
+On a miss: first, you don’t heal them. Second, you’ve opened both your brain and theirs to the world’s psychic maelstrom, without protection or preparation. For you, and for your patient if your patient’s a fellow player’s character, treat it as though you’ve made that move and missed the roll. For patients belonging to the MC, their experience and fate are up to the MC.
+', 'WEIRD', 'CHARACTER', 'ANGEL');
+INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('TOUCHED BY DEATH', '_**Touched by death**_: when someone is unconscious in your care, you can use them for _**augury**_. When someone has died in your care, you can use their body for _**augury**_.', null, 'CHARACTER', 'ANGEL');
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+-- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
@@ -279,3 +308,32 @@ On a miss, it shoulders you instead, inflicting v-harm as established.', 'COOL',
 -- stats_options
 -- playbook_creators
 -- playbooks
+INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('ANGEL', 'At the beginning of the session, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions.
+
+If you need jingle during a session, tell the MC you’d like to work a gig. Your gigs:
+
+- *Tend to the health of a dozen families or more*
+- *Serve a wealthy NPC as angel on call*
+- *Serve a warlord NPC as combat medic*
+- *Others, as you negotiate them*
+
+As a one-time expenditure, and very subject to availability, 1-barter might count for:
+
+- *a night in high luxury & company*
+- *any weapon, gear or fashion not valuable or hi-tech*
+- *repair of a piece of hi-tech gear*
+- *a session’s hire of a violent individual as bodyguard*
+- *a few sessions’ tribute to a warlord; a few sessions’ maintenance and repairs for a hi-performance vehicle well-used*
+- *bribes, fees and gifts sufficient to get you into almost anyone’s presence*
+
+For better stuff, you should expect to make particular arrangements. You can’t just wander around the commons of some hardhold with oddments ajangle and expect to find hi-tech or luxe eternal.', 'When you’re lying in the dust of Apocalypse World guts aspilled, for whom do you pray? Thee gods? They’re long gone. Your beloved comrades? Fuckers all, or you wouldn’t be here to begin with. Your precious old mother? She’s a darling but she can’t put an intestine back inside so it’ll stay. No, you pray for some grinning kid or veteran or just someone with a heartshocker and a hand with sutures and a 6-pack of morphine. And when that someone comes, _that’s_ an angel.', 'Angels are medics. If you want everybody to love you, or at least rely on you, play an angel. Warning: if things are going well, maybe nobody will rely on you. Make interesting relationships so you’ll stay relevant. Or sabotage things, I guess.');
+-- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('BATTLEBABE', '', '', '');
+-- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('BRAINER', '', '', '');
+-- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('CHOPPER', '', '', '');
+-- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('DRIVER', '', '', '');
+-- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('GUNLUGGER', '', '', '');
+-- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('HARDHOLDER', '', '', '');
+-- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('HOCUS', '', '', '');
+-- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('MAESTRO_D', '', '', '');
+-- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('SAVVYHEAD', '', '', '');
+-- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('SKINNER', '', '', '');
