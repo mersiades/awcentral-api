@@ -1,3 +1,4 @@
+-- MOVES
 -- Basic moves
 INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('DO SOMETHING UNDER FIRE', 'When you _**do something under fire**_, or dig in to endure fire, roll+cool. On a 10+, you do it. On a 7–9, you flinch, hesitate, or stall: the MC can offer you a worse outcome, a hard bargain, or an ugly choice. On a miss, be prepared for the worst.', 'COOL', 'BASIC', null);
 INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('GO AGGRO ON SOMEONE', 'When you _**go aggro on someone**_, make it clear what you want them to do and what you’ll do to them. Roll+hard. On a 10+, they have to choose:
@@ -253,6 +254,8 @@ INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('SHOULDER AN
 On a 10+, you inflict v-harm+1.
 
 On a miss, it shoulders you instead, inflicting v-harm as established.', 'COOL', 'ROAD_WAR', null);
+
+-- Playbook moves
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
@@ -268,3 +271,11 @@ On a miss, it shoulders you instead, inflicting v-harm as established.', 'COOL',
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
 -- INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('', '', STAT, KIND, PLAYBOOK);
+
+-- PLAYBOOKS
+-- names
+-- looks
+-- stats
+-- stats_options
+-- playbook_creators
+-- playbooks
