@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.services.jpa;
 
+import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Playbook;
 import com.mersiades.awcdata.repositories.PlaybookRepository;
 import com.mersiades.awcdata.services.PlaybookService;
@@ -46,5 +47,10 @@ public class PlaybookJpaService implements PlaybookService {
     @Override
     public void deleteById(Long id) {
         playbookRepository.deleteById(id);
+    }
+
+    @Override
+    public Playbook findByPlaybookType(Playbooks playbookType) {
+        return playbookRepository.findByPlaybookType(playbookType);
     }
 }

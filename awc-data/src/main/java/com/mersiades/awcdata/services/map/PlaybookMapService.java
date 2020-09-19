@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.services.map;
 
+import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Playbook;
 import com.mersiades.awcdata.services.PlaybookService;
 import org.springframework.context.annotation.Profile;
@@ -33,5 +34,14 @@ public class PlaybookMapService extends AbstractMapService<Playbook, Long> imple
     @Override
     public void deleteById(Long id) {
         super.deleteById(id);
+    }
+
+    @Override
+    public Playbook findByPlaybookType(Playbooks playbookType) {
+        return this.findAll()
+                .stream()
+                .filter(playbook -> playbook.getPlaybookType().equals(playbookType))
+                .findFirst()
+                .orElse(null);
     }
 }

@@ -307,9 +307,58 @@ INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('TOUCHED BY 
 -- stats
 -- stats_options
 -- playbook_creators
--- playbooks
-INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('ANGEL', 'At the beginning of the session, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions.
+INSERT INTO pb_creators (pb_type, gear_instr, imp_instr, moves_instr, hx_instr)
+VALUES ('ANGEL', 'You get:
 
+- angel kit, no supplier
+- 1 small practical weapon
+- oddments worth 2-barter
+- fashion suitable to your look, including at your option a piece worth 1-armor (you detail)
+
+Small practical weapons
+(choose 1):
+
+- .38 revolver (2-harm close reload loud)
+- 9mm (2-harm close loud)
+- big knife (2-harm hand)
+- sawed-off (3-harm close reload messy) • stun gun (s-harm hand reload)
+
+If you’d like to start play with a vehicle or a prosthetic, get with the MC.', 'Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.
+
+Each time you improve, choose one of the options. Check it off; you can’t choose it again.', 'You get all the basic moves. Choose 2 angel moves.
+
+You can use all the battle moves, but when you get the chance, look up _**keeping an eye out**_, and _**baiting a trap**_, as well as the rules for harm.', 'Everyone introduces their characters by name, look and outlook. Take your turn.
+
+List the other characters’ names.
+
+Go around again for Hx. On your turn, ask 1, 2, or all 3:
+
+- Which one of you do I figure is doomed to self-destruction?
+For that character, write Hx-2.
+- Which one of you put a hand in when it mattered, and helped me save a life?
+For that character, write Hx+2.
+- Which one of you has been beside me all along, and has seen everything I’ve seen?
+For that character, write Hx+3.
+
+For everyone else, write Hx+1. You keep your eyes open.
+
+On the others’ turns, answer their questions as you like.
+
+At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.
+');
+-- INSERT INTO pb_creators (pb_type, barter_instr, intro, intro_comment) VALUES ('BATTLEBABE', '', '', '');
+-- INSERT INTO pb_creators (pb_type, barter_instr, intro, intro_comment) VALUES ('BRAINER', '', '', '');
+-- INSERT INTO pb_creators (pb_type, barter_instr, intro, intro_comment) VALUES ('CHOPPER', '', '', '');
+-- INSERT INTO pb_creators (pb_type, barter_instr, intro, intro_comment) VALUES ('DRIVER', '', '', '');
+-- INSERT INTO pb_creators (pb_type, barter_instr, intro, intro_comment) VALUES ('GUNLUGGER', '', '', '');
+-- INSERT INTO pb_creators (pb_type, barter_instr, intro, intro_comment) VALUES ('HARDHOLDER', '', '', '');
+-- INSERT INTO pb_creators (pb_type, barter_instr, intro, intro_comment) VALUES ('HOCUS', '', '', '');
+-- INSERT INTO pb_creators (pb_type, barter_instr, intro, intro_comment) VALUES ('MAESTRO_D', '', '', '');
+-- INSERT INTO pb_creators (pb_type, barter_instr, intro, intro_comment) VALUES ('SAVVYHEAD', '', '', '');
+-- INSERT INTO pb_creators (pb_type, barter_instr, intro, intro_comment) VALUES ('SKINNER', '', '', '');
+
+-- playbooks
+INSERT INTO playbooks (pb_type, barter_instr, intro, intro_comment) VALUES ('ANGEL', 'At the beginning of the session, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions.
 If you need jingle during a session, tell the MC you’d like to work a gig. Your gigs:
 
 - *Tend to the health of a dozen families or more*
@@ -327,13 +376,14 @@ As a one-time expenditure, and very subject to availability, 1-barter might coun
 - *bribes, fees and gifts sufficient to get you into almost anyone’s presence*
 
 For better stuff, you should expect to make particular arrangements. You can’t just wander around the commons of some hardhold with oddments ajangle and expect to find hi-tech or luxe eternal.', 'When you’re lying in the dust of Apocalypse World guts aspilled, for whom do you pray? Thee gods? They’re long gone. Your beloved comrades? Fuckers all, or you wouldn’t be here to begin with. Your precious old mother? She’s a darling but she can’t put an intestine back inside so it’ll stay. No, you pray for some grinning kid or veteran or just someone with a heartshocker and a hand with sutures and a 6-pack of morphine. And when that someone comes, _that’s_ an angel.', 'Angels are medics. If you want everybody to love you, or at least rely on you, play an angel. Warning: if things are going well, maybe nobody will rely on you. Make interesting relationships so you’ll stay relevant. Or sabotage things, I guess.');
--- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('BATTLEBABE', '', '', '');
--- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('BRAINER', '', '', '');
--- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('CHOPPER', '', '', '');
--- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('DRIVER', '', '', '');
--- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('GUNLUGGER', '', '', '');
--- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('HARDHOLDER', '', '', '');
--- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('HOCUS', '', '', '');
--- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('MAESTRO_D', '', '', '');
--- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('SAVVYHEAD', '', '', '');
--- INSERT INTO playbooks (playbook_type, barter_instr, intro, intro_comment) VALUES ('SKINNER', '', '', '');
+
+-- INSERT INTO playbooks (pb_type, barter_instr, intro, intro_comment) VALUES ('BATTLEBABE', '', '', '');
+-- INSERT INTO playbooks (pb_type, barter_instr, intro, intro_comment) VALUES ('BRAINER', '', '', '');
+-- INSERT INTO playbooks (pb_type, barter_instr, intro, intro_comment) VALUES ('CHOPPER', '', '', '');
+-- INSERT INTO playbooks (pb_type, barter_instr, intro, intro_comment) VALUES ('DRIVER', '', '', '');
+-- INSERT INTO playbooks (pb_type, barter_instr, intro, intro_comment) VALUES ('GUNLUGGER', '', '', '');
+-- INSERT INTO playbooks (pb_type, barter_instr, intro, intro_comment) VALUES ('HARDHOLDER', '', '', '');
+-- INSERT INTO playbooks (pb_type, barter_instr, intro, intro_comment) VALUES ('HOCUS', '', '', '');
+-- INSERT INTO playbooks (pb_type, barter_instr, intro, intro_comment) VALUES ('MAESTRO_D', '', '', '');
+-- INSERT INTO playbooks (pb_type, barter_instr, intro, intro_comment) VALUES ('SAVVYHEAD', '', '', '');
+-- INSERT INTO playbooks (pb_type, barter_instr, intro, intro_comment) VALUES ('SKINNER', '', '', '');

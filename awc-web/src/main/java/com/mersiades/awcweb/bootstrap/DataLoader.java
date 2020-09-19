@@ -26,14 +26,18 @@ public class DataLoader implements CommandLineRunner {
     private final NpcService npcService;
     private final ThreatService threatService;
     private final CharacterService characterService;
+    private final PlaybookCreatorService playbookCreatorService;
+    private final PlaybookService playbookService;
 
     public DataLoader(UserService userService, GameService gameService,
-                      NpcService npcService, ThreatService threatService, CharacterService characterService) {
+                      NpcService npcService, ThreatService threatService, CharacterService characterService, PlaybookCreatorService playbookCreatorService, PlaybookService playbookService) {
         this.userService = userService;
         this.gameService = gameService;
         this.npcService = npcService;
         this.threatService = threatService;
         this.characterService = characterService;
+        this.playbookCreatorService = playbookCreatorService;
+        this.playbookService = playbookService;
     }
 
     @Override
@@ -42,6 +46,18 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadData() {
+        Set<PlaybookCreator> playbookCreators = playbookCreatorService.findAll();
+        PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL);
+        System.out.println(playbookCreatorAngel.getGearInstructions());
+        Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL);
+        System.out.println(playbookAngel.getBarter_instructions());
+
+        playbookAngel.setCreator(playbookCreatorAngel);
+        playbookCreatorAngel.setPlaybook(playbookAngel);
+        playbookCreatorService.save(playbookCreatorAngel);
+        playbookService.save(playbookAngel);
+
+
         // -------------------------------------- Set up mock Users -------------------------------------- //
         User mockUser1 = new User();
         mockUser1.setUsername("Dave");

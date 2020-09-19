@@ -4,10 +4,7 @@ import com.mersiades.awcdata.enums.Playbooks;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -15,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "playbooks")
 public class Playbook extends BaseEntity {
 
-    @Column(name = "playbook_type")
+    @Column(name = "pb_type")
     private Playbooks playbookType;
 
     @Lob
@@ -32,5 +29,8 @@ public class Playbook extends BaseEntity {
 
     @Column(name = "image_url")
     private String playbook_image_url;
+
+    @OneToOne(mappedBy = "playbook", cascade = CascadeType.ALL)
+    private PlaybookCreator creator;
 
 }
