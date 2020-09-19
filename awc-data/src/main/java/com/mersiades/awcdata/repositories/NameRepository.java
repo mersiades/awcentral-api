@@ -1,2 +1,12 @@
-package com.mersiades.awcdata.repositories;public interface NameRepository {
+package com.mersiades.awcdata.repositories;
+
+import com.mersiades.awcdata.enums.Playbooks;
+import com.mersiades.awcdata.models.Name;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.Set;
+
+public interface NameRepository extends CrudRepository<Name, Long> {
+
+    Set<Name> findAllByPlaybookType(Playbooks playbookType);
 }

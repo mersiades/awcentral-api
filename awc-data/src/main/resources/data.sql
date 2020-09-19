@@ -303,6 +303,34 @@ INSERT INTO moves (name, description, stat, kind, playbook) VALUES ('TOUCHED BY 
 
 -- PLAYBOOKS
 -- names
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Dou');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Bon');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Abe');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Boo');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'T');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Kal');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Char');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Jav');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Ruth');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Wei');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Jay');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Nee');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Kim');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Lan');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Di');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Dez');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Doc');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Core');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Wheels');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Buzz');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Key');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Gabe');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Biz');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Bish');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Line');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Inch');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Grip');
+INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Setter');
 -- looks
 -- stats
 -- stats_options

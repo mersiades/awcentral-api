@@ -28,9 +28,10 @@ public class DataLoader implements CommandLineRunner {
     private final CharacterService characterService;
     private final PlaybookCreatorService playbookCreatorService;
     private final PlaybookService playbookService;
+    private final NameService nameService;
 
     public DataLoader(UserService userService, GameService gameService,
-                      NpcService npcService, ThreatService threatService, CharacterService characterService, PlaybookCreatorService playbookCreatorService, PlaybookService playbookService) {
+                      NpcService npcService, ThreatService threatService, CharacterService characterService, PlaybookCreatorService playbookCreatorService, PlaybookService playbookService, NameService nameService) {
         this.userService = userService;
         this.gameService = gameService;
         this.npcService = npcService;
@@ -38,6 +39,7 @@ public class DataLoader implements CommandLineRunner {
         this.characterService = characterService;
         this.playbookCreatorService = playbookCreatorService;
         this.playbookService = playbookService;
+        this.nameService = nameService;
     }
 
     @Override
@@ -46,11 +48,15 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadData() {
-        Set<PlaybookCreator> playbookCreators = playbookCreatorService.findAll();
         PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL);
-        System.out.println(playbookCreatorAngel.getGearInstructions());
         Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL);
-        System.out.println(playbookAngel.getBarter_instructions());
+        Set<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL);
+        namesAngel.forEach(name -> {
+            name.setPlaybookCreator(playbookCreatorAngel);
+            nameService.save(name);
+        });
+//        playbookCreatorAngel.setNames(namesAngel);
+
 
         playbookAngel.setCreator(playbookCreatorAngel);
         playbookCreatorAngel.setPlaybook(playbookAngel);
