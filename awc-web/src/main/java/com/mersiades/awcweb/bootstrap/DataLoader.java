@@ -57,7 +57,6 @@ public class DataLoader implements CommandLineRunner {
             nameService.save(name);
             playbookCreatorAngel.getNames().add(name);
         });
-        System.out.println(playbookCreatorAngel.getNames());
 
         playbookAngel.setCreator(playbookCreatorAngel);
         playbookCreatorAngel.setPlaybook(playbookAngel);
