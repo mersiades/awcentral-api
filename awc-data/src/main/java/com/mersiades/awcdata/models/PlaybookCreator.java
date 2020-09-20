@@ -37,16 +37,8 @@ public class PlaybookCreator extends BaseEntity {
     @JoinColumn(name = "playbook_id")
     private Playbook playbook;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "playbookCreator")
+    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "playbookCreator" )
     private final Set<Name> names = new HashSet<>();
-
-//    public void addName(Name name) {
-//        this.names.add(name);
-//    }
-//
-//    public void setNames(Set<Name> names) {
-//        this.names.addAll(names);
-//    }
 
     @Override
     public String toString() {

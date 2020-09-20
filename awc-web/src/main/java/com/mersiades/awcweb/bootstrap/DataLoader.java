@@ -51,12 +51,13 @@ public class DataLoader implements CommandLineRunner {
         PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL);
         Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL);
         Set<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL);
+
         namesAngel.forEach(name -> {
             name.setPlaybookCreator(playbookCreatorAngel);
             nameService.save(name);
+            playbookCreatorAngel.getNames().add(name);
         });
-//        playbookCreatorAngel.setNames(namesAngel);
-
+        System.out.println(playbookCreatorAngel.getNames());
 
         playbookAngel.setCreator(playbookCreatorAngel);
         playbookCreatorAngel.setPlaybook(playbookAngel);
