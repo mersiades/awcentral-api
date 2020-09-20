@@ -16,6 +16,7 @@ public class Look extends BaseEntity {
     @Column(name = "pb_type")
     private Playbooks playbookType;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "category")
     private LookCategories category;
 

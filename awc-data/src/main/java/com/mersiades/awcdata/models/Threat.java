@@ -20,6 +20,7 @@ public class Threat extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "threat_kind")
     private Threats threatKind;
 

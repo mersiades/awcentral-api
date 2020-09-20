@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "playbooks")
 public class Playbook extends BaseEntity {
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "pb_type")
     private Playbooks playbookType;
 

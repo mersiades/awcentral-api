@@ -332,6 +332,40 @@ INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Inch');
 INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Grip');
 INSERT INTO names (pb_type, name) VALUES ('ANGEL', 'Setter');
 -- looks
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'GENDER', 'man');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'GENDER', 'woman');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'GENDER', 'ambiguous');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'GENDER', 'transgressing');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'GENDER', 'concealed');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'CLOTHES', 'utility wear');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'CLOTHES', 'casual wear plus utility');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'CLOTHES', 'scrounge wear plus utility');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'FACE', 'kind face');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'FACE', 'string face');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'FACE', 'rugged face');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'FACE', 'haggard face');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'FACE', 'pretty face');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'FACE', 'lively face');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'EYES', 'quick eyes');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'EYES', 'hard eyes');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'EYES', 'caring eyes');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'EYES', 'bright eyes');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'EYES', 'laughing eyes');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'EYES', 'clear eyes');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'BODY', 'compact body');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'BODY', 'stout body');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'BODY', 'spare body');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'BODY', 'big body');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'BODY', 'rangy body');
+INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'BODY', 'sturdy body');
+-- INSERT INTO looks (pb_type, category, look) VALUES ('', '', '');
+-- INSERT INTO looks (pb_type, category, look) VALUES ('', '', '');
+-- INSERT INTO looks (pb_type, category, look) VALUES ('', '', '');
+-- INSERT INTO looks (pb_type, category, look) VALUES ('', '', '');
+-- INSERT INTO looks (pb_type, category, look) VALUES ('', '', '');
+-- INSERT INTO looks (pb_type, category, look) VALUES ('', '', '');
+-- INSERT INTO looks (pb_type, category, look) VALUES ('', '', '');
+
 -- stats
 -- stats_options
 -- playbook_creators

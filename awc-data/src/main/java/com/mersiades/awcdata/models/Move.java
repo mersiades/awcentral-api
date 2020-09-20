@@ -6,10 +6,7 @@ import com.mersiades.awcdata.enums.Stats;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -24,12 +21,15 @@ public class Move extends BaseEntity {
     @Column(name = "description")
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "stat")
     private Stats stat;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "kind")
     private MoveKinds kind;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "playbook")
     private Playbooks playbook;
 

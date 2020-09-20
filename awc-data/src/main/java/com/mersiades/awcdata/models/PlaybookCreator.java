@@ -14,6 +14,7 @@ import java.util.Set;
 @Table(name = "pb_creators")
 public class PlaybookCreator extends BaseEntity {
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "pb_type")
     private Playbooks playbookType;
 
