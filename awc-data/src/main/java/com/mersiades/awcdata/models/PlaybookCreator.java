@@ -41,6 +41,9 @@ public class PlaybookCreator extends BaseEntity {
     @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "playbookCreator" )
     private final Set<Name> names = new HashSet<>();
 
+    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "playbookCreator" )
+    private final Set<Look> looks = new HashSet<>();
+
     @Override
     public String toString() {
         return "PlaybookCreator{" +

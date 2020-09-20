@@ -29,9 +29,10 @@ public class DataLoader implements CommandLineRunner {
     private final PlaybookCreatorService playbookCreatorService;
     private final PlaybookService playbookService;
     private final NameService nameService;
+    private final LookService lookService;
 
     public DataLoader(UserService userService, GameService gameService,
-                      NpcService npcService, ThreatService threatService, CharacterService characterService, PlaybookCreatorService playbookCreatorService, PlaybookService playbookService, NameService nameService) {
+                      NpcService npcService, ThreatService threatService, CharacterService characterService, PlaybookCreatorService playbookCreatorService, PlaybookService playbookService, NameService nameService, LookService lookService) {
         this.userService = userService;
         this.gameService = gameService;
         this.npcService = npcService;
@@ -40,6 +41,7 @@ public class DataLoader implements CommandLineRunner {
         this.playbookCreatorService = playbookCreatorService;
         this.playbookService = playbookService;
         this.nameService = nameService;
+        this.lookService = lookService;
     }
 
     @Override
@@ -51,11 +53,18 @@ public class DataLoader implements CommandLineRunner {
         PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL);
         Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL);
         Set<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL);
+        Set<Look> looksAngel = lookService.findAllByPlaybookType(Playbooks.ANGEL);
 
         namesAngel.forEach(name -> {
             name.setPlaybookCreator(playbookCreatorAngel);
             nameService.save(name);
             playbookCreatorAngel.getNames().add(name);
+        });
+
+        looksAngel.forEach(look -> {
+            look.setPlaybookCreator(playbookCreatorAngel);
+            lookService.save(look);
+            playbookCreatorAngel.getLooks().add(look);
         });
 
         playbookAngel.setCreator(playbookCreatorAngel);

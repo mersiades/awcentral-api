@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(exclude = "playbookCreator", callSuper = false)
 @Data
 @Entity
 @Table(name = "looks")
