@@ -19,4 +19,8 @@ public class Stat extends BaseEntity {
     @Column
     private int value;
 
+    @ManyToOne
+    @JoinColumn(name = "stat_option_id")
+    private StatsOption statsOption;
+
 }
