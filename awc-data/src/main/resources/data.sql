@@ -366,43 +366,11 @@ INSERT INTO looks (pb_type, category, look) VALUES ('ANGEL', 'BODY', 'sturdy bod
 -- INSERT INTO looks (pb_type, category, look) VALUES ('', '', '');
 -- INSERT INTO looks (pb_type, category, look) VALUES ('', '', '');
 
--- stats
-INSERT INTO stats (name, value) VALUES('COOL', -3);
-INSERT INTO stats (name, value) VALUES('COOL', -2);
-INSERT INTO stats (name, value) VALUES('COOL', -1);
-INSERT INTO stats (name, value) VALUES('COOL', 0);
-INSERT INTO stats (name, value) VALUES('COOL', 1);
-INSERT INTO stats (name, value) VALUES('COOL', 2);
-INSERT INTO stats (name, value) VALUES('COOL', 3);
-INSERT INTO stats (name, value) VALUES('HARD', -3);
-INSERT INTO stats (name, value) VALUES('HARD', -2);
-INSERT INTO stats (name, value) VALUES('HARD', -1);
-INSERT INTO stats (name, value) VALUES('HARD', 0);
-INSERT INTO stats (name, value) VALUES('HARD', 1);
-INSERT INTO stats (name, value) VALUES('HARD', 2);
-INSERT INTO stats (name, value) VALUES('HARD', 3);
-INSERT INTO stats (name, value) VALUES('HOT', -3);
-INSERT INTO stats (name, value) VALUES('HOT', -2);
-INSERT INTO stats (name, value) VALUES('HOT', -1);
-INSERT INTO stats (name, value) VALUES('HOT', 0);
-INSERT INTO stats (name, value) VALUES('HOT', 1);
-INSERT INTO stats (name, value) VALUES('HOT', 2);
-INSERT INTO stats (name, value) VALUES('HOT', 3);
-INSERT INTO stats (name, value) VALUES('SHARP', -3);
-INSERT INTO stats (name, value) VALUES('SHARP', -2);
-INSERT INTO stats (name, value) VALUES('SHARP', -1);
-INSERT INTO stats (name, value) VALUES('SHARP', 0);
-INSERT INTO stats (name, value) VALUES('SHARP', 1);
-INSERT INTO stats (name, value) VALUES('SHARP', 2);
-INSERT INTO stats (name, value) VALUES('SHARP', 3);
-INSERT INTO stats (name, value) VALUES('WEIRD', -3);
-INSERT INTO stats (name, value) VALUES('WEIRD', -2);
-INSERT INTO stats (name, value) VALUES('WEIRD', -1);
-INSERT INTO stats (name, value) VALUES('WEIRD', 0);
-INSERT INTO stats (name, value) VALUES('WEIRD', 1);
-INSERT INTO stats (name, value) VALUES('WEIRD', 2);
-INSERT INTO stats (name, value) VALUES('WEIRD', 3);
 -- stats_options
+INSERT INTO stats_options (pb_type, cool, hard, hot, sharp, weird) VALUES ('ANGEL', 1, 0, 1, 2, -1);
+INSERT INTO stats_options (pb_type, cool, hard, hot, sharp, weird) VALUES ('ANGEL', 1, 1, 0, 2, -1);
+INSERT INTO stats_options (pb_type, cool, hard, hot, sharp, weird) VALUES ('ANGEL', -1, 1, 0, 2, 1);
+INSERT INTO stats_options (pb_type, cool, hard, hot, sharp, weird) VALUES ('ANGEL', 2, 0, -1, 2, -1);
 -- playbook_creators
 INSERT INTO pb_creators (pb_type, gear_instr, imp_instr, moves_instr, hx_instr)
 VALUES ('ANGEL', 'You get:

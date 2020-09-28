@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.services.jpa;
 
+import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.StatsOption;
 import com.mersiades.awcdata.repositories.StatsOptionRepository;
 import com.mersiades.awcdata.services.StatsOptionService;
@@ -46,5 +47,10 @@ public class StatsOptionJpaService implements StatsOptionService {
     @Override
     public void deleteById(Long id) {
         statsOptionRepository.deleteById(id);
+    }
+
+    @Override
+    public Set<StatsOption> findAllByPlaybookType(Playbooks playbookType) {
+        return statsOptionRepository.findAllByPlaybookType(playbookType);
     }
 }

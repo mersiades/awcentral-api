@@ -30,9 +30,10 @@ public class DataLoader implements CommandLineRunner {
     private final PlaybookService playbookService;
     private final NameService nameService;
     private final LookService lookService;
+    private final StatsOptionService statsOptionService;
 
     public DataLoader(UserService userService, GameService gameService,
-                      NpcService npcService, ThreatService threatService, CharacterService characterService, PlaybookCreatorService playbookCreatorService, PlaybookService playbookService, NameService nameService, LookService lookService) {
+                      NpcService npcService, ThreatService threatService, CharacterService characterService, PlaybookCreatorService playbookCreatorService, PlaybookService playbookService, NameService nameService, LookService lookService, StatsOptionService statsOptionService) {
         this.userService = userService;
         this.gameService = gameService;
         this.npcService = npcService;
@@ -42,6 +43,7 @@ public class DataLoader implements CommandLineRunner {
         this.playbookService = playbookService;
         this.nameService = nameService;
         this.lookService = lookService;
+        this.statsOptionService = statsOptionService;
     }
 
     @Override
@@ -54,6 +56,13 @@ public class DataLoader implements CommandLineRunner {
         Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL);
         Set<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL);
         Set<Look> looksAngel = lookService.findAllByPlaybookType(Playbooks.ANGEL);
+        Set<StatsOption> statsOptionsAngel = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL);
+
+        for(StatsOption statsOption: statsOptionsAngel) {
+            playbookCreatorAngel.getStatsOptions().add(statsOption);
+            statsOption.setPlaybookCreator(playbookCreatorAngel);
+            statsOptionService.save(statsOption);
+        }
 
         namesAngel.forEach(name -> {
             name.setPlaybookCreator(playbookCreatorAngel);
@@ -71,6 +80,19 @@ public class DataLoader implements CommandLineRunner {
         playbookCreatorAngel.setPlaybook(playbookAngel);
         playbookCreatorService.save(playbookCreatorAngel);
         playbookService.save(playbookAngel);
+
+        Set<StatsOption> statsOptions = playbookAngel.getCreator().getStatsOptions();
+
+        System.out.println("|-------------- ANGEL STAT OPTIONS --------------|");
+        statsOptions.forEach(statsOption -> {
+
+            System.out.println("PB: " + statsOption.getPlaybookType());
+            System.out.println("COOL: " + statsOption.getCOOL());
+            System.out.println("HARD: " + statsOption.getHARD());
+            System.out.println("HOT: " + statsOption.getHOT());
+            System.out.println("SHARP: " + statsOption.getSHARP());
+            System.out.println("WEIRD: " + statsOption.getWEIRD() + "\n");
+        });
 
 
         // -------------------------------------- Set up mock Users -------------------------------------- //
