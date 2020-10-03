@@ -12,7 +12,7 @@ import java.util.Set;
 public class User extends BaseEntity {
 
     @Column(name = "discourse_id")
-    private Long discourseID;
+    private String discourseID;
 
     @Column(name = "username")
     private String username;
@@ -32,7 +32,7 @@ public class User extends BaseEntity {
         super(id);
     }
 
-    public User(Long discourseID, String username) {
+    public User(String discourseID, String username) {
         this.discourseID = discourseID;
         this.username = username;
     }

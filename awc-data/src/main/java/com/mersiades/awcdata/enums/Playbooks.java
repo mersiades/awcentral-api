@@ -13,9 +13,9 @@ public enum Playbooks {
     SAVVYHEAD("SAVVYHEAD"),
     SKINNER("SKINNER");
 
-    private String code;
+    private final String code;
 
-    private Playbooks(String code) {
+    Playbooks(String code) {
         this.code = code;
     }
 

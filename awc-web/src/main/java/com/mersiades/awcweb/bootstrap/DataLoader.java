@@ -14,12 +14,12 @@ import java.util.Set;
 @Component
 public class DataLoader implements CommandLineRunner {
 
-    final Long DISCORD_TEXT_CHANNEL_ID_1 = Long.parseLong("741573502452105236");
-    final Long DISCORD_TEXT_CHANNEL_ID_2 = Long.parseLong("823458920374529070");
-    final Long DISCORD_VOICE_CHANNEL_ID_1 = Long.parseLong("741573503710527498");
-    final Long DISCORD_VOICE_CHANNEL_ID_2 = Long.parseLong("123876129847590347");
-    final Long DISCORD_USER_ID_1 = Long.parseLong("696484065859076146");
-    final Long DISCORD_USER_ID_2 = Long.parseLong("134523465246534532");
+    final String DISCORD_TEXT_CHANNEL_ID_1 = "741573502452105236";
+    final String DISCORD_TEXT_CHANNEL_ID_2 = "823458920374529070";
+    final String DISCORD_VOICE_CHANNEL_ID_1 = "741573503710527498";
+    final String DISCORD_VOICE_CHANNEL_ID_2 = "123876129847590347";
+    final String DISCORD_USER_ID_1 = "696484065859076146";
+    final String DISCORD_USER_ID_2 = "134523465246534532";
 
     private final UserService userService;
     private final GameService gameService;

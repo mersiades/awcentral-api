@@ -1,0 +1,9 @@
+type User {
+    id: ID!
+    username: String!
+    discourseID: String!
+}
+
+type Query {
+    userByDiscourseId(discourseId:String!): User
+}

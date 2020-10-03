@@ -39,7 +39,7 @@ class GameRoleJpaServiceTest {
 
     @BeforeEach
     void setUp() {
-        mockGame = new Game(2L, 123L, 234L, "Mock Game");
+        mockGame = new Game(2L, "823458920374529070", "123876129847590347", "Mock Game");
         mockUser = new User(3L);
         mockGameRole = new GameRole(1L, Roles.MC, mockGame, mockUser);
     }

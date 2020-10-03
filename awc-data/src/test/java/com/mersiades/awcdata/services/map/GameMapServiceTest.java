@@ -15,13 +15,13 @@ class GameMapServiceTest {
 
     final Long gameId = 1L;
 
-    final Long textChannelId = 741573502452105236L;
+    final String textChannelId = "741573502452105236";
 
-    final Long textChannelId2 = 741573503710527498L;
+    final String textChannelId2 = "741573503710527498";
 
-    final Long voiceChannelId = 823458920374529070L;
+    final String voiceChannelId = "823458920374529070";
 
-    final Long voiceChannelId2 = 123876129847590347L;
+    final String voiceChannelId2 = "123876129847590347";
 
     final String name = "Mock game";
 

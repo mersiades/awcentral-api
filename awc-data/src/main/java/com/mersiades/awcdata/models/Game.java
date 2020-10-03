@@ -18,11 +18,11 @@ public class Game extends BaseEntity {
      * textChannelId acts as the Game's id
      */
     @Column(name = "text_channel_id")
-    private Long textChannelId;
+    private String textChannelId;
 
     /* voiceChannelId is provided by Discord when the Game's channels are created. */
     @Column(name = "voice_channel_id")
-    private Long voiceChannelId;
+    private String voiceChannelId;
 
     @Column(name = "name")
     private String name;
@@ -33,13 +33,13 @@ public class Game extends BaseEntity {
     public Game() {
     }
 
-    public Game(Long textChannelId, Long voiceChannelId, String name) {
+    public Game(String textChannelId, String voiceChannelId, String name) {
         this.textChannelId = textChannelId;
         this.voiceChannelId = voiceChannelId;
         this.name = name;
     }
 
-    public Game(Long id, Long textChannelId, Long voiceChannelId, String name) {
+    public Game(Long id, String textChannelId, String voiceChannelId, String name) {
         super(id);
         this.textChannelId = textChannelId;
         this.voiceChannelId = voiceChannelId;

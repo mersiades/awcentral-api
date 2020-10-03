@@ -31,13 +31,13 @@ class GameJpaServiceTest {
 
     @BeforeEach
     void setUp() {
-        returnedGame = new Game(1L, 678L, 789L, "Mock Game");
+        returnedGame = new Game(1L, "823458920374529070", "123876129847590347", "Mock Game");
     }
 
     @Test
     void findAll() {
         Set<Game> returnedGames = new HashSet<>();
-        returnedGames.add(new Game(2L, 123L, 345L, "Another Mock Game"));
+        returnedGames.add(new Game(2L, "741573502452105236", "741573503710527498", "Another Mock Game"));
         returnedGames.add(returnedGame);
 
         when(gameRepository.findAll()).thenReturn(returnedGames);
@@ -68,7 +68,7 @@ class GameJpaServiceTest {
 
     @Test
     void save() {
-        Game gameToSave = new Game(3L, 123L, 234L, "Save Me");
+        Game gameToSave = new Game(3L, "741573502452105236", "741573503710527498", "Save Me");
 
         when(gameRepository.save(any())).thenReturn(gameToSave);
 
