@@ -25,13 +25,13 @@ public class GameRole extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameRole")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "gameRole")
     private final Set<Npc> npcs = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameRole")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "gameRole")
     private final Set<Threat> threats = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameRole")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "gameRole")
     private Set<Character> characters = new HashSet<>();
 
     public GameRole() {
@@ -52,6 +52,6 @@ public class GameRole extends BaseEntity {
 
     @Override
     public String toString() {
-        return "GameRole [role= " + this.role + ", Game= " + this.getGame().getId() + ", User= " + this.getUser().getUsername() + "]";
+        return "GameRole [role= " + this.role + ", Game= " + this.getGame().getId() + ", User= " + this.getUser().getId() + "]";
     }
 }

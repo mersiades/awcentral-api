@@ -1,9 +1,26 @@
+enum Roles {
+    MC
+    PLAYER
+}
 type User {
     id: ID!
-    username: String!
-    discourseID: String!
+    discordId: String!
+    gameRoles: [GameRole]
+}
+
+type Game {
+    id: ID!
+    name: String!
+    textChannelId: String!
+    voiceChannelId: String!
+}
+
+type GameRole {
+    id: ID!
+    role: Roles
+    game: Game
 }
 
 type Query {
-    userByDiscourseId(discourseId:String!): User
+    userByDiscordId(discordId:String!): User
 }

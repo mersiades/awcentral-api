@@ -49,11 +49,11 @@ public class UserJpaService implements UserService {
     }
 
     @Override
-    public User findByDiscourseID(String discourseID) {
-        Optional<User> optionalUser = userRepository.findByDiscourseID(discourseID);
+    public User findByDiscordId(String discordId) {
+        Optional<User> optionalUser = userRepository.findByDiscordId(discordId);
         return optionalUser.orElseGet(() -> {
             User newUser = new User();
-            newUser.setDiscourseID(discourseID);
+            newUser.setDiscordId(discordId);
             userRepository.save(newUser);
             return newUser;
         });

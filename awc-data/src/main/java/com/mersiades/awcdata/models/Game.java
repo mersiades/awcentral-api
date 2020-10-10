@@ -30,6 +30,9 @@ public class Game extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private final Set<GameRole> gameRoles = new HashSet<>();
 
+    @ManyToMany(mappedBy = "games")
+    private Set<User> users;
+
     public Game() {
     }
 

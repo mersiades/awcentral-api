@@ -97,12 +97,11 @@ public class DataLoader implements CommandLineRunner {
 
         // -------------------------------------- Set up mock Users -------------------------------------- //
         User mockUser1 = new User();
-        mockUser1.setUsername("Dave");
-        mockUser1.setDiscourseID(DISCORD_USER_ID_1);
+
+        mockUser1.setDiscordId(DISCORD_USER_ID_1);
 
         User mockUser2 = new User();
-        mockUser2.setUsername("Sarah");
-        mockUser2.setDiscourseID(DISCORD_USER_ID_2);
+        mockUser2.setDiscordId(DISCORD_USER_ID_2);
 
         userService.save(mockUser1);
         userService.save(mockUser2);
@@ -233,11 +232,11 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void printUser(User user) {
-        System.out.println("| ------------- " + user.getUsername().toUpperCase() + " -------------- |");
+        System.out.println("| ------------- " + user.getId() + " -------------- |");
         System.out.println("ID: " + user.getId());
-        System.out.println("Discord ID: " + user.getDiscourseID());
+        System.out.println("Discord ID: " + user.getDiscordId());
         Set<Game> davesGames = user.getGames();
-        System.out.println(user.getUsername() + " is playing in " + davesGames.size() + " games");
+        System.out.println(user.getId() + " is playing in " + davesGames.size() + " games");
         printUsersGame(davesGames);
         System.out.println("\n");
     }

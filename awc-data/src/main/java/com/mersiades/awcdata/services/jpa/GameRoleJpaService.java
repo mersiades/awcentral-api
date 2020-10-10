@@ -1,14 +1,13 @@
 package com.mersiades.awcdata.services.jpa;
 
 import com.mersiades.awcdata.models.GameRole;
+import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.GameRoleService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Profile("jpa")
@@ -46,5 +45,10 @@ public class GameRoleJpaService implements GameRoleService {
     @Override
     public void deleteById(Long id) {
         gameRoleRepository.deleteById(id);
+    }
+
+    @Override
+    public List<GameRole> findAllByUser(User user) {
+        return new ArrayList<>(gameRoleRepository.findAllByUser(user));
     }
 }

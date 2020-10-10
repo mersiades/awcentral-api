@@ -6,23 +6,21 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
 
-    @Column(name = "discourse_id")
-    private String discourseID;
+    @Column(name = "discord_id")
+    private String discordId;
 
-    @Column(name = "username")
-    private String username;
-
-    @ManyToMany
+    @ManyToMany(fetch= FetchType.EAGER)
     @JoinTable(name = "user_games", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "game_id"))
     private final Set<Game> games = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "user")
     private final Set<GameRole> gameRoles = new HashSet<>();
 
     public User() {
@@ -32,9 +30,8 @@ public class User extends BaseEntity {
         super(id);
     }
 
-    public User(String discourseID, String username) {
-        this.discourseID = discourseID;
-        this.username = username;
+    public User(String discordId) {
+        this.discordId = discordId;
     }
 
 }

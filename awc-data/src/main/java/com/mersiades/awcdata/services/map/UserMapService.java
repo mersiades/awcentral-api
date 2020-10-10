@@ -38,12 +38,12 @@ public class UserMapService extends AbstractMapService<User, Long> implements Us
     }
 
     @Override
-    public User findByDiscourseID(String discourseID) {
+    public User findByDiscordId(String discordId) {
         Optional<User> optionalUser = this.findAll().stream()
-                .filter(user -> user.getDiscourseID().equals(discourseID)).findFirst();
+                .filter(user -> user.getDiscordId().equals(discordId)).findFirst();
         return  optionalUser.orElseGet(() -> {
             User newUser = new User();
-            newUser.setDiscourseID(discourseID);
+            newUser.setDiscordId(discordId);
             this.save(newUser);
             return newUser;
         });
