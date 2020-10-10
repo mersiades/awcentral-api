@@ -21,6 +21,7 @@ public class GameRole extends BaseEntity {
     @JoinColumn(name = "game_id")
     private Game game;
 
+    // TODO: delete relationship between Games and Users. Use GameRole instead
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -40,6 +41,11 @@ public class GameRole extends BaseEntity {
     public GameRole(Roles role, Game game, User user) {
         this.role = role;
         this.game = game;
+        this.user = user;
+    }
+
+    public GameRole(Roles role, User user) {
+        this.role = role;
         this.user = user;
     }
 

@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -47,6 +48,17 @@ public class Game extends BaseEntity {
         this.textChannelId = textChannelId;
         this.voiceChannelId = voiceChannelId;
         this.name = name;
+    }
+
+    public Game(String textChannelId, String voiceChannelId, String name, GameRole mcGameRole) {
+        this.textChannelId = textChannelId;
+        this.voiceChannelId = voiceChannelId;
+        this.name = name;
+        this.gameRoles.add(mcGameRole);
+    }
+
+    public Set<User> getUsers() {
+        return Objects.requireNonNullElseGet(this.users, HashSet::new);
     }
 
 }
