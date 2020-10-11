@@ -161,10 +161,6 @@ public class DataLoader implements CommandLineRunner {
         characterService.save(mockCharacter2);
 
         // ----------------------------------------------------------------------------------------------- //
-        mockUser1.getGames().add(mockGame1);
-        mockUser1.getGames().add(mockGame2);
-        mockUser2.getGames().add(mockGame1);
-        mockUser2.getGames().add(mockGame2);
         npcService.save(mockNpc1);
         npcService.save(mockNpc2);
         npcService.save(mockNpc3);
@@ -235,24 +231,8 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("| ------------- " + user.getId() + " -------------- |");
         System.out.println("ID: " + user.getId());
         System.out.println("Discord ID: " + user.getDiscordId());
-        Set<Game> davesGames = user.getGames();
-        System.out.println(user.getId() + " is playing in " + davesGames.size() + " games");
-        printUsersGame(davesGames);
+        System.out.println("GameRoles (#): " + user.getGameRoles().size());
         System.out.println("\n");
     }
 
-    private void printUsersGame(Set<Game> games) {
-        int i = 1;
-        for (Game game : games) {
-            System.out.println("\t ********** Game " + i + " **********");
-            i++;
-            System.out.println("\t * Game ID : " + game.getId());
-            System.out.println("\t * Game text channel: " + game.getTextChannelId());
-            System.out.println("\t * Game voice channel: " + game.getVoiceChannelId());
-            System.out.println("\t * Game name: " + game.getName());
-            if (i != games.size()) {
-                System.out.println("\t ****************************");
-            }
-        }
-    }
 }

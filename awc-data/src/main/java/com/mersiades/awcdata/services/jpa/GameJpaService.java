@@ -5,14 +5,15 @@ import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.repositories.GameRepository;
-import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Profile("jpa")
@@ -20,13 +21,11 @@ public class GameJpaService implements GameService {
 
     private final GameRepository gameRepository;
     private final UserService userService;
-    private final GameRoleRepository gameRoleRepository;
     private final GameRoleService gameRoleService;
 
-    public GameJpaService(GameRepository gameRepository, UserService userService, GameRoleRepository gameRoleRepository, GameRoleService gameRoleService) {
+    public GameJpaService(GameRepository gameRepository, UserService userService, GameRoleService gameRoleService) {
         this.gameRepository = gameRepository;
         this.userService = userService;
-        this.gameRoleRepository = gameRoleRepository;
         this.gameRoleService = gameRoleService;
     }
 
@@ -59,11 +58,6 @@ public class GameJpaService implements GameService {
     }
 
     @Override
-    public List<Game> findAllByUsers(User user) {
-        return new ArrayList<>(gameRepository.findAllByUsers(user));
-    }
-
-    @Override
     public Game findByGameRoles(GameRole gameRole) {
         return gameRepository.findByGameRoles(gameRole);
     }
@@ -78,7 +72,10 @@ public class GameJpaService implements GameService {
 
         Game newGame = new Game(textChannelId, voiceChannelId, name, mcGameRole);
 
-        gameRepository.save(newGame);
+        Game savedGame = gameRepository.save(newGame);
+
+        mcGameRole.setGame(savedGame);
+        gameRoleService.save(mcGameRole);
 
         return newGame;
     }

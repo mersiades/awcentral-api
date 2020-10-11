@@ -10,10 +10,8 @@ import com.mersiades.awcdata.services.UserService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Profile({ "default", "map"})
@@ -52,14 +50,6 @@ public class GameMapService extends AbstractMapService<Game, Long> implements Ga
     }
 
     @Override
-    public List<Game> findAllByUsers(User user) {
-        return this.findAll()
-                .stream()
-                .filter(otherUser -> otherUser.getId().equals(user.getId()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public Game findByGameRoles(GameRole gameRole) {
         Optional<Game> optionalGame = this.findAll()
                 .stream()
@@ -70,18 +60,18 @@ public class GameMapService extends AbstractMapService<Game, Long> implements Ga
 
     @Override
     public Game createGameWithMC(String discordId, String name, String textChannelId, String voiceChannelId) {
-        Game newGame = new Game();
-
         // Find the User who created the game and add to Game
         User creator = userService.findByDiscordId(discordId);
-        newGame.getUsers().add(creator);
 
-        // Create the MC GameRole and add to Game
-        GameRole mcGameRole = new GameRole(Roles.MC, newGame, creator);
-        newGame.getGameRoles().add(mcGameRole);
-        gameRoleService.save(mcGameRole);
+        // Create the MC GameRole for the Game creator
+        GameRole mcGameRole = new GameRole(Roles.MC, creator);
+
+        Game newGame = new Game(textChannelId, voiceChannelId, name, mcGameRole);
 
         this.save(newGame);
+
+        mcGameRole.setGame(newGame);
+        gameRoleService.save(mcGameRole);
 
         return newGame;
     }

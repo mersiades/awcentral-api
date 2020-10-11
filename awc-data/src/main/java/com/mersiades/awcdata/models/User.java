@@ -15,13 +15,6 @@ public class User extends BaseEntity {
     @Column(name = "discord_id")
     private String discordId;
 
-    // TODO: delete relationship between Games and Users. Use GameRole instead
-    @ManyToMany(fetch= FetchType.EAGER)
-    @JoinTable(name = "user_games",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "game_id"))
-    private final Set<Game> games = new HashSet<>();
-
     @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "user")
     private final Set<GameRole> gameRoles = new HashSet<>();
 
@@ -34,6 +27,23 @@ public class User extends BaseEntity {
 
     public User(String discordId) {
         this.discordId = discordId;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Game [");
+        if (this.getId() != null) {
+            sb.append("id= ").append(this.getId());
+        }
+        if (this.discordId != null) {
+            sb.append(", discordId= ").append(this.discordId);
+        }
+
+        sb.append(", gameRoles size= ").append(this.gameRoles.size());
+
+        sb.append("]");
+
+        return sb.toString();
     }
 
 }

@@ -1,6 +1,5 @@
 package com.mersiades.awcweb.fieldResolvers;
 
-import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.services.GameRoleService;
@@ -18,10 +17,6 @@ public class UserResolver implements GraphQLResolver<User> {
     public UserResolver(GameService gameService, GameRoleService gameRoleService) {
         this.gameService = gameService;
         this.gameRoleService = gameRoleService;
-    }
-
-    public List<Game> getGames(User user) {
-        return gameService.findAllByUsers(user);
     }
 
     public List<GameRole> getGameRoles(User user) {

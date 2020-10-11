@@ -27,5 +27,8 @@ type Query {
 }
 
 type Mutation {
-    createGame(discordId: String!, name: String!, textChannelId: String!, voiceChannelId: String!): Game
+    createGame(discordId: String!,
+        name: String!,
+        textChannelId: String!,
+        voiceChannelId: String!): Game
 }

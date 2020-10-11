@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -31,9 +30,6 @@ public class Game extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private final Set<GameRole> gameRoles = new HashSet<>();
 
-    @ManyToMany(mappedBy = "games")
-    private Set<User> users;
-
     public Game() {
     }
 
@@ -57,8 +53,28 @@ public class Game extends BaseEntity {
         this.gameRoles.add(mcGameRole);
     }
 
-    public Set<User> getUsers() {
-        return Objects.requireNonNullElseGet(this.users, HashSet::new);
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Game [");
+        if (this.getId() != null) {
+            sb.append("id= ").append(this.getId());
+        }
+        if (this.name != null) {
+            sb.append(", name= ").append(this.name);
+        }
+        if (this.textChannelId != null) {
+            sb.append(", textChannelId= ").append(this.textChannelId);
+        }
+
+        if (this.voiceChannelId != null) {
+            sb.append(", voiceChannelId= ").append(this.voiceChannelId);
+        }
+
+        sb.append(", gameRoles size= ").append(this.gameRoles.size());
+
+        sb.append("]");
+
+        return sb.toString();
     }
 
 }

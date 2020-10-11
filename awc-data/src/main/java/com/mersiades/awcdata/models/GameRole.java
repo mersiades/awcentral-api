@@ -21,7 +21,6 @@ public class GameRole extends BaseEntity {
     @JoinColumn(name = "game_id")
     private Game game;
 
-    // TODO: delete relationship between Games and Users. Use GameRole instead
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -58,6 +57,26 @@ public class GameRole extends BaseEntity {
 
     @Override
     public String toString() {
-        return "GameRole [role= " + this.role + ", Game= " + this.getGame().getId() + ", User= " + this.getUser().getId() + "]";
+        StringBuilder sb = new StringBuilder("GameRole [");
+        if (this.getId() != null) {
+            sb.append("id= ").append(this.getId());
+        }
+
+        if (this.role != null) {
+            sb.append(", role= ").append(this.role);
+        }
+
+        if (this.getGame() != null) {
+            System.out.println(this.getGame().getId());
+            sb.append(", Game= ").append(this.getGame().getId());
+        }
+
+        if (this.getUser().getId() != null) {
+            sb.append(", User= ").append(this.getUser().getId());
+        }
+
+        sb.append("]");
+
+        return sb.toString();
     }
 }
