@@ -88,6 +88,15 @@ public class GameMapService extends AbstractMapService<Game, Long> implements Ga
         }
         return null;
     }
+
+    @Override
+    public Game findGameByTextChannelId(String textChannelId) {
+        Optional<Game> optionalGame = this.findAll()
+                .stream()
+                .filter(game -> game.getTextChannelId().equals(textChannelId))
+                .findFirst();
+        return optionalGame.orElse(null);
+    }
 }
 
 

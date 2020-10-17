@@ -15,15 +15,30 @@ type Game {
     voiceChannelId: String!
     gameRoles: [GameRole]
 }
+type Npc {
+    id: ID!
+}
+
+type Threat {
+    id: ID!
+}
+
+type Character {
+    id: ID!
+}
 
 type GameRole {
     id: ID!
     role: Roles
     game: Game
+    npcs: [Npc]
+    threats: [Threat]
+    characters: [Character]
 }
 
 type Query {
     userByDiscordId(discordId:String!): User
+    gameByTextChannelId(textChannelId:String!): Game
 }
 
 type Mutation {

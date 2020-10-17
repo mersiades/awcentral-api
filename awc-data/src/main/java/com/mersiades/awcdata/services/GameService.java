@@ -9,4 +9,6 @@ public interface GameService extends CrudService<Game, Long> {
     Game createGameWithMC(String discordId, String name, String textChannelId, String voiceChannelId);
 
     Game deleteGameByTextChannelId(String textChannelId);
+
+    Game findGameByTextChannelId(String textChannelId);
 }

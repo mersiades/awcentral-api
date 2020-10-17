@@ -89,4 +89,9 @@ public class GameJpaService implements GameService {
         gameRepository.deleteGameByTextChannelId(textChannelId);
         return null;
     }
+
+    @Override
+    public Game findGameByTextChannelId(String textChannelId) {
+        return gameRepository.findGameByTextChannelId(textChannelId);
+    }
 }

@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.services.jpa;
 
+import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
@@ -55,5 +56,10 @@ public class GameRoleJpaService implements GameRoleService {
         System.out.println("Game Roles: " + gameRoles.size());
         return gameRoles;
 //        return new ArrayList<>(gameRoleRepository.findAllByUser(user));
+    }
+
+    @Override
+    public List<GameRole> findAllByGame(Game game) {
+        return new ArrayList<>(gameRoleRepository.findAllByGame(game));
     }
 }

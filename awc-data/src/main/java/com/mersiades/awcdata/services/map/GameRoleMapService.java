@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.services.map;
 
+import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.services.GameRoleService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Profile({ "default", "map"})
@@ -42,5 +44,12 @@ public class GameRoleMapService extends AbstractMapService<GameRole, Long> imple
     @Override
     public List<GameRole> findAllByUser(User user) {
         return new ArrayList<>(this.findAll());
+    }
+
+    @Override
+    public List<GameRole> findAllByGame(Game game) {
+        return this.findAll().stream()
+                .filter(gameRole -> gameRole.getGame().getId().equals(game.getId()))
+                .collect(Collectors.toList());
     }
 }
