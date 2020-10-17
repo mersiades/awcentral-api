@@ -31,7 +31,7 @@ public class User extends BaseEntity {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Game [");
+        StringBuilder sb = new StringBuilder("User [");
         if (this.getId() != null) {
             sb.append("id= ").append(this.getId());
         }

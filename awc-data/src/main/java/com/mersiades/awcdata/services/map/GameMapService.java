@@ -75,6 +75,19 @@ public class GameMapService extends AbstractMapService<Game, Long> implements Ga
 
         return newGame;
     }
+
+    @Override
+    public Game deleteGameByTextChannelId(String textChannelId) {
+        Optional<Game> gameToDeleteOptional = this.findAll().stream()
+                .filter(game -> game.getTextChannelId().equals(textChannelId))
+                .findFirst();
+        if (gameToDeleteOptional.isEmpty()) {
+            System.out.println("Could not find game to delete. TextChannelId = " + textChannelId);
+        } else {
+        this.delete(gameToDeleteOptional.get());
+        }
+        return null;
+    }
 }
 
 

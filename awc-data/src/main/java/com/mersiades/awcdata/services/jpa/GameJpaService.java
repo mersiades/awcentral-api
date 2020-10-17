@@ -11,6 +11,7 @@ import com.mersiades.awcdata.services.UserService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -76,7 +77,16 @@ public class GameJpaService implements GameService {
 
         mcGameRole.setGame(savedGame);
         gameRoleService.save(mcGameRole);
+//        creator.getGameRoles().add(mcGameRole);
+//        userService.save(creator);
 
         return newGame;
+    }
+
+    @Transactional
+    @Override
+    public Game deleteGameByTextChannelId(String textChannelId) {
+        gameRepository.deleteGameByTextChannelId(textChannelId);
+        return null;
     }
 }

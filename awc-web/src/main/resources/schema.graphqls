@@ -31,4 +31,6 @@ type Mutation {
         name: String!,
         textChannelId: String!,
         voiceChannelId: String!): Game
+
+    deleteGame(textChannelId: String!): Game
 }
