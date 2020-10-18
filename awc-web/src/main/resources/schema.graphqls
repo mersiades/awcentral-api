@@ -25,6 +25,7 @@ type Threat {
 
 type Character {
     id: ID!
+    name: String
 }
 
 type GameRole {
