@@ -18,11 +18,11 @@ public class Game extends BaseEntity {
      * textChannelId acts as the Game's id
      */
     @Column(name = "text_channel_id")
-    private Long textChannelId;
+    private String textChannelId;
 
     /* voiceChannelId is provided by Discord when the Game's channels are created. */
     @Column(name = "voice_channel_id")
-    private Long voiceChannelId;
+    private String voiceChannelId;
 
     @Column(name = "name")
     private String name;
@@ -33,17 +33,48 @@ public class Game extends BaseEntity {
     public Game() {
     }
 
-    public Game(Long textChannelId, Long voiceChannelId, String name) {
+    public Game(String textChannelId, String voiceChannelId, String name) {
         this.textChannelId = textChannelId;
         this.voiceChannelId = voiceChannelId;
         this.name = name;
     }
 
-    public Game(Long id, Long textChannelId, Long voiceChannelId, String name) {
+    public Game(Long id, String textChannelId, String voiceChannelId, String name) {
         super(id);
         this.textChannelId = textChannelId;
         this.voiceChannelId = voiceChannelId;
         this.name = name;
+    }
+
+    public Game(String textChannelId, String voiceChannelId, String name, GameRole mcGameRole) {
+        this.textChannelId = textChannelId;
+        this.voiceChannelId = voiceChannelId;
+        this.name = name;
+        this.gameRoles.add(mcGameRole);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Game [");
+        if (this.getId() != null) {
+            sb.append("id= ").append(this.getId());
+        }
+        if (this.name != null) {
+            sb.append(", name= ").append(this.name);
+        }
+        if (this.textChannelId != null) {
+            sb.append(", textChannelId= ").append(this.textChannelId);
+        }
+
+        if (this.voiceChannelId != null) {
+            sb.append(", voiceChannelId= ").append(this.voiceChannelId);
+        }
+
+        sb.append(", gameRoles size= ").append(this.gameRoles.size());
+
+        sb.append("]");
+
+        return sb.toString();
     }
 
 }

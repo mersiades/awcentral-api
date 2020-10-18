@@ -14,12 +14,12 @@ import java.util.Set;
 @Component
 public class DataLoader implements CommandLineRunner {
 
-    final Long DISCORD_TEXT_CHANNEL_ID_1 = Long.parseLong("741573502452105236");
-    final Long DISCORD_TEXT_CHANNEL_ID_2 = Long.parseLong("823458920374529070");
-    final Long DISCORD_VOICE_CHANNEL_ID_1 = Long.parseLong("741573503710527498");
-    final Long DISCORD_VOICE_CHANNEL_ID_2 = Long.parseLong("123876129847590347");
-    final Long DISCORD_USER_ID_1 = Long.parseLong("696484065859076146");
-    final Long DISCORD_USER_ID_2 = Long.parseLong("134523465246534532");
+    final String DISCORD_TEXT_CHANNEL_ID_1 = "741573502452105236";
+    final String DISCORD_TEXT_CHANNEL_ID_2 = "823458920374529070";
+    final String DISCORD_VOICE_CHANNEL_ID_1 = "741573503710527498";
+    final String DISCORD_VOICE_CHANNEL_ID_2 = "123876129847590347";
+    final String DISCORD_USER_ID_1 = "696484065859076146";
+    final String DISCORD_USER_ID_2 = "134523465246534532";
 
     private final UserService userService;
     private final GameService gameService;
@@ -97,12 +97,11 @@ public class DataLoader implements CommandLineRunner {
 
         // -------------------------------------- Set up mock Users -------------------------------------- //
         User mockUser1 = new User();
-        mockUser1.setUsername("Dave");
-        mockUser1.setDiscourseID(DISCORD_USER_ID_1);
+
+        mockUser1.setDiscordId(DISCORD_USER_ID_1);
 
         User mockUser2 = new User();
-        mockUser2.setUsername("Sarah");
-        mockUser2.setDiscourseID(DISCORD_USER_ID_2);
+        mockUser2.setDiscordId(DISCORD_USER_ID_2);
 
         userService.save(mockUser1);
         userService.save(mockUser2);
@@ -162,10 +161,6 @@ public class DataLoader implements CommandLineRunner {
         characterService.save(mockCharacter2);
 
         // ----------------------------------------------------------------------------------------------- //
-        mockUser1.getGames().add(mockGame1);
-        mockUser1.getGames().add(mockGame2);
-        mockUser2.getGames().add(mockGame1);
-        mockUser2.getGames().add(mockGame2);
         npcService.save(mockNpc1);
         npcService.save(mockNpc2);
         npcService.save(mockNpc3);
@@ -233,27 +228,11 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void printUser(User user) {
-        System.out.println("| ------------- " + user.getUsername().toUpperCase() + " -------------- |");
+        System.out.println("| ------------- " + user.getId() + " -------------- |");
         System.out.println("ID: " + user.getId());
-        System.out.println("Discord ID: " + user.getDiscourseID());
-        Set<Game> davesGames = user.getGames();
-        System.out.println(user.getUsername() + " is playing in " + davesGames.size() + " games");
-        printUsersGame(davesGames);
+        System.out.println("Discord ID: " + user.getDiscordId());
+        System.out.println("GameRoles (#): " + user.getGameRoles().size());
         System.out.println("\n");
     }
 
-    private void printUsersGame(Set<Game> games) {
-        int i = 1;
-        for (Game game : games) {
-            System.out.println("\t ********** Game " + i + " **********");
-            i++;
-            System.out.println("\t * Game ID : " + game.getId());
-            System.out.println("\t * Game text channel: " + game.getTextChannelId());
-            System.out.println("\t * Game voice channel: " + game.getVoiceChannelId());
-            System.out.println("\t * Game name: " + game.getName());
-            if (i != games.size()) {
-                System.out.println("\t ****************************");
-            }
-        }
-    }
 }

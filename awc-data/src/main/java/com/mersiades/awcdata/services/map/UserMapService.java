@@ -5,6 +5,7 @@ import com.mersiades.awcdata.services.UserService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -34,5 +35,17 @@ public class UserMapService extends AbstractMapService<User, Long> implements Us
     @Override
     public void deleteById(Long id) {
         super.deleteById(id);
+    }
+
+    @Override
+    public User findByDiscordId(String discordId) {
+        Optional<User> optionalUser = this.findAll().stream()
+                .filter(user -> user.getDiscordId().equals(discordId)).findFirst();
+        return  optionalUser.orElseGet(() -> {
+            User newUser = new User();
+            newUser.setDiscordId(discordId);
+            this.save(newUser);
+            return newUser;
+        });
     }
 }

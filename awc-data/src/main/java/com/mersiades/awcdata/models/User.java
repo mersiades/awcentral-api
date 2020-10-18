@@ -6,23 +6,16 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
 
-    @Column(name = "discourse_id")
-    private Long discourseID;
+    @Column(name = "discord_id")
+    private String discordId;
 
-    @Column(name = "username")
-    private String username;
-
-    @ManyToMany
-    @JoinTable(name = "user_games", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "game_id"))
-    private final Set<Game> games = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "user")
     private final Set<GameRole> gameRoles = new HashSet<>();
 
     public User() {
@@ -32,9 +25,25 @@ public class User extends BaseEntity {
         super(id);
     }
 
-    public User(Long discourseID, String username) {
-        this.discourseID = discourseID;
-        this.username = username;
+    public User(String discordId) {
+        this.discordId = discordId;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("User [");
+        if (this.getId() != null) {
+            sb.append("id= ").append(this.getId());
+        }
+        if (this.discordId != null) {
+            sb.append(", discordId= ").append(this.discordId);
+        }
+
+        sb.append(", gameRoles size= ").append(this.gameRoles.size());
+
+        sb.append("]");
+
+        return sb.toString();
     }
 
 }

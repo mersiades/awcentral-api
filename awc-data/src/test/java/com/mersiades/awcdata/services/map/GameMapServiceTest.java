@@ -1,6 +1,8 @@
 package com.mersiades.awcdata.services.map;
 
 import com.mersiades.awcdata.models.Game;
+import com.mersiades.awcdata.services.GameRoleService;
+import com.mersiades.awcdata.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,16 +14,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class GameMapServiceTest {
 
     GameMapService gameMapService;
+    UserService userService;
+    GameRoleService gameRoleService;
 
     final Long gameId = 1L;
 
-    final Long textChannelId = 741573502452105236L;
+    final String textChannelId = "741573502452105236";
 
-    final Long textChannelId2 = 741573503710527498L;
+    final String textChannelId2 = "741573503710527498";
 
-    final Long voiceChannelId = 823458920374529070L;
+    final String voiceChannelId = "823458920374529070";
 
-    final Long voiceChannelId2 = 123876129847590347L;
+    final String voiceChannelId2 = "123876129847590347";
 
     final String name = "Mock game";
 
@@ -29,7 +33,7 @@ class GameMapServiceTest {
 
     @BeforeEach
     void setUp() {
-        gameMapService = new GameMapService();
+        gameMapService = new GameMapService(userService, gameRoleService);
         gameMapService.save(new Game(gameId, textChannelId, voiceChannelId, name));
     }
 

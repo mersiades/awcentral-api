@@ -47,4 +47,15 @@ public class UserJpaService implements UserService {
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
+
+    @Override
+    public User findByDiscordId(String discordId) {
+        Optional<User> optionalUser = userRepository.findByDiscordId(discordId);
+        return optionalUser.orElseGet(() -> {
+            User newUser = new User();
+            newUser.setDiscordId(discordId);
+            userRepository.save(newUser);
+            return newUser;
+        });
+    }
 }

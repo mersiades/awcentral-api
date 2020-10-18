@@ -1,0 +1,52 @@
+enum Roles {
+    MC
+    PLAYER
+}
+type User {
+    id: ID!
+    discordId: String!
+    gameRoles: [GameRole]
+}
+
+type Game {
+    id: ID!
+    name: String!
+    textChannelId: String!
+    voiceChannelId: String!
+    gameRoles: [GameRole]
+}
+type Npc {
+    id: ID!
+}
+
+type Threat {
+    id: ID!
+}
+
+type Character {
+    id: ID!
+    name: String
+}
+
+type GameRole {
+    id: ID!
+    role: Roles
+    game: Game
+    npcs: [Npc]
+    threats: [Threat]
+    characters: [Character]
+}
+
+type Query {
+    userByDiscordId(discordId:String!): User
+    gameByTextChannelId(textChannelId:String!): Game
+}
+
+type Mutation {
+    createGame(discordId: String!,
+        name: String!,
+        textChannelId: String!,
+        voiceChannelId: String!): Game
+
+    deleteGame(textChannelId: String!): Game
+}

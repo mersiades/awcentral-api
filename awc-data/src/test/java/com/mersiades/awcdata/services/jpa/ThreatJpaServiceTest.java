@@ -42,7 +42,7 @@ class ThreatJpaServiceTest {
 
     @Test
     void findAll() {
-        GameRole mockGameRole = new GameRole(4L, Roles.MC, new Game(5L, 123L, 234L, "mock game"),new User(6L));
+        GameRole mockGameRole = new GameRole(4L, Roles.MC, new Game(5L, "741573502452105236", "741573503710527498", "mock game"),new User(6L));
         Set<Threat> returnThreats = new HashSet<>();
         returnThreats.add(new Threat(2L));
         returnThreats.add(new Threat(mockGameRole, "Gritsnot", Threats.AFFLICTION, "to infect"));

@@ -25,13 +25,13 @@ public class GameRole extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameRole")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "gameRole")
     private final Set<Npc> npcs = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameRole")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "gameRole")
     private final Set<Threat> threats = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameRole")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "gameRole")
     private Set<Character> characters = new HashSet<>();
 
     public GameRole() {
@@ -40,6 +40,11 @@ public class GameRole extends BaseEntity {
     public GameRole(Roles role, Game game, User user) {
         this.role = role;
         this.game = game;
+        this.user = user;
+    }
+
+    public GameRole(Roles role, User user) {
+        this.role = role;
         this.user = user;
     }
 
@@ -52,6 +57,26 @@ public class GameRole extends BaseEntity {
 
     @Override
     public String toString() {
-        return "GameRole [role= " + this.role + ", Game= " + this.getGame().getId() + ", User= " + this.getUser().getUsername() + "]";
+        StringBuilder sb = new StringBuilder("GameRole [");
+        if (this.getId() != null) {
+            sb.append("id= ").append(this.getId());
+        }
+
+        if (this.role != null) {
+            sb.append(", role= ").append(this.role);
+        }
+
+        if (this.getGame() != null) {
+            System.out.println(this.getGame().getId());
+            sb.append(", Game= ").append(this.getGame().getId());
+        }
+
+        if (this.getUser().getId() != null) {
+            sb.append(", User= ").append(this.getUser().getId());
+        }
+
+        sb.append("]");
+
+        return sb.toString();
     }
 }

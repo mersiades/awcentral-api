@@ -38,7 +38,7 @@ class UserJpaServiceTest {
     void findAll() {
         Set<User> returnUsers = new HashSet<>();
         returnUsers.add(new User(2L));
-        returnUsers.add(new User(123L, "Mock Username"));
+        returnUsers.add(new User("696484065859076146"));
 
         when(userRepository.findAll()).thenReturn(returnUsers);
 
