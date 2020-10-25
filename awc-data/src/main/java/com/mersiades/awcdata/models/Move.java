@@ -4,10 +4,12 @@ import com.mersiades.awcdata.enums.MoveKinds;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.enums.Stats;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 @Data
 public class Move  {
 
+    @Id
     private String id;
 
     private String name;

@@ -2,12 +2,16 @@ package com.mersiades.awcdata.models;
 
 import com.mersiades.awcdata.enums.Playbooks;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
 public class PlaybookCreator {
+
+    @Id
+    private String id;
 
     // enum type string
     private Playbooks playbookType;

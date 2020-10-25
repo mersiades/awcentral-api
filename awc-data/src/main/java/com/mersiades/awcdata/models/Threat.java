@@ -2,10 +2,12 @@ package com.mersiades.awcdata.models;
 
 import com.mersiades.awcdata.enums.Threats;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 @Data
 public class Threat {
 
+    @Id
     private String id;
 
     /* The GameRole that created/owns the Threat */

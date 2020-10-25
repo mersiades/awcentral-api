@@ -1,6 +1,7 @@
 package com.mersiades.awcdata.models;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.Set;
 @Data
 public class User {
 
+    @Id
     private String id;
 
     private String discordId;

@@ -1,10 +1,12 @@
 package com.mersiades.awcdata.models;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
 
 @Data
 public class Npc {
 
+    @Id
     private String id;
 
     private String name;

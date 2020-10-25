@@ -1,6 +1,7 @@
 package com.mersiades.awcdata.models;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.Set;
 @Data
 public class Game {
 
+    @Id
     private String id;
 
     /*

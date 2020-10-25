@@ -75,6 +75,7 @@ public class DataLoader implements CommandLineRunner {
             lookService.save(look);
             playbookCreatorAngel.getLooks().add(look);
         });
+        System.out.println("looksAngel = " + looksAngel);
 
         playbookAngel.setCreator(playbookCreatorAngel);
         playbookCreatorAngel.setPlaybook(playbookAngel);
