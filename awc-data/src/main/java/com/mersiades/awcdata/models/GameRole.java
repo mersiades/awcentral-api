@@ -19,9 +19,9 @@ public class GameRole {
 
     private User user;
 
-    private final Set<Npc> npcs = new HashSet<>();
+    private Set<Npc> npcs = new HashSet<>();
 
-    private final Set<Threat> threats = new HashSet<>();
+    private Set<Threat> threats = new HashSet<>();
 
     private Set<Character> characters = new HashSet<>();
 

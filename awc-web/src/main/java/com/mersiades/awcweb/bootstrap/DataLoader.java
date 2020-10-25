@@ -30,9 +30,10 @@ public class DataLoader implements CommandLineRunner {
     private final LookService lookService;
     private final StatsOptionService statsOptionService;
     private final MoveService moveService;
+    private final GameRoleService gameRoleService;
 
     public DataLoader(UserService userService, GameService gameService,
-                      NpcService npcService, ThreatService threatService, CharacterService characterService, PlaybookCreatorService playbookCreatorService, PlaybookService playbookService, NameService nameService, LookService lookService, StatsOptionService statsOptionService, MoveService moveService) {
+                      NpcService npcService, ThreatService threatService, CharacterService characterService, PlaybookCreatorService playbookCreatorService, PlaybookService playbookService, NameService nameService, LookService lookService, StatsOptionService statsOptionService, MoveService moveService, GameRoleService gameRoleService) {
         this.userService = userService;
         this.gameService = gameService;
         this.npcService = npcService;
@@ -44,6 +45,7 @@ public class DataLoader implements CommandLineRunner {
         this.lookService = lookService;
         this.statsOptionService = statsOptionService;
         this.moveService = moveService;
+        this.gameRoleService = gameRoleService;
     }
 
     @Override
@@ -126,11 +128,9 @@ public class DataLoader implements CommandLineRunner {
                 "\n" +
                 "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.");
         PlaybookCreator saved =  playbookCreatorService.save(angelCreator);
-        System.out.println("saved = " + saved);
 
-        // Throws IllegalStateException: Cannot set property names because no setter, no wither and it's not part of the persistence constructor public com.mersiades.awcdata.models.PlaybookCreator(com.mersiades.awcdata.enums.Playbooks,java.lang.String,java.lang.String,java.lang.String,java.lang.String)!
-//        Set<PlaybookCreator> playbookCreators = playbookCreatorService.findAll();
-//        System.out.println("Number of saved playbookCreators: " + playbookCreators.size());
+        Set<PlaybookCreator> playbookCreators = playbookCreatorService.findAll();
+        System.out.println("Number of saved playbookCreators: " + playbookCreators.size());
     }
 
     public void loadStatsOptions() {
@@ -377,40 +377,27 @@ public class DataLoader implements CommandLineRunner {
 
         for(StatsOption statsOption: statsOptionsAngel) {
             playbookCreatorAngel.getStatsOptions().add(statsOption);
-            statsOption.setPlaybookCreator(playbookCreatorAngel);
+//            statsOption.setPlaybookCreator(playbookCreatorAngel);
             statsOptionService.save(statsOption);
         }
 
         namesAngel.forEach(name -> {
-            name.setPlaybookCreator(playbookCreatorAngel);
+//            name.setPlaybookCreator(playbookCreatorAngel);
             nameService.save(name);
             playbookCreatorAngel.getNames().add(name);
         });
 
         looksAngel.forEach(look -> {
-            look.setPlaybookCreator(playbookCreatorAngel);
+//            look.setPlaybookCreator(playbookCreatorAngel);
             lookService.save(look);
             playbookCreatorAngel.getLooks().add(look);
         });
-        System.out.println("looksAngel = " + looksAngel);
+
 
         playbookAngel.setCreator(playbookCreatorAngel);
-        playbookCreatorAngel.setPlaybook(playbookAngel);
+//        playbookCreatorAngel.setPlaybook(playbookAngel);
         playbookCreatorService.save(playbookCreatorAngel);
         playbookService.save(playbookAngel);
-
-        Set<StatsOption> statsOptions = playbookAngel.getCreator().getStatsOptions();
-
-        System.out.println("|-------------- ANGEL STAT OPTIONS --------------|");
-        statsOptions.forEach(statsOption -> {
-
-            System.out.println("PB: " + statsOption.getPlaybookType());
-            System.out.println("COOL: " + statsOption.getCOOL());
-            System.out.println("HARD: " + statsOption.getHARD());
-            System.out.println("HOT: " + statsOption.getHOT());
-            System.out.println("SHARP: " + statsOption.getSHARP());
-            System.out.println("WEIRD: " + statsOption.getWEIRD() + "\n");
-        });
 
 
         // -------------------------------------- Set up mock Users -------------------------------------- //
@@ -421,8 +408,8 @@ public class DataLoader implements CommandLineRunner {
         User mockUser2 = new User();
         mockUser2.setDiscordId(DISCORD_USER_ID_2);
 
-        userService.save(mockUser1);
-        userService.save(mockUser2);
+//        userService.save(mockUser1);
+//        userService.save(mockUser2);
 
         // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
         Game mockGame1 = new Game(DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
@@ -435,72 +422,72 @@ public class DataLoader implements CommandLineRunner {
         Threat mockThreat1 = new Threat(daveAsMC, "Tum Tum", Threats.WARLORD, "Slaver: to own and sell people");
         Threat mockThreat2 = new Threat(daveAsMC, "Gnarly", Threats.GROTESQUE, "Cannibal: craves satiety and plenty");
         daveAsMC.getThreats().add(mockThreat1);
-        daveAsMC.getThreats().add(mockThreat2);
+//        daveAsMC.getThreats().add(mockThreat2);
 
-        mockGame1.getGameRoles().add(daveAsMC);
-        mockUser1.getGameRoles().add(daveAsMC);
+//        mockGame1.getGameRoles().add(daveAsMC);
+//        mockUser1.getGameRoles().add(daveAsMC);
+//
+//        GameRole sarahAsPlayer = new GameRole(Roles.PLAYER, mockGame1, mockUser2);
+//        mockGame1.getGameRoles().add(sarahAsPlayer);
+//        mockUser2.getGameRoles().add(sarahAsPlayer);
 
-        GameRole sarahAsPlayer = new GameRole(Roles.PLAYER, mockGame1, mockUser2);
-        mockGame1.getGameRoles().add(sarahAsPlayer);
-        mockUser2.getGameRoles().add(sarahAsPlayer);
-
-        gameService.save(mockGame1);
+//        gameService.save(mockGame1);
 
         // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
-        Game mockGame2 = new Game(DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
-
-        GameRole daveAsPlayer = new GameRole(Roles.PLAYER, mockGame2, mockUser1);
-        mockGame2.getGameRoles().add(daveAsPlayer);
-        mockUser1.getGameRoles().add(daveAsPlayer);
-
-        GameRole sarahAsMC = new GameRole(Roles.MC, mockGame2, mockUser2);
-        Npc mockNpc3 = new Npc(sarahAsMC, "Batty", "Overly polite gun for hire");
-        Npc mockNpc4 = new Npc(sarahAsMC, "Farley");
-        sarahAsMC.getNpcs().add(mockNpc3);
-        sarahAsMC.getNpcs().add(mockNpc4);
-        Threat mockThreat3 = new Threat(sarahAsMC, "Fleece", Threats.BRUTE, "Hunting pack: to victimize anyone vulnerable");
-        Threat mockThreat4 = new Threat(sarahAsMC, "Wet Rot", Threats.AFFLICTION, "Condition: to expose people to danger");
-        sarahAsMC.getThreats().add(mockThreat3);
-        sarahAsMC.getThreats().add(mockThreat4);
-
-        mockGame2.getGameRoles().add(sarahAsMC);
-        mockUser2.getGameRoles().add(sarahAsMC);
-
-        gameService.save(mockGame2);
+//        Game mockGame2 = new Game(DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
+//
+//        GameRole daveAsPlayer = new GameRole(Roles.PLAYER, mockGame2, mockUser1);
+//        mockGame2.getGameRoles().add(daveAsPlayer);
+//        mockUser1.getGameRoles().add(daveAsPlayer);
+//
+//        GameRole sarahAsMC = new GameRole(Roles.MC, mockGame2, mockUser2);
+//        Npc mockNpc3 = new Npc(sarahAsMC, "Batty", "Overly polite gun for hire");
+//        Npc mockNpc4 = new Npc(sarahAsMC, "Farley");
+//        sarahAsMC.getNpcs().add(mockNpc3);
+//        sarahAsMC.getNpcs().add(mockNpc4);
+//        Threat mockThreat3 = new Threat(sarahAsMC, "Fleece", Threats.BRUTE, "Hunting pack: to victimize anyone vulnerable");
+//        Threat mockThreat4 = new Threat(sarahAsMC, "Wet Rot", Threats.AFFLICTION, "Condition: to expose people to danger");
+//        sarahAsMC.getThreats().add(mockThreat3);
+//        sarahAsMC.getThreats().add(mockThreat4);
+//
+//        mockGame2.getGameRoles().add(sarahAsMC);
+//        mockUser2.getGameRoles().add(sarahAsMC);
+//
+//        gameService.save(mockGame2);
 
         // ---------------------------------- Add Characters to Players --------------------------------- //
-        Character mockCharacter1 = new Character("October", sarahAsPlayer, Playbooks.ANGEL, "not much gear");
-        sarahAsPlayer.getCharacters().add(mockCharacter1);
-
-        Character mockCharacter2 = new Character("Leah", daveAsPlayer, Playbooks.SAVVYHEAD, "workshop with tools");
-        daveAsPlayer.getCharacters().add(mockCharacter2);
-
-        characterService.save(mockCharacter1);
-        characterService.save(mockCharacter2);
+//        Character mockCharacter1 = new Character("October", sarahAsPlayer, Playbooks.ANGEL, "not much gear");
+//        sarahAsPlayer.getCharacters().add(mockCharacter1);
+//
+//        Character mockCharacter2 = new Character("Leah", daveAsPlayer, Playbooks.SAVVYHEAD, "workshop with tools");
+//        daveAsPlayer.getCharacters().add(mockCharacter2);
+//
+//        characterService.save(mockCharacter1);
+//        characterService.save(mockCharacter2);
 
         // ----------------------------------------------------------------------------------------------- //
-        npcService.save(mockNpc1);
-        npcService.save(mockNpc2);
-        npcService.save(mockNpc3);
-        npcService.save(mockNpc4);
-        threatService.save(mockThreat1);
-        threatService.save(mockThreat2);
-        threatService.save(mockThreat3);
-        threatService.save(mockThreat4);
+//        npcService.save(mockNpc1);
+//        npcService.save(mockNpc2);
+//        npcService.save(mockNpc3);
+//        npcService.save(mockNpc4);
+//        threatService.save(mockThreat1);
+//        threatService.save(mockThreat2);
+//        threatService.save(mockThreat3);
+//        threatService.save(mockThreat4);
 
 
         // -------------------------------------- Print MockUser1 -------------------------------------- //
-        printUser(mockUser1);
-        System.out.println("\t ********** Game Role 1 **********");
-        printGameRole(daveAsMC);
-        System.out.println("\t ********** Game Role 2 **********");
-        printGameRole(daveAsPlayer);
+//        printUser(mockUser1);
+//        System.out.println("\t ********** Game Role 1 **********");
+//        printGameRole(daveAsMC);
+//        System.out.println("\t ********** Game Role 2 **********");
+//        printGameRole(daveAsPlayer);
         // -------------------------------------- Print MockUser2 -------------------------------------- //
-        printUser(mockUser2);
-        System.out.println("\t ********** Game Role 1 **********");
-        printGameRole(sarahAsPlayer);
-        System.out.println("\t ********** Game Role 2 **********");
-        printGameRole(sarahAsMC);
+//        printUser(mockUser2);
+//        System.out.println("\t ********** Game Role 1 **********");
+//        printGameRole(sarahAsPlayer);
+//        System.out.println("\t ********** Game Role 2 **********");
+//        printGameRole(sarahAsMC);
         // -------------------------------------- Print MockGame1 -------------------------------------- //
         // -------------------------------------- Print MockGame2 -------------------------------------- //
     }
@@ -523,14 +510,14 @@ public class DataLoader implements CommandLineRunner {
                 }
             }
             System.out.println("\t This role has " + threats.size() + " threats");
-            if (threats.size() > 0) {
-                for (Threat threat : threats) {
-                    System.out.println("\t\t Threat name: " + threat.getName());
-                    System.out.println("\t\t Threat kind: " + threat.getThreatKind());
-                    System.out.println("\t\t Threat impulse: " + threat.getImpulse());
-                    System.out.println("\n");
-                }
-            }
+//            if (threats.size() > 0) {
+//                for (Threat threat : threats) {
+//                    System.out.println("\t\t Threat name: " + threat.getName());
+//                    System.out.println("\t\t Threat kind: " + threat.getThreatKind());
+//                    System.out.println("\t\t Threat impulse: " + threat.getImpulse());
+//                    System.out.println("\n");
+//                }
+//            }
         } else if (roleType == Roles.PLAYER) {
             Set<Character> characters = role.getCharacters();
             System.out.println("\t This role has " + characters.size() + " characters");

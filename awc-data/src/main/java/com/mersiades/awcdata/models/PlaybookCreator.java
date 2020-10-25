@@ -32,13 +32,13 @@ public class PlaybookCreator {
     private Playbook playbook;
 
     // one to many
-    private final Set<Name> names = new HashSet<>();
+    private Set<Name> names = new HashSet<>();
 
     // one to many
-    private final Set<Look> looks = new HashSet<>();
+    private Set<Look> looks = new HashSet<>();
 
     // one to many
-    private final Set<StatsOption> statsOptions = new HashSet<>();
+    private Set<StatsOption> statsOptions = new HashSet<>();
 
     public PlaybookCreator(Playbooks playbookType, String gearInstructions, String improvementInstructions, String movesInstructions, String hxInstructions) {
         this.playbookType = playbookType;

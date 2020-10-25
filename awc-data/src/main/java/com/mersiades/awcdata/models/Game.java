@@ -23,7 +23,7 @@ public class Game {
 
     private String name;
 
-    private final Set<GameRole> gameRoles = new HashSet<>();
+    private Set<GameRole> gameRoles = new HashSet<>();
 
     public Game() {
     }
