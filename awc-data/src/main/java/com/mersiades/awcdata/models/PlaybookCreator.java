@@ -40,10 +40,11 @@ public class PlaybookCreator {
     // one to many
     private final Set<StatsOption> statsOptions = new HashSet<>();
 
-    @Override
-    public String toString() {
-        return "PlaybookCreator{" +
-                "playbookType=" + playbookType +
-                '}';
+    public PlaybookCreator(Playbooks playbookType, String gearInstructions, String improvementInstructions, String movesInstructions, String hxInstructions) {
+        this.playbookType = playbookType;
+        this.gearInstructions = gearInstructions;
+        this.improvementInstructions = improvementInstructions;
+        this.movesInstructions = movesInstructions;
+        this.hxInstructions = hxInstructions;
     }
 }

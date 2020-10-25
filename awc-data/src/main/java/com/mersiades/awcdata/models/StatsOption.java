@@ -24,4 +24,13 @@ public class StatsOption {
 
     // many to one
     private PlaybookCreator playbookCreator;
+
+    public StatsOption(Playbooks playbookType, int COOL, int HARD, int HOT, int SHARP, int WEIRD) {
+        this.playbookType = playbookType;
+        this.COOL = COOL;
+        this.HARD = HARD;
+        this.HOT = HOT;
+        this.SHARP = SHARP;
+        this.WEIRD = WEIRD;
+    }
 }

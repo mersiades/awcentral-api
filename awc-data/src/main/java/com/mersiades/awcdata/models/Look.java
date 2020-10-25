@@ -18,4 +18,10 @@ public class Look {
     private String look;
 
     private PlaybookCreator playbookCreator;
+
+    public Look(Playbooks playbookType, LookCategories category, String look) {
+        this.playbookType = playbookType;
+        this.category = category;
+        this.look = look;
+    }
 }

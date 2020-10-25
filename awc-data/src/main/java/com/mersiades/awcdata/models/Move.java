@@ -26,4 +26,11 @@ public class Move  {
     // enum type string
     private Playbooks playbook;
 
+    public Move(String name, String description, Stats stat, MoveKinds kind, Playbooks playbook) {
+        this.name = name;
+        this.description = description;
+        this.stat = stat;
+        this.kind = kind;
+        this.playbook = playbook;
+    }
 }

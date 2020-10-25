@@ -27,4 +27,10 @@ public class Playbook  {
     // one to one
     private PlaybookCreator creator;
 
+    public Playbook(Playbooks playbookType, String barter_instructions, String intro, String intro_comment) {
+        this.playbookType = playbookType;
+        this.barter_instructions = barter_instructions;
+        this.intro = intro;
+        this.intro_comment = intro_comment;
+    }
 }
