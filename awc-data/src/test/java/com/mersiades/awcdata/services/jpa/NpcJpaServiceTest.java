@@ -31,14 +31,14 @@ class NpcJpaServiceTest {
 
     @BeforeEach
     void setUp() {
-        mockNpc = new Npc(1L, "Butch");
+        mockNpc = new Npc("npcId01", "Butch");
     }
 
     @Test
     void findAll() {
         Set<Npc> returnNpcs = new HashSet<>();
-        returnNpcs.add(new Npc(2L, "Sarah"));
-        returnNpcs.add(new Npc(3L, "Reginald"));
+        returnNpcs.add(new Npc("npcId02", "Sarah"));
+        returnNpcs.add(new Npc("npcId03", "Reginald"));
 
         when(npcRepository.findAll()).thenReturn(returnNpcs);
 
@@ -52,7 +52,7 @@ class NpcJpaServiceTest {
     void findById() {
         when(npcRepository.findById(any())).thenReturn(Optional.of(mockNpc));
 
-        Npc npc = service.findById(1L);
+        Npc npc = service.findById("npcId01");
 
         assertNotNull(npc);
     }
@@ -77,7 +77,7 @@ class NpcJpaServiceTest {
 
     @Test
     void deleteById() {
-        npcRepository.deleteById(1L);
+        npcRepository.deleteById("npcId01");
 
         verify(npcRepository).deleteById(any());
     }

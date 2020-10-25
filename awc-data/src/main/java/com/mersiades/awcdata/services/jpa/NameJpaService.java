@@ -29,7 +29,7 @@ public class NameJpaService implements NameService {
     }
 
     @Override
-    public Name findById(Long id) {
+    public Name findById(String id) {
         Optional<Name> optionalName = nameRepository.findById(id);
         return optionalName.orElse(null);
     }
@@ -45,7 +45,7 @@ public class NameJpaService implements NameService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         nameRepository.deleteById(id);
     }
 

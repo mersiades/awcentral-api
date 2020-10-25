@@ -29,7 +29,7 @@ public class StatsOptionJpaService implements StatsOptionService {
     }
 
     @Override
-    public StatsOption findById(Long id) {
+    public StatsOption findById(String id) {
         Optional<StatsOption> optionalStatsOption = statsOptionRepository.findById(id);
         return optionalStatsOption.orElse(null);
     }
@@ -45,7 +45,7 @@ public class StatsOptionJpaService implements StatsOptionService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         statsOptionRepository.deleteById(id);
     }
 

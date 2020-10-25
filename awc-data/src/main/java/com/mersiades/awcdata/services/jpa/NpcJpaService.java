@@ -28,7 +28,7 @@ public class NpcJpaService implements NpcService {
     }
 
     @Override
-    public Npc findById(Long id) {
+    public Npc findById(String id) {
         Optional<Npc> optionalNpc = npcRepository.findById(id);
         return optionalNpc.orElse(null);
     }
@@ -44,7 +44,7 @@ public class NpcJpaService implements NpcService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
          npcRepository.deleteById(id);
     }
 }

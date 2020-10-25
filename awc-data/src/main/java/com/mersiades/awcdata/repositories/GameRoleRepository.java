@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Set;
 
-public interface GameRoleRepository extends CrudRepository<GameRole, Long> {
+public interface GameRoleRepository extends CrudRepository<GameRole, String> {
     Set<GameRole> findAllByUser(User user);
 
     Set<GameRole> findAllByGame(Game game);

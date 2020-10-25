@@ -29,7 +29,7 @@ public class PlaybookCreatorJpaService implements PlaybookCreatorService {
     }
 
     @Override
-    public PlaybookCreator findById(Long id) {
+    public PlaybookCreator findById(String id) {
         Optional<PlaybookCreator> optionalPlaybookCreator = playbookCreatorRepository.findById(id);
         return optionalPlaybookCreator.orElse(null);
     }
@@ -45,7 +45,7 @@ public class PlaybookCreatorJpaService implements PlaybookCreatorService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
        playbookCreatorRepository.deleteById(id);
     }
 

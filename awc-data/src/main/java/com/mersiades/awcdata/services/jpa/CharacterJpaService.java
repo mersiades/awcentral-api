@@ -28,7 +28,7 @@ public class CharacterJpaService implements CharacterService {
     }
 
     @Override
-    public Character findById(Long id) {
+    public Character findById(String id) {
         Optional<Character> optionalCharacter = characterRepository.findById(id);
         return optionalCharacter.orElse(null);
     }
@@ -44,7 +44,7 @@ public class CharacterJpaService implements CharacterService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         characterRepository.deleteById(id);
     }
 }

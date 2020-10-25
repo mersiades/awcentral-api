@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Set;
 
-public interface StatsOptionRepository extends CrudRepository<StatsOption, Long> {
+public interface StatsOptionRepository extends CrudRepository<StatsOption, String> {
 
     Set<StatsOption> findAllByPlaybookType(Playbooks playbookType);
 }

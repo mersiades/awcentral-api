@@ -29,7 +29,7 @@ public class LookJpaService implements LookService {
     }
 
     @Override
-    public Look findById(Long id) {
+    public Look findById(String id) {
         Optional<Look> optionalLook = this.lookRepository.findById(id);
         return optionalLook.orElse(null);
     }
@@ -45,7 +45,7 @@ public class LookJpaService implements LookService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         this.lookRepository.deleteById(id);
     }
 

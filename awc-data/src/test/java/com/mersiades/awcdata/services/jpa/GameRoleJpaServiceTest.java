@@ -39,16 +39,16 @@ class GameRoleJpaServiceTest {
 
     @BeforeEach
     void setUp() {
-        mockGame = new Game(2L, "823458920374529070", "123876129847590347", "Mock Game");
-        mockUser = new User(3L);
-        mockGameRole = new GameRole(1L, Roles.MC, mockGame, mockUser);
+        mockGame = new Game("gameId02", "823458920374529070", "123876129847590347", "Mock Game");
+        mockUser = new User("discordId03");
+        mockGameRole = new GameRole("gameRoleId01", Roles.MC, mockGame, mockUser);
     }
 
     @Test
     void findAll() {
         Set<GameRole> returnGameRoleSet = new HashSet<>();
-        returnGameRoleSet.add(new GameRole(4L, Roles.PLAYER, mockGame, mockUser));
-        returnGameRoleSet.add(new GameRole(5L, Roles.MC, mockGame, mockUser));
+        returnGameRoleSet.add(new GameRole("gameRoleId02", Roles.PLAYER, mockGame, mockUser));
+        returnGameRoleSet.add(new GameRole("gameRoleId03", Roles.MC, mockGame, mockUser));
 
         when(gameRoleRepository.findAll()).thenReturn(returnGameRoleSet);
 
@@ -62,7 +62,7 @@ class GameRoleJpaServiceTest {
     void findById() {
         when(gameRoleRepository.findById(any())).thenReturn(Optional.of(mockGameRole));
 
-        GameRole gameRole = service.findById(1L);
+        GameRole gameRole = service.findById("gameRoleId01");
 
         assertNotNull(gameRole);
     }
@@ -86,7 +86,7 @@ class GameRoleJpaServiceTest {
 
     @Test
     void deleteById() {
-        gameRoleRepository.deleteById(1L);
+        gameRoleRepository.deleteById("gameRoleId01");
 
         verify(gameRoleRepository).deleteById(any());
     }

@@ -31,13 +31,13 @@ class GameJpaServiceTest {
 
     @BeforeEach
     void setUp() {
-        returnedGame = new Game(1L, "823458920374529070", "123876129847590347", "Mock Game");
+        returnedGame = new Game("gameId01", "823458920374529070", "123876129847590347", "Mock Game");
     }
 
     @Test
     void findAll() {
         Set<Game> returnedGames = new HashSet<>();
-        returnedGames.add(new Game(2L, "741573502452105236", "741573503710527498", "Another Mock Game"));
+        returnedGames.add(new Game("gameId02", "741573502452105236", "741573503710527498", "Another Mock Game"));
         returnedGames.add(returnedGame);
 
         when(gameRepository.findAll()).thenReturn(returnedGames);
@@ -52,7 +52,7 @@ class GameJpaServiceTest {
     void findById() {
         when(gameRepository.findById(any())).thenReturn(Optional.of(returnedGame));
 
-        Game game = service.findById(1L);
+        Game game = service.findById("gameId01");
 
         assertEquals(game.getId(), returnedGame.getId());
     }
@@ -61,14 +61,14 @@ class GameJpaServiceTest {
     void findByIdNotFound() {
         when(gameRepository.findById(any())).thenReturn(Optional.empty());
 
-        Game game = service.findById(1L);
+        Game game = service.findById("gameId01");
 
         assertNull(game);
     }
 
     @Test
     void save() {
-        Game gameToSave = new Game(3L, "741573502452105236", "741573503710527498", "Save Me");
+        Game gameToSave = new Game("gameId03", "741573502452105236", "741573503710527498", "Save Me");
 
         when(gameRepository.save(any())).thenReturn(gameToSave);
 
@@ -88,7 +88,7 @@ class GameJpaServiceTest {
 
     @Test
     void deleteById() {
-        gameRepository.deleteById(1L);
+        gameRepository.deleteById("gameId01");
 
         verify(gameRepository).deleteById(any());
     }

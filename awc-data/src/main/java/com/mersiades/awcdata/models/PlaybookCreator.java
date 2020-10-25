@@ -2,49 +2,38 @@ package com.mersiades.awcdata.models;
 
 import com.mersiades.awcdata.enums.Playbooks;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-@Entity
-@Table(name = "pb_creators")
-public class PlaybookCreator extends BaseEntity {
+public class PlaybookCreator {
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "pb_type")
+    // enum type string
     private Playbooks playbookType;
 
-    @Lob
-    @Column(name = "gear_instr")
+    // long string
     private String gearInstructions;
 
-    @Lob
-    @Column(name = "imp_instr")
+    // long string
     private String improvementInstructions;
 
-    @Lob
-    @Column(name = "moves_instr")
+    // long string
     private String movesInstructions;
 
-    @Lob
-    @Column(name = "hx_instr")
+    // long string
     private String hxInstructions;
 
-    @OneToOne
-    @JoinColumn(name = "playbook_id")
+    // one to one
     private Playbook playbook;
 
-    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "playbookCreator" )
+    // one to many
     private final Set<Name> names = new HashSet<>();
 
-    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "playbookCreator" )
+    // one to many
     private final Set<Look> looks = new HashSet<>();
 
-    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "playbookCreator" )
+    // one to many
     private final Set<StatsOption> statsOptions = new HashSet<>();
 
     @Override

@@ -28,7 +28,7 @@ public class GameRoleJpaService implements GameRoleService {
     }
 
     @Override
-    public GameRole findById(Long id) {
+    public GameRole findById(String id) {
         Optional<GameRole> optionalGameRole = gameRoleRepository.findById(id);
         return optionalGameRole.orElse(null);
     }
@@ -44,7 +44,7 @@ public class GameRoleJpaService implements GameRoleService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         gameRoleRepository.deleteById(id);
     }
 

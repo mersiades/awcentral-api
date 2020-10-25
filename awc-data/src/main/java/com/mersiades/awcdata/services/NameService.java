@@ -5,7 +5,7 @@ import com.mersiades.awcdata.models.Name;
 
 import java.util.Set;
 
-public interface NameService extends CrudService<Name, Long>{
+public interface NameService extends CrudService<Name, String>{
 
     Set<Name> findAllByPlaybookType(Playbooks playbookType);
 }

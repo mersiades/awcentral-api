@@ -2,28 +2,25 @@ package com.mersiades.awcdata.models;
 
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-@Entity
-@Table(name = "users")
-public class User extends BaseEntity {
+public class User {
 
-    @Column(name = "discord_id")
+    private String id;
+
     private String discordId;
 
-    @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "user")
+    // one to many
     private final Set<GameRole> gameRoles = new HashSet<>();
 
     public User() {
     }
 
-    public User(Long id) {
-        super(id);
-    }
+//    public User(String id) {
+//        this.id = id;
+//    }
 
     public User(String discordId) {
         this.discordId = discordId;

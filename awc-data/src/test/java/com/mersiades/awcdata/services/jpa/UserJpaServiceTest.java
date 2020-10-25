@@ -31,13 +31,13 @@ class UserJpaServiceTest {
 
     @BeforeEach
     void setUp() {
-        mockUser = new User(1L);
+        mockUser = new User("discordId01");
     }
 
     @Test
     void findAll() {
         Set<User> returnUsers = new HashSet<>();
-        returnUsers.add(new User(2L));
+        returnUsers.add(new User("discordId02"));
         returnUsers.add(new User("696484065859076146"));
 
         when(userRepository.findAll()).thenReturn(returnUsers);
@@ -52,7 +52,7 @@ class UserJpaServiceTest {
     void findById() {
         when(userRepository.findById(any())).thenReturn(Optional.of(mockUser));
 
-        User user = service.findById(1L);
+        User user = service.findById("discordId01");
 
         assertNotNull(user);
         assertEquals(user.getId(), mockUser.getId());
@@ -62,7 +62,7 @@ class UserJpaServiceTest {
     void findByIdNotFound() {
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-        User user = service.findById(1L);
+        User user = service.findById("discordId01");
 
         assertNull(user);
     }
@@ -86,7 +86,7 @@ class UserJpaServiceTest {
 
     @Test
     void deleteById() {
-        service.deleteById(1L);
+        service.deleteById("discordId01");
 
         verify(userRepository).deleteById(any());
     }

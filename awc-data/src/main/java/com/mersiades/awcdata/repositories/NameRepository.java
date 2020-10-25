@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Set;
 
-public interface NameRepository extends CrudRepository<Name, Long> {
+public interface NameRepository extends CrudRepository<Name, String> {
 
     Set<Name> findAllByPlaybookType(Playbooks playbookType);
 }

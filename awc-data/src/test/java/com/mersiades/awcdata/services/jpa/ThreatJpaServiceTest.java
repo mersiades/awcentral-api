@@ -37,14 +37,14 @@ class ThreatJpaServiceTest {
 
     @BeforeEach
     void setUp() {
-        mockThreat = new Threat(1L);
+        mockThreat = new Threat("threatId03");
     }
 
     @Test
     void findAll() {
-        GameRole mockGameRole = new GameRole(4L, Roles.MC, new Game(5L, "741573502452105236", "741573503710527498", "mock game"),new User(6L));
+        GameRole mockGameRole = new GameRole("threatId05", Roles.MC, new Game("threatId06", "741573502452105236", "741573503710527498", "mock game"),new User("discordId01"));
         Set<Threat> returnThreats = new HashSet<>();
-        returnThreats.add(new Threat(2L));
+        returnThreats.add(new Threat("threatId04"));
         returnThreats.add(new Threat(mockGameRole, "Gritsnot", Threats.AFFLICTION, "to infect"));
 
         when(threatRepository.findAll()).thenReturn(returnThreats);
@@ -59,7 +59,7 @@ class ThreatJpaServiceTest {
     void findById() {
         when(threatRepository.findById(any())).thenReturn(Optional.of(mockThreat));
 
-        Threat threat = service.findById(1L);
+        Threat threat = service.findById("threatId03");
 
         assertNotNull(threat);
 
@@ -86,7 +86,7 @@ class ThreatJpaServiceTest {
 
     @Test
     void deleteById() {
-        service.deleteById(1L);
+        service.deleteById("threatId03");
 
         verify(threatRepository).deleteById(any());
     }

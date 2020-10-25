@@ -4,7 +4,7 @@ import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import org.springframework.data.repository.CrudRepository;
 
-public interface GameRepository extends CrudRepository<Game, Long> {
+public interface GameRepository extends CrudRepository<Game, String> {
     Game findByGameRoles(GameRole gameRole);
 
     void deleteGameByTextChannelId(String textChannelId);

@@ -28,7 +28,7 @@ public class UserJpaService implements UserService {
     }
 
     @Override
-    public User findById(Long id) {
+    public User findById(String id) {
         Optional<User> optionalUser = userRepository.findById(id);
         return optionalUser.orElse(null);
     }
@@ -44,7 +44,7 @@ public class UserJpaService implements UserService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         userRepository.deleteById(id);
     }
 

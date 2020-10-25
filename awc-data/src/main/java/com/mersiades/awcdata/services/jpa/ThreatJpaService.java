@@ -28,7 +28,7 @@ public class ThreatJpaService implements ThreatService {
     }
 
     @Override
-    public Threat findById(Long id) {
+    public Threat findById(String id) {
         Optional<Threat> optionalThreat = threatRepository.findById(id);
         return optionalThreat.orElse(null);
     }
@@ -44,7 +44,7 @@ public class ThreatJpaService implements ThreatService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
        threatRepository.deleteById(id);
     }
 }

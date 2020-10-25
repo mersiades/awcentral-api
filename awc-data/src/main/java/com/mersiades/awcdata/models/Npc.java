@@ -2,21 +2,16 @@ package com.mersiades.awcdata.models;
 
 import lombok.*;
 
-import javax.persistence.*;
-
-@EqualsAndHashCode(callSuper = true)
 @Data
-@Entity
-@Table(name = "npcs")
-public class Npc extends BaseEntity {
-    @Column(name = "name")
+public class Npc {
+
+    private String id;
+
     private String name;
 
-    @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "game_role_id")
+    // many to one
     private GameRole gameRole;
 
     public Npc() {
@@ -26,8 +21,8 @@ public class Npc extends BaseEntity {
         this.name = name;
     }
 
-    public Npc(Long id, String name) {
-        super(id);
+    public Npc(String id, String name) {
+        this.id = id;
         this.name = name;
     }
 

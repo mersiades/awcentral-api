@@ -11,7 +11,6 @@ import com.mersiades.awcdata.services.UserService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -38,7 +37,7 @@ public class GameJpaService implements GameService {
     }
 
     @Override
-    public Game findById(Long id) {
+    public Game findById(String id) {
         Optional<Game> optionalGame = gameRepository.findById(id);
         return optionalGame.orElse(null);
     }
@@ -54,7 +53,7 @@ public class GameJpaService implements GameService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         gameRepository.deleteById(id);
     }
 
@@ -83,7 +82,7 @@ public class GameJpaService implements GameService {
         return newGame;
     }
 
-    @Transactional
+    // transactional
     @Override
     public Game deleteGameByTextChannelId(String textChannelId) {
         gameRepository.deleteGameByTextChannelId(textChannelId);

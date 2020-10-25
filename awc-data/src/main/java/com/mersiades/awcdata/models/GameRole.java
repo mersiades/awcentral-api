@@ -2,36 +2,25 @@ package com.mersiades.awcdata.models;
 
 import com.mersiades.awcdata.enums.Roles;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@EqualsAndHashCode(exclude = {"game", "user"}, callSuper = false)
-@Entity
-@Table(name = "game_roles")
-public class GameRole extends BaseEntity {
+public class GameRole {
 
-    @Column(name = "role")
+    private String id;
+
     private Roles role;
 
-    @ManyToOne
-    @JoinColumn(name = "game_id")
     private Game game;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "gameRole")
     private final Set<Npc> npcs = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "gameRole")
     private final Set<Threat> threats = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "gameRole")
     private Set<Character> characters = new HashSet<>();
 
     public GameRole() {
@@ -48,8 +37,8 @@ public class GameRole extends BaseEntity {
         this.user = user;
     }
 
-    public GameRole(Long id, Roles role, Game game, User user) {
-        super(id);
+    public GameRole(String id, Roles role, Game game, User user) {
+        this.id = id;
         this.role = role;
         this.game = game;
         this.user = user;
