@@ -29,8 +29,7 @@ public class Threat {
         this.id = id;
     }
 
-    public Threat(GameRole gameRole, String name, Threats threatKind, String impulse) {
-        this.gameRole = gameRole;
+    public Threat(String name, Threats threatKind, String impulse) {
         this.name = name;
         this.threatKind = threatKind;
         this.impulse = impulse;

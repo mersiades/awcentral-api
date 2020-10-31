@@ -45,7 +45,7 @@ class ThreatJpaServiceTest {
         GameRole mockGameRole = new GameRole("threatId05", Roles.MC, new Game("threatId06", "741573502452105236", "741573503710527498", "mock game"),new User("discordId01"));
         Set<Threat> returnThreats = new HashSet<>();
         returnThreats.add(new Threat("threatId04"));
-        returnThreats.add(new Threat(mockGameRole, "Gritsnot", Threats.AFFLICTION, "to infect"));
+        returnThreats.add(new Threat("Gritsnot", Threats.AFFLICTION, "to infect"));
 
         when(threatRepository.findAll()).thenReturn(returnThreats);
 

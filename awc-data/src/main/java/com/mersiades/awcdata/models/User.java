@@ -2,11 +2,13 @@ package com.mersiades.awcdata.models;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Document
 public class User {
 
     @Id
@@ -20,9 +22,10 @@ public class User {
     public User() {
     }
 
-//    public User(String id) {
-//        this.id = id;
-//    }
+    public User(String id, String discordId) {
+        this.id = id;
+        this.discordId = discordId;
+    }
 
     public User(String discordId) {
         this.discordId = discordId;

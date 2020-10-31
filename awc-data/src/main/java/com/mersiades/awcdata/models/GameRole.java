@@ -3,11 +3,14 @@ package com.mersiades.awcdata.models;
 import com.mersiades.awcdata.enums.Roles;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Document
 public class GameRole {
 
     @Id
@@ -15,8 +18,10 @@ public class GameRole {
 
     private Roles role;
 
+    @DBRef
     private Game game;
 
+    @DBRef
     private User user;
 
     private Set<Npc> npcs = new HashSet<>();
@@ -26,6 +31,9 @@ public class GameRole {
     private Set<Character> characters = new HashSet<>();
 
     public GameRole() {
+    }
+    public GameRole(Roles role) {
+        this.role = role;
     }
 
     public GameRole(Roles role, Game game, User user) {

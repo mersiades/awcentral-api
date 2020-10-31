@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -369,6 +370,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void loadData() {
+        // -------------------------------------- Set up Playbooks -------------------------------------- //
         PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL);
         Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL);
         Set<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL);
@@ -378,82 +380,109 @@ public class DataLoader implements CommandLineRunner {
         for(StatsOption statsOption: statsOptionsAngel) {
             playbookCreatorAngel.getStatsOptions().add(statsOption);
 //            statsOption.setPlaybookCreator(playbookCreatorAngel);
-            statsOptionService.save(statsOption);
+//            statsOptionService.save(statsOption);
         }
 
         namesAngel.forEach(name -> {
 //            name.setPlaybookCreator(playbookCreatorAngel);
-            nameService.save(name);
+//            nameService.save(name);
             playbookCreatorAngel.getNames().add(name);
         });
 
         looksAngel.forEach(look -> {
 //            look.setPlaybookCreator(playbookCreatorAngel);
-            lookService.save(look);
+//            lookService.save(look);
             playbookCreatorAngel.getLooks().add(look);
         });
 
 
         playbookAngel.setCreator(playbookCreatorAngel);
 //        playbookCreatorAngel.setPlaybook(playbookAngel);
-        playbookCreatorService.save(playbookCreatorAngel);
+//        playbookCreatorService.save(playbookCreatorAngel);
         playbookService.save(playbookAngel);
 
 
         // -------------------------------------- Set up mock Users -------------------------------------- //
-        User mockUser1 = new User();
+        User mockUser1 = new User(UUID.randomUUID().toString(), DISCORD_USER_ID_1);
 
-        mockUser1.setDiscordId(DISCORD_USER_ID_1);
+//        mockUser1.setDiscordId(DISCORD_USER_ID_1);
 
-        User mockUser2 = new User();
-        mockUser2.setDiscordId(DISCORD_USER_ID_2);
+        User mockUser2 = new User(UUID.randomUUID().toString(), DISCORD_USER_ID_2);
+//        mockUser2.setDiscordId(DISCORD_USER_ID_2);
 
-//        userService.save(mockUser1);
+
 //        userService.save(mockUser2);
 
         // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
-        Game mockGame1 = new Game(DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
+        Game mockGame1 = new Game(UUID.randomUUID().toString(), DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
 
-        GameRole daveAsMC = new GameRole(Roles.MC, mockGame1, mockUser1);
+        GameRole daveAsMC = new GameRole(Roles.MC);
+        GameRole sarahAsPlayer = new GameRole(Roles.PLAYER);
+
         Npc mockNpc1 = new Npc(daveAsMC, "Vision", "Badass truck driver");
         Npc mockNpc2 = new Npc(daveAsMC, "Nbeke");
+
+        Threat mockThreat1 = new Threat( "Tum Tum", Threats.WARLORD, "Slaver: to own and sell people");
+        Threat mockThreat2 = new Threat("Gnarly", Threats.GROTESQUE, "Cannibal: craves satiety and plenty");
+
         daveAsMC.getNpcs().add(mockNpc1);
         daveAsMC.getNpcs().add(mockNpc2);
-        Threat mockThreat1 = new Threat(daveAsMC, "Tum Tum", Threats.WARLORD, "Slaver: to own and sell people");
-        Threat mockThreat2 = new Threat(daveAsMC, "Gnarly", Threats.GROTESQUE, "Cannibal: craves satiety and plenty");
         daveAsMC.getThreats().add(mockThreat1);
-//        daveAsMC.getThreats().add(mockThreat2);
+        daveAsMC.getThreats().add(mockThreat2);
 
-//        mockGame1.getGameRoles().add(daveAsMC);
-//        mockUser1.getGameRoles().add(daveAsMC);
-//
-//        GameRole sarahAsPlayer = new GameRole(Roles.PLAYER, mockGame1, mockUser2);
-//        mockGame1.getGameRoles().add(sarahAsPlayer);
-//        mockUser2.getGameRoles().add(sarahAsPlayer);
+        mockGame1.getGameRoles().add(daveAsMC);
+        mockGame1.getGameRoles().add(sarahAsPlayer);
+        gameService.save(mockGame1);
 
-//        gameService.save(mockGame1);
+        mockUser1.getGameRoles().add(daveAsMC);
+        userService.save(mockUser1);
+
+        mockUser2.getGameRoles().add(sarahAsPlayer);
+        userService.save(mockUser2);
+
+        daveAsMC.setUser(mockUser1);
+        daveAsMC.setGame(mockGame1);
+        gameRoleService.save(daveAsMC);
+
+        sarahAsPlayer.setGame(mockGame1);
+        sarahAsPlayer.setUser(mockUser2);
+        gameRoleService.save(sarahAsPlayer);
 
         // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
-//        Game mockGame2 = new Game(DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
-//
-//        GameRole daveAsPlayer = new GameRole(Roles.PLAYER, mockGame2, mockUser1);
-//        mockGame2.getGameRoles().add(daveAsPlayer);
-//        mockUser1.getGameRoles().add(daveAsPlayer);
-//
-//        GameRole sarahAsMC = new GameRole(Roles.MC, mockGame2, mockUser2);
-//        Npc mockNpc3 = new Npc(sarahAsMC, "Batty", "Overly polite gun for hire");
-//        Npc mockNpc4 = new Npc(sarahAsMC, "Farley");
-//        sarahAsMC.getNpcs().add(mockNpc3);
-//        sarahAsMC.getNpcs().add(mockNpc4);
-//        Threat mockThreat3 = new Threat(sarahAsMC, "Fleece", Threats.BRUTE, "Hunting pack: to victimize anyone vulnerable");
-//        Threat mockThreat4 = new Threat(sarahAsMC, "Wet Rot", Threats.AFFLICTION, "Condition: to expose people to danger");
-//        sarahAsMC.getThreats().add(mockThreat3);
-//        sarahAsMC.getThreats().add(mockThreat4);
-//
-//        mockGame2.getGameRoles().add(sarahAsMC);
-//        mockUser2.getGameRoles().add(sarahAsMC);
-//
-//        gameService.save(mockGame2);
+        Game mockGame2 = new Game(UUID.randomUUID().toString(), DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
+
+        GameRole daveAsPlayer = new GameRole(Roles.PLAYER);
+        GameRole sarahAsMC = new GameRole(Roles.MC);
+
+        Npc mockNpc3 = new Npc(sarahAsMC, "Batty", "Overly polite gun for hire");
+        Npc mockNpc4 = new Npc(sarahAsMC, "Farley");
+
+        Threat mockThreat3 = new Threat("Fleece", Threats.BRUTE, "Hunting pack: to victimize anyone vulnerable");
+        Threat mockThreat4 = new Threat("Wet Rot", Threats.AFFLICTION, "Condition: to expose people to danger");
+
+        sarahAsMC.getNpcs().add(mockNpc3);
+        sarahAsMC.getNpcs().add(mockNpc4);
+        sarahAsMC.getThreats().add(mockThreat3);
+        sarahAsMC.getThreats().add(mockThreat4);
+
+        mockGame2.getGameRoles().add(daveAsPlayer);
+        mockGame2.getGameRoles().add(sarahAsMC);
+        gameService.save(mockGame2);
+
+        mockUser1.getGameRoles().add(daveAsPlayer);
+        userService.save(mockUser1);
+
+        mockUser2.getGameRoles().add(sarahAsMC);
+        userService.save(mockUser2);
+
+        daveAsPlayer.setUser(mockUser1);
+        daveAsPlayer.setGame(mockGame2);
+        gameRoleService.save(daveAsPlayer);
+
+        sarahAsMC.setGame(mockGame2);
+        sarahAsMC.setUser(mockUser2);
+        gameRoleService.save(sarahAsMC);
+
 
         // ---------------------------------- Add Characters to Players --------------------------------- //
 //        Character mockCharacter1 = new Character("October", sarahAsPlayer, Playbooks.ANGEL, "not much gear");
