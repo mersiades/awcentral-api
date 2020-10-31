@@ -348,7 +348,7 @@ public class DataLoader implements CommandLineRunner {
         Move sixthSense = new Move("SIXTH SENSE", "_**Sixth sense**_: when you open your brain to the world’s psychic maelstrom, roll+sharp instead of +weird.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
         Move infirmary = new Move("INFIRMARY", "_**Infirmary**_: you get an infirmary, a workspace with life support, a drug lab and a crew of 2 (Shigusa & Mox, maybe). Get patients into it and you can work on them like a savvyhead on tech (_cf_).", null,MoveKinds.CHARACTER, Playbooks.ANGEL);
         Move profCompassion = new Move("PROFESSIONAL COMPASSION", "_**Professional compassion**_: you can roll+sharp instead of roll+Hx when you help someone who’s rolling.",null, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move bettlefieldGrace = new Move("BATTLEFIELD GRACE","_**Battlefield grace**_: while you are caring for people, not fighting, you get +1armor.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
+        Move battlefieldGrace = new Move("BATTLEFIELD GRACE","_**Battlefield grace**_: while you are caring for people, not fighting, you get +1armor.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
         Move healingTouch = new Move("HEALING TOUCH","_**Healing touch**_: when you put your hands skin-to-skin on a wounded person and open your brain to them, roll+weird.\n" +
                 "\n" +
                 "On a 10+, heal 1 segment.\n" +
@@ -361,7 +361,7 @@ public class DataLoader implements CommandLineRunner {
         moveService.save(sixthSense);
         moveService.save(infirmary);
         moveService.save(profCompassion);
-        moveService.save(bettlefieldGrace);
+        moveService.save(battlefieldGrace);
         moveService.save(healingTouch);
         moveService.save(touchedByDeath);
 
@@ -371,6 +371,7 @@ public class DataLoader implements CommandLineRunner {
 
     private void loadData() {
         // -------------------------------------- Set up Playbooks -------------------------------------- //
+        // -------------------------------------- ANGEL -------------------------------------- //
         PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL);
         Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL);
         Set<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL);
@@ -379,39 +380,18 @@ public class DataLoader implements CommandLineRunner {
 
         for(StatsOption statsOption: statsOptionsAngel) {
             playbookCreatorAngel.getStatsOptions().add(statsOption);
-//            statsOption.setPlaybookCreator(playbookCreatorAngel);
-//            statsOptionService.save(statsOption);
         }
 
-        namesAngel.forEach(name -> {
-//            name.setPlaybookCreator(playbookCreatorAngel);
-//            nameService.save(name);
-            playbookCreatorAngel.getNames().add(name);
-        });
-
-        looksAngel.forEach(look -> {
-//            look.setPlaybookCreator(playbookCreatorAngel);
-//            lookService.save(look);
-            playbookCreatorAngel.getLooks().add(look);
-        });
-
-
+        namesAngel.forEach(name -> playbookCreatorAngel.getNames().add(name));
+        looksAngel.forEach(look -> playbookCreatorAngel.getLooks().add(look));
         playbookAngel.setCreator(playbookCreatorAngel);
-//        playbookCreatorAngel.setPlaybook(playbookAngel);
-//        playbookCreatorService.save(playbookCreatorAngel);
         playbookService.save(playbookAngel);
 
 
         // -------------------------------------- Set up mock Users -------------------------------------- //
         User mockUser1 = new User(UUID.randomUUID().toString(), DISCORD_USER_ID_1);
 
-//        mockUser1.setDiscordId(DISCORD_USER_ID_1);
-
         User mockUser2 = new User(UUID.randomUUID().toString(), DISCORD_USER_ID_2);
-//        mockUser2.setDiscordId(DISCORD_USER_ID_2);
-
-
-//        userService.save(mockUser2);
 
         // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
         Game mockGame1 = new Game(UUID.randomUUID().toString(), DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
@@ -506,17 +486,17 @@ public class DataLoader implements CommandLineRunner {
 
 
         // -------------------------------------- Print MockUser1 -------------------------------------- //
-//        printUser(mockUser1);
-//        System.out.println("\t ********** Game Role 1 **********");
-//        printGameRole(daveAsMC);
-//        System.out.println("\t ********** Game Role 2 **********");
-//        printGameRole(daveAsPlayer);
+        printUser(mockUser1);
+        System.out.println("\t ********** Game Role 1 **********");
+        printGameRole(daveAsMC);
+        System.out.println("\t ********** Game Role 2 **********");
+        printGameRole(daveAsPlayer);
         // -------------------------------------- Print MockUser2 -------------------------------------- //
-//        printUser(mockUser2);
-//        System.out.println("\t ********** Game Role 1 **********");
-//        printGameRole(sarahAsPlayer);
-//        System.out.println("\t ********** Game Role 2 **********");
-//        printGameRole(sarahAsMC);
+        printUser(mockUser2);
+        System.out.println("\t ********** Game Role 1 **********");
+        printGameRole(sarahAsPlayer);
+        System.out.println("\t ********** Game Role 2 **********");
+        printGameRole(sarahAsMC);
         // -------------------------------------- Print MockGame1 -------------------------------------- //
         // -------------------------------------- Print MockGame2 -------------------------------------- //
     }
@@ -539,14 +519,14 @@ public class DataLoader implements CommandLineRunner {
                 }
             }
             System.out.println("\t This role has " + threats.size() + " threats");
-//            if (threats.size() > 0) {
-//                for (Threat threat : threats) {
-//                    System.out.println("\t\t Threat name: " + threat.getName());
-//                    System.out.println("\t\t Threat kind: " + threat.getThreatKind());
-//                    System.out.println("\t\t Threat impulse: " + threat.getImpulse());
-//                    System.out.println("\n");
-//                }
-//            }
+            if (threats.size() > 0) {
+                for (Threat threat : threats) {
+                    System.out.println("\t\t Threat name: " + threat.getName());
+                    System.out.println("\t\t Threat kind: " + threat.getThreatKind());
+                    System.out.println("\t\t Threat impulse: " + threat.getImpulse());
+                    System.out.println("\n");
+                }
+            }
         } else if (roleType == Roles.PLAYER) {
             Set<Character> characters = role.getCharacters();
             System.out.println("\t This role has " + characters.size() + " characters");
