@@ -36,6 +36,11 @@ public class GameRole {
         this.role = role;
     }
 
+    public GameRole(String id, Roles role) {
+        this.id = id;
+        this.role = role;
+    }
+
     public GameRole(Roles role, Game game, User user) {
         this.role = role;
         this.game = game;
@@ -66,11 +71,12 @@ public class GameRole {
         }
 
         if (this.getGame() != null) {
-            System.out.println(this.getGame().getId());
             sb.append(", Game= ").append(this.getGame().getId());
         }
 
-        if (this.getUser().getId() != null) {
+        if (this.getUser() == null) {
+            sb.append(", User= null");
+        } else if (this.getUser().getId() != null) {
             sb.append(", User= ").append(this.getUser().getId());
         }
 

@@ -396,8 +396,8 @@ public class DataLoader implements CommandLineRunner {
         // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
         Game mockGame1 = new Game(UUID.randomUUID().toString(), DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
 
-        GameRole daveAsMC = new GameRole(Roles.MC);
-        GameRole sarahAsPlayer = new GameRole(Roles.PLAYER);
+        GameRole daveAsMC = new GameRole(UUID.randomUUID().toString(), Roles.MC);
+        GameRole sarahAsPlayer = new GameRole(UUID.randomUUID().toString(), Roles.PLAYER);
 
         Npc mockNpc1 = new Npc(daveAsMC, "Vision", "Badass truck driver");
         Npc mockNpc2 = new Npc(daveAsMC, "Nbeke");
@@ -431,8 +431,8 @@ public class DataLoader implements CommandLineRunner {
         // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
         Game mockGame2 = new Game(UUID.randomUUID().toString(), DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
 
-        GameRole daveAsPlayer = new GameRole(Roles.PLAYER);
-        GameRole sarahAsMC = new GameRole(Roles.MC);
+        GameRole daveAsPlayer = new GameRole(UUID.randomUUID().toString(), Roles.PLAYER);
+        GameRole sarahAsMC = new GameRole(UUID.randomUUID().toString(), Roles.MC);
 
         Npc mockNpc3 = new Npc(sarahAsMC, "Batty", "Overly polite gun for hire");
         Npc mockNpc4 = new Npc(sarahAsMC, "Farley");

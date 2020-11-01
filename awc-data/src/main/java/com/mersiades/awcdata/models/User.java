@@ -1,11 +1,12 @@
 package com.mersiades.awcdata.models;
 
-import lombok.*;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Document
@@ -17,7 +18,8 @@ public class User {
     private String discordId;
 
     // one to many
-    private final Set<GameRole> gameRoles = new HashSet<>();
+    @DBRef
+    private List<GameRole> gameRoles = new ArrayList<>();
 
     public User() {
     }

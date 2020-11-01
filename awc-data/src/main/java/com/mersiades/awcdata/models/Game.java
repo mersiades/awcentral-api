@@ -2,10 +2,11 @@ package com.mersiades.awcdata.models;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Document
@@ -25,7 +26,8 @@ public class Game {
 
     private String name;
 
-    private Set<GameRole> gameRoles = new HashSet<>();
+    @DBRef
+    private List<GameRole> gameRoles = new ArrayList<>();
 
     public Game() {
     }

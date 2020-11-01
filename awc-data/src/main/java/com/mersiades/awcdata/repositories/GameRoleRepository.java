@@ -5,10 +5,10 @@ import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.Set;
+import java.util.List;
 
 public interface GameRoleRepository extends CrudRepository<GameRole, String> {
-    Set<GameRole> findAllByUser(User user);
+    List<GameRole> findAllByUser(User user);
 
-    Set<GameRole> findAllByGame(Game game);
+    List<GameRole> findAllByGame(Game game);
 }

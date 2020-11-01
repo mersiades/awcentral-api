@@ -2,9 +2,11 @@ package com.mersiades.awcdata.models;
 
 import com.mersiades.awcdata.enums.Threats;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
 @Data
+@NoArgsConstructor
 public class Threat {
 
     @Id
