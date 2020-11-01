@@ -336,11 +336,248 @@ public class DataLoader implements CommandLineRunner {
         moveService.save(lifestyleAndGigs);
         moveService.save(sessionEnd);
 
+        System.out.println("|| --- Loading peripheral moves --- ||");
         /* ----------------------------- PERIPHERAL MOVES --------------------------------- */
-        // TODO: Add peripheral moves to DataLoader
+        Move sufferHarm = new Move("SUFFER HARM", "When you _**suffer harm**_, roll+harm suffered (after armor, if you’re wearing any).\n" +
+                "\n" +
+                "On a 10+, the MC can choose 1:\n" +
+                "\n" +
+                "- *You’re out of action: unconscious, trapped, incoherent or panicked.*\n" +
+                "- *It’s worse than it seemed. Take an additional 1-harm.*\n" +
+                "- *Choose 2 from the 7–9 list below.*\n" +
+                "\n" +
+                "On a 7–9, the MC can choose 1:\n" +
+                "\n" +
+                "- *You lose your footing.*\n" +
+                "- *You lose your grip on whatever you’re holding.*\n" +
+                "- *You lose track of someone or something you’re attending to.*\n" +
+                "- *You miss noticing something important.*\n" +
+                "\n" +
+                "On a miss, the MC can nevertheless choose something from the 7–9 list above. If she does, though, it’s instead of some of the harm you’re suffering, so you take -1harm.", null, MoveKinds.PERIPHERAL, null);
+        Move inflictHarm = new Move("INFLICT HARM ON PC", "When you _**inflict harm on another player’s character**_, the other character gets +1Hx with you (on their sheet) for every segment of harm you inflict. If this brings them to Hx+4, they reset to Hx+1 as usual, and therefore mark experience.", Stats.HX, MoveKinds.PERIPHERAL, null);
+        Move healPcHarm = new Move("HEAL PC HARM", "When you _**heal another player’s character’s harm**_, you get +1Hx with them (on your sheet) for every segment of harm you heal. If this brings you to Hx+4, you reset to Hx+1 as usual, and therefore mark experience.", Stats.HX, MoveKinds.PERIPHERAL, null);
+        Move giveBarter = new Move("GIVE BARTER", "When you _**give 1-barter to someone, but with strings attached**_, it counts as manipulating them and hitting the roll with a 10+, no leverage or roll required.", null, MoveKinds.PERIPHERAL, null);
+        Move goToMarket = new Move("GO TO THE MARKET", "When you _**go into a holding’s bustling market**_, looking for some particular thing to buy, and it’s not obvious whether you should be able to just go buy one like that, roll+sharp.\n" +
+                "\n" +
+                "On a 10+, yes, you can just go buy it like that.\n" +
+                "\n" +
+                "On a 7–9, the MC chooses 1:\n" +
+                "\n" +
+                "- *It costs 1-barter more than you’d expect.*\n" +
+                "- *It’s not openly for sale, but you find someone who can lead you to someone selling it.*\n" +
+                "- *It’s not openly for sale, but you find someone who sold it recently, who may be willing to introduce you to their previous buyer.*\n" +
+                "- *It’s not available for sale, but you find something similar. Will it do?*\n" +
+                "\n" +
+                "On a miss, the MC chooses 1, plus it costs 1-barter more.", Stats.SHARP, MoveKinds.PERIPHERAL, null);
+        Move makeWantKnown = new Move("MAKE WANT KNOWN", "When you _**make known that you want a thing and drop jingle to speed it on its way**_, roll+barter spent (max roll+3). It has to be a thing you could legitimately get this way. On a 10+ it comes to you, no strings attached. On a 7–9 it comes to you, or something pretty close. On a miss, it comes to you, but with strings very much attached.", null, MoveKinds.PERIPHERAL, null);
+        Move insight = new Move("INSIGHT", "When you are able to go to someone for _**insight**_, ask them what they think your best course is, and the MC will tell you. If you pursue that course, take +1 to any rolls you make in the pursuit. If you pursue that course but don’t accomplish your ends, you mark experience.", null, MoveKinds.PERIPHERAL, null);
+        Move augury = new Move("AUGURY", "When you are able to use something for _**augury**_, roll+weird.\n" +
+                "\n" +
+                "On a hit, you can choose 1:\n" +
+                "\n" +
+                "- *Reach through the world’s psychic maelstrom to something or someone connected to it.*\n" +
+                "- *Isolate and protect a person or thing from the world’s psychic maelstrom.*\n" +
+                "- *Isolate and contain a fragment of the world’s psychic maelstrom itself.*\n" +
+                "- *Insert information into the world’s psychic maelstrom.*\n" +
+                "- *Open a window into the world’s psychic maelstrom.*\n" +
+                "\n" +
+                "By default, the effect will last only as long as you maintain it, will reach only shallowly into the world’s psychic maelstrom as it is local to you, and will bleed instability.\n" +
+                "\n" +
+                "On a 10+, choose 2; on a 7–9, choose 1:\n" +
+                "\n" +
+                "- *It’ll persist (for a while) without your actively maintaining it.*\n" +
+                "- *It reaches deep into the world’s psychic maelstrom.*\n" +
+                "- *It reaches broadly throughout the world’s psychic maelstrom.*\n" +
+                "- *It’s stable and contained, no bleeding.*\n" +
+                "\n" +
+                "On a miss, whatever bad happens, your antenna takes the brunt of it.", Stats.WEIRD, MoveKinds.PERIPHERAL, null);
+        Move changeHighlightedStats = new Move("CHANGE HIGHLIGHTED STATS", "_**At the beginning of any session**_, or at the end if you forgot, anyone can say, “hey, let’s change highlighted stats.” When someone says it, do it. Go around the circle again, following the same procedure you used to highlight them in the first place: the high-Hx player highlights one stat, and the MC highlight another.", null, MoveKinds.PERIPHERAL, null);
 
+        moveService.save(sufferHarm);
+        moveService.save(inflictHarm);
+        moveService.save(healPcHarm);
+        moveService.save(giveBarter);
+        moveService.save(goToMarket);
+        moveService.save(makeWantKnown);
+        moveService.save(insight);
+        moveService.save(augury);
+        moveService.save(changeHighlightedStats);
+
+        System.out.println("|| --- Loading battle moves --- ||");
         /* ----------------------------- BATTLE MOVES --------------------------------- */
-        // TODO: Add battle moves to DataLoader
+        Move exchangeHarm = new Move("EXCHANGE HARM", "When you _**exchange harm**_, both sides simultaneously inflict and suffer harm as established:\n" +
+                "\n" +
+                "- *You inflict harm equal to the harm rating of your weapon, minus the armor rating of your enemy’s armor.*\n" +
+                "- *You suffer harm equal to the harm rating of your enemy’s weapon, minus the armor rating of your own armor.*", null, MoveKinds.BATTLE, null);
+        Move seizeByForce = new Move("SEIZE BY FORCE", "To _**seize something by force**_, exchange harm, but first roll+hard.\n" +
+                "\n" +
+                "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
+                "\n" +
+                "- *You inflict terrible harm (+1harm).*\n" +
+                "- *You suffer little harm (-1harm).*\n" +
+                "- *You take definite and undeniable control of it.*\n" +
+                "- *You impress, dismay, or frighten your enemy.*", Stats.HARD, MoveKinds.BATTLE, null);
+        Move assaultAPosition = new Move("ASSAULT A POSITION", "To _**assault a secure position**_, exchange harm, but first roll+hard.\n" +
+                "\n" +
+                "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
+                "\n" +
+                "- *You inflict terrible harm (+1harm).*\n" +
+                "- *You suffer little harm (-1harm).*\n" +
+                "- *You force your way into your enemy’s position.*\n" +
+                "- *You impress, dismay, or frighten your enemy.*", Stats.HARD, MoveKinds.BATTLE, null);
+        Move keepHoldOfSomething = new Move("KEEP HOLD OF SOMETHING", "To _**keep hold of something you have**_, exchange harm, but first roll+hard.\n" +
+                "\n" +
+                "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
+                "\n" +
+                "- *You inflict terrible harm (+1harm).*\n" +
+                "- *You suffer little harm (-1harm).*\n" +
+                "- *You keep definite control of it.*\n" +
+                "- *You impress, dismay, or frighten your enemy.*", Stats.HARD, MoveKinds.BATTLE, null);
+        Move fightFree = new Move("FIGHT FREE", "To _**fight your way free**_, exchange harm, but first roll+hard.\n" +
+                "\n" +
+                "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
+                "\n" +
+                "- *You inflict terrible harm (+1harm).*\n" +
+                "- *You suffer little harm (-1harm).*\n" +
+                "- *You win free and get away.*\n" +
+                "- *You impress, dismay, or frighten your enemy.*", Stats.HARD, MoveKinds.BATTLE, null);
+        Move defendSomeone = new Move("DEFEND SOMEONE", "To _**defend someone else from attack**_, exchange harm, but first roll+hard.\n" +
+                "\n" +
+                "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
+                "\n" +
+                "- *You inflict terrible harm (+1harm).*\n" +
+                "- *You suffer little harm (-1harm).*\n" +
+                "- *You protect them from harm.*\n" +
+                "- *You impress, dismay, or frighten your enemy.*", Stats.HARD, MoveKinds.BATTLE, null);
+        Move doSingleCombat = new Move("DO SINGLE COMBAT", "When you _**do single combat with someone**_, no quarters, exchange harm, but first roll+hard.\n" +
+                "\n" +
+                "On a 10+, both. On a 7–9, choose 1. On a miss, your opponent chooses 1 against you:\n" +
+                "\n" +
+                "- *You inflict terrible harm (+1harm).*\n" +
+                "- *You suffer little harm (-1harm).*\n" +
+                "\n" +
+                "After you exchange harm, do you prefer to end the fight now, or fight on? If both of you prefer to end the fight now, it ends. If both of you prefer to fight on, it continues, and you must make the move again. If one of you prefers to end the fight, though, and the other prefers to fight on, then the former must choose: flee, submit to the latter‘s mercy, or fight on after all.", Stats.HARD, MoveKinds.BATTLE, null);
+        Move layDownFire = new Move("LAY DOWN FIRE", "When you _**lay down fire**_, roll+hard.\n" +
+                "\n" +
+                "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
+                "\n" +
+                "- *You provide covering fire, allowing another character to move or act freely.*\n" +
+                "- *You provide supporting fire, giving another PC +1choice to their own battle move.*\n" +
+                "- *You provide suppressing fire, denying another character to move or act freely. (If a PC, they may still act under fire.)*\n" +
+                "- *You take an opportune shot, inflicting harm (but -1harm) on an enemy within your reach.*", Stats.HARD, MoveKinds.BATTLE, null);
+        Move standOverwatch = new Move("STAND OVERWATCH", "When you _**stand overwatch**_ for an ally, roll+cool. On a hit, if anyone attacks or interferes with your ally, you attack them and inflict harm as established, as well as warning your ally.\n" +
+                "\n" +
+                "On a 10+, choose 1:\n" +
+                "\n" +
+                "- *...And you inflict your harm before they can carry out their attack or interference.*\n" +
+                "- *...And you inflict terrible harm (+1harm).*\n" +
+                "\n" +
+                "On a miss, you are able to warn your ally but not attack your enemy.", Stats.COOL, MoveKinds.BATTLE, null);
+        Move keepAnEyeOut = new Move("KEEP AN EYE OUT", "When you _**keep an eye out**_ for what’s coming, roll+sharp.\n" +
+                "\n" +
+                "On a 10+, hold 3. On a 7–9, hold 2. On a miss, hold 1. During the battle, spend your hold, 1 for 1, to ask the MC what’s coming and choose 1:\n" +
+                "\n" +
+                "- *Direct a PC ally’s attention to an enemy. If they make a battle move against that enemy, they get +1choice to their move.*\n" +
+                "- *Give a PC ally an order, instruction, or suggestion. If they do it, they get +1 to any rolls they make in the effort.*\n" +
+                "- *Direct any ally’s attention to an enemy. If they attack that enemy, they inflict +1harm.*\n" +
+                "- *Direct any ally’s attention to a danger. They take -1harm from that danger.*", Stats.SHARP, MoveKinds.BATTLE, null);
+        Move beTheBait = new Move("BE THE BAIT", "When _**you’re the bait**_, roll+cool.\n" +
+                "\n" +
+                "On a 10+, choose 2. On a 7–9, choose 1:\n" +
+                "\n" +
+                "- *You draw your prey all the way into the trap. Otherwise, they only approach.*\n" +
+                "- *Your prey doesn’t suspect you. Otherwise, they’re wary and alert.*\n" +
+                "- *You don’t expose yourself to extra risk. Otherwise, any harm your prey inflicts is +1.*\n" +
+                "\n" +
+                "On a miss, the MC chooses 1 for you.", Stats.COOL, MoveKinds.BATTLE, null);
+        Move beTheCat = new Move("BE THE CAT", "When _**you’re the cat**_, roll+cool. On a hit, you catch your prey out.\n" +
+                "\n" +
+                "On a 10+, you’ve driven them first to a place of your choosing; say where.\n" +
+                "\n" +
+                "On a 7–9, you’ve had to follow them where they wanted to go; they say where.\n" +
+                "\n" +
+                "On a miss, your prey escapes you.", Stats.COOL, MoveKinds.BATTLE, null);
+        Move beTheMouse = new Move("BE THE MOUSE", "When _**you’re the mouse**_, roll+cool.\n" +
+                "\n" +
+                "On a 10+, you escape clean and leave your hunter hunting.\n" +
+                "\n" +
+                "On a 7–9, your hunter catches you out, but only after you’ve led them to a place of your choosing; say where.\n" +
+                "\n" +
+                "On a miss, your hunter catches you out and the MC says where.", Stats.COOL, MoveKinds.BATTLE, null);
+        Move catOrMouse = new Move("CAT OR MOUSE", "When _**it’s not certain whether you’re the cat or the mouse**_, roll+sharp. On a hit, you decide which you are.\n" +
+                "\n" +
+                "On a 10+, you take +1forward as well.\n" +
+                "\n" +
+                "On a miss, you’re the mouse.", Stats.SHARP, MoveKinds.BATTLE, null);
+
+        moveService.save(exchangeHarm);
+        moveService.save(seizeByForce);
+        moveService.save(assaultAPosition);
+        moveService.save(keepHoldOfSomething);
+        moveService.save(fightFree);
+        moveService.save(defendSomeone);
+        moveService.save(doSingleCombat);
+        moveService.save(layDownFire);
+        moveService.save(standOverwatch);
+        moveService.save(keepAnEyeOut);
+        moveService.save(beTheBait);
+        moveService.save(beTheCat);
+        moveService.save(beTheMouse);
+        moveService.save(catOrMouse);
+
+        System.out.println("|| --- Loading road war moves --- ||");
+        /* ----------------------------- ROAD WAR MOVES --------------------------------- */
+        Move boardAMovingVehicle = new Move("BOARD A MOVING VEHICLE", "To _**board a moving vehicle**_, roll+cool, minus its speed. To board one moving vehicle from another, roll+cool, minus the difference between their speeds.\n" +
+                "\n" +
+                "On a 10+, you’re on and you made it look easy. Take +1forward.\n" +
+                "\n" +
+                "On a 7–9, you’re on, but jesus.\n" +
+                "\n" +
+                "On a miss, the MC chooses: you’re hanging on for dear life, or you’re down and good luck to you.", Stats.COOL, MoveKinds.ROAD_WAR, null);
+        Move outdistanceAnotherVehicle = new Move("OUTDISTANCE ANOTHER VEHICLE", "When you try to outdistance another vehicle, roll+cool, modified by the vehicles’ relative speed.\n" +
+                "\n" +
+                "On a 10+, you outdistance them and break away.\n" +
+                "\n" +
+                "On a 7–9, choose 1:\n" +
+                "\n" +
+                "- *You outdistance them and break away, but your vehicle suffers 1-harm ap from the strain.*\n" +
+                "- *You don’t escape them, but you can go to ground in a place you choose.*\n" +
+                "- *They overtake you, but their vehicle suffers 1-harm ap from the strain.*\n" +
+                "\n" +
+                "On a miss, your counterpart chooses 1 against you.", Stats.COOL, MoveKinds.ROAD_WAR, null);
+        Move overtakeAnotherVehicle = new Move("OVERTAKE ANOTHER VEHICLE", "When you _**try to overtake another vehicle**_, roll+cool, modified by the vehicles’ relative speed.\n" +
+                "\n" +
+                "On a 10+, you overtake them and draw alongside.\n" +
+                "\n" +
+                "On a 7–9, choose 1:\n" +
+                "\n" +
+                "- *You overtake them, but your vehicle suffers 1-harm ap the same.*\n" +
+                "- *You don’t overtake them, but you can drive them into a place you choose.*\n" +
+                "- *They outdistance you, but their vehicle suffers 1-harm ap the same.*\n" +
+                "\n" +
+                "On a miss, your counterpart chooses 1 against you.", Stats.COOL, MoveKinds.ROAD_WAR, null);
+        Move dealWithBadTerrain = new Move("DEAL WITH BAD TERRAIN", "When you have to _**deal with bad terrain**_, roll+cool, plus your vehicle’s handling.\n" +
+                "\n" +
+                "On a 10+, you fly through untouched.\n" +
+                "\n" +
+                "On a 7–9, choose 1:\n" +
+                "\n" +
+                "- *You slow down and pick your way forward.*\n" +
+                "- *You push too hard and your vehicle suffers harm as established.*\n" +
+                "- *You ditch out and go back or try to find another way.*\n" +
+                "\n" +
+                "On a miss, the MC chooses 1 for you; the others are impossible.", Stats.COOL, MoveKinds.ROAD_WAR, null);
+        Move shoulderAnotherVehicle = new Move("SHOULDER ANOTHER VEHICLE", "To _**shoulder another vehicle**_, roll+cool. On a hit, you shoulder it aside, inflicting v-harm as established.\n" +
+                "\n" +
+                "On a 10+, you inflict v-harm+1.\n" +
+                "\n" +
+                "On a miss, it shoulders you instead, inflicting v-harm as established.", Stats.COOL, MoveKinds.ROAD_WAR, null);
+
+        moveService.save(boardAMovingVehicle);
+        moveService.save(outdistanceAnotherVehicle);
+        moveService.save(overtakeAnotherVehicle);
+        moveService.save(dealWithBadTerrain);
+        moveService.save(shoulderAnotherVehicle);
 
         /* ----------------------------- ANGEL MOVES --------------------------------- */
         System.out.println("|| --- Loading Angel moves --- ||");
