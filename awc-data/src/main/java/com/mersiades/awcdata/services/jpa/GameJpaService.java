@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @Profile("jpa")
@@ -64,20 +65,21 @@ public class GameJpaService implements GameService {
 
     @Override
     public Game createGameWithMC(String discordId, String name, String textChannelId, String voiceChannelId) {
+        // Create the new game
+        Game newGame = new Game(UUID.randomUUID().toString(), textChannelId, voiceChannelId, name);
+
         // Find the User who created the game to associate with GameRole
         User creator = userService.findByDiscordId(discordId);
 
-        // Create an MC GameRole for the Game creator
-        GameRole mcGameRole = new GameRole(Roles.MC, creator);
-
-        Game newGame = new Game(textChannelId, voiceChannelId, name, mcGameRole);
-
+        // Create an MC GameRole for the Game creator and add it to the Game
+        GameRole mcGameRole = new GameRole(UUID.randomUUID().toString(), Roles.MC);
+        newGame.getGameRoles().add(mcGameRole);
         Game savedGame = gameRepository.save(newGame);
 
+        // Add the Game and User to the MC's GameRole
         mcGameRole.setGame(savedGame);
+        mcGameRole.setUser(creator);
         gameRoleService.save(mcGameRole);
-//        creator.getGameRoles().add(mcGameRole);
-//        userService.save(creator);
 
         return newGame;
     }

@@ -52,6 +52,14 @@ public class Game {
         this.gameRoles.add(mcGameRole);
     }
 
+    public Game(String id, String textChannelId, String voiceChannelId, String name, GameRole mcGameRole) {
+        this.id = id;
+        this.textChannelId = textChannelId;
+        this.voiceChannelId = voiceChannelId;
+        this.name = name;
+        this.gameRoles.add(mcGameRole);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Game [");
