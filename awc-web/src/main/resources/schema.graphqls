@@ -2,6 +2,38 @@ enum Roles {
     MC
     PLAYER
 }
+
+enum Stats {
+    COOL
+    HARD
+    HOT
+    SHARP
+    WEIRD
+    HX
+}
+
+enum MoveKinds {
+    CHARACTER
+    BASIC
+    PERIPHERAL
+    BATTLE
+    ROAD_WAR
+}
+
+enum PlayBooks {
+    ANGEL
+    BATTLEBABE
+    BRAINER
+    CHOPPER
+    DRIVER
+    GUNLUGGER
+    HARDHOLDER
+    HOCUS
+    MAESTRO_D
+    SAVVYHEAD
+    SKINNER
+}
+
 type User {
     id: ID!
     discordId: String!
@@ -16,11 +48,11 @@ type Game {
     gameRoles: [GameRole]
 }
 type Npc {
-    id: ID!
+    id: ID
 }
 
 type Threat {
-    id: ID!
+    id: ID
 }
 
 type Character {
@@ -37,9 +69,19 @@ type GameRole {
     characters: [Character]
 }
 
+type Move {
+    id: ID
+    name: String!
+    description: String
+    stat: Stats
+    kind: MoveKinds!
+    playbook: PlayBooks
+}
+
 type Query {
     userByDiscordId(discordId:String!): User
     gameByTextChannelId(textChannelId:String!): Game
+    allMoves: [Move]
 }
 
 type Mutation {
