@@ -34,6 +34,16 @@ enum PlayBooks {
     SKINNER
 }
 
+enum Threats {
+    WARLORD,
+    GROTESQUE,
+    BRUTE,
+    AFFLICTION,
+    LANDSCAPE,
+    TERRAIN,
+    VEHICLE,
+}
+
 type User {
     id: ID!
     discordId: String!
@@ -49,10 +59,17 @@ type Game {
 }
 type Npc {
     id: ID
+    name: String
+    description: String
 }
 
 type Threat {
     id: ID
+    name: String
+    threatKind: Threats
+    impulse: String
+    description: String
+    stakes: String
 }
 
 type Character {
@@ -82,6 +99,7 @@ type Query {
     userByDiscordId(discordId:String!): User
     gameByTextChannelId(textChannelId:String!): Game
     allMoves: [Move]
+    gameRoleByGameAndUser(gameId: String!, userId: String!): GameRole
 }
 
 type Mutation {

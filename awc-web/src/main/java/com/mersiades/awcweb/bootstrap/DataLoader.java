@@ -19,6 +19,9 @@ public class DataLoader implements CommandLineRunner {
     final String DISCORD_VOICE_CHANNEL_ID_2 = "123876129847590347";
     final String DISCORD_USER_ID_1 = "696484065859076146";
     final String DISCORD_USER_ID_2 = "134523465246534532";
+    final String MOCK_USER_1_ID = "571f9b70-a572-47f9-a643-5cd985a2cde6";
+    final String MOCK_GAME_1_ID = "0ca6cc54-77a5-4d6e-ba2e-ee1543d6a249";
+    final String MOCK_GAME_2_ID = "ecb645d2-06d3-46dc-ad7f-20bbd167085d";
 
     private final UserService userService;
     private final GameService gameService;
@@ -626,12 +629,12 @@ public class DataLoader implements CommandLineRunner {
 
 
         // -------------------------------------- Set up mock Users -------------------------------------- //
-        User mockUser1 = new User(UUID.randomUUID().toString(), DISCORD_USER_ID_1);
+        User mockUser1 = new User(MOCK_USER_1_ID, DISCORD_USER_ID_1);
 
         User mockUser2 = new User(UUID.randomUUID().toString(), DISCORD_USER_ID_2);
 
         // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
-        Game mockGame1 = new Game(UUID.randomUUID().toString(), DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
+        Game mockGame1 = new Game(MOCK_GAME_1_ID, DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
 
         GameRole daveAsMC = new GameRole(UUID.randomUUID().toString(), Roles.MC);
         GameRole sarahAsPlayer = new GameRole(UUID.randomUUID().toString(), Roles.PLAYER);
@@ -666,7 +669,7 @@ public class DataLoader implements CommandLineRunner {
         gameRoleService.save(sarahAsPlayer);
 
         // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
-        Game mockGame2 = new Game(UUID.randomUUID().toString(), DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
+        Game mockGame2 = new Game(MOCK_GAME_2_ID, DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
 
         GameRole daveAsPlayer = new GameRole(UUID.randomUUID().toString(), Roles.PLAYER);
         GameRole sarahAsMC = new GameRole(UUID.randomUUID().toString(), Roles.MC);

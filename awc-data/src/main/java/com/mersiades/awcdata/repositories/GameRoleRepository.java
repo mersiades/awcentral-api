@@ -11,4 +11,6 @@ public interface GameRoleRepository extends CrudRepository<GameRole, String> {
     List<GameRole> findAllByUser(User user);
 
     List<GameRole> findAllByGame(Game game);
+
+    GameRole findByGameIdAndUserId(String gameId, String userId);
 }

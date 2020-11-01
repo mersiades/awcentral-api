@@ -61,4 +61,9 @@ public class GameRoleJpaService implements GameRoleService {
     public List<GameRole> findAllByGame(Game game) {
         return new ArrayList<>(gameRoleRepository.findAllByGame(game));
     }
+
+    @Override
+    public GameRole findByGameIdAndUserId(String gameId, String userId) {
+        return gameRoleRepository.findByGameIdAndUserId(gameId, userId);
+    }
 }
