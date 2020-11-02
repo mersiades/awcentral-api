@@ -22,6 +22,7 @@ public class DataLoader implements CommandLineRunner {
     final String MOCK_USER_1_ID = "571f9b70-a572-47f9-a643-5cd985a2cde6";
     final String MOCK_GAME_1_ID = "0ca6cc54-77a5-4d6e-ba2e-ee1543d6a249";
     final String MOCK_GAME_2_ID = "ecb645d2-06d3-46dc-ad7f-20bbd167085d";
+    final String DAVE_AS_PLAYER_ID = "2a7aba8d-f6e8-4880-8021-99809c800acc";
 
     private final UserService userService;
     private final GameService gameService;
@@ -83,7 +84,7 @@ public class DataLoader implements CommandLineRunner {
                 "- *a few sessions’ tribute to a warlord; a few sessions’ maintenance and repairs for a hi-performance vehicle well-used*\n" +
                 "- *bribes, fees and gifts sufficient to get you into almost anyone’s presence*\n" +
                 "\n" +
-                "For better stuff, you should expect to make particular arrangements. You can’t just wander around the commons of some hardhold with oddments ajangle and expect to find hi-tech or luxe eternal.", "When you’re lying in the dust of Apocalypse World guts aspilled, for whom do you pray? Thee gods? They’re long gone. Your beloved comrades? Fuckers all, or you wouldn’t be here to begin with. Your precious old mother? She’s a darling but she can’t put an intestine back inside so it’ll stay. No, you pray for some grinning kid or veteran or just someone with a heartshocker and a hand with sutures and a 6-pack of morphine. And when that someone comes, _that’s_ an angel.", "Angels are medics. If you want everybody to love you, or at least rely on you, play an angel. Warning: if things are going well, maybe nobody will rely on you. Make interesting relationships so you’ll stay relevant. Or sabotage things, I guess.", "https://awc-images.s3-ap-southeast-2.amazonaws.com/angel.png");
+                "For better stuff, you should expect to make particular arrangements. You can’t just wander around the commons of some hardhold with oddments ajangle and expect to find hi-tech or luxe eternal.", "When you’re lying in the dust of Apocalypse World guts aspilled, for whom do you pray? The gods? They’re long gone. Your beloved comrades? Fuckers all, or you wouldn’t be here to begin with. Your precious old mother? She’s a darling but she can’t put an intestine back inside so it’ll stay. No, you pray for some grinning kid or veteran or just someone with a heartshocker and a hand with sutures and a 6-pack of morphine. And when that someone comes, _that’s_ an angel.", "Angels are medics. If you want everybody to love you, or at least rely on you, play an angel. Warning: if things are going well, maybe nobody will rely on you. Make interesting relationships so you’ll stay relevant. Or sabotage things, I guess.", "https://awc-images.s3-ap-southeast-2.amazonaws.com/angel.png");
 
         Playbook battlebabe = new Playbook(Playbooks.BATTLEBABE, "At the beginning of the session, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions.\n" +
                 "\n" +
@@ -145,7 +146,7 @@ public class DataLoader implements CommandLineRunner {
                 "- *a few sessions’ tribute to a warlord; a few sessions’ maintenance and repairs for a hi-performance vehicle well-used*\n" +
                 "- *bribes, fees and gifts sufficient to get you into almost anyone’s presence*\n" +
                 "\n" +
-                "For better stuff, you should expect to make particular arrangements. You can’t just wander around the commons of some hardhold with oddments ajangle and expect to find hi-tech or luxe eternal.", "pocalypse World is all scarcity, of course it is. There’s not enough wholesome food, not enough untainted water, not enough security, not enough light, not enough electricity, not enough children, not enough hope.\n" +
+                "For better stuff, you should expect to make particular arrangements. You can’t just wander around the commons of some hardhold with oddments ajangle and expect to find hi-tech or luxe eternal.", "Apocalypse World is all scarcity, of course it is. There’s not enough wholesome food, not enough untainted water, not enough security, not enough light, not enough electricity, not enough children, not enough hope.\n" +
                 "\n" +
                 "However, the Golden Age Past did leave us two things: enough gasoline, enough bullets. Come the end, I guess the fuckers didn’t need them like they thought they would.\n" +
                 "\n" +
@@ -236,7 +237,7 @@ public class DataLoader implements CommandLineRunner {
                 "- *the material costs for crash resuscitation by a medic*\n" +
                 "- *a few sessions’ tribute to a warlord; bribes, fees and gifts sufficient to get you into almost anyone’s presence*\n" +
                 "\n" +
-                "For better stuff, you should expect to make particular arrangements. You can’t just wander around the commons of some hardhold with oddments ajangle and expect to find hi-tech or luxe eternal.", "In the golden age of legend, there was this guy named Maestro. He was known for dressing up real dap and whever he went, the people had much luxe tune. There was this other guy named Maitre d’. He was known for dressing up real dap and whever he went, the people had all the food they could eat and the fanciest of it.\n" +
+                "For better stuff, you should expect to make particular arrangements. You can’t just wander around the commons of some hardhold with oddments ajangle and expect to find hi-tech or luxe eternal.", "In the golden age of legend, there was this guy named Maestro. He was known for dressing up real dap and wherever he went, the people had much luxe tune. There was this other guy named Maitre d’. He was known for dressing up real dap and whever he went, the people had all the food they could eat and the fanciest of it.\n" +
                 "\n" +
                 "Here in Apocalypse World, those two guys are dead. They died and the fat sizzled off them, they died same as much-luxe-tune and all-you-can-eat. The maestro d’ now, he can’t give you what those guys used to could, but fuck it, maybe he can find you a little somethin somethin to take off the edge.", "The maestro d’ runs a social establishment, like a bar, a drug den or a bordello. If you want to be sexier than a hardholder, with fewer obligations and less shit to deal with, play a maestro d’. Warning: fewer obligations and less shit, not none and none.", "https://awc-images.s3-ap-southeast-2.amazonaws.com/maestrod.png");
         Playbook savvyhead = new Playbook(Playbooks.SAVVYHEAD, "At the beginning of the session, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions.\n" +
@@ -842,7 +843,7 @@ public class DataLoader implements CommandLineRunner {
         // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
         Game mockGame1 = new Game(MOCK_GAME_1_ID, DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
 
-        GameRole daveAsMC = new GameRole(UUID.randomUUID().toString(), Roles.MC);
+        GameRole daveAsMC = new GameRole(DAVE_AS_PLAYER_ID, Roles.MC);
         GameRole sarahAsPlayer = new GameRole(UUID.randomUUID().toString(), Roles.PLAYER);
 
         Npc mockNpc1 = new Npc(daveAsMC, "Vision", "Badass truck driver");

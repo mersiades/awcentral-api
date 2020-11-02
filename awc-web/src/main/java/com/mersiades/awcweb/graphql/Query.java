@@ -13,14 +13,12 @@ public class Query implements GraphQLQueryResolver {
     private final UserService userService;
     private final GameService gameService;
     private final MoveService moveService;
-    private final GameRoleService gameRoleService;
     private final PlaybookService playbookService;
 
-    public Query(UserService userService, GameService gameService, MoveService moveService, GameRoleService gameRoleService, PlaybookService playbookService) {
+    public Query(UserService userService, GameService gameService, MoveService moveService, PlaybookService playbookService) {
         this.userService = userService;
         this.gameService = gameService;
         this.moveService = moveService;
-        this.gameRoleService = gameRoleService;
         this.playbookService = playbookService;
     }
 

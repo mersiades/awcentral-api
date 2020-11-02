@@ -3,8 +3,12 @@ package com.mersiades.awcdata.models;
 import com.mersiades.awcdata.enums.Playbooks;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.UUID;
 
 @Data
+@Document
 public class Character {
 
     @Id
@@ -23,13 +27,7 @@ public class Character {
     private GameRole gameRole;
 
     public Character() {
-    }
-
-    public Character(String name, GameRole gameRole, Playbooks playbook, String gear) {
-        this.name = name;
-        this.gameRole = gameRole;
-        this.playbook = playbook;
-        this.gear = gear;
+        this.id = UUID.randomUUID().toString();
     }
 
     public Character(String id, String name, GameRole gameRole, Playbooks playbook, String gear) {

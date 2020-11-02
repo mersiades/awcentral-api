@@ -14,7 +14,4 @@ public class GameResolver implements GraphQLResolver<Game> {
         this.gameRoleService = gameRoleService;
     }
 
-//    public List<GameRole> getGameRoles(Game game) {
-//        return gameRoleService.findAllByGame(game);
-//    }
 }

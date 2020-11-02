@@ -57,6 +57,7 @@ type Game {
     voiceChannelId: String!
     gameRoles: [GameRole]
 }
+
 type Npc {
     id: ID
     name: String
@@ -119,6 +120,9 @@ type Mutation {
         name: String!,
         textChannelId: String!,
         voiceChannelId: String!): Game
-
     deleteGame(textChannelId: String!): Game
+    createCharacter(gameRoleId: String!): Character
+    setCharacterPlaybook(gameRoleId: String!,
+        characterId: String!,
+        playbookType: PlayBooks!): Character
 }
