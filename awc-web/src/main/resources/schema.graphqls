@@ -97,11 +97,21 @@ type Move {
     playbook: PlayBooks
 }
 
+type Playbook {
+    id: ID
+    playbookType: PlayBooks!
+    barterInstructions: String!
+    intro: String!
+    introComment: String!
+    playbookImageUrl: String!
+}
+
 type Query {
     userByDiscordId(discordId:String!): User
     gameByTextChannelId(textChannelId:String!): Game
     allMoves: [Move]
     gameForPlayer(textChannelId:String!, userId:String!): Game
+    playbooks: [Playbook]
 }
 
 type Mutation {
