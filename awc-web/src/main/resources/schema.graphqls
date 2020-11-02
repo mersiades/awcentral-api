@@ -75,6 +75,8 @@ type Threat {
 type Character {
     id: ID!
     name: String
+    gear: String
+    playbook: PlayBooks
 }
 
 type GameRole {
@@ -99,7 +101,7 @@ type Query {
     userByDiscordId(discordId:String!): User
     gameByTextChannelId(textChannelId:String!): Game
     allMoves: [Move]
-    gameRoleByGameAndUser(gameId: String!, userId: String!): GameRole
+    gameForPlayer(textChannelId:String!, userId:String!): Game
 }
 
 type Mutation {

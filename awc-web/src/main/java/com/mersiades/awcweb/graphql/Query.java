@@ -38,11 +38,26 @@ public class Query implements GraphQLQueryResolver {
         return gameService.findGameByTextChannelId(textChannelId);
     }
 
-    public Set<Move> allMoves() {
-        return moveService.findAll();
+    public Game gameForPlayer(String textChannelId, String userId) {
+        System.out.println("Fetching Game for player: " + textChannelId);
+
+        // Get the Game
+        Game game = gameService.findGameByTextChannelId(textChannelId);
+
+        // Get the User's GameRole from the Game
+        GameRole usersGameRole = game.getGameRoles().stream().filter(gameRole -> gameRole.getUser().getId().equals(userId)).findFirst().orElseThrow();
+
+        // Remove all GameRoles
+        game.getGameRoles().clear();
+
+        // Reinstate User's GameRole
+        game.getGameRoles().add(usersGameRole);
+
+        // Return the game, but with only the User's (player) GameRole
+        return game;
     }
 
-    public GameRole gameRoleByGameAndUser(String gameId, String userId) {
-        return gameRoleService.findByGameIdAndUserId(gameId, userId);
+    public Set<Move> allMoves() {
+        return moveService.findAll();
     }
 }
