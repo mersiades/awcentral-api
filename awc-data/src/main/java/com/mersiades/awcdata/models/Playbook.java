@@ -16,23 +16,24 @@ public class Playbook  {
     private Playbooks playbookType;
 
     // long string
-    private String barter_instructions;
+    private String barterInstructions;
 
     // long string
     private String intro;
 
     // long string
-    private String intro_comment;
+    private String introComment;
 
-    private String playbook_image_url;
+    private String playbookImageUrl;
 
     // one to one
     private PlaybookCreator creator;
 
-    public Playbook(Playbooks playbookType, String barter_instructions, String intro, String intro_comment) {
+    public Playbook(Playbooks playbookType, String barterInstructions, String intro, String introComment, String playbookImageUrl) {
         this.playbookType = playbookType;
-        this.barter_instructions = barter_instructions;
+        this.barterInstructions = barterInstructions;
         this.intro = intro;
-        this.intro_comment = intro_comment;
+        this.introComment = introComment;
+        this.playbookImageUrl = playbookImageUrl;
     }
 }
