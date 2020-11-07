@@ -3,10 +3,13 @@ package com.mersiades.awcweb.bootstrap;
 import com.mersiades.awcdata.enums.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
+import com.mersiades.awcdata.repositories.*;
 import com.mersiades.awcdata.services.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,6 +40,44 @@ public class DataLoader implements CommandLineRunner {
     private final MoveService moveService;
     private final GameRoleService gameRoleService;
 
+
+
+    @Autowired
+    CharacterReactiveRepository characterReactiveRepository;
+
+    @Autowired
+    GameReactiveRepository gameReactiveRepository;
+
+    @Autowired
+    GameRoleReactiveRepository gameRoleReactiveRepository;
+
+    @Autowired
+    LookReactiveRepository lookReactiveRepository;
+
+    @Autowired
+    MoveReactiveRepository moveReactiveRepository;
+
+    @Autowired
+    NameReactiveRepository nameReactiveRepository;
+
+    @Autowired
+    NpcReactiveRepository npcReactiveRepository;
+
+    @Autowired
+    PlaybookCreatorReactiveRepository playbookCreatorReactiveRepository;
+
+    @Autowired
+    PlaybookReactiveRepository playbookReactiveRepository;
+
+    @Autowired
+    StatsOptionReactiveRepository statsOptionReactiveRepository;
+
+    @Autowired
+    ThreatReactiveRepository threatReactiveRepository;
+
+    @Autowired
+    UserReactiveRepository userReactiveRepository;
+
     public DataLoader(UserService userService, GameService gameService,
                       NpcService npcService, ThreatService threatService, CharacterService characterService, PlaybookCreatorService playbookCreatorService, PlaybookService playbookService, NameService nameService, LookService lookService, StatsOptionService statsOptionService, MoveService moveService, GameRoleService gameRoleService) {
         this.userService = userService;
@@ -62,6 +103,18 @@ public class DataLoader implements CommandLineRunner {
         loadPlaybookCreators();
         loadPlaybooks();
         loadData();
+
+        System.out.println("Character count: " + Objects.requireNonNull(characterReactiveRepository.count().block()).toString());
+        System.out.println("Game count: " + Objects.requireNonNull(gameReactiveRepository.count().block()).toString());
+        System.out.println("GameRole count: " + Objects.requireNonNull(gameRoleReactiveRepository.count().block()).toString());
+        System.out.println("Look count: " + Objects.requireNonNull(lookReactiveRepository.count().block()).toString());
+        System.out.println("Move count: " + Objects.requireNonNull(moveReactiveRepository.count().block()).toString());
+        System.out.println("Name count: " + Objects.requireNonNull(nameReactiveRepository.count().block()).toString());
+        System.out.println("Npc count: " + Objects.requireNonNull(npcReactiveRepository.count().block()).toString());
+        System.out.println("PlaybookCreator count: " + Objects.requireNonNull(playbookCreatorReactiveRepository.count().block()).toString());
+        System.out.println("Playbook count: " + Objects.requireNonNull(playbookReactiveRepository.count().block()).toString());
+        System.out.println("Threat count: " + Objects.requireNonNull(threatReactiveRepository.count().block()).toString());
+        System.out.println("User count: " + Objects.requireNonNull(userReactiveRepository.count().block()).toString());
     }
 
     public void loadPlaybooks() {
@@ -875,6 +928,11 @@ public class DataLoader implements CommandLineRunner {
         sarahAsPlayer.setUser(mockUser2);
         gameRoleService.save(sarahAsPlayer);
 
+        threatService.save(mockThreat1);
+        threatService.save(mockThreat2);
+        npcService.save(mockNpc1);
+        npcService.save(mockNpc2);
+
         // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
         Game mockGame2 = new Game(MOCK_GAME_2_ID, DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
 
@@ -910,6 +968,10 @@ public class DataLoader implements CommandLineRunner {
         sarahAsMC.setUser(mockUser2);
         gameRoleService.save(sarahAsMC);
 
+        threatService.save(mockThreat3);
+        threatService.save(mockThreat4);
+        npcService.save(mockNpc3);
+        npcService.save(mockNpc4);
 
         // ---------------------------------- Add Characters to Players --------------------------------- //
 //        Character mockCharacter1 = new Character("October", sarahAsPlayer, Playbooks.ANGEL, "not much gear");
