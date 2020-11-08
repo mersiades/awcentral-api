@@ -21,16 +21,11 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public Flux<Character> findAll() {
         return characterRepository.findAll();
-//        Set<Character> characters = new HashSet<>();
-//        characterRepository.findAll().forEach(characters::add);
-//        return characters;
     }
 
     @Override
     public Mono<Character> findById(String id) {
         return characterRepository.findById(id);
-//        Mono<Character> optionalCharacter = characterRepository.findById(id);
-//        return optionalCharacter.orElse(null);
     }
 
     @Override

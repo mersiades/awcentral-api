@@ -27,23 +27,15 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Flux<GameRole> findAll() {
         return gameRoleRepository.findAll();
-//        Set<GameRole> gameRoles = new HashSet<>();
-//        gameRoleRepository.findAll().forEach(gameRoles::add);
-//        return gameRoles;
     }
 
     @Override
     public Mono<GameRole> findById(String id) {
         return gameRoleRepository.findById(id);
-//        Optional<GameRole> optionalGameRole = gameRoleRepository.findById(id);
-//        return optionalGameRole.orElse(null);
     }
 
     @Override
     public Mono<GameRole> save(GameRole gameRole) {
-//        Mono<GameRole> gameRoleMono = gameRoleRepository.save(gameRole);
-//        System.out.println("gameRoleMono: " + gameRoleMono);
-//        return gameRoleMono;
         return gameRoleRepository.save(gameRole);
     }
 
@@ -62,9 +54,6 @@ public class GameRoleServiceImpl implements GameRoleService {
         System.out.println("user = " + user);
         System.out.println("gameRoles: " + user.getGameRoles().toString());
         return gameRoleRepository.findAllByUser(user);
-//        List<GameRole> gameRoles = gameRoleRepository.findAllByUser(user);
-//        System.out.println("Game Roles: " + gameRoles.size());
-//        return gameRoles;
     }
 
     @Override
@@ -72,10 +61,10 @@ public class GameRoleServiceImpl implements GameRoleService {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
         Character newCharacter = new Character();
         System.out.println("newCharacter = " + newCharacter);
-        characterService.save(newCharacter);
+        characterService.save(newCharacter).block();
         assert gameRole != null;
         gameRole.getCharacters().add(newCharacter);
-        gameRoleRepository.save(gameRole);
+        gameRoleRepository.save(gameRole).block();
         return newCharacter;
     }
 
@@ -85,8 +74,8 @@ public class GameRoleServiceImpl implements GameRoleService {
         assert gameRole != null;
         Character character = gameRole.getCharacters().stream().filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
         character.setPlaybook(playbookType);
-        characterService.save(character);
-        gameRoleRepository.save(gameRole);
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
         return character;
     }
 }
