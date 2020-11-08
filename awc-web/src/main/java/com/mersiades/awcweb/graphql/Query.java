@@ -29,14 +29,14 @@ public class Query implements GraphQLQueryResolver {
 
     public Game gameByTextChannelId(String textChannelId) {
         System.out.println("Fetching Game by textChannelId: " + textChannelId);
-        return gameService.findGameByTextChannelId(textChannelId);
+        return gameService.findGameByTextChannelId(textChannelId).block();
     }
 
     public Game gameForPlayer(String textChannelId, String userId) {
         System.out.println("Fetching Game for player: " + textChannelId);
 
         // Get the Game
-        Game game = gameService.findGameByTextChannelId(textChannelId);
+        Game game = gameService.findGameByTextChannelId(textChannelId).block();
 
         // Get the User's GameRole from the Game
         GameRole usersGameRole = game.getGameRoles().stream().filter(gameRole -> gameRole.getUser().getId().equals(userId)).findFirst().orElseThrow();

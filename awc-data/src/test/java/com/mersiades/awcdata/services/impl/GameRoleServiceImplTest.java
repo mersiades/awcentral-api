@@ -24,6 +24,7 @@ import static org.mockito.Mockito.*;
 class GameRoleServiceImplTest {
 
     public static final String MOCK_GAMEROLE_ID = "mock-gamerole-id";
+
     @Mock
     GameRoleReactiveRepository gameRoleReactiveRepository;
 

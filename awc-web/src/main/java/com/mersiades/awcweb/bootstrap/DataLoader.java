@@ -912,7 +912,7 @@ public class DataLoader implements CommandLineRunner {
 
         mockGame1.getGameRoles().add(daveAsMC);
         mockGame1.getGameRoles().add(sarahAsPlayer);
-        gameService.save(mockGame1);
+        gameService.save(mockGame1).block();
 
         mockUser1.getGameRoles().add(daveAsMC);
         userService.save(mockUser1);
@@ -952,7 +952,7 @@ public class DataLoader implements CommandLineRunner {
 
         mockGame2.getGameRoles().add(daveAsPlayer);
         mockGame2.getGameRoles().add(sarahAsMC);
-        gameService.save(mockGame2);
+        gameService.save(mockGame2).block();
 
         mockUser1.getGameRoles().add(daveAsPlayer);
         userService.save(mockUser1);

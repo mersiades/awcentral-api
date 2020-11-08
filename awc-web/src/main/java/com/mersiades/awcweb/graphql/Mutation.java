@@ -26,7 +26,7 @@ public class Mutation implements GraphQLMutationResolver {
 
     public Game deleteGame(String textChannelId) {
         System.out.println("Deleting Game with textChannelId: " + textChannelId);
-        return gameService.deleteGameByTextChannelId(textChannelId);
+        return gameService.deleteGameByTextChannelId(textChannelId).block();
     }
 
     public Character createCharacter(String gameRoleId) {
