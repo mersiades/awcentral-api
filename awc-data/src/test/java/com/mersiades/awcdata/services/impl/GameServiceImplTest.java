@@ -24,7 +24,6 @@ import static org.mockito.Mockito.*;
 class GameServiceImplTest {
 
     public static final String MOCK_GAME_ID_1 = "mock-game-id-1";
-
     public static final String MOCK_GAMEROLE_ID = "mock-gamerole-id";
     public static final String MOCK_TEXT_CHANNEL_ID_1 = "mock-text-channel-id-1";
 

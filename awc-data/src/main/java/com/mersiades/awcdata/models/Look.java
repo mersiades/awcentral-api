@@ -24,4 +24,11 @@ public class Look {
         this.category = category;
         this.look = look;
     }
+
+    public Look(String id, Playbooks playbookType, LookCategories category, String look) {
+        this.id = id;
+        this.playbookType = playbookType;
+        this.category = category;
+        this.look = look;
+    }
 }
