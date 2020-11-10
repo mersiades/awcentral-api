@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -442,34 +443,35 @@ public class DataLoader implements CommandLineRunner {
         Look angel24 = new Look(Playbooks.ANGEL, LookCategories.BODY, "big body");
         Look angel25 = new Look(Playbooks.ANGEL, LookCategories.BODY, "rangy body");
         Look angel26 = new Look(Playbooks.ANGEL, LookCategories.BODY, "sturdy body");
-        lookService.save(angel1);
-        lookService.save(angel2);
-        lookService.save(angel3);
-        lookService.save(angel4);
-        lookService.save(angel5);
-        lookService.save(angel6);
-        lookService.save(angel7);
-        lookService.save(angel8);
-        lookService.save(angel9);
-        lookService.save(angel10);
-        lookService.save(angel11);
-        lookService.save(angel12);
-        lookService.save(angel13);
-        lookService.save(angel14);
-        lookService.save(angel15);
-        lookService.save(angel16);
-        lookService.save(angel17);
-        lookService.save(angel18);
-        lookService.save(angel19);
-        lookService.save(angel20);
-        lookService.save(angel21);
-        lookService.save(angel22);
-        lookService.save(angel23);
-        lookService.save(angel24);
-        lookService.save(angel25);
-        lookService.save(angel26);
+        lookService.save(angel1).block();
+        lookService.save(angel2).block();
+        lookService.save(angel3).block();
+        lookService.save(angel4).block();
+        lookService.save(angel5).block();
+        lookService.save(angel6).block();
+        lookService.save(angel7).block();
+        lookService.save(angel8).block();
+        lookService.save(angel9).block();
+        lookService.save(angel10).block();
+        lookService.save(angel11).block();
+        lookService.save(angel12).block();
+        lookService.save(angel13).block();
+        lookService.save(angel14).block();
+        lookService.save(angel15).block();
+        lookService.save(angel16).block();
+        lookService.save(angel17).block();
+        lookService.save(angel18).block();
+        lookService.save(angel19).block();
+        lookService.save(angel20).block();
+        lookService.save(angel21).block();
+        lookService.save(angel22).block();
+        lookService.save(angel23).block();
+        lookService.save(angel24).block();
+        lookService.save(angel25).block();
+        lookService.save(angel26).block();
 
-        Set<Look> looks = lookService.findAll();
+        List<Look> looks = lookService.findAll().collectList().block();
+        assert looks != null;
         System.out.println("Number of saved looks: " + looks.size());
     }
 
@@ -875,7 +877,7 @@ public class DataLoader implements CommandLineRunner {
         PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL);
         Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL);
         Set<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL);
-        Set<Look> looksAngel = lookService.findAllByPlaybookType(Playbooks.ANGEL);
+        List<Look> looksAngel = lookService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
         Set<StatsOption> statsOptionsAngel = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL);
 
         for(StatsOption statsOption: statsOptionsAngel) {
@@ -883,6 +885,7 @@ public class DataLoader implements CommandLineRunner {
         }
 
         namesAngel.forEach(name -> playbookCreatorAngel.getNames().add(name));
+        assert looksAngel != null;
         looksAngel.forEach(look -> playbookCreatorAngel.getLooks().add(look));
         playbookAngel.setCreator(playbookCreatorAngel);
         playbookService.save(playbookAngel);
