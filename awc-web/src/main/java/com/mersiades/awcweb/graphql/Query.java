@@ -1,10 +1,14 @@
 package com.mersiades.awcweb.graphql;
 
 import com.mersiades.awcdata.models.*;
-import com.mersiades.awcdata.services.*;
+import com.mersiades.awcdata.services.GameService;
+import com.mersiades.awcdata.services.MoveService;
+import com.mersiades.awcdata.services.PlaybookService;
+import com.mersiades.awcdata.services.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -51,8 +55,8 @@ public class Query implements GraphQLQueryResolver {
         return game;
     }
 
-    public Set<Move> allMoves() {
-        return moveService.findAll();
+    public List<Move> allMoves() {
+        return moveService.findAll().collectList().block();
     }
 
     public Set<Playbook> playbooks() {

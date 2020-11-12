@@ -34,6 +34,11 @@ public class LookServiceImpl implements com.mersiades.awcdata.services.LookServi
     }
 
     @Override
+    public Flux<Look> saveAll(Flux<Look> looks) {
+        return lookRepository.saveAll(looks);
+    }
+
+    @Override
     public void delete(Look look) {
         this.lookRepository.delete(look);
     }

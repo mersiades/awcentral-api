@@ -10,6 +10,8 @@ public interface ReactiveCrudService<T, ID> {
 
     Mono<T> save(T object);
 
+    Flux<T> saveAll(Flux<T> moves);
+
     void delete(T object);
 
     void deleteById(ID id);

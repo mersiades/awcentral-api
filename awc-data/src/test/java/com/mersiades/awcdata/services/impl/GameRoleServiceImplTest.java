@@ -18,7 +18,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 class GameRoleServiceImplTest {
@@ -35,9 +36,12 @@ class GameRoleServiceImplTest {
 
     GameRole mockGameRole;
 
+    GameRole mockGameRole2;
+
     User mockUser;
 
     Character mockCharacter;
+
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -47,14 +51,14 @@ class GameRoleServiceImplTest {
         mockCharacter = new Character();
         mockGameRole = new GameRole(MOCK_GAMEROLE_ID, Roles.MC, mockGame1, mockUser);
         gameRoleService = new GameRoleServiceImpl(gameRoleReactiveRepository, characterService);
+        mockGameRole2 = new GameRole();
     }
 
 
     @Test
     void shouldFindAllGameRoles() {
         // Given
-        GameRole gameRole2 = new GameRole();
-        when(gameRoleReactiveRepository.findAll()).thenReturn(Flux.just(mockGameRole, gameRole2));
+        when(gameRoleReactiveRepository.findAll()).thenReturn(Flux.just(mockGameRole, mockGameRole2));
 
         // When
         List<GameRole> gameRoles = gameRoleService.findAll().collectList().block();
@@ -92,6 +96,22 @@ class GameRoleServiceImplTest {
         assertEquals(MOCK_GAMEROLE_ID, savedGameRole.getId());
         verify(gameRoleReactiveRepository, times(1)).save(any(GameRole.class));
     }
+
+//    @Test
+//    void shouldSaveGameRoles() {
+//        // Given
+//        when(gameRoleReactiveRepository.saveAll(Flux.just(mockGameRole, mockGameRole2)))
+//                .thenReturn(Flux.just(mockGameRole, mockGameRole2));
+//
+//        // When
+//        List<GameRole> savedGameRoles = gameRoleService.saveAll(Flux.just(mockGameRole, mockGameRole2))
+//                .collectList().block();
+//
+//        // Then
+//        assert savedGameRoles != null;
+//        assertEquals(6, savedGameRoles.size());
+////        verify(gameRoleReactiveRepository, times(1)).saveAll(any());
+//    }
 
     @Test
     void shouldDeleteGameRole() {

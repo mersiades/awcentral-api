@@ -8,6 +8,7 @@ import com.mersiades.awcdata.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,7 +41,6 @@ public class DataLoader implements CommandLineRunner {
     private final StatsOptionService statsOptionService;
     private final MoveService moveService;
     private final GameRoleService gameRoleService;
-
 
 
     @Autowired
@@ -392,7 +392,7 @@ public class DataLoader implements CommandLineRunner {
                 "On the others’ turns, answer their questions as you like.\n" +
                 "\n" +
                 "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.");
-        PlaybookCreator saved =  playbookCreatorService.save(angelCreator);
+        PlaybookCreator saved = playbookCreatorService.save(angelCreator);
 
         Set<PlaybookCreator> playbookCreators = playbookCreatorService.findAll();
         System.out.println("Number of saved playbookCreators: " + playbookCreators.size());
@@ -443,32 +443,10 @@ public class DataLoader implements CommandLineRunner {
         Look angel24 = new Look(Playbooks.ANGEL, LookCategories.BODY, "big body");
         Look angel25 = new Look(Playbooks.ANGEL, LookCategories.BODY, "rangy body");
         Look angel26 = new Look(Playbooks.ANGEL, LookCategories.BODY, "sturdy body");
-        lookService.save(angel1).block();
-        lookService.save(angel2).block();
-        lookService.save(angel3).block();
-        lookService.save(angel4).block();
-        lookService.save(angel5).block();
-        lookService.save(angel6).block();
-        lookService.save(angel7).block();
-        lookService.save(angel8).block();
-        lookService.save(angel9).block();
-        lookService.save(angel10).block();
-        lookService.save(angel11).block();
-        lookService.save(angel12).block();
-        lookService.save(angel13).block();
-        lookService.save(angel14).block();
-        lookService.save(angel15).block();
-        lookService.save(angel16).block();
-        lookService.save(angel17).block();
-        lookService.save(angel18).block();
-        lookService.save(angel19).block();
-        lookService.save(angel20).block();
-        lookService.save(angel21).block();
-        lookService.save(angel22).block();
-        lookService.save(angel23).block();
-        lookService.save(angel24).block();
-        lookService.save(angel25).block();
-        lookService.save(angel26).block();
+
+        lookService.saveAll(Flux.just(angel1, angel2, angel3, angel4, angel5, angel6, angel7, angel8, angel9,
+                angel10, angel11, angel12, angel13, angel14, angel15, angel16, angel17, angel18, angel19,
+                angel20, angel21, angel22, angel23, angel24, angel25, angel26)).blockLast();
 
         List<Look> looks = lookService.findAll().collectList().block();
         assert looks != null;
@@ -589,17 +567,9 @@ public class DataLoader implements CommandLineRunner {
         Move openBrain = new Move("OPEN YOUR BRAIN", "When you _**open your brain to the world’s psychic maelstrom**_, roll+weird. On a hit, the MC tells you something new and interesting about the current situation, and might ask you a question or two; answer them. On a 10+, the MC gives you good detail. On a 7–9, the MC gives you an impression. If you already know all there is to know, the MC will tell you that. On a miss, be prepared for the worst.", Stats.WEIRD, MoveKinds.BASIC, null);
         Move lifestyleAndGigs = new Move("LIFESTYLE AND GIGS", "_**At the beginning of the session**_, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions. If you need jingle during a session, tell the MC you’d like to work a gig.", null, MoveKinds.BASIC, null);
         Move sessionEnd = new Move("SESSION END", "_**At the end of every session**_, choose a character who knows you better than they used to. If there’s more than one, choose one at your whim. Tell that player to add +1 to their Hx with you on their sheet. If this brings them to Hx+4, they reset to Hx+1 (and therefore mark experience). If no one knows you better, choose a character who doesn’t know you as well as they thought, or choose any character at your whim. Tell that player to take -1 to their Hx with you on their sheet. If this brings them to Hx -3, they reset to Hx=0 (and therefore mark experience).", null, MoveKinds.BASIC, null);
-        moveService.save(doSomethingUnderFire);
-        moveService.save(goAggro);
-        moveService.save(sucker);
-        moveService.save(doBattle);
-        moveService.save(seduceOrManip);
-        moveService.save(helpOrInterfere);
-        moveService.save(readASitch);
-        moveService.save(readAPerson);
-        moveService.save(openBrain);
-        moveService.save(lifestyleAndGigs);
-        moveService.save(sessionEnd);
+
+        moveService.saveAll(Flux.just(doSomethingUnderFire, goAggro, sucker, doBattle, seduceOrManip, helpOrInterfere,
+                readASitch, readAPerson, openBrain, lifestyleAndGigs, sessionEnd)).blockLast();
 
         System.out.println("|| --- Loading peripheral moves --- ||");
         /* ----------------------------- PERIPHERAL MOVES --------------------------------- */
@@ -658,15 +628,8 @@ public class DataLoader implements CommandLineRunner {
                 "On a miss, whatever bad happens, your antenna takes the brunt of it.", Stats.WEIRD, MoveKinds.PERIPHERAL, null);
         Move changeHighlightedStats = new Move("CHANGE HIGHLIGHTED STATS", "_**At the beginning of any session**_, or at the end if you forgot, anyone can say, “hey, let’s change highlighted stats.” When someone says it, do it. Go around the circle again, following the same procedure you used to highlight them in the first place: the high-Hx player highlights one stat, and the MC highlight another.", null, MoveKinds.PERIPHERAL, null);
 
-        moveService.save(sufferHarm);
-        moveService.save(inflictHarm);
-        moveService.save(healPcHarm);
-        moveService.save(giveBarter);
-        moveService.save(goToMarket);
-        moveService.save(makeWantKnown);
-        moveService.save(insight);
-        moveService.save(augury);
-        moveService.save(changeHighlightedStats);
+        moveService.saveAll(Flux.just(sufferHarm, inflictHarm, healPcHarm, giveBarter, goToMarket, makeWantKnown,
+                insight, augury, changeHighlightedStats)).blockLast();
 
         System.out.println("|| --- Loading battle moves --- ||");
         /* ----------------------------- BATTLE MOVES --------------------------------- */
@@ -775,20 +738,9 @@ public class DataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, you’re the mouse.", Stats.SHARP, MoveKinds.BATTLE, null);
 
-        moveService.save(exchangeHarm);
-        moveService.save(seizeByForce);
-        moveService.save(assaultAPosition);
-        moveService.save(keepHoldOfSomething);
-        moveService.save(fightFree);
-        moveService.save(defendSomeone);
-        moveService.save(doSingleCombat);
-        moveService.save(layDownFire);
-        moveService.save(standOverwatch);
-        moveService.save(keepAnEyeOut);
-        moveService.save(beTheBait);
-        moveService.save(beTheCat);
-        moveService.save(beTheMouse);
-        moveService.save(catOrMouse);
+        moveService.saveAll(Flux.just(exchangeHarm, seizeByForce, assaultAPosition, keepHoldOfSomething,
+                fightFree, defendSomeone, doSingleCombat, layDownFire, standOverwatch, keepAnEyeOut,
+                beTheBait, beTheCat, beTheMouse, catOrMouse)).blockLast();
 
         System.out.println("|| --- Loading road war moves --- ||");
         /* ----------------------------- ROAD WAR MOVES --------------------------------- */
@@ -838,36 +790,30 @@ public class DataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, it shoulders you instead, inflicting v-harm as established.", Stats.COOL, MoveKinds.ROAD_WAR, null);
 
-        moveService.save(boardAMovingVehicle);
-        moveService.save(outdistanceAnotherVehicle);
-        moveService.save(overtakeAnotherVehicle);
-        moveService.save(dealWithBadTerrain);
-        moveService.save(shoulderAnotherVehicle);
+        moveService.saveAll(Flux.just(boardAMovingVehicle, outdistanceAnotherVehicle, overtakeAnotherVehicle,
+                dealWithBadTerrain, shoulderAnotherVehicle)).blockLast();
 
         /* ----------------------------- ANGEL MOVES --------------------------------- */
         System.out.println("|| --- Loading Angel moves --- ||");
         Move angelSpecial = new Move("ANGEL SPECIAL", "If you and another character have sex, your Hx with them on your sheet goes immediately to +3, and they immediately get +1 to their Hx with you on their sheet. If that brings their Hx with you to +4, they reset it to +1 instead, as usual, and so mark experience.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
         Move sixthSense = new Move("SIXTH SENSE", "_**Sixth sense**_: when you open your brain to the world’s psychic maelstrom, roll+sharp instead of +weird.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move infirmary = new Move("INFIRMARY", "_**Infirmary**_: you get an infirmary, a workspace with life support, a drug lab and a crew of 2 (Shigusa & Mox, maybe). Get patients into it and you can work on them like a savvyhead on tech (_cf_).", null,MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move profCompassion = new Move("PROFESSIONAL COMPASSION", "_**Professional compassion**_: you can roll+sharp instead of roll+Hx when you help someone who’s rolling.",null, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move battlefieldGrace = new Move("BATTLEFIELD GRACE","_**Battlefield grace**_: while you are caring for people, not fighting, you get +1armor.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move healingTouch = new Move("HEALING TOUCH","_**Healing touch**_: when you put your hands skin-to-skin on a wounded person and open your brain to them, roll+weird.\n" +
+        Move infirmary = new Move("INFIRMARY", "_**Infirmary**_: you get an infirmary, a workspace with life support, a drug lab and a crew of 2 (Shigusa & Mox, maybe). Get patients into it and you can work on them like a savvyhead on tech (_cf_).", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
+        Move profCompassion = new Move("PROFESSIONAL COMPASSION", "_**Professional compassion**_: you can roll+sharp instead of roll+Hx when you help someone who’s rolling.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
+        Move battlefieldGrace = new Move("BATTLEFIELD GRACE", "_**Battlefield grace**_: while you are caring for people, not fighting, you get +1armor.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
+        Move healingTouch = new Move("HEALING TOUCH", "_**Healing touch**_: when you put your hands skin-to-skin on a wounded person and open your brain to them, roll+weird.\n" +
                 "\n" +
                 "On a 10+, heal 1 segment.\n" +
                 "\n" +
                 "On a 7–9, heal 1 segment, but you’re also opening your brain, so roll that move next.\n" +
                 "\n" +
                 "On a miss: first, you don’t heal them. Second, you’ve opened both your brain and theirs to the world’s psychic maelstrom, without protection or preparation. For you, and for your patient if your patient’s a fellow player’s character, treat it as though you’ve made that move and missed the roll. For patients belonging to the MC, their experience and fate are up to the MC.\n", Stats.WEIRD, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move touchedByDeath = new Move("HEALING TOUCH","_**Touched by death**_: when someone is unconscious in your care, you can use them for _**augury**_. When someone has died in your care, you can use their body for _**augury**_.",null ,MoveKinds.CHARACTER, Playbooks.ANGEL);
-        moveService.save(angelSpecial);
-        moveService.save(sixthSense);
-        moveService.save(infirmary);
-        moveService.save(profCompassion);
-        moveService.save(battlefieldGrace);
-        moveService.save(healingTouch);
-        moveService.save(touchedByDeath);
+        Move touchedByDeath = new Move("HEALING TOUCH", "_**Touched by death**_: when someone is unconscious in your care, you can use them for _**augury**_. When someone has died in your care, you can use their body for _**augury**_.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
 
-        Set<Move> moves = moveService.findAll();
+        moveService.saveAll(Flux.just(angelSpecial, sixthSense, infirmary, profCompassion,
+                battlefieldGrace, healingTouch, touchedByDeath)).blockLast();
+
+        List<Move> moves = moveService.findAll().collectList().block();
+        assert moves != null;
         System.out.println("Number of saved moves: " + moves.size());
     }
 
@@ -880,7 +826,7 @@ public class DataLoader implements CommandLineRunner {
         List<Look> looksAngel = lookService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
         Set<StatsOption> statsOptionsAngel = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL);
 
-        for(StatsOption statsOption: statsOptionsAngel) {
+        for (StatsOption statsOption : statsOptionsAngel) {
             playbookCreatorAngel.getStatsOptions().add(statsOption);
         }
 
@@ -905,7 +851,7 @@ public class DataLoader implements CommandLineRunner {
         Npc mockNpc1 = new Npc(daveAsMC, "Vision", "Badass truck driver");
         Npc mockNpc2 = new Npc(daveAsMC, "Nbeke");
 
-        Threat mockThreat1 = new Threat( "Tum Tum", Threats.WARLORD, "Slaver: to own and sell people");
+        Threat mockThreat1 = new Threat("Tum Tum", Threats.WARLORD, "Slaver: to own and sell people");
         Threat mockThreat2 = new Threat("Gnarly", Threats.GROTESQUE, "Cannibal: craves satiety and plenty");
 
         daveAsMC.getNpcs().add(mockNpc1);
@@ -925,11 +871,9 @@ public class DataLoader implements CommandLineRunner {
 
         daveAsMC.setUser(mockUser1);
         daveAsMC.setGame(mockGame1);
-        gameRoleService.save(daveAsMC).block();
-
         sarahAsPlayer.setGame(mockGame1);
         sarahAsPlayer.setUser(mockUser2);
-        gameRoleService.save(sarahAsPlayer).block();
+        gameRoleService.saveAll(Flux.just(daveAsMC, sarahAsPlayer)).blockLast();
 
         threatService.save(mockThreat1);
         threatService.save(mockThreat2);
@@ -965,11 +909,9 @@ public class DataLoader implements CommandLineRunner {
 
         daveAsPlayer.setUser(mockUser1);
         daveAsPlayer.setGame(mockGame2);
-        gameRoleService.save(daveAsPlayer).block();
-
         sarahAsMC.setGame(mockGame2);
         sarahAsMC.setUser(mockUser2);
-        gameRoleService.save(sarahAsMC).block();
+        gameRoleService.saveAll(Flux.just(daveAsPlayer, sarahAsMC)).blockLast();
 
         threatService.save(mockThreat3);
         threatService.save(mockThreat4);

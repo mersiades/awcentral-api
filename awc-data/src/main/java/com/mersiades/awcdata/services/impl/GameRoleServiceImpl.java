@@ -40,6 +40,11 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
+    public Flux<GameRole> saveAll(Flux<GameRole> gameRoles) {
+        return gameRoleRepository.saveAll(gameRoles);
+    }
+
+    @Override
     public void delete(GameRole gameRole) {
         gameRoleRepository.delete(gameRole);
     }

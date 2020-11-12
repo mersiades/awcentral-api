@@ -34,6 +34,11 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
+    public Flux<Character> saveAll(Flux<Character> characters) {
+        return characterRepository.saveAll(characters);
+    }
+
+    @Override
     public void delete(Character character) {
         characterRepository.delete(character);
     }
