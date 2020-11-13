@@ -484,36 +484,13 @@ public class DataLoader implements CommandLineRunner {
         Name inch = new Name(Playbooks.ANGEL, "Inch");
         Name grip = new Name(Playbooks.ANGEL, "Grip");
         Name setter = new Name(Playbooks.ANGEL, "Setter");
-        nameService.save(dou);
-        nameService.save(bon);
-        nameService.save(abe);
-        nameService.save(boo);
-        nameService.save(t);
-        nameService.save(kal);
-        nameService.save(charName);
-        nameService.save(jav);
-        nameService.save(ruth);
-        nameService.save(wei);
-        nameService.save(jay);
-        nameService.save(nee);
-        nameService.save(kim);
-        nameService.save(lan);
-        nameService.save(di);
-        nameService.save(dez);
-        nameService.save(core);
-        nameService.save(wheels);
-        nameService.save(doc);
-        nameService.save(buzz);
-        nameService.save(key);
-        nameService.save(line);
-        nameService.save(gabe);
-        nameService.save(biz);
-        nameService.save(bish);
-        nameService.save(inch);
-        nameService.save(grip);
-        nameService.save(setter);
 
-        Set<Name> names = nameService.findAll();
+        nameService.saveAll(Flux.just(dou, bon, abe, boo, t, kal, charName, jav, ruth, wei, jay, nee,
+                kim, lan, di, dez, core, wheels, doc, buzz, key, line, gabe, biz, bish, inch, grip, setter))
+                .blockLast();
+
+        List<Name> names = nameService.findAll().collectList().block();
+        assert names != null;
         System.out.println("Number of saved names: " + names.size());
     }
 
@@ -822,7 +799,7 @@ public class DataLoader implements CommandLineRunner {
         // -------------------------------------- ANGEL -------------------------------------- //
         PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL);
         Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL);
-        Set<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL);
+        List<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
         List<Look> looksAngel = lookService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
         Set<StatsOption> statsOptionsAngel = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL);
 
@@ -830,6 +807,7 @@ public class DataLoader implements CommandLineRunner {
             playbookCreatorAngel.getStatsOptions().add(statsOption);
         }
 
+        assert namesAngel != null;
         namesAngel.forEach(name -> playbookCreatorAngel.getNames().add(name));
         assert looksAngel != null;
         looksAngel.forEach(look -> playbookCreatorAngel.getLooks().add(look));
