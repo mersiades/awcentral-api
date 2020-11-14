@@ -1,6 +1,9 @@
 package com.mersiades.awcdata.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,6 +13,9 @@ import java.util.List;
 
 @Data
 @Document
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -20,9 +26,6 @@ public class User {
     // one to many
     @DBRef
     private List<GameRole> gameRoles = new ArrayList<>();
-
-    public User() {
-    }
 
     public User(String id, String discordId) {
         this.id = id;
@@ -43,7 +46,9 @@ public class User {
             sb.append(", discordId= ").append(this.discordId);
         }
 
-        sb.append(", gameRoles size= ").append(this.gameRoles.size());
+        if (this.gameRoles != null) {
+            sb.append(", gameRoles size= ").append(this.gameRoles.size());
+        }
 
         sb.append("]");
 

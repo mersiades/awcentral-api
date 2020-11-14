@@ -57,7 +57,11 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Flux<GameRole> findAllByUser(User user) {
         System.out.println("user = " + user);
-        System.out.println("gameRoles: " + user.getGameRoles().toString());
+        if (user.getGameRoles() == null) {
+            System.out.println("gameRoles: null");
+        } else {
+            System.out.println("gameRoles: " + user.getGameRoles().toString());
+        }
         return gameRoleRepository.findAllByUser(user);
     }
 

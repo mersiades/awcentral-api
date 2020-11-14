@@ -840,10 +840,11 @@ public class DataLoader implements CommandLineRunner {
         gameService.save(mockGame1).block();
 
         mockUser1.getGameRoles().add(daveAsMC);
-        userService.save(mockUser1);
+//        userService.save(mockUser1);
 
         mockUser2.getGameRoles().add(sarahAsPlayer);
-        userService.save(mockUser2);
+//        userService.save(mockUser2);
+
 
         daveAsMC.setUser(mockUser1);
         daveAsMC.setGame(mockGame1);
@@ -876,10 +877,9 @@ public class DataLoader implements CommandLineRunner {
         gameService.save(mockGame2).block();
 
         mockUser1.getGameRoles().add(daveAsPlayer);
-        userService.save(mockUser1);
-
         mockUser2.getGameRoles().add(sarahAsMC);
-        userService.save(mockUser2);
+        userService.saveAll(Flux.just(mockUser1, mockUser2)).blockLast();
+
 
         daveAsPlayer.setUser(mockUser1);
         daveAsPlayer.setGame(mockGame2);

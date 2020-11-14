@@ -139,7 +139,7 @@ class GameServiceImplTest {
         String mockGameName = "Michael's new mock game";
         String mockTextChannelId2 = "mock-text-channel-id-2";
         String mockVoiceChannelId2 = "mock-voice-channel-id-2";
-        when(userService.findByDiscordId(anyString())).thenReturn(mockUser);
+        when(userService.findByDiscordId(anyString())).thenReturn(Mono.just(mockUser));
         when(gameRepository.save(any())).thenReturn(Mono.just(mockGame1));
         when(gameRoleService.save(any())).thenReturn(Mono.just(mockGameRole));
 

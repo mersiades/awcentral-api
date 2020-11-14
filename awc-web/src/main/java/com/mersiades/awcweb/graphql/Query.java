@@ -27,7 +27,7 @@ public class Query implements GraphQLQueryResolver {
 
     public User userByDiscordId(String discordId) {
         System.out.println("Fetching User by Discord id: " + discordId);
-        return userService.findByDiscordId(discordId);
+        return userService.findByDiscordId(discordId).block();
     }
 
     public Game gameByTextChannelId(String textChannelId) {

@@ -71,7 +71,7 @@ public class GameServiceImpl implements GameService {
 
         // Find the User who created the game to associate with GameRole
         // TODO: add .block() when userService is converted to reactive
-        User creator = userService.findByDiscordId(discordId);
+        User creator = userService.findByDiscordId(discordId).block();
 
         // Create an MC GameRole for the Game creator and add it to the Game
         GameRole mcGameRole = new GameRole(UUID.randomUUID().toString(), Roles.MC);
