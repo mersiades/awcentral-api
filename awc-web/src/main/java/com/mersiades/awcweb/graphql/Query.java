@@ -9,7 +9,6 @@ import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class Query implements GraphQLQueryResolver {
@@ -43,6 +42,7 @@ public class Query implements GraphQLQueryResolver {
         Game game = gameService.findGameByTextChannelId(textChannelId).block();
 
         // Get the User's GameRole from the Game
+        assert game != null;
         GameRole usersGameRole = game.getGameRoles().stream().filter(gameRole -> gameRole.getUser().getId().equals(userId)).findFirst().orElseThrow();
 
         // Remove all GameRoles
@@ -59,7 +59,7 @@ public class Query implements GraphQLQueryResolver {
         return moveService.findAll().collectList().block();
     }
 
-    public Set<Playbook> playbooks() {
-        return playbookService.findAll();
+    public List<Playbook> playbooks() {
+        return playbookService.findAll().collectList().block();
     }
 }

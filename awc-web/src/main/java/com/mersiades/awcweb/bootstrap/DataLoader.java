@@ -335,19 +335,11 @@ public class DataLoader implements CommandLineRunner {
                 "\n" +
                 "Anything beautiful left in this ugly ass world, skinners hold it. Will they share it with you? What do you offer _them_?", "Skinners are pure hot. They’re entirely social and they have great, directly manipulative moves. Play a skinner if you want to be unignorable. Warning: skinners have the tools, but unlike hardholders, choppers and hocuses, they don’t have a steady influx of motivation. You’ll have most fun if you can roll your own.\n", "https://awc-images.s3-ap-southeast-2.amazonaws.com/skinner.png");
 
-        playbookService.save(angel);
-        playbookService.save(battlebabe);
-        playbookService.save(brainer);
-        playbookService.save(chopper);
-        playbookService.save(driver);
-        playbookService.save(gunlugger);
-        playbookService.save(hardholder);
-        playbookService.save(maestroD);
-        playbookService.save(hocus);
-        playbookService.save(savvyhead);
-        playbookService.save(skinner);
+        playbookService.saveAll(Flux.just(angel, battlebabe, brainer, chopper, driver, gunlugger, hardholder,
+                maestroD, hocus, savvyhead, skinner)).blockLast();
 
-        Set<Playbook> playbooks = playbookService.findAll();
+        List<Playbook> playbooks = playbookService.findAll().collectList().block();
+        assert playbooks != null;
         System.out.println("Number of saved playbooks: " + playbooks.size());
     }
 
@@ -799,23 +791,28 @@ public class DataLoader implements CommandLineRunner {
         // -------------------------------------- Set up Playbooks -------------------------------------- //
         // -------------------------------------- ANGEL -------------------------------------- //
         PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL).block();
-        Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL);
+        assert playbookCreatorAngel != null;
+
+        Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL).block();
+        assert playbookAngel != null;
+
         List<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
+        assert namesAngel != null;
+
         List<Look> looksAngel = lookService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
+        assert looksAngel != null;
+
         Set<StatsOption> statsOptionsAngel = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL);
 
-        assert playbookCreatorAngel != null;
 
         for (StatsOption statsOption : statsOptionsAngel) {
             playbookCreatorAngel.getStatsOptions().add(statsOption);
         }
 
-        assert namesAngel != null;
         namesAngel.forEach(name -> playbookCreatorAngel.getNames().add(name));
-        assert looksAngel != null;
         looksAngel.forEach(look -> playbookCreatorAngel.getLooks().add(look));
         playbookAngel.setCreator(playbookCreatorAngel);
-        playbookService.save(playbookAngel);
+        playbookService.save(playbookAngel).block();
 
 
         // -------------------------------------- Set up mock Users -------------------------------------- //
