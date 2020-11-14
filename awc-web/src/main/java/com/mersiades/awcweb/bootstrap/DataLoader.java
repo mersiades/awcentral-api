@@ -392,9 +392,10 @@ public class DataLoader implements CommandLineRunner {
                 "On the others’ turns, answer their questions as you like.\n" +
                 "\n" +
                 "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.");
-        PlaybookCreator saved = playbookCreatorService.save(angelCreator);
+        PlaybookCreator saved = playbookCreatorService.save(angelCreator).block();
 
-        Set<PlaybookCreator> playbookCreators = playbookCreatorService.findAll();
+        List<PlaybookCreator> playbookCreators = playbookCreatorService.findAll().collectList().block();
+        assert playbookCreators != null;
         System.out.println("Number of saved playbookCreators: " + playbookCreators.size());
     }
 
@@ -797,11 +798,13 @@ public class DataLoader implements CommandLineRunner {
     private void loadData() {
         // -------------------------------------- Set up Playbooks -------------------------------------- //
         // -------------------------------------- ANGEL -------------------------------------- //
-        PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL);
+        PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL).block();
         Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL);
         List<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
         List<Look> looksAngel = lookService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
         Set<StatsOption> statsOptionsAngel = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL);
+
+        assert playbookCreatorAngel != null;
 
         for (StatsOption statsOption : statsOptionsAngel) {
             playbookCreatorAngel.getStatsOptions().add(statsOption);
