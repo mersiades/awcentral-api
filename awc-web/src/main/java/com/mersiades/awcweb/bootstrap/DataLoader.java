@@ -851,8 +851,7 @@ public class DataLoader implements CommandLineRunner {
         sarahAsPlayer.setUser(mockUser2);
         gameRoleService.saveAll(Flux.just(daveAsMC, sarahAsPlayer)).blockLast();
 
-        threatService.save(mockThreat1);
-        threatService.save(mockThreat2);
+        threatService.saveAll(Flux.just(mockThreat1, mockThreat2)).blockLast();
         npcService.saveAll(Flux.just(mockNpc1, mockNpc2)).blockLast();
 
         // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
@@ -888,8 +887,7 @@ public class DataLoader implements CommandLineRunner {
         sarahAsMC.setUser(mockUser2);
         gameRoleService.saveAll(Flux.just(daveAsPlayer, sarahAsMC)).blockLast();
 
-        threatService.save(mockThreat3);
-        threatService.save(mockThreat4);
+        threatService.saveAll(Flux.just(mockThreat3, mockThreat4)).blockLast();
         npcService.saveAll(Flux.just(mockNpc3, mockNpc4)).blockLast();
 
         // ---------------------------------- Add Characters to Players --------------------------------- //
