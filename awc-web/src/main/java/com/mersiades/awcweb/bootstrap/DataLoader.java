@@ -855,8 +855,7 @@ public class DataLoader implements CommandLineRunner {
 
         threatService.save(mockThreat1);
         threatService.save(mockThreat2);
-        npcService.save(mockNpc1);
-        npcService.save(mockNpc2);
+        npcService.saveAll(Flux.just(mockNpc1, mockNpc2)).blockLast();
 
         // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
         Game mockGame2 = new Game(MOCK_GAME_2_ID, DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
@@ -893,8 +892,7 @@ public class DataLoader implements CommandLineRunner {
 
         threatService.save(mockThreat3);
         threatService.save(mockThreat4);
-        npcService.save(mockNpc3);
-        npcService.save(mockNpc4);
+        npcService.saveAll(Flux.just(mockNpc3, mockNpc4)).blockLast();
 
         // ---------------------------------- Add Characters to Players --------------------------------- //
 //        Character mockCharacter1 = new Character("October", sarahAsPlayer, Playbooks.ANGEL, "not much gear");

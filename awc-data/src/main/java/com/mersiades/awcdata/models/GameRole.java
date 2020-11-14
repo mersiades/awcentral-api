@@ -1,7 +1,10 @@
 package com.mersiades.awcdata.models;
 
 import com.mersiades.awcdata.enums.Roles;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,6 +14,9 @@ import java.util.Set;
 
 @Data
 @Document
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GameRole {
 
     @Id
@@ -30,8 +36,6 @@ public class GameRole {
 
     private Set<Character> characters = new HashSet<>();
 
-    public GameRole() {
-    }
     public GameRole(Roles role) {
         this.role = role;
     }
