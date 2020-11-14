@@ -384,7 +384,7 @@ public class DataLoader implements CommandLineRunner {
                 "On the others’ turns, answer their questions as you like.\n" +
                 "\n" +
                 "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.");
-        PlaybookCreator saved = playbookCreatorService.save(angelCreator).block();
+        playbookCreatorService.save(angelCreator).block();
 
         List<PlaybookCreator> playbookCreators = playbookCreatorService.findAll().collectList().block();
         assert playbookCreators != null;
@@ -398,12 +398,10 @@ public class DataLoader implements CommandLineRunner {
         StatsOption angel2 = new StatsOption(Playbooks.ANGEL, 1, 1, 0, 2, -1);
         StatsOption angel3 = new StatsOption(Playbooks.ANGEL, -1, 1, 0, 2, 1);
         StatsOption angel4 = new StatsOption(Playbooks.ANGEL, 2, 0, -1, 2, -1);
-        statsOptionService.save(angel1);
-        statsOptionService.save(angel2);
-        statsOptionService.save(angel3);
-        statsOptionService.save(angel4);
+        statsOptionService.saveAll(Flux.just(angel1, angel2, angel3, angel4)).blockLast();
 
-        Set<StatsOption> statsOptions = statsOptionService.findAll();
+        List<StatsOption> statsOptions = statsOptionService.findAll().collectList().block();
+        assert statsOptions != null;
         System.out.println("Number of saved statsOptions: " + statsOptions.size());
     }
 
@@ -802,8 +800,8 @@ public class DataLoader implements CommandLineRunner {
         List<Look> looksAngel = lookService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
         assert looksAngel != null;
 
-        Set<StatsOption> statsOptionsAngel = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL);
-
+        List<StatsOption> statsOptionsAngel = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
+        assert statsOptionsAngel != null;
 
         for (StatsOption statsOption : statsOptionsAngel) {
             playbookCreatorAngel.getStatsOptions().add(statsOption);
