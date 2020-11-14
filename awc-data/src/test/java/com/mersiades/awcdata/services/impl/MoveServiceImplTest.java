@@ -2,7 +2,7 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.enums.MoveKinds;
 import com.mersiades.awcdata.models.Move;
-import com.mersiades.awcdata.repositories.MoveReactiveRepository;
+import com.mersiades.awcdata.repositories.MoveRepository;
 import com.mersiades.awcdata.services.MoveService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class MoveServiceImplTest {
     public static final String MOCK_MOVE_ID_1 = "mock-move-id-1";
 
     @Mock
-    MoveReactiveRepository moveRepository;
+    MoveRepository moveRepository;
 
     MoveService moveService;
 

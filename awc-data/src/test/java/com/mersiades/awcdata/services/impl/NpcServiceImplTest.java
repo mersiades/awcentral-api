@@ -2,7 +2,7 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.Npc;
-import com.mersiades.awcdata.repositories.NpcReactiveRepository;
+import com.mersiades.awcdata.repositories.NpcRepository;
 import com.mersiades.awcdata.services.NpcService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class NpcServiceImplTest {
     public static final String MOCK_NPC_ID_1 = "mock-npc-id-1";
 
     @Mock
-    NpcReactiveRepository npcRepository;
+    NpcRepository npcRepository;
 
     NpcService npcService;
 

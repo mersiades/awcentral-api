@@ -4,22 +4,20 @@ import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
-import com.mersiades.awcdata.repositories.GameRoleReactiveRepository;
+import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-@Profile("jpa")
 public class GameRoleServiceImpl implements GameRoleService {
 
-    private final GameRoleReactiveRepository gameRoleRepository;
+    private final GameRoleRepository gameRoleRepository;
     private final CharacterService characterService;
 
-    public GameRoleServiceImpl(GameRoleReactiveRepository gameRoleRepository, CharacterService characterService) {
+    public GameRoleServiceImpl(GameRoleRepository gameRoleRepository, CharacterService characterService) {
         this.gameRoleRepository = gameRoleRepository;
         this.characterService = characterService;
     }

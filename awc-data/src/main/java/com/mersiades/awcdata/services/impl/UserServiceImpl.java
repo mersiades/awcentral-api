@@ -1,9 +1,8 @@
 package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.models.User;
-import com.mersiades.awcdata.repositories.UserReactiveRepository;
+import com.mersiades.awcdata.repositories.UserRepository;
 import com.mersiades.awcdata.services.UserService;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -11,12 +10,11 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 @Service
-@Profile("jpa")
 public class UserServiceImpl implements UserService {
 
-    private final UserReactiveRepository userRepository;
+    private final UserRepository userRepository;
 
-    public UserServiceImpl(UserReactiveRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

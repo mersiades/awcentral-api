@@ -2,19 +2,17 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Look;
-import com.mersiades.awcdata.repositories.LookReactiveRepository;
-import org.springframework.context.annotation.Profile;
+import com.mersiades.awcdata.repositories.LookRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-@Profile("jpa")
 public class LookServiceImpl implements com.mersiades.awcdata.services.LookService {
 
-    private final LookReactiveRepository lookRepository;
+    private final LookRepository lookRepository;
 
-    public LookServiceImpl(LookReactiveRepository lookRepository) {
+    public LookServiceImpl(LookRepository lookRepository) {
         this.lookRepository = lookRepository;
     }
 

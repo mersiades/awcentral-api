@@ -1,20 +1,18 @@
 package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.models.Character;
-import com.mersiades.awcdata.repositories.CharacterReactiveRepository;
+import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-@Profile("jpa")
 public class CharacterServiceImpl implements CharacterService {
 
-    private final CharacterReactiveRepository characterRepository;
+    private final CharacterRepository characterRepository;
 
-    public CharacterServiceImpl(CharacterReactiveRepository characterRepository) {
+    public CharacterServiceImpl(CharacterRepository characterRepository) {
         this.characterRepository = characterRepository;
     }
 

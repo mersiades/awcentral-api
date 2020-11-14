@@ -1,20 +1,18 @@
 package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.models.Threat;
-import com.mersiades.awcdata.repositories.ThreatReactiveRepository;
+import com.mersiades.awcdata.repositories.ThreatRepository;
 import com.mersiades.awcdata.services.ThreatService;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-@Profile("jpa")
 public class ThreatServiceImpl implements ThreatService {
 
-    private final ThreatReactiveRepository threatRepository;
+    private final ThreatRepository threatRepository;
 
-    public ThreatServiceImpl(ThreatReactiveRepository threatRepository) {
+    public ThreatServiceImpl(ThreatRepository threatRepository) {
         this.threatRepository = threatRepository;
     }
 

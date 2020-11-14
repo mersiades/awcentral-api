@@ -2,7 +2,7 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Playbook;
-import com.mersiades.awcdata.repositories.PlaybookReactiveRepository;
+import com.mersiades.awcdata.repositories.PlaybookRepository;
 import com.mersiades.awcdata.services.PlaybookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class PlaybookServiceImplTest {
     public static final String MOCK_PLAYBOOK_ID_1 = "mock-playbook-id-1";
 
     @Mock
-    PlaybookReactiveRepository playbookRepository;
+    PlaybookRepository playbookRepository;
 
     PlaybookService playbookService;
 

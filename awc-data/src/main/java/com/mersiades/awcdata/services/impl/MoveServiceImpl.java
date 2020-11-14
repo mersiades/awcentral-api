@@ -1,20 +1,18 @@
 package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.models.Move;
-import com.mersiades.awcdata.repositories.MoveReactiveRepository;
+import com.mersiades.awcdata.repositories.MoveRepository;
 import com.mersiades.awcdata.services.MoveService;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-@Profile("jpa")
 public class MoveServiceImpl implements MoveService {
 
-    private final MoveReactiveRepository moveRepository;
+    private final MoveRepository moveRepository;
 
-    public MoveServiceImpl(MoveReactiveRepository moveRepository) {
+    public MoveServiceImpl(MoveRepository moveRepository) {
         this.moveRepository = moveRepository;
     }
 

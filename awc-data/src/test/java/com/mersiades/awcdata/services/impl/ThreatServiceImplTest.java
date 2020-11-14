@@ -1,7 +1,7 @@
 package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.models.Threat;
-import com.mersiades.awcdata.repositories.ThreatReactiveRepository;
+import com.mersiades.awcdata.repositories.ThreatRepository;
 import com.mersiades.awcdata.services.ThreatService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class ThreatServiceImplTest {
     public static final String MOCK_THREAT_ID_1 = "mock-threat-id-1";
 
     @Mock
-    ThreatReactiveRepository threatRepository;
+    ThreatRepository threatRepository;
 
     ThreatService threatService;
 

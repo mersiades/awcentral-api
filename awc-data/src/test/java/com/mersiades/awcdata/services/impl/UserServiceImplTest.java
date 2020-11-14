@@ -1,7 +1,7 @@
 package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.models.User;
-import com.mersiades.awcdata.repositories.UserReactiveRepository;
+import com.mersiades.awcdata.repositories.UserRepository;
 import com.mersiades.awcdata.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class UserServiceImplTest {
     public static final String DISCORD_USER_ID_1 = "696484065859076146";
 
     @Mock
-    UserReactiveRepository userRepository;
+    UserRepository userRepository;
 
     UserService userService;
 

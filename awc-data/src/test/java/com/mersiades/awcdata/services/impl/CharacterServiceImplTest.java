@@ -3,7 +3,7 @@ package com.mersiades.awcdata.services.impl;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.GameRole;
-import com.mersiades.awcdata.repositories.CharacterReactiveRepository;
+import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class CharacterServiceImplTest {
     public static final String MOCK_CHARACTER_ID_1 = "mock-character-id-1";
 
     @Mock
-    CharacterReactiveRepository characterRepository;
+    CharacterRepository characterRepository;
 
     CharacterService characterService;
 

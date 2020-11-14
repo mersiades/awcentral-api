@@ -2,20 +2,18 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Playbook;
-import com.mersiades.awcdata.repositories.PlaybookReactiveRepository;
+import com.mersiades.awcdata.repositories.PlaybookRepository;
 import com.mersiades.awcdata.services.PlaybookService;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-@Profile("jpa")
 public class PlaybookServiceImpl implements PlaybookService {
 
-    private final PlaybookReactiveRepository playbookRepository;
+    private final PlaybookRepository playbookRepository;
 
-    public PlaybookServiceImpl(PlaybookReactiveRepository playbookRepository) {
+    public PlaybookServiceImpl(PlaybookRepository playbookRepository) {
         this.playbookRepository = playbookRepository;
     }
 

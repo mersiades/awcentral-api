@@ -2,20 +2,18 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.StatsOption;
-import com.mersiades.awcdata.repositories.StatsOptionReactiveRepository;
+import com.mersiades.awcdata.repositories.StatsOptionRepository;
 import com.mersiades.awcdata.services.StatsOptionService;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-@Profile("jpa")
 public class StatsOptionServiceImpl implements StatsOptionService {
 
-    private final StatsOptionReactiveRepository statsOptionRepository;
+    private final StatsOptionRepository statsOptionRepository;
 
-    public StatsOptionServiceImpl(StatsOptionReactiveRepository statsOptionRepository) {
+    public StatsOptionServiceImpl(StatsOptionRepository statsOptionRepository) {
         this.statsOptionRepository = statsOptionRepository;
     }
 

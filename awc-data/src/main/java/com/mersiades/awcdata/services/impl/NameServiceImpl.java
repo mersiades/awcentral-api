@@ -2,20 +2,18 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Name;
-import com.mersiades.awcdata.repositories.NameReactiveRepository;
+import com.mersiades.awcdata.repositories.NameRepository;
 import com.mersiades.awcdata.services.NameService;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-@Profile("jpa")
 public class NameServiceImpl implements NameService {
 
-    private final NameReactiveRepository nameRepository;
+    private final NameRepository nameRepository;
 
-    public NameServiceImpl(NameReactiveRepository nameRepository) {
+    public NameServiceImpl(NameRepository nameRepository) {
         this.nameRepository = nameRepository;
     }
 

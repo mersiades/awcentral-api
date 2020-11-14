@@ -2,9 +2,10 @@ package com.mersiades.awcdata.repositories;
 
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Playbook;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Mono;
 
-public interface PlaybookRepository extends CrudRepository<Playbook, String> {
+public interface PlaybookRepository extends ReactiveMongoRepository<Playbook, String> {
 
-    Playbook findByPlaybookType(Playbooks playbookType);
+    Mono<Playbook> findByPlaybookType(Playbooks playbookType);
 }

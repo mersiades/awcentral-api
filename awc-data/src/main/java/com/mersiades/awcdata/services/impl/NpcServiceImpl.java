@@ -1,19 +1,17 @@
 package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.models.Npc;
-import com.mersiades.awcdata.repositories.NpcReactiveRepository;
-import org.springframework.context.annotation.Profile;
+import com.mersiades.awcdata.repositories.NpcRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-@Profile("jpa")
 public class NpcServiceImpl implements com.mersiades.awcdata.services.NpcService {
 
-    private final NpcReactiveRepository npcRepository;
+    private final NpcRepository npcRepository;
 
-    public NpcServiceImpl(NpcReactiveRepository npcRepository) {
+    public NpcServiceImpl(NpcRepository npcRepository) {
         this.npcRepository = npcRepository;
     }
 

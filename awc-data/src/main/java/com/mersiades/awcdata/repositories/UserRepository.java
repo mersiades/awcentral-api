@@ -1,10 +1,9 @@
 package com.mersiades.awcdata.repositories;
 
 import com.mersiades.awcdata.models.User;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Mono;
 
-import java.util.Optional;
-
-public interface UserRepository extends CrudRepository<User, String> {
-    Optional<User> findByDiscordId(String discordId);
+public interface UserRepository extends ReactiveMongoRepository<User, String> {
+    Mono<User> findByDiscordId(String discordId);
 }

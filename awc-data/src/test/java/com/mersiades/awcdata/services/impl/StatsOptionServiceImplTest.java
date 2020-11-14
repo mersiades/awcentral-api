@@ -2,7 +2,7 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.StatsOption;
-import com.mersiades.awcdata.repositories.StatsOptionReactiveRepository;
+import com.mersiades.awcdata.repositories.StatsOptionRepository;
 import com.mersiades.awcdata.services.StatsOptionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class StatsOptionServiceImplTest {
     public static final String MOCK_STATS_OPTION_ID_1 = "mock-stats-option-id-1";
 
     @Mock
-    StatsOptionReactiveRepository soRepository;
+    StatsOptionRepository soRepository;
 
     StatsOptionService soService;
 

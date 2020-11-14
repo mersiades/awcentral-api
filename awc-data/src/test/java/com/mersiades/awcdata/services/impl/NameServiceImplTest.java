@@ -3,7 +3,7 @@ package com.mersiades.awcdata.services.impl;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Name;
 import com.mersiades.awcdata.models.PlaybookCreator;
-import com.mersiades.awcdata.repositories.NameReactiveRepository;
+import com.mersiades.awcdata.repositories.NameRepository;
 import com.mersiades.awcdata.services.NameService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class NameServiceImplTest {
     public static final String MOCK_NAME_ID_1 = "mock-name-id-1";
 
     @Mock
-    NameReactiveRepository nameRepository;
+    NameRepository nameRepository;
 
     NameService nameService;
 

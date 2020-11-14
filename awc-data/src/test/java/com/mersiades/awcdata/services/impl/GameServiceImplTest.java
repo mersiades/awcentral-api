@@ -4,7 +4,7 @@ import com.mersiades.awcdata.enums.Roles;
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
-import com.mersiades.awcdata.repositories.GameReactiveRepository;
+import com.mersiades.awcdata.repositories.GameRepository;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
@@ -28,7 +28,7 @@ class GameServiceImplTest {
     public static final String MOCK_TEXT_CHANNEL_ID_1 = "mock-text-channel-id-1";
 
     @Mock
-    GameReactiveRepository gameRepository;
+    GameRepository gameRepository;
 
     @Mock
     UserService userService;

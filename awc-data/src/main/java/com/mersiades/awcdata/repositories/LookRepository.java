@@ -2,11 +2,9 @@ package com.mersiades.awcdata.repositories;
 
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Look;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Flux;
 
-import java.util.Set;
-
-public interface LookRepository extends CrudRepository<Look, String> {
-
-    Set<Look> findAllByPlaybookType(Playbooks playbookType);
+public interface LookRepository extends ReactiveMongoRepository<Look, String> {
+    Flux<Look> findAllByPlaybookType(Playbooks playbookType);
 }

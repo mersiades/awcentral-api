@@ -44,40 +44,40 @@ public class DataLoader implements CommandLineRunner {
 
 
     @Autowired
-    CharacterReactiveRepository characterReactiveRepository;
+    CharacterRepository characterRepository;
 
     @Autowired
-    GameReactiveRepository gameReactiveRepository;
+    GameRepository gameRepository;
 
     @Autowired
-    GameRoleReactiveRepository gameRoleReactiveRepository;
+    GameRoleRepository gameRoleRepository;
 
     @Autowired
-    LookReactiveRepository lookReactiveRepository;
+    LookRepository lookRepository;
 
     @Autowired
-    MoveReactiveRepository moveReactiveRepository;
+    MoveRepository moveRepository;
 
     @Autowired
-    NameReactiveRepository nameReactiveRepository;
+    NameRepository nameRepository;
 
     @Autowired
-    NpcReactiveRepository npcReactiveRepository;
+    NpcRepository npcRepository;
 
     @Autowired
-    PlaybookCreatorReactiveRepository playbookCreatorReactiveRepository;
+    PlaybookCreatorRepository playbookCreatorRepository;
 
     @Autowired
-    PlaybookReactiveRepository playbookReactiveRepository;
+    PlaybookRepository playbookRepository;
 
     @Autowired
-    StatsOptionReactiveRepository statsOptionReactiveRepository;
+    StatsOptionRepository statsOptionRepository;
 
     @Autowired
-    ThreatReactiveRepository threatReactiveRepository;
+    ThreatRepository threatRepository;
 
     @Autowired
-    UserReactiveRepository userReactiveRepository;
+    UserRepository userRepository;
 
     public DataLoader(UserService userService, GameService gameService,
                       NpcService npcService, ThreatService threatService, CharacterService characterService, PlaybookCreatorService playbookCreatorService, PlaybookService playbookService, NameService nameService, LookService lookService, StatsOptionService statsOptionService, MoveService moveService, GameRoleService gameRoleService) {
@@ -105,17 +105,17 @@ public class DataLoader implements CommandLineRunner {
         loadPlaybooks();
         loadData();
 
-        System.out.println("Character count: " + Objects.requireNonNull(characterReactiveRepository.count().block()).toString());
-        System.out.println("Game count: " + Objects.requireNonNull(gameReactiveRepository.count().block()).toString());
-        System.out.println("GameRole count: " + Objects.requireNonNull(gameRoleReactiveRepository.count().block()).toString());
-        System.out.println("Look count: " + Objects.requireNonNull(lookReactiveRepository.count().block()).toString());
-        System.out.println("Move count: " + Objects.requireNonNull(moveReactiveRepository.count().block()).toString());
-        System.out.println("Name count: " + Objects.requireNonNull(nameReactiveRepository.count().block()).toString());
-        System.out.println("Npc count: " + Objects.requireNonNull(npcReactiveRepository.count().block()).toString());
-        System.out.println("PlaybookCreator count: " + Objects.requireNonNull(playbookCreatorReactiveRepository.count().block()).toString());
-        System.out.println("Playbook count: " + Objects.requireNonNull(playbookReactiveRepository.count().block()).toString());
-        System.out.println("Threat count: " + Objects.requireNonNull(threatReactiveRepository.count().block()).toString());
-        System.out.println("User count: " + Objects.requireNonNull(userReactiveRepository.count().block()).toString());
+        System.out.println("Character count: " + Objects.requireNonNull(characterRepository.count().block()).toString());
+        System.out.println("Game count: " + Objects.requireNonNull(gameRepository.count().block()).toString());
+        System.out.println("GameRole count: " + Objects.requireNonNull(gameRoleRepository.count().block()).toString());
+        System.out.println("Look count: " + Objects.requireNonNull(lookRepository.count().block()).toString());
+        System.out.println("Move count: " + Objects.requireNonNull(moveRepository.count().block()).toString());
+        System.out.println("Name count: " + Objects.requireNonNull(nameRepository.count().block()).toString());
+        System.out.println("Npc count: " + Objects.requireNonNull(npcRepository.count().block()).toString());
+        System.out.println("PlaybookCreator count: " + Objects.requireNonNull(playbookCreatorRepository.count().block()).toString());
+        System.out.println("Playbook count: " + Objects.requireNonNull(playbookRepository.count().block()).toString());
+        System.out.println("Threat count: " + Objects.requireNonNull(threatRepository.count().block()).toString());
+        System.out.println("User count: " + Objects.requireNonNull(userRepository.count().block()).toString());
     }
 
     public void loadPlaybooks() {

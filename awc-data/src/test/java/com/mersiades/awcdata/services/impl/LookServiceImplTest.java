@@ -3,7 +3,7 @@ package com.mersiades.awcdata.services.impl;
 import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Look;
-import com.mersiades.awcdata.repositories.LookReactiveRepository;
+import com.mersiades.awcdata.repositories.LookRepository;
 import com.mersiades.awcdata.services.LookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class LookServiceImplTest {
     public static final String MOCK_LOOK_ID_1 = "mock-look-id-1";
 
     @Mock
-    LookReactiveRepository lookRepository;
+    LookRepository lookRepository;
 
     LookService lookService;
 
