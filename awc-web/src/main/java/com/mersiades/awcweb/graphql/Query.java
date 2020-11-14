@@ -1,11 +1,14 @@
 package com.mersiades.awcweb.graphql;
 
 import com.mersiades.awcdata.models.*;
-import com.mersiades.awcdata.services.*;
+import com.mersiades.awcdata.services.GameService;
+import com.mersiades.awcdata.services.MoveService;
+import com.mersiades.awcdata.services.PlaybookService;
+import com.mersiades.awcdata.services.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.List;
 
 @Component
 public class Query implements GraphQLQueryResolver {
@@ -24,21 +27,22 @@ public class Query implements GraphQLQueryResolver {
 
     public User userByDiscordId(String discordId) {
         System.out.println("Fetching User by Discord id: " + discordId);
-        return userService.findByDiscordId(discordId);
+        return userService.findByDiscordId(discordId).block();
     }
 
     public Game gameByTextChannelId(String textChannelId) {
         System.out.println("Fetching Game by textChannelId: " + textChannelId);
-        return gameService.findGameByTextChannelId(textChannelId);
+        return gameService.findGameByTextChannelId(textChannelId).block();
     }
 
     public Game gameForPlayer(String textChannelId, String userId) {
         System.out.println("Fetching Game for player: " + textChannelId);
 
         // Get the Game
-        Game game = gameService.findGameByTextChannelId(textChannelId);
+        Game game = gameService.findGameByTextChannelId(textChannelId).block();
 
         // Get the User's GameRole from the Game
+        assert game != null;
         GameRole usersGameRole = game.getGameRoles().stream().filter(gameRole -> gameRole.getUser().getId().equals(userId)).findFirst().orElseThrow();
 
         // Remove all GameRoles
@@ -51,11 +55,11 @@ public class Query implements GraphQLQueryResolver {
         return game;
     }
 
-    public Set<Move> allMoves() {
-        return moveService.findAll();
+    public List<Move> allMoves() {
+        return moveService.findAll().collectList().block();
     }
 
-    public Set<Playbook> playbooks() {
-        return playbookService.findAll();
+    public List<Playbook> playbooks() {
+        return playbookService.findAll().collectList().block();
     }
 }

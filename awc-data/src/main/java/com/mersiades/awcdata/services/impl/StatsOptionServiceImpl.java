@@ -1,42 +1,40 @@
-package com.mersiades.awcdata.services.jpa;
+package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.StatsOption;
 import com.mersiades.awcdata.repositories.StatsOptionRepository;
 import com.mersiades.awcdata.services.StatsOptionService;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
-@Profile("jpa")
-public class StatsOptionJpaService implements StatsOptionService {
+public class StatsOptionServiceImpl implements StatsOptionService {
 
     private final StatsOptionRepository statsOptionRepository;
 
-    public StatsOptionJpaService(StatsOptionRepository statsOptionRepository) {
+    public StatsOptionServiceImpl(StatsOptionRepository statsOptionRepository) {
         this.statsOptionRepository = statsOptionRepository;
     }
 
     @Override
-    public Set<StatsOption> findAll() {
-        Set<StatsOption> statsOptions = new HashSet<>();
-        statsOptionRepository.findAll().forEach(statsOptions::add);
-        return statsOptions;
+    public Flux<StatsOption> findAll() {
+        return statsOptionRepository.findAll();
     }
 
     @Override
-    public StatsOption findById(String id) {
-        Optional<StatsOption> optionalStatsOption = statsOptionRepository.findById(id);
-        return optionalStatsOption.orElse(null);
+    public Mono<StatsOption> findById(String id) {
+        return statsOptionRepository.findById(id);
     }
 
     @Override
-    public StatsOption save(StatsOption statsOption) {
+    public Mono<StatsOption> save(StatsOption statsOption) {
         return statsOptionRepository.save(statsOption);
+    }
+
+    @Override
+    public Flux<StatsOption> saveAll(Flux<StatsOption> statsOptions) {
+        return statsOptionRepository.saveAll(statsOptions);
     }
 
     @Override
@@ -50,7 +48,7 @@ public class StatsOptionJpaService implements StatsOptionService {
     }
 
     @Override
-    public Set<StatsOption> findAllByPlaybookType(Playbooks playbookType) {
+    public Flux<StatsOption> findAllByPlaybookType(Playbooks playbookType) {
         return statsOptionRepository.findAllByPlaybookType(playbookType);
     }
 }

@@ -2,13 +2,14 @@ package com.mersiades.awcdata.services;
 
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
+import reactor.core.publisher.Mono;
 
-public interface GameService extends CrudService<Game, String> {
-    Game findByGameRoles(GameRole gameRole);
+public interface GameService extends ReactiveCrudService<Game, String> {
+    Mono<Game> findByGameRoles(GameRole gameRole);
 
     Game createGameWithMC(String discordId, String name, String textChannelId, String voiceChannelId);
 
-    Game deleteGameByTextChannelId(String textChannelId);
+    Mono<Game> deleteGameByTextChannelId(String textChannelId);
 
-    Game findGameByTextChannelId(String textChannelId);
+    Mono<Game> findGameByTextChannelId(String textChannelId);
 }

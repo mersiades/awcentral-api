@@ -1,42 +1,40 @@
-package com.mersiades.awcdata.services.jpa;
+package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Name;
 import com.mersiades.awcdata.repositories.NameRepository;
 import com.mersiades.awcdata.services.NameService;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
-@Profile("jpa")
-public class NameJpaService implements NameService {
+public class NameServiceImpl implements NameService {
 
     private final NameRepository nameRepository;
 
-    public NameJpaService(NameRepository nameRepository) {
+    public NameServiceImpl(NameRepository nameRepository) {
         this.nameRepository = nameRepository;
     }
 
     @Override
-    public Set<Name> findAll() {
-        Set<Name> names = new HashSet<>();
-        nameRepository.findAll().forEach(names::add);
-        return names;
+    public Flux<Name> findAll() {
+        return nameRepository.findAll();
     }
 
     @Override
-    public Name findById(String id) {
-        Optional<Name> optionalName = nameRepository.findById(id);
-        return optionalName.orElse(null);
+    public Mono<Name> findById(String id) {
+        return nameRepository.findById(id);
     }
 
     @Override
-    public Name save(Name name) {
+    public Mono<Name> save(Name name) {
         return nameRepository.save(name);
+    }
+
+    @Override
+    public Flux<Name> saveAll(Flux<Name> moves) {
+        return nameRepository.saveAll(moves);
     }
 
     @Override
@@ -50,15 +48,7 @@ public class NameJpaService implements NameService {
     }
 
     @Override
-    public Set<Name> findAllByPlaybookType(Playbooks playbookType) {
+    public Flux<Name> findAllByPlaybookType(Playbooks playbookType) {
         return nameRepository.findAllByPlaybookType(playbookType);
     }
-
-
-
-
-
-
-
-
 }

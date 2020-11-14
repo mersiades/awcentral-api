@@ -2,12 +2,13 @@ package com.mersiades.awcdata.repositories;
 
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Mono;
 
-public interface GameRepository extends CrudRepository<Game, String> {
-    Game findByGameRoles(GameRole gameRole);
+public interface GameRepository extends ReactiveMongoRepository<Game, String> {
+    Mono<Game> findByGameRoles(GameRole gameRole);
 
-    void deleteGameByTextChannelId(String textChannelId);
+    Mono<Game> deleteGameByTextChannelId(String textChannelId);
 
-    Game findGameByTextChannelId(String textChannelId);
+    Mono<Game> findGameByTextChannelId(String textChannelId);
 }

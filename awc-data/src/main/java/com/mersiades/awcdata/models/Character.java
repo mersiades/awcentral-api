@@ -1,6 +1,8 @@
 package com.mersiades.awcdata.models;
 
 import com.mersiades.awcdata.enums.Playbooks;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,6 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.UUID;
 
 @Data
+@Builder
+@AllArgsConstructor
 @Document
 public class Character {
 

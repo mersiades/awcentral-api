@@ -4,6 +4,9 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Npc {
 
     @Id
@@ -15,9 +18,6 @@ public class Npc {
 
     // many to one
     private GameRole gameRole;
-
-    public Npc() {
-    }
 
     public Npc(GameRole gameRole, String name) {
         this.name = name;

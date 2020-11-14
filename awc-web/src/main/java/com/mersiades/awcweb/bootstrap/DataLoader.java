@@ -3,10 +3,15 @@ package com.mersiades.awcweb.bootstrap;
 import com.mersiades.awcdata.enums.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
+import com.mersiades.awcdata.repositories.*;
 import com.mersiades.awcdata.services.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,6 +42,43 @@ public class DataLoader implements CommandLineRunner {
     private final MoveService moveService;
     private final GameRoleService gameRoleService;
 
+
+    @Autowired
+    CharacterRepository characterRepository;
+
+    @Autowired
+    GameRepository gameRepository;
+
+    @Autowired
+    GameRoleRepository gameRoleRepository;
+
+    @Autowired
+    LookRepository lookRepository;
+
+    @Autowired
+    MoveRepository moveRepository;
+
+    @Autowired
+    NameRepository nameRepository;
+
+    @Autowired
+    NpcRepository npcRepository;
+
+    @Autowired
+    PlaybookCreatorRepository playbookCreatorRepository;
+
+    @Autowired
+    PlaybookRepository playbookRepository;
+
+    @Autowired
+    StatsOptionRepository statsOptionRepository;
+
+    @Autowired
+    ThreatRepository threatRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
     public DataLoader(UserService userService, GameService gameService,
                       NpcService npcService, ThreatService threatService, CharacterService characterService, PlaybookCreatorService playbookCreatorService, PlaybookService playbookService, NameService nameService, LookService lookService, StatsOptionService statsOptionService, MoveService moveService, GameRoleService gameRoleService) {
         this.userService = userService;
@@ -62,6 +104,18 @@ public class DataLoader implements CommandLineRunner {
         loadPlaybookCreators();
         loadPlaybooks();
         loadData();
+
+        System.out.println("Character count: " + Objects.requireNonNull(characterRepository.count().block()).toString());
+        System.out.println("Game count: " + Objects.requireNonNull(gameRepository.count().block()).toString());
+        System.out.println("GameRole count: " + Objects.requireNonNull(gameRoleRepository.count().block()).toString());
+        System.out.println("Look count: " + Objects.requireNonNull(lookRepository.count().block()).toString());
+        System.out.println("Move count: " + Objects.requireNonNull(moveRepository.count().block()).toString());
+        System.out.println("Name count: " + Objects.requireNonNull(nameRepository.count().block()).toString());
+        System.out.println("Npc count: " + Objects.requireNonNull(npcRepository.count().block()).toString());
+        System.out.println("PlaybookCreator count: " + Objects.requireNonNull(playbookCreatorRepository.count().block()).toString());
+        System.out.println("Playbook count: " + Objects.requireNonNull(playbookRepository.count().block()).toString());
+        System.out.println("Threat count: " + Objects.requireNonNull(threatRepository.count().block()).toString());
+        System.out.println("User count: " + Objects.requireNonNull(userRepository.count().block()).toString());
     }
 
     public void loadPlaybooks() {
@@ -281,19 +335,11 @@ public class DataLoader implements CommandLineRunner {
                 "\n" +
                 "Anything beautiful left in this ugly ass world, skinners hold it. Will they share it with you? What do you offer _them_?", "Skinners are pure hot. They’re entirely social and they have great, directly manipulative moves. Play a skinner if you want to be unignorable. Warning: skinners have the tools, but unlike hardholders, choppers and hocuses, they don’t have a steady influx of motivation. You’ll have most fun if you can roll your own.\n", "https://awc-images.s3-ap-southeast-2.amazonaws.com/skinner.png");
 
-        playbookService.save(angel);
-        playbookService.save(battlebabe);
-        playbookService.save(brainer);
-        playbookService.save(chopper);
-        playbookService.save(driver);
-        playbookService.save(gunlugger);
-        playbookService.save(hardholder);
-        playbookService.save(maestroD);
-        playbookService.save(hocus);
-        playbookService.save(savvyhead);
-        playbookService.save(skinner);
+        playbookService.saveAll(Flux.just(angel, battlebabe, brainer, chopper, driver, gunlugger, hardholder,
+                maestroD, hocus, savvyhead, skinner)).blockLast();
 
-        Set<Playbook> playbooks = playbookService.findAll();
+        List<Playbook> playbooks = playbookService.findAll().collectList().block();
+        assert playbooks != null;
         System.out.println("Number of saved playbooks: " + playbooks.size());
     }
 
@@ -338,9 +384,10 @@ public class DataLoader implements CommandLineRunner {
                 "On the others’ turns, answer their questions as you like.\n" +
                 "\n" +
                 "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.");
-        PlaybookCreator saved =  playbookCreatorService.save(angelCreator);
+        playbookCreatorService.save(angelCreator).block();
 
-        Set<PlaybookCreator> playbookCreators = playbookCreatorService.findAll();
+        List<PlaybookCreator> playbookCreators = playbookCreatorService.findAll().collectList().block();
+        assert playbookCreators != null;
         System.out.println("Number of saved playbookCreators: " + playbookCreators.size());
     }
 
@@ -351,12 +398,10 @@ public class DataLoader implements CommandLineRunner {
         StatsOption angel2 = new StatsOption(Playbooks.ANGEL, 1, 1, 0, 2, -1);
         StatsOption angel3 = new StatsOption(Playbooks.ANGEL, -1, 1, 0, 2, 1);
         StatsOption angel4 = new StatsOption(Playbooks.ANGEL, 2, 0, -1, 2, -1);
-        statsOptionService.save(angel1);
-        statsOptionService.save(angel2);
-        statsOptionService.save(angel3);
-        statsOptionService.save(angel4);
+        statsOptionService.saveAll(Flux.just(angel1, angel2, angel3, angel4)).blockLast();
 
-        Set<StatsOption> statsOptions = statsOptionService.findAll();
+        List<StatsOption> statsOptions = statsOptionService.findAll().collectList().block();
+        assert statsOptions != null;
         System.out.println("Number of saved statsOptions: " + statsOptions.size());
     }
 
@@ -389,34 +434,13 @@ public class DataLoader implements CommandLineRunner {
         Look angel24 = new Look(Playbooks.ANGEL, LookCategories.BODY, "big body");
         Look angel25 = new Look(Playbooks.ANGEL, LookCategories.BODY, "rangy body");
         Look angel26 = new Look(Playbooks.ANGEL, LookCategories.BODY, "sturdy body");
-        lookService.save(angel1);
-        lookService.save(angel2);
-        lookService.save(angel3);
-        lookService.save(angel4);
-        lookService.save(angel5);
-        lookService.save(angel6);
-        lookService.save(angel7);
-        lookService.save(angel8);
-        lookService.save(angel9);
-        lookService.save(angel10);
-        lookService.save(angel11);
-        lookService.save(angel12);
-        lookService.save(angel13);
-        lookService.save(angel14);
-        lookService.save(angel15);
-        lookService.save(angel16);
-        lookService.save(angel17);
-        lookService.save(angel18);
-        lookService.save(angel19);
-        lookService.save(angel20);
-        lookService.save(angel21);
-        lookService.save(angel22);
-        lookService.save(angel23);
-        lookService.save(angel24);
-        lookService.save(angel25);
-        lookService.save(angel26);
 
-        Set<Look> looks = lookService.findAll();
+        lookService.saveAll(Flux.just(angel1, angel2, angel3, angel4, angel5, angel6, angel7, angel8, angel9,
+                angel10, angel11, angel12, angel13, angel14, angel15, angel16, angel17, angel18, angel19,
+                angel20, angel21, angel22, angel23, angel24, angel25, angel26)).blockLast();
+
+        List<Look> looks = lookService.findAll().collectList().block();
+        assert looks != null;
         System.out.println("Number of saved looks: " + looks.size());
     }
 
@@ -451,36 +475,13 @@ public class DataLoader implements CommandLineRunner {
         Name inch = new Name(Playbooks.ANGEL, "Inch");
         Name grip = new Name(Playbooks.ANGEL, "Grip");
         Name setter = new Name(Playbooks.ANGEL, "Setter");
-        nameService.save(dou);
-        nameService.save(bon);
-        nameService.save(abe);
-        nameService.save(boo);
-        nameService.save(t);
-        nameService.save(kal);
-        nameService.save(charName);
-        nameService.save(jav);
-        nameService.save(ruth);
-        nameService.save(wei);
-        nameService.save(jay);
-        nameService.save(nee);
-        nameService.save(kim);
-        nameService.save(lan);
-        nameService.save(di);
-        nameService.save(dez);
-        nameService.save(core);
-        nameService.save(wheels);
-        nameService.save(doc);
-        nameService.save(buzz);
-        nameService.save(key);
-        nameService.save(line);
-        nameService.save(gabe);
-        nameService.save(biz);
-        nameService.save(bish);
-        nameService.save(inch);
-        nameService.save(grip);
-        nameService.save(setter);
 
-        Set<Name> names = nameService.findAll();
+        nameService.saveAll(Flux.just(dou, bon, abe, boo, t, kal, charName, jav, ruth, wei, jay, nee,
+                kim, lan, di, dez, core, wheels, doc, buzz, key, line, gabe, biz, bish, inch, grip, setter))
+                .blockLast();
+
+        List<Name> names = nameService.findAll().collectList().block();
+        assert names != null;
         System.out.println("Number of saved names: " + names.size());
     }
 
@@ -534,17 +535,9 @@ public class DataLoader implements CommandLineRunner {
         Move openBrain = new Move("OPEN YOUR BRAIN", "When you _**open your brain to the world’s psychic maelstrom**_, roll+weird. On a hit, the MC tells you something new and interesting about the current situation, and might ask you a question or two; answer them. On a 10+, the MC gives you good detail. On a 7–9, the MC gives you an impression. If you already know all there is to know, the MC will tell you that. On a miss, be prepared for the worst.", Stats.WEIRD, MoveKinds.BASIC, null);
         Move lifestyleAndGigs = new Move("LIFESTYLE AND GIGS", "_**At the beginning of the session**_, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions. If you need jingle during a session, tell the MC you’d like to work a gig.", null, MoveKinds.BASIC, null);
         Move sessionEnd = new Move("SESSION END", "_**At the end of every session**_, choose a character who knows you better than they used to. If there’s more than one, choose one at your whim. Tell that player to add +1 to their Hx with you on their sheet. If this brings them to Hx+4, they reset to Hx+1 (and therefore mark experience). If no one knows you better, choose a character who doesn’t know you as well as they thought, or choose any character at your whim. Tell that player to take -1 to their Hx with you on their sheet. If this brings them to Hx -3, they reset to Hx=0 (and therefore mark experience).", null, MoveKinds.BASIC, null);
-        moveService.save(doSomethingUnderFire);
-        moveService.save(goAggro);
-        moveService.save(sucker);
-        moveService.save(doBattle);
-        moveService.save(seduceOrManip);
-        moveService.save(helpOrInterfere);
-        moveService.save(readASitch);
-        moveService.save(readAPerson);
-        moveService.save(openBrain);
-        moveService.save(lifestyleAndGigs);
-        moveService.save(sessionEnd);
+
+        moveService.saveAll(Flux.just(doSomethingUnderFire, goAggro, sucker, doBattle, seduceOrManip, helpOrInterfere,
+                readASitch, readAPerson, openBrain, lifestyleAndGigs, sessionEnd)).blockLast();
 
         System.out.println("|| --- Loading peripheral moves --- ||");
         /* ----------------------------- PERIPHERAL MOVES --------------------------------- */
@@ -603,15 +596,8 @@ public class DataLoader implements CommandLineRunner {
                 "On a miss, whatever bad happens, your antenna takes the brunt of it.", Stats.WEIRD, MoveKinds.PERIPHERAL, null);
         Move changeHighlightedStats = new Move("CHANGE HIGHLIGHTED STATS", "_**At the beginning of any session**_, or at the end if you forgot, anyone can say, “hey, let’s change highlighted stats.” When someone says it, do it. Go around the circle again, following the same procedure you used to highlight them in the first place: the high-Hx player highlights one stat, and the MC highlight another.", null, MoveKinds.PERIPHERAL, null);
 
-        moveService.save(sufferHarm);
-        moveService.save(inflictHarm);
-        moveService.save(healPcHarm);
-        moveService.save(giveBarter);
-        moveService.save(goToMarket);
-        moveService.save(makeWantKnown);
-        moveService.save(insight);
-        moveService.save(augury);
-        moveService.save(changeHighlightedStats);
+        moveService.saveAll(Flux.just(sufferHarm, inflictHarm, healPcHarm, giveBarter, goToMarket, makeWantKnown,
+                insight, augury, changeHighlightedStats)).blockLast();
 
         System.out.println("|| --- Loading battle moves --- ||");
         /* ----------------------------- BATTLE MOVES --------------------------------- */
@@ -720,20 +706,9 @@ public class DataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, you’re the mouse.", Stats.SHARP, MoveKinds.BATTLE, null);
 
-        moveService.save(exchangeHarm);
-        moveService.save(seizeByForce);
-        moveService.save(assaultAPosition);
-        moveService.save(keepHoldOfSomething);
-        moveService.save(fightFree);
-        moveService.save(defendSomeone);
-        moveService.save(doSingleCombat);
-        moveService.save(layDownFire);
-        moveService.save(standOverwatch);
-        moveService.save(keepAnEyeOut);
-        moveService.save(beTheBait);
-        moveService.save(beTheCat);
-        moveService.save(beTheMouse);
-        moveService.save(catOrMouse);
+        moveService.saveAll(Flux.just(exchangeHarm, seizeByForce, assaultAPosition, keepHoldOfSomething,
+                fightFree, defendSomeone, doSingleCombat, layDownFire, standOverwatch, keepAnEyeOut,
+                beTheBait, beTheCat, beTheMouse, catOrMouse)).blockLast();
 
         System.out.println("|| --- Loading road war moves --- ||");
         /* ----------------------------- ROAD WAR MOVES --------------------------------- */
@@ -783,56 +758,59 @@ public class DataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, it shoulders you instead, inflicting v-harm as established.", Stats.COOL, MoveKinds.ROAD_WAR, null);
 
-        moveService.save(boardAMovingVehicle);
-        moveService.save(outdistanceAnotherVehicle);
-        moveService.save(overtakeAnotherVehicle);
-        moveService.save(dealWithBadTerrain);
-        moveService.save(shoulderAnotherVehicle);
+        moveService.saveAll(Flux.just(boardAMovingVehicle, outdistanceAnotherVehicle, overtakeAnotherVehicle,
+                dealWithBadTerrain, shoulderAnotherVehicle)).blockLast();
 
         /* ----------------------------- ANGEL MOVES --------------------------------- */
         System.out.println("|| --- Loading Angel moves --- ||");
         Move angelSpecial = new Move("ANGEL SPECIAL", "If you and another character have sex, your Hx with them on your sheet goes immediately to +3, and they immediately get +1 to their Hx with you on their sheet. If that brings their Hx with you to +4, they reset it to +1 instead, as usual, and so mark experience.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
         Move sixthSense = new Move("SIXTH SENSE", "_**Sixth sense**_: when you open your brain to the world’s psychic maelstrom, roll+sharp instead of +weird.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move infirmary = new Move("INFIRMARY", "_**Infirmary**_: you get an infirmary, a workspace with life support, a drug lab and a crew of 2 (Shigusa & Mox, maybe). Get patients into it and you can work on them like a savvyhead on tech (_cf_).", null,MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move profCompassion = new Move("PROFESSIONAL COMPASSION", "_**Professional compassion**_: you can roll+sharp instead of roll+Hx when you help someone who’s rolling.",null, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move battlefieldGrace = new Move("BATTLEFIELD GRACE","_**Battlefield grace**_: while you are caring for people, not fighting, you get +1armor.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move healingTouch = new Move("HEALING TOUCH","_**Healing touch**_: when you put your hands skin-to-skin on a wounded person and open your brain to them, roll+weird.\n" +
+        Move infirmary = new Move("INFIRMARY", "_**Infirmary**_: you get an infirmary, a workspace with life support, a drug lab and a crew of 2 (Shigusa & Mox, maybe). Get patients into it and you can work on them like a savvyhead on tech (_cf_).", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
+        Move profCompassion = new Move("PROFESSIONAL COMPASSION", "_**Professional compassion**_: you can roll+sharp instead of roll+Hx when you help someone who’s rolling.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
+        Move battlefieldGrace = new Move("BATTLEFIELD GRACE", "_**Battlefield grace**_: while you are caring for people, not fighting, you get +1armor.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
+        Move healingTouch = new Move("HEALING TOUCH", "_**Healing touch**_: when you put your hands skin-to-skin on a wounded person and open your brain to them, roll+weird.\n" +
                 "\n" +
                 "On a 10+, heal 1 segment.\n" +
                 "\n" +
                 "On a 7–9, heal 1 segment, but you’re also opening your brain, so roll that move next.\n" +
                 "\n" +
                 "On a miss: first, you don’t heal them. Second, you’ve opened both your brain and theirs to the world’s psychic maelstrom, without protection or preparation. For you, and for your patient if your patient’s a fellow player’s character, treat it as though you’ve made that move and missed the roll. For patients belonging to the MC, their experience and fate are up to the MC.\n", Stats.WEIRD, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move touchedByDeath = new Move("HEALING TOUCH","_**Touched by death**_: when someone is unconscious in your care, you can use them for _**augury**_. When someone has died in your care, you can use their body for _**augury**_.",null ,MoveKinds.CHARACTER, Playbooks.ANGEL);
-        moveService.save(angelSpecial);
-        moveService.save(sixthSense);
-        moveService.save(infirmary);
-        moveService.save(profCompassion);
-        moveService.save(battlefieldGrace);
-        moveService.save(healingTouch);
-        moveService.save(touchedByDeath);
+        Move touchedByDeath = new Move("HEALING TOUCH", "_**Touched by death**_: when someone is unconscious in your care, you can use them for _**augury**_. When someone has died in your care, you can use their body for _**augury**_.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
 
-        Set<Move> moves = moveService.findAll();
+        moveService.saveAll(Flux.just(angelSpecial, sixthSense, infirmary, profCompassion,
+                battlefieldGrace, healingTouch, touchedByDeath)).blockLast();
+
+        List<Move> moves = moveService.findAll().collectList().block();
+        assert moves != null;
         System.out.println("Number of saved moves: " + moves.size());
     }
 
     private void loadData() {
         // -------------------------------------- Set up Playbooks -------------------------------------- //
         // -------------------------------------- ANGEL -------------------------------------- //
-        PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL);
-        Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL);
-        Set<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL);
-        Set<Look> looksAngel = lookService.findAllByPlaybookType(Playbooks.ANGEL);
-        Set<StatsOption> statsOptionsAngel = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL);
+        PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL).block();
+        assert playbookCreatorAngel != null;
 
-        for(StatsOption statsOption: statsOptionsAngel) {
+        Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL).block();
+        assert playbookAngel != null;
+
+        List<Name> namesAngel = nameService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
+        assert namesAngel != null;
+
+        List<Look> looksAngel = lookService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
+        assert looksAngel != null;
+
+        List<StatsOption> statsOptionsAngel = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
+        assert statsOptionsAngel != null;
+
+        for (StatsOption statsOption : statsOptionsAngel) {
             playbookCreatorAngel.getStatsOptions().add(statsOption);
         }
 
         namesAngel.forEach(name -> playbookCreatorAngel.getNames().add(name));
         looksAngel.forEach(look -> playbookCreatorAngel.getLooks().add(look));
         playbookAngel.setCreator(playbookCreatorAngel);
-        playbookService.save(playbookAngel);
+        playbookService.save(playbookAngel).block();
 
 
         // -------------------------------------- Set up mock Users -------------------------------------- //
@@ -849,7 +827,7 @@ public class DataLoader implements CommandLineRunner {
         Npc mockNpc1 = new Npc(daveAsMC, "Vision", "Badass truck driver");
         Npc mockNpc2 = new Npc(daveAsMC, "Nbeke");
 
-        Threat mockThreat1 = new Threat( "Tum Tum", Threats.WARLORD, "Slaver: to own and sell people");
+        Threat mockThreat1 = new Threat("Tum Tum", Threats.WARLORD, "Slaver: to own and sell people");
         Threat mockThreat2 = new Threat("Gnarly", Threats.GROTESQUE, "Cannibal: craves satiety and plenty");
 
         daveAsMC.getNpcs().add(mockNpc1);
@@ -859,21 +837,23 @@ public class DataLoader implements CommandLineRunner {
 
         mockGame1.getGameRoles().add(daveAsMC);
         mockGame1.getGameRoles().add(sarahAsPlayer);
-        gameService.save(mockGame1);
+        gameService.save(mockGame1).block();
 
         mockUser1.getGameRoles().add(daveAsMC);
-        userService.save(mockUser1);
+//        userService.save(mockUser1);
 
         mockUser2.getGameRoles().add(sarahAsPlayer);
-        userService.save(mockUser2);
+//        userService.save(mockUser2);
+
 
         daveAsMC.setUser(mockUser1);
         daveAsMC.setGame(mockGame1);
-        gameRoleService.save(daveAsMC);
-
         sarahAsPlayer.setGame(mockGame1);
         sarahAsPlayer.setUser(mockUser2);
-        gameRoleService.save(sarahAsPlayer);
+        gameRoleService.saveAll(Flux.just(daveAsMC, sarahAsPlayer)).blockLast();
+
+        threatService.saveAll(Flux.just(mockThreat1, mockThreat2)).blockLast();
+        npcService.saveAll(Flux.just(mockNpc1, mockNpc2)).blockLast();
 
         // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
         Game mockGame2 = new Game(MOCK_GAME_2_ID, DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
@@ -894,22 +874,21 @@ public class DataLoader implements CommandLineRunner {
 
         mockGame2.getGameRoles().add(daveAsPlayer);
         mockGame2.getGameRoles().add(sarahAsMC);
-        gameService.save(mockGame2);
+        gameService.save(mockGame2).block();
 
         mockUser1.getGameRoles().add(daveAsPlayer);
-        userService.save(mockUser1);
-
         mockUser2.getGameRoles().add(sarahAsMC);
-        userService.save(mockUser2);
+        userService.saveAll(Flux.just(mockUser1, mockUser2)).blockLast();
+
 
         daveAsPlayer.setUser(mockUser1);
         daveAsPlayer.setGame(mockGame2);
-        gameRoleService.save(daveAsPlayer);
-
         sarahAsMC.setGame(mockGame2);
         sarahAsMC.setUser(mockUser2);
-        gameRoleService.save(sarahAsMC);
+        gameRoleService.saveAll(Flux.just(daveAsPlayer, sarahAsMC)).blockLast();
 
+        threatService.saveAll(Flux.just(mockThreat3, mockThreat4)).blockLast();
+        npcService.saveAll(Flux.just(mockNpc3, mockNpc4)).blockLast();
 
         // ---------------------------------- Add Characters to Players --------------------------------- //
 //        Character mockCharacter1 = new Character("October", sarahAsPlayer, Playbooks.ANGEL, "not much gear");

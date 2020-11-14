@@ -1,7 +1,7 @@
 package com.mersiades.awcdata.repositories;
 
 import com.mersiades.awcdata.models.Threat;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
-public interface ThreatRepository extends CrudRepository<Threat, String> {
+public interface ThreatRepository extends ReactiveMongoRepository<Threat, String> {
 }
