@@ -178,4 +178,33 @@ class GameServiceImplTest {
         assertEquals(MOCK_GAME_ID_1, returnedGame.getId());
         verify(gameRepository, times(1)).findGameByTextChannelId(anyString());
     }
+
+    @Test
+    void shouldAppendChannelsToGame() {
+        // Given
+        String mockGameId = "mock-game-id-2";
+        String mockTextChannelId = "mock-text-channel-id-1";
+        String mockVoiceChannelId = "mock-voice-channel-id-1";
+        Game mockGame2 = Game.builder()
+                .id(mockGameId)
+                .name("mock-game-name-2")
+                .build();
+        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame2));
+
+        // This seems so wrong, like I'm not testing the method at all, just replicating the outcome
+        mockGame2.setVoiceChannelId(mockVoiceChannelId);
+        mockGame2.setTextChannelId(mockTextChannelId);
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame2));
+
+        // When
+        Game updatedGame = gameService.appendChannels(mockGameId, mockTextChannelId, mockVoiceChannelId).block();
+
+        // Then
+        assert updatedGame != null;
+        assertEquals(mockTextChannelId, updatedGame.getTextChannelId());
+        assertEquals(mockVoiceChannelId, updatedGame.getVoiceChannelId());
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
+
+    }
 }
