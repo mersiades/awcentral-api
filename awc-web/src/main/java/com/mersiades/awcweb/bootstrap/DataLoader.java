@@ -809,6 +809,7 @@ public class DataLoader implements CommandLineRunner {
 
         namesAngel.forEach(name -> playbookCreatorAngel.getNames().add(name));
         looksAngel.forEach(look -> playbookCreatorAngel.getLooks().add(look));
+        playbookCreatorService.save(playbookCreatorAngel).block();
         playbookAngel.setCreator(playbookCreatorAngel);
         playbookService.save(playbookAngel).block();
 

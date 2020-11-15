@@ -107,12 +107,30 @@ type Playbook {
     playbookImageUrl: String!
 }
 
+type Name {
+    id: ID
+    playbookType: PlayBooks
+    name: String
+}
+
+type PlaybookCreator {
+    id: ID
+    playbookType: PlayBooks
+    playbook: Playbook
+    gearInstructions: String
+    improvementInstructions: String
+    movesInstructions: String
+    hxInstructions: String
+    names: [Name]
+}
+
 type Query {
     userByDiscordId(discordId:String!): User
     gameByTextChannelId(textChannelId:String!): Game
     allMoves: [Move]
     gameForPlayer(textChannelId:String!, userId:String!): Game
     playbooks: [Playbook]
+    playbookCreator(playbookType: PlayBooks!): PlaybookCreator
 }
 
 type Mutation {
