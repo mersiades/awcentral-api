@@ -144,7 +144,7 @@ class GameServiceImplTest {
         when(gameRoleService.save(any())).thenReturn(Mono.just(mockGameRole));
 
         // When
-        Game returnedGame = gameService.createGameWithMC(mockDiscordId, mockGameName, mockTextChannelId2, mockVoiceChannelId2);
+        Game returnedGame = gameService.createGameWithMC(mockDiscordId, mockGameName);
         
         // Then
         assertEquals("mock-text-channel-id-2", returnedGame.getTextChannelId());

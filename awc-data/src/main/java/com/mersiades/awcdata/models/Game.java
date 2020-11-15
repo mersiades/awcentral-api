@@ -32,6 +32,11 @@ public class Game {
     public Game() {
     }
 
+    public Game(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Game(String textChannelId, String voiceChannelId, String name) {
         this.textChannelId = textChannelId;
         this.voiceChannelId = voiceChannelId;

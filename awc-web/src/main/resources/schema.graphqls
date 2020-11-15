@@ -53,8 +53,8 @@ type User {
 type Game {
     id: ID!
     name: String!
-    textChannelId: String!
-    voiceChannelId: String!
+    textChannelId: String
+    voiceChannelId: String
     gameRoles: [GameRole]
 }
 
@@ -117,9 +117,8 @@ type Query {
 
 type Mutation {
     createGame(discordId: String!,
-        name: String!,
-        textChannelId: String!,
-        voiceChannelId: String!): Game
+        name: String!): Game
+    appendChannels(id: String! textChannelId: String!, voiceChannelId: String!): Game
     deleteGame(textChannelId: String!): Game
     createCharacter(gameRoleId: String!): Character
     setCharacterPlaybook(gameRoleId: String!,

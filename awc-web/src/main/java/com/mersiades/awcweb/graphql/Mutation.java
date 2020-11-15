@@ -19,9 +19,14 @@ public class Mutation implements GraphQLMutationResolver {
         this.gameRoleService = gameRoleService;
     }
 
-    public Game createGame(String discordId, String name, String textChannelId, String voiceChannelId) {
+    public Game createGame(String discordId, String name) {
         System.out.println("Creating Game for Discord id: " + discordId);
-        return gameService.createGameWithMC(discordId, name, textChannelId, voiceChannelId);
+        return gameService.createGameWithMC(discordId, name);
+    }
+
+    public Game appendChannels(String id, String textChannelId, String voiceChannelId) {
+        System.out.println("Appending channels to Game: " + id);
+        return gameService.appendChannels(id, textChannelId, voiceChannelId).block();
     }
 
     public Game deleteGame(String textChannelId) {

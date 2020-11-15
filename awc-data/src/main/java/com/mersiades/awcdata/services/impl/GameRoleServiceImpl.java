@@ -1,12 +1,13 @@
 package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.enums.Playbooks;
+import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.Character;
-import com.mersiades.awcdata.models.GameRole;
-import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
+import com.mersiades.awcdata.services.NpcService;
+import com.mersiades.awcdata.services.ThreatService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,10 +17,14 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     private final GameRoleRepository gameRoleRepository;
     private final CharacterService characterService;
+    private final NpcService npcService;
+    private final ThreatService threatService;
 
-    public GameRoleServiceImpl(GameRoleRepository gameRoleRepository, CharacterService characterService) {
+    public GameRoleServiceImpl(GameRoleRepository gameRoleRepository, CharacterService characterService, NpcService npcService, ThreatService threatService) {
         this.gameRoleRepository = gameRoleRepository;
         this.characterService = characterService;
+        this.npcService = npcService;
+        this.threatService = threatService;
     }
 
     @Override
@@ -44,6 +49,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     @Override
     public void delete(GameRole gameRole) {
+        System.out.println("gameRole in gamerRoleService.delete= " + gameRole);
         gameRoleRepository.delete(gameRole);
     }
 

@@ -63,12 +63,12 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game createGameWithMC(String discordId, String name, String textChannelId, String voiceChannelId) {
+    public Game createGameWithMC(String discordId, String name) {
+        System.out.println("createGameWithMC in gameServiceImpl");
         // Create the new game
-        Game newGame = new Game(UUID.randomUUID().toString(), textChannelId, voiceChannelId, name);
+        Game newGame = new Game(UUID.randomUUID().toString(), name);
 
         // Find the User who created the game to associate with GameRole
-        // TODO: add .block() when userService is converted to reactive
         User creator = userService.findByDiscordId(discordId).block();
 
         // Create an MC GameRole for the Game creator and add it to the Game
@@ -86,11 +86,26 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Mono<Game> deleteGameByTextChannelId(String textChannelId) {
-        return gameRepository.deleteGameByTextChannelId(textChannelId);
+        return gameRepository.deleteGameByTextChannelId(textChannelId).map(game -> {
+            for (GameRole gameRole: game.getGameRoles()) {
+                System.out.println("gameRole = in deleteGameByTextChannelId" + gameRole);
+                gameRoleService.delete(gameRole);
+            }
+            return game;
+        });
     }
 
     @Override
     public Mono<Game> findGameByTextChannelId(String textChannelId) {
         return gameRepository.findGameByTextChannelId(textChannelId);
+    }
+
+    @Override
+    public Mono<Game> appendChannels(String id, String textChannelId, String voiceChannelId) {
+        return gameRepository.findById(id).flatMap(game -> {
+            game.setTextChannelId(textChannelId);
+            game.setVoiceChannelId(voiceChannelId);
+            return gameRepository.save(game);
+        });
     }
 }
