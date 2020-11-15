@@ -88,7 +88,6 @@ public class GameServiceImpl implements GameService {
     public Mono<Game> deleteGameByTextChannelId(String textChannelId) {
         return gameRepository.deleteGameByTextChannelId(textChannelId).map(game -> {
             for (GameRole gameRole: game.getGameRoles()) {
-                System.out.println("gameRole = in deleteGameByTextChannelId" + gameRole);
                 gameRoleService.delete(gameRole);
             }
             return game;
