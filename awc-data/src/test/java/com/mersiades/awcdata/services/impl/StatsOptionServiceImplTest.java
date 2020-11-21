@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -88,9 +89,20 @@ class StatsOptionServiceImplTest {
         verify(soRepository, times(1)).save(any(StatsOption.class));
     }
 
-//    @Test
-//    void shouldSaveAllStatsOptions() {
-//    }
+    @Test
+    void shouldSaveAllStatsOptions() {
+        // Given
+        StatsOption mockSo2 = StatsOption.builder().build();
+        when(soRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockSo1, mockSo2));
+
+        // When
+        List<StatsOption> savedStatsOptions = soService.saveAll(Flux.just(mockSo1,mockSo2)).collectList().block();
+
+        // Then
+        assert savedStatsOptions != null;
+        assertEquals(2, savedStatsOptions.size());
+        verify(soRepository, times(1)).saveAll(any(Publisher.class));
+    }
 
     @Test
     void shouldDeleteStatsOption() {

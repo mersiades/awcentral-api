@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -98,6 +99,21 @@ class GameServiceImplTest {
         assert returnedGame != null;
         assertEquals(MOCK_GAME_ID_1, returnedGame.getId());
         verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldSaveAllGames() {
+        // Given
+        Game mockGame2 = new Game();
+        when(gameRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockGame1, mockGame2));
+
+        // When
+        List<Game> savedGames = gameService.saveAll(Flux.just(mockGame1, mockGame2)).collectList().block();
+
+        // Then
+        assert savedGames != null;
+        assertEquals(2, savedGames.size());
+        verify(gameRepository, times(1)).saveAll(any(Publisher.class));
     }
 
     @Test

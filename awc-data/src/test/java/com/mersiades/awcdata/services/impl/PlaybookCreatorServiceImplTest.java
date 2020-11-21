@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -82,14 +83,20 @@ class PlaybookCreatorServiceImplTest {
         verify(pcRepository, times(1)).save(any(PlaybookCreator.class));
     }
 
-//    @Test
-//    void shouldSaveAllPlaybookCreators() {
-//        // Given
-//
-//        // When
-//
-//        // Then
-//    }
+    @Test
+    void shouldSaveAllPlaybookCreators() {
+        // Given
+        PlaybookCreator mockPc2 = PlaybookCreator.builder().build();
+        when(pcRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockPc1, mockPc2));
+
+        // When
+        List<PlaybookCreator> savedPlaybookCreators = pcService.saveAll(Flux.just(mockPc1,mockPc2)).collectList().block();
+
+        // Then
+        assert savedPlaybookCreators != null;
+        assertEquals(2, savedPlaybookCreators.size());
+        verify(pcRepository, times(1)).saveAll(any(Publisher.class));
+    }
 
     @Test
     void shouldDeletePlaybookCreator() {

@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -105,21 +106,21 @@ class GameRoleServiceImplTest {
         verify(gameRoleRepository, times(1)).save(any(GameRole.class));
     }
 
-//    @Test
-//    void shouldSaveGameRoles() {
-//        // Given
-//        when(gameRoleRepository.saveAll(Flux.just(mockGameRole, mockGameRole2)))
-//                .thenReturn(Flux.just(mockGameRole, mockGameRole2));
-//
-//        // When
-//        List<GameRole> savedGameRoles = gameRoleService.saveAll(Flux.just(mockGameRole, mockGameRole2))
-//                .collectList().block();
-//
-//        // Then
-//        assert savedGameRoles != null;
-//        assertEquals(6, savedGameRoles.size());
-////        verify(gameRoleRepository, times(1)).saveAll(any());
-//    }
+    @Test
+    void shouldSaveGameRoles() {
+        // Given
+        when(gameRoleRepository.saveAll(any(Publisher.class)))
+                .thenReturn(Flux.just(mockGameRole, mockGameRole2));
+
+        // When
+        List<GameRole> savedGameRoles = gameRoleService.saveAll(Flux.just(mockGameRole, mockGameRole2))
+                .collectList().block();
+
+        // Then
+        assert savedGameRoles != null;
+        assertEquals(2, savedGameRoles.size());
+        verify(gameRoleRepository, times(1)).saveAll(any(Publisher.class));
+    }
 
     @Test
     void shouldDeleteGameRole() {

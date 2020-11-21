@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -88,9 +89,20 @@ class NpcServiceImplTest {
         verify(npcRepository, times(1)).save(any(Npc.class));
     }
 
-//    @Test
-//    void shouldSaveAllNpcs() {
-//    }
+    @Test
+    void shouldSaveAllNpcs() {
+        // Given
+        Npc mockNpc2 = Npc.builder().build();
+        when(npcRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockNpc1, mockNpc2));
+
+        // When
+        List<Npc> savedNpcs = npcService.saveAll(Flux.just(mockNpc1,mockNpc2)).collectList().block();
+
+        // Then
+        assert savedNpcs != null;
+        assertEquals(2, savedNpcs.size());
+        verify(npcRepository, times(1)).saveAll(any(Publisher.class));
+    }
 
     @Test
     void shouldDeleteNpc() {
