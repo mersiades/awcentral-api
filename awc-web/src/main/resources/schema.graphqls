@@ -142,4 +142,7 @@ type Mutation {
     setCharacterPlaybook(gameRoleId: String!,
         characterId: String!,
         playbookType: PlayBooks!): Character
+    setCharacterName(gameRoleId: String!,
+        characterId: String!,
+        name: String!): Character
 }

@@ -12,4 +12,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character addNewCharacter(String gameRoleId);
 
     Character setCharacterPlaybook(String gameRoleId, String characterId, Playbooks playbookType);
+
+    Character setCharacterName(String gameRoleId, String characterId, String name);
 }

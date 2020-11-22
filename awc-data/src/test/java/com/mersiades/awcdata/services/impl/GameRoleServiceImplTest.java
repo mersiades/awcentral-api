@@ -190,4 +190,23 @@ class GameRoleServiceImplTest {
         verify(characterService, times(1)).save(any(Character.class));
         verify(gameRoleRepository, times(1)).save(any(GameRole.class));
     }
+
+    @Test
+    void shouldSetCharacterName() {
+        // Given
+        String mockCharacterName = "Mock Character Name";
+        mockGameRole.getCharacters().add(mockCharacter);
+        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+
+        // When
+        Character returnedCharacter = gameRoleService.setCharacterName(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockCharacterName);
+
+        // Then
+        assertEquals(mockCharacterName, returnedCharacter.getName());
+        verify(gameRoleRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+    }
 }

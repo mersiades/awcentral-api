@@ -91,4 +91,15 @@ public class GameRoleServiceImpl implements GameRoleService {
         gameRoleRepository.save(gameRole).block();
         return character;
     }
+
+    @Override
+    public Character setCharacterName(String gameRoleId, String characterId, String name) {
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+        Character character = gameRole.getCharacters().stream().filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+        character.setName(name);
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+        return character;
+    }
 }
