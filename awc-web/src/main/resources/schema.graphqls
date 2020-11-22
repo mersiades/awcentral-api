@@ -44,6 +44,14 @@ enum Threats {
     VEHICLE,
 }
 
+enum LookCategories {
+    GENDER,
+    CLOTHES,
+    FACE,
+    EYES,
+    BODY
+}
+
 type User {
     id: ID!
     discordId: String!
@@ -78,6 +86,7 @@ type Character {
     name: String
     gear: String
     playbook: PlayBooks
+    looks: [Look]
 }
 
 type GameRole {
@@ -113,6 +122,13 @@ type Name {
     name: String
 }
 
+type Look {
+    id: ID
+    playbookType: PlayBooks
+    category: LookCategories
+    look: String
+}
+
 type PlaybookCreator {
     id: ID
     playbookType: PlayBooks
@@ -122,6 +138,7 @@ type PlaybookCreator {
     movesInstructions: String
     hxInstructions: String
     names: [Name]
+    looks: [Look]
 }
 
 type Query {
@@ -145,4 +162,8 @@ type Mutation {
     setCharacterName(gameRoleId: String!,
         characterId: String!,
         name: String!): Character
+    setCharacterLook(gameRoleId: String!,
+        characterId: String!,
+        look: String!,
+        category: LookCategories! ): Character
 }

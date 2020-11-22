@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.services;
 
+import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.GameRole;
@@ -14,4 +15,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character setCharacterPlaybook(String gameRoleId, String characterId, Playbooks playbookType);
 
     Character setCharacterName(String gameRoleId, String characterId, String name);
+
+    Character setCharacterLook(String gameRoleId, String characterId, String look, LookCategories category);
 }

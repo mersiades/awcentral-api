@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.Character;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Service
 public class GameRoleServiceImpl implements GameRoleService {
 
@@ -20,7 +23,8 @@ public class GameRoleServiceImpl implements GameRoleService {
     private final NpcService npcService;
     private final ThreatService threatService;
 
-    public GameRoleServiceImpl(GameRoleRepository gameRoleRepository, CharacterService characterService, NpcService npcService, ThreatService threatService) {
+    public GameRoleServiceImpl(GameRoleRepository gameRoleRepository, CharacterService characterService,
+                               NpcService npcService, ThreatService threatService) {
         this.gameRoleRepository = gameRoleRepository;
         this.characterService = characterService;
         this.npcService = npcService;
@@ -85,7 +89,8 @@ public class GameRoleServiceImpl implements GameRoleService {
     public Character setCharacterPlaybook(String gameRoleId, String characterId, Playbooks playbookType) {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
         assert gameRole != null;
-        Character character = gameRole.getCharacters().stream().filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
         character.setPlaybook(playbookType);
         characterService.save(character).block();
         gameRoleRepository.save(gameRole).block();
@@ -96,8 +101,24 @@ public class GameRoleServiceImpl implements GameRoleService {
     public Character setCharacterName(String gameRoleId, String characterId, String name) {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
         assert gameRole != null;
-        Character character = gameRole.getCharacters().stream().filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
         character.setName(name);
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+        return character;
+    }
+
+    @Override
+    public Character setCharacterLook(String gameRoleId, String characterId, String look, LookCategories category) {
+        Look newLook = Look.builder().id(UUID.randomUUID().toString()).look(look).category(category).build();
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+        character.getLooks().add(newLook);
+        // TODO: Handle replacing a look for a given category
+
         characterService.save(character).block();
         gameRoleRepository.save(gameRole).block();
         return character;

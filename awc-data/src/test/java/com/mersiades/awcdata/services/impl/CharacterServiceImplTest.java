@@ -124,4 +124,5 @@ class CharacterServiceImplTest {
         // Then
         verify(characterRepository, times(1)).deleteById(anyString());
     }
+
 }
