@@ -142,6 +142,16 @@ type Look {
     look: String
 }
 
+type StatsOption {
+    id: ID
+    playbookType: PlayBooks
+    COOL: Int
+    HARD: Int
+    HOT: Int
+    SHARP: Int
+    WEIRD: Int
+}
+
 type PlaybookCreator {
     id: ID
     playbookType: PlayBooks
@@ -152,6 +162,7 @@ type PlaybookCreator {
     hxInstructions: String
     names: [Name]
     looks: [Look]
+    statsOptions: [StatsOption]
 }
 
 type Query {
