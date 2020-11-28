@@ -7,10 +7,7 @@ import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
-import com.mersiades.awcdata.services.CharacterService;
-import com.mersiades.awcdata.services.GameRoleService;
-import com.mersiades.awcdata.services.NpcService;
-import com.mersiades.awcdata.services.ThreatService;
+import com.mersiades.awcdata.services.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -41,6 +38,9 @@ class GameRoleServiceImplTest {
     @Mock
     ThreatService threatService;
 
+    @Mock
+    LookService lookService;
+
     GameRoleService gameRoleService;
 
     GameRole mockGameRole;
@@ -59,7 +59,7 @@ class GameRoleServiceImplTest {
         mockUser = new User();
         mockCharacter = new Character();
         mockGameRole = new GameRole(MOCK_GAMEROLE_ID, Roles.MC, mockGame1, mockUser);
-        gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, npcService, threatService);
+        gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, lookService, npcService, threatService);
         mockGameRole2 = new GameRole();
     }
 

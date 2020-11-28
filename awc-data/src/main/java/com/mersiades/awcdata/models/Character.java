@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.models;
 
+import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Data
@@ -44,5 +46,11 @@ public class Character {
         this.gameRole = gameRole;
         this.playbook = playbook;
         this.gear = gear;
+    }
+
+    public Optional<Look> getLookByCategory(LookCategories category) {
+        return this.looks.stream()
+                .filter(look -> look.getCategory().equals(category))
+                .findFirst();
     }
 }
