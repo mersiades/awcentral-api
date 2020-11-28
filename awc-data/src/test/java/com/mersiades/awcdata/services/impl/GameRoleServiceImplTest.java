@@ -33,13 +33,7 @@ class GameRoleServiceImplTest {
     CharacterService characterService;
 
     @Mock
-    NpcService npcService;
-
-    @Mock
-    ThreatService threatService;
-
-    @Mock
-    LookService lookService;
+    StatsOptionService statsOptionService;
 
     GameRoleService gameRoleService;
 
@@ -59,7 +53,7 @@ class GameRoleServiceImplTest {
         mockUser = new User();
         mockCharacter = new Character();
         mockGameRole = new GameRole(MOCK_GAMEROLE_ID, Roles.MC, mockGame1, mockUser);
-        gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, lookService, npcService, threatService);
+        gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, statsOptionService);
         mockGameRole2 = new GameRole();
     }
 

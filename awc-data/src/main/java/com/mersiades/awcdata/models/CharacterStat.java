@@ -18,4 +18,5 @@ public class CharacterStat {
     private int value;
 
     private Boolean isHighlighted;
+
 }

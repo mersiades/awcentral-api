@@ -2,16 +2,16 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
+import com.mersiades.awcdata.enums.Stats;
 import com.mersiades.awcdata.models.Character;
-import com.mersiades.awcdata.models.GameRole;
-import com.mersiades.awcdata.models.Look;
-import com.mersiades.awcdata.models.User;
+import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.*;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,17 +19,14 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     private final GameRoleRepository gameRoleRepository;
     private final CharacterService characterService;
-    private final LookService lookService;
-    private final NpcService npcService;
-    private final ThreatService threatService;
+    private final StatsOptionService statsOptionService;
 
     public GameRoleServiceImpl(GameRoleRepository gameRoleRepository, CharacterService characterService,
-                               LookService lookService, NpcService npcService, ThreatService threatService) {
+                                StatsOptionService statsOptionService) {
         this.gameRoleRepository = gameRoleRepository;
         this.characterService = characterService;
-        this.lookService = lookService;
-        this.npcService = npcService;
-        this.threatService = threatService;
+        this.statsOptionService = statsOptionService;
+
     }
 
     @Override
@@ -137,5 +134,99 @@ public class GameRoleServiceImpl implements GameRoleService {
         gameRoleRepository.save(gameRole).block();
 
         return character;
+    }
+
+    @Override
+    public Character setCharacterStats(String gameRoleId, String characterId, String statsOptionId) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        // Get statsOption from db
+
+        StatsOption statsOption = statsOptionService.findById(statsOptionId).block();
+            assert statsOption != null;
+
+
+        // Create or update COOL CharacterStat
+        Optional<CharacterStat> optionalCool = character.getStatsBlock().getCharacterStatbyStat(Stats.COOL);
+        if (optionalCool.isEmpty()) {
+            CharacterStat newCool = CharacterStat.builder()
+                    .id(UUID.randomUUID().toString())
+                    .stat(Stats.COOL)
+                    .value(statsOption.getCOOL())
+                    .isHighlighted(false)
+                    .build();
+            character.getStatsBlock().getStats().add(newCool);
+        } else {
+           optionalCool.get().setValue(statsOption.getCOOL());
+        }
+
+        // Create or update HARD CharacterStat
+        Optional<CharacterStat> optionalHard = character.getStatsBlock().getCharacterStatbyStat(Stats.HARD);
+        if (optionalHard.isEmpty()) {
+            CharacterStat newHard = CharacterStat.builder()
+                    .id(UUID.randomUUID().toString())
+                    .stat(Stats.COOL)
+                    .value(statsOption.getHARD())
+                    .isHighlighted(false)
+                    .build();
+            character.getStatsBlock().getStats().add(newHard);
+        } else {
+            optionalHard.get().setValue(statsOption.getHARD());
+        }
+
+        // Create or update HOT CharacterStat
+        Optional<CharacterStat> optionalHot = character.getStatsBlock().getCharacterStatbyStat(Stats.HOT);
+        if (optionalHot.isEmpty()) {
+            CharacterStat newHot = CharacterStat.builder()
+                    .id(UUID.randomUUID().toString())
+                    .stat(Stats.HOT)
+                    .value(statsOption.getHOT())
+                    .isHighlighted(false)
+                    .build();
+            character.getStatsBlock().getStats().add(newHot);
+        } else {
+            optionalHot.get().setValue(statsOption.getHOT());
+        }
+
+        // Create or update SHARP CharacterStat
+        Optional<CharacterStat> optionalSharp = character.getStatsBlock().getCharacterStatbyStat(Stats.SHARP);
+        if (optionalSharp.isEmpty()) {
+            CharacterStat newSharp = CharacterStat.builder()
+                    .id(UUID.randomUUID().toString())
+                    .stat(Stats.SHARP)
+                    .value(statsOption.getSHARP())
+                    .isHighlighted(false)
+                    .build();
+            character.getStatsBlock().getStats().add(newSharp);
+        } else {
+            optionalSharp.get().setValue(statsOption.getSHARP());
+        }
+
+        // Create or update WEIRD CharacterStat
+        Optional<CharacterStat> optionalWeird = character.getStatsBlock().getCharacterStatbyStat(Stats.WEIRD);
+        if (optionalWeird.isEmpty()) {
+            CharacterStat newWeird = CharacterStat.builder()
+                    .id(UUID.randomUUID().toString())
+                    .stat(Stats.WEIRD)
+                    .value(statsOption.getWEIRD())
+                    .isHighlighted(false)
+                    .build();
+            character.getStatsBlock().getStats().add(newWeird);
+        } else {
+            optionalWeird.get().setValue(statsOption.getWEIRD());
+        }
+
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return null;
     }
 }

@@ -17,4 +17,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character setCharacterName(String gameRoleId, String characterId, String name);
 
     Character setCharacterLook(String gameRoleId, String characterId, String look, LookCategories category);
+
+    Character setCharacterStats(String gameRoleId, String characterId, String statsOptionId);
 }

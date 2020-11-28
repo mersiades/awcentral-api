@@ -190,4 +190,7 @@ type Mutation {
         characterId: String!,
         look: String!,
         category: LookCategories! ): Character
+    setCharacterStats(gameRoleId: String!,
+        characterId: String!,
+        statsOptionId: String! ): Character
 }
