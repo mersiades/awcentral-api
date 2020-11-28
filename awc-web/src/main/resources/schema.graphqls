@@ -81,12 +81,25 @@ type Threat {
     stakes: String
 }
 
+type CharacterStat {
+    id: ID
+    stat: Stats
+    value: Int
+    isHighlighted: Boolean
+}
+
+type StatsBlock {
+    id: ID
+    stats: [CharacterStat]
+}
+
 type Character {
     id: ID!
     name: String
     gear: String
     playbook: PlayBooks
     looks: [Look]
+    statsBlock: StatsBlock
 }
 
 type GameRole {

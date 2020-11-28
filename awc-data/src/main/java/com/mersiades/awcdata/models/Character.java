@@ -24,7 +24,7 @@ public class Character {
 
     private String name;
 
-    // TODO: add stats
+    private StatsBlock statsBlock = new StatsBlock();
 
     // TODO: add harm
 
