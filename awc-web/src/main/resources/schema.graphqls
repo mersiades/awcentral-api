@@ -96,7 +96,7 @@ type StatsBlock {
 type Character {
     id: ID!
     name: String
-    gear: String
+    gear: [String]
     playbook: PlayBooks
     looks: [Look]
     statsBlock: StatsBlock
@@ -152,11 +152,23 @@ type StatsOption {
     WEIRD: Int
 }
 
+type GearInstructions {
+    id: ID!
+    youGet: String
+    youGetItems: [String]
+    inAddition: String
+    introduceChoice: String
+    numberCanChoose: Int
+    chooseableGear: [String]
+    withMC: String
+    startingBarter: Int
+}
+
 type PlaybookCreator {
-    id: ID
+    id: ID!
     playbookType: PlayBooks
     playbook: Playbook
-    gearInstructions: String
+    gearInstructions: GearInstructions
     improvementInstructions: String
     movesInstructions: String
     hxInstructions: String

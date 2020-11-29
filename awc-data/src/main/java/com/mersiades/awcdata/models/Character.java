@@ -30,7 +30,7 @@ public class Character {
 
     private Playbooks playbook;
 
-    private String gear;
+    private List<String> gear = new ArrayList<>();
 
     private List<Look> looks = new ArrayList<>();
 
@@ -40,12 +40,11 @@ public class Character {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Character(String id, String name, GameRole gameRole, Playbooks playbook, String gear) {
+    public Character(String id, String name, GameRole gameRole, Playbooks playbook) {
         this.id = id;
         this.name = name;
         this.gameRole = gameRole;
         this.playbook = playbook;
-        this.gear = gear;
     }
 
     public Optional<Look> getLookByCategory(LookCategories category) {

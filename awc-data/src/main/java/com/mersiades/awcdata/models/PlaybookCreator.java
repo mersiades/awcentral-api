@@ -23,7 +23,7 @@ public class PlaybookCreator {
     private Playbooks playbookType;
 
     // long string
-    private String gearInstructions;
+    private GearInstructions gearInstructions;
 
     // long string
     private String improvementInstructions;
@@ -46,7 +46,7 @@ public class PlaybookCreator {
     // one to many
     private Set<StatsOption> statsOptions = new HashSet<>();
 
-    public PlaybookCreator(Playbooks playbookType, String gearInstructions, String improvementInstructions, String movesInstructions, String hxInstructions) {
+    public PlaybookCreator(Playbooks playbookType, GearInstructions gearInstructions, String improvementInstructions, String movesInstructions, String hxInstructions) {
         this.playbookType = playbookType;
         this.gearInstructions = gearInstructions;
         this.improvementInstructions = improvementInstructions;

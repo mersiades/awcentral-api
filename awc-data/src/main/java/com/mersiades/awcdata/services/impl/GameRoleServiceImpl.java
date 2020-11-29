@@ -154,7 +154,11 @@ public class GameRoleServiceImpl implements GameRoleService {
         assert statsOption != null;
 
         // Create or update each CharacterStat
-        Arrays.asList(Stats.values().clone()).forEach(stat -> createOrUpdateCharacterStat(character, statsOption, stat));
+        Arrays.asList(Stats.values().clone()).forEach(stat -> {
+            if (!stat.equals(Stats.HX)) {
+                createOrUpdateCharacterStat(character, statsOption, stat);
+            }
+        });
 
         // Save to db
         characterService.save(character).block();

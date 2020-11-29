@@ -346,23 +346,21 @@ public class DataLoader implements CommandLineRunner {
     public void loadPlaybookCreators() {
         System.out.println("|| --- Loading playbook creators --- ||");
         /* ----------------------------- ANGEL PLAYBOOK CREATOR --------------------------------- */
-        PlaybookCreator angelCreator = new PlaybookCreator(Playbooks.ANGEL, "You get:\n" +
-                "\n" +
-                "- angel kit, no supplier\n" +
-                "- 1 small practical weapon\n" +
-                "- oddments worth 2-barter\n" +
-                "- fashion suitable to your look, including at your option a piece worth 1-armor (you detail)\n" +
-                "\n" +
-                "Small practical weapons\n" +
-                "(choose 1):\n" +
-                "\n" +
-                "- .38 revolver (2-harm close reload loud)\n" +
-                "- 9mm (2-harm close loud)\n" +
-                "- big knife (2-harm hand)\n" +
-                "- sawed-off (3-harm close reload messy)\n" +
-                "- stun gun (s-harm hand reload)\n" +
-                "\n" +
-                "If you’d like to start play with a vehicle or a prosthetic, get with the MC.", "Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
+        GearInstructions angelGearInstructions = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .youGet("You get:")
+                .youGetItems(List.of("fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
+                .introduceChoice("Small practical weapons")
+                .numberCanChoose(1)
+                .chooseableGear(List.of(".38 revolver (2-harm close reload loud)",
+                        "9mm (2-harm close loud)",
+                        "big knife (2-harm hand)",
+                        "sawed-off (3-harm close reload messy)",
+                        "stun gun (s-harm hand reload)"))
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .startingBarter(2)
+                .build();
+        PlaybookCreator angelCreator = new PlaybookCreator(Playbooks.ANGEL, angelGearInstructions, "Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
                 "\n" +
                 "Each time you improve, choose one of the options. Check it off; you can’t choose it again.", "You get all the basic moves. Choose 2 angel moves.\n" +
                 "\n" +

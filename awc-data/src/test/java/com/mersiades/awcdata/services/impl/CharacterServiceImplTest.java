@@ -41,7 +41,7 @@ class CharacterServiceImplTest {
                 .id(MOCK_CHARACTER_ID_1)
                 .name("Mr Mock Character Name")
                 .playbook(Playbooks.ANGEL)
-                .gear("I haz some cool gear")
+                .gear(List.of("gun", "knife"))
                 .gameRole(mockGameRole1)
                 .build();
 
