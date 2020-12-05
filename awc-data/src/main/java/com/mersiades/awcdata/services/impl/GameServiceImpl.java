@@ -86,6 +86,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Mono<Game> deleteGameByTextChannelId(String textChannelId) {
+        // TODO: check if changing this to deleteByTextChannelId helps
         return gameRepository.deleteGameByTextChannelId(textChannelId).map(game -> {
             for (GameRole gameRole: game.getGameRoles()) {
                 gameRoleService.delete(gameRole);
