@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -88,14 +89,20 @@ class NameServiceImplTest {
         verify(nameRepository, times(1)).save(any(Name.class));
     }
 
-//    @Test
-//    void shouldSaveAllNames() {
-//        // Given
-//
-//        // When
-//
-//        // Then
-//    }
+    @Test
+    void shouldSaveAllNames() {
+        // Given
+        Name mockName2 = Name.builder().build();
+        when(nameRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockName1, mockName2));
+
+        // When
+        List<Name> savedNames = nameService.saveAll(Flux.just(mockName1,mockName2)).collectList().block();
+
+        // Then
+        assert savedNames != null;
+        assertEquals(2, savedNames.size());
+        verify(nameRepository, times(1)).saveAll(any(Publisher.class));
+    }
 
     @Test
     void shouldDeleteName() {

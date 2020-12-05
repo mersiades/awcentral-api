@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -92,6 +93,21 @@ class CharacterServiceImplTest {
     }
 
     @Test
+    void shouldSaveAllCharacters() {
+        // Given
+        Character mockCharacter2 = Character.builder().build();
+        when(characterRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockCharacter1, mockCharacter2));
+
+        // When
+        List<Character> savedLooks = characterService.saveAll(Flux.just(mockCharacter1,mockCharacter2)).collectList().block();
+
+        // Then
+        assert savedLooks != null;
+        assertEquals(2, savedLooks.size());
+        verify(characterRepository, times(1)).saveAll(any(Publisher.class));
+    }
+
+    @Test
     void shouldDeleteCharacter() {
         // When
         characterService.delete(mockCharacter1);
@@ -108,4 +124,5 @@ class CharacterServiceImplTest {
         // Then
         verify(characterRepository, times(1)).deleteById(anyString());
     }
+
 }

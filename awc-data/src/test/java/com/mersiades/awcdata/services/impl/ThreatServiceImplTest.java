@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -80,9 +81,20 @@ class ThreatServiceImplTest {
         verify(threatRepository, times(1)).save(any(Threat.class));
     }
 
-//    @Test
-//    void shouldSaveAllThreats() {
-//    }
+    @Test
+    void shouldSaveAllThreats() {
+        // Given
+        Threat mockThreat2 = Threat.builder().build();
+        when(threatRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockThreat1, mockThreat2));
+
+        // When
+        List<Threat> savedThreats = threatService.saveAll(Flux.just(mockThreat1,mockThreat2)).collectList().block();
+
+        // Then
+        assert savedThreats != null;
+        assertEquals(2, savedThreats.size());
+        verify(threatRepository, times(1)).saveAll(any(Publisher.class));
+    }
 
     @Test
     void shouldDeleteThreat() {

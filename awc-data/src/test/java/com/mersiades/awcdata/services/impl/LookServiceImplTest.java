@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -80,20 +81,20 @@ class LookServiceImplTest {
         verify(lookRepository, times(1)).save(any(Look.class));
     }
 
-//    @Test
-//    void shouldSaveAllLooks() {
-//        // Given
-//        Look mockLook2 = Look.builder().build();
-//        when(lookRepository.saveAll(any())).thenReturn(Flux.just(mockLook1, mockLook2));
-//
-//        // When
-//        List<Look> savedLooks = lookService.saveAll(Flux.just(mockLook1,mockLook2)).collectList().block();
-//
-//        // Then
-//        assert savedLooks != null;
-//        assertEquals(2, savedLooks.size());
-//        verify(lookRepository, times(1)).saveAll(any());
-//    }
+    @Test
+    void shouldSaveAllLooks() {
+        // Given
+        Look mockLook2 = Look.builder().build();
+        when(lookRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockLook1, mockLook2));
+
+        // When
+        List<Look> savedLooks = lookService.saveAll(Flux.just(mockLook1,mockLook2)).collectList().block();
+
+        // Then
+        assert savedLooks != null;
+        assertEquals(2, savedLooks.size());
+        verify(lookRepository, times(1)).saveAll(any(Publisher.class));
+    }
 
     @Test
     void shouldDeleteLook() {

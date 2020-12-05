@@ -1,5 +1,6 @@
 package com.mersiades.awcweb.graphql;
 
+import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.Game;
@@ -42,6 +43,16 @@ public class Mutation implements GraphQLMutationResolver {
     public Character setCharacterPlaybook(String gameRoleId, String characterId, Playbooks playbookType) {
         System.out.println("Setting Playbook for for Character: " + characterId);
         return gameRoleService.setCharacterPlaybook(gameRoleId, characterId, playbookType);
+    }
+
+    public Character setCharacterName(String gameRoleId, String characterId, String name) {
+        System.out.println("Setting name for for Character: " + characterId);
+        return gameRoleService.setCharacterName(gameRoleId, characterId, name);
+    }
+
+    public Character setCharacterLook(String gameRoleId, String characterId, String look, LookCategories category) {
+        System.out.println("Setting a Look for for Character: " + characterId);
+        return gameRoleService.setCharacterLook(gameRoleId, characterId, look, category);
     }
 
 }

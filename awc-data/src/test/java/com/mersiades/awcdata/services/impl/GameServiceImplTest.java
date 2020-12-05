@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -101,6 +102,21 @@ class GameServiceImplTest {
     }
 
     @Test
+    void shouldSaveAllGames() {
+        // Given
+        Game mockGame2 = new Game();
+        when(gameRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockGame1, mockGame2));
+
+        // When
+        List<Game> savedGames = gameService.saveAll(Flux.just(mockGame1, mockGame2)).collectList().block();
+
+        // Then
+        assert savedGames != null;
+        assertEquals(2, savedGames.size());
+        verify(gameRepository, times(1)).saveAll(any(Publisher.class));
+    }
+
+    @Test
     void shouldDeleteGame() {
         // When
         gameService.delete(mockGame1);
@@ -177,5 +193,34 @@ class GameServiceImplTest {
         assert returnedGame != null;
         assertEquals(MOCK_GAME_ID_1, returnedGame.getId());
         verify(gameRepository, times(1)).findGameByTextChannelId(anyString());
+    }
+
+    @Test
+    void shouldAppendChannelsToGame() {
+        // Given
+        String mockGameId = "mock-game-id-2";
+        String mockTextChannelId = "mock-text-channel-id-1";
+        String mockVoiceChannelId = "mock-voice-channel-id-1";
+        Game mockGame2 = Game.builder()
+                .id(mockGameId)
+                .name("mock-game-name-2")
+                .build();
+        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame2));
+
+        // This seems so wrong, like I'm not testing the method at all, just replicating the outcome
+        mockGame2.setVoiceChannelId(mockVoiceChannelId);
+        mockGame2.setTextChannelId(mockTextChannelId);
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame2));
+
+        // When
+        Game updatedGame = gameService.appendChannels(mockGameId, mockTextChannelId, mockVoiceChannelId).block();
+
+        // Then
+        assert updatedGame != null;
+        assertEquals(mockTextChannelId, updatedGame.getTextChannelId());
+        assertEquals(mockVoiceChannelId, updatedGame.getVoiceChannelId());
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
+
     }
 }

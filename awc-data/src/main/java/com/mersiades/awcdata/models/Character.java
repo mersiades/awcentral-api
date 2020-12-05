@@ -7,6 +7,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -27,6 +29,8 @@ public class Character {
     private Playbooks playbook;
 
     private String gear;
+
+    private List<Look> looks = new ArrayList<>();
 
     private GameRole gameRole;
 

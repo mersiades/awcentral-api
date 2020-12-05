@@ -1,10 +1,8 @@
 package com.mersiades.awcweb.graphql;
 
+import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.*;
-import com.mersiades.awcdata.services.GameService;
-import com.mersiades.awcdata.services.MoveService;
-import com.mersiades.awcdata.services.PlaybookService;
-import com.mersiades.awcdata.services.UserService;
+import com.mersiades.awcdata.services.*;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 
@@ -17,12 +15,14 @@ public class Query implements GraphQLQueryResolver {
     private final GameService gameService;
     private final MoveService moveService;
     private final PlaybookService playbookService;
+    private final PlaybookCreatorService playbookCreatorService;
 
-    public Query(UserService userService, GameService gameService, MoveService moveService, PlaybookService playbookService) {
+    public Query(UserService userService, GameService gameService, MoveService moveService, PlaybookService playbookService, PlaybookCreatorService playbookCreatorService) {
         this.userService = userService;
         this.gameService = gameService;
         this.moveService = moveService;
         this.playbookService = playbookService;
+        this.playbookCreatorService = playbookCreatorService;
     }
 
     public User userByDiscordId(String discordId) {
@@ -61,5 +61,9 @@ public class Query implements GraphQLQueryResolver {
 
     public List<Playbook> playbooks() {
         return playbookService.findAll().collectList().block();
+    }
+
+    public PlaybookCreator playbookCreator(Playbooks playbookType) {
+        return playbookCreatorService.findByPlaybookType(playbookType).block();
     }
 }

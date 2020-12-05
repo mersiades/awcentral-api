@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -82,9 +83,20 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).save(any(User.class));
     }
 
-//    @Test
-//    void shouldSaveAllUsers() {
-//    }
+    @Test
+    void shouldSaveAllUsers() {
+        // Given
+        User mockUser2 = User.builder().build();
+        when(userRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockUser1, mockUser2));
+
+        // When
+        List<User> savedUsers = userService.saveAll(Flux.just(mockUser1,mockUser2)).collectList().block();
+
+        // Then
+        assert savedUsers != null;
+        assertEquals(2, savedUsers.size());
+        verify(userRepository, times(1)).saveAll(any(Publisher.class));
+    }
 
     @Test
     void shouldDeleteUser() {

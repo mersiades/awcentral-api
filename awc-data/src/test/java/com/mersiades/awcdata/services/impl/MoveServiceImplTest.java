@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -83,6 +84,21 @@ class MoveServiceImplTest {
         assert savedMove != null;
         assertEquals(MOCK_MOVE_ID_1, savedMove.getId());
         verify(moveRepository, times(1)).save(any(Move.class));
+    }
+
+    @Test
+    void shouldSaveAllMoves() {
+        // Given
+        Move mockMove2 = Move.builder().build();
+        when(moveRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockMove1, mockMove2));
+
+        // When
+        List<Move> savedMoves = moveService.saveAll(Flux.just(mockMove1,mockMove2)).collectList().block();
+
+        // Then
+        assert savedMoves != null;
+        assertEquals(2, savedMoves.size());
+        verify(moveRepository, times(1)).saveAll(any(Publisher.class));
     }
 
     @Test

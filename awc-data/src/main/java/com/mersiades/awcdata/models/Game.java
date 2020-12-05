@@ -1,5 +1,7 @@
 package com.mersiades.awcdata.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -10,6 +12,8 @@ import java.util.List;
 
 @Data
 @Document
+@Builder
+@AllArgsConstructor
 public class Game {
 
     @Id
@@ -82,7 +86,9 @@ public class Game {
             sb.append(", voiceChannelId= ").append(this.voiceChannelId);
         }
 
-        sb.append(", gameRoles size= ").append(this.gameRoles.size());
+        if (this.gameRoles != null) {
+            sb.append(", gameRoles size= ").append(this.gameRoles.size());
+        }
 
         sb.append("]");
 
