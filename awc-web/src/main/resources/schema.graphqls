@@ -54,15 +54,12 @@ enum LookCategories {
 
 type User {
     id: ID!
-    discordId: String!
     gameRoles: [GameRole]
 }
 
 type Game {
     id: ID!
     name: String!
-    textChannelId: String
-    voiceChannelId: String
     gameRoles: [GameRole]
 }
 
@@ -142,19 +139,18 @@ type PlaybookCreator {
 }
 
 type Query {
-    userByDiscordId(discordId:String!): User
-    gameByTextChannelId(textChannelId:String!): Game
+    gameRolesByUserId(id: String!): [GameRole]
+    game(gameId:String!): Game
+    gameForPlayer(gameId:String!, userId:String!): Game
     allMoves: [Move]
-    gameForPlayer(textChannelId:String!, userId:String!): Game
     playbooks: [Playbook]
     playbookCreator(playbookType: PlayBooks!): PlaybookCreator
 }
 
 type Mutation {
-    createGame(discordId: String!,
+    createGame(userId: String!,
         name: String!): Game
-    appendChannels(id: String! textChannelId: String!, voiceChannelId: String!): Game
-    deleteGame(textChannelId: String!): Game
+    deleteGame(gameId: String!): Game
     createCharacter(gameRoleId: String!): Character
     setCharacterPlaybook(gameRoleId: String!,
         characterId: String!,

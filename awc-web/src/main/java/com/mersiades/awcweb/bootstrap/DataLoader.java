@@ -12,19 +12,13 @@ import reactor.core.publisher.Flux;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Component
 public class DataLoader implements CommandLineRunner {
 
-    final String DISCORD_TEXT_CHANNEL_ID_1 = "741573502452105236";
-    final String DISCORD_TEXT_CHANNEL_ID_2 = "823458920374529070";
-    final String DISCORD_VOICE_CHANNEL_ID_1 = "741573503710527498";
-    final String DISCORD_VOICE_CHANNEL_ID_2 = "123876129847590347";
-    final String DISCORD_USER_ID_1 = "696484065859076146";
-    final String DISCORD_USER_ID_2 = "134523465246534532";
-    final String MOCK_USER_1_ID = "571f9b70-a572-47f9-a643-5cd985a2cde6";
+    final String KEYCLOAK_ID_1 = "652d9d38-a08c-4275-847c-7a20f679d9ee";
+    final String KEYCLOAK_ID_2 = "f5977240-79c1-48c4-9097-cc9cdb3d2288";
     final String MOCK_GAME_1_ID = "0ca6cc54-77a5-4d6e-ba2e-ee1543d6a249";
     final String MOCK_GAME_2_ID = "ecb645d2-06d3-46dc-ad7f-20bbd167085d";
     final String DAVE_AS_PLAYER_ID = "2a7aba8d-f6e8-4880-8021-99809c800acc";
@@ -815,21 +809,22 @@ public class DataLoader implements CommandLineRunner {
 
 
         // -------------------------------------- Set up mock Users -------------------------------------- //
-        User mockUser1 = new User(MOCK_USER_1_ID, DISCORD_USER_ID_1);
+        User mockUser1 = User.builder().id(KEYCLOAK_ID_1).build();
 
-        User mockUser2 = new User(UUID.randomUUID().toString(), DISCORD_USER_ID_2);
+        User mockUser2 = User.builder().id(KEYCLOAK_ID_2).build();
 
         // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
-        Game mockGame1 = new Game(MOCK_GAME_1_ID, DISCORD_TEXT_CHANNEL_ID_1, DISCORD_VOICE_CHANNEL_ID_1, "Mock Game 1");
+        Game mockGame1 = Game.builder().id(MOCK_GAME_1_ID).name("Mock Game 1").build();
 
-        GameRole daveAsMC = new GameRole(DAVE_AS_PLAYER_ID, Roles.MC);
-        GameRole sarahAsPlayer = new GameRole(UUID.randomUUID().toString(), Roles.PLAYER);
+        GameRole daveAsMC = GameRole.builder().id(DAVE_AS_PLAYER_ID).role(Roles.MC).build();
+        GameRole sarahAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
 
         Npc mockNpc1 = new Npc(daveAsMC, "Vision", "Badass truck driver");
         Npc mockNpc2 = new Npc(daveAsMC, "Nbeke");
 
         Threat mockThreat1 = new Threat("Tum Tum", Threats.WARLORD, "Slaver: to own and sell people");
         Threat mockThreat2 = new Threat("Gnarly", Threats.GROTESQUE, "Cannibal: craves satiety and plenty");
+
 
         daveAsMC.getNpcs().add(mockNpc1);
         daveAsMC.getNpcs().add(mockNpc2);
@@ -857,10 +852,10 @@ public class DataLoader implements CommandLineRunner {
         npcService.saveAll(Flux.just(mockNpc1, mockNpc2)).blockLast();
 
         // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
-        Game mockGame2 = new Game(MOCK_GAME_2_ID, DISCORD_TEXT_CHANNEL_ID_2, DISCORD_VOICE_CHANNEL_ID_2, "Mock Game 2");
+        Game mockGame2 = Game.builder().id(MOCK_GAME_2_ID).name("Mock Game 2").build();
 
-        GameRole daveAsPlayer = new GameRole(UUID.randomUUID().toString(), Roles.PLAYER);
-        GameRole sarahAsMC = new GameRole(UUID.randomUUID().toString(), Roles.MC);
+        GameRole daveAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
+        GameRole sarahAsMC =  GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.MC).build();
 
         Npc mockNpc3 = new Npc(sarahAsMC, "Batty", "Overly polite gun for hire");
         Npc mockNpc4 = new Npc(sarahAsMC, "Farley");
@@ -933,8 +928,8 @@ public class DataLoader implements CommandLineRunner {
         Roles roleType = role.getRole();
         System.out.println("\t Role: " + role.getRole());
         if (roleType == Roles.MC) {
-            Set<Npc> npcs = role.getNpcs();
-            Set<Threat> threats = role.getThreats();
+            List<Npc> npcs = role.getNpcs();
+            List<Threat> threats = role.getThreats();
             System.out.println("\t This role has " + npcs.size() + " NPCs");
             if (npcs.size() > 0) {
                 for (Npc npc : npcs) {
@@ -955,7 +950,7 @@ public class DataLoader implements CommandLineRunner {
                 }
             }
         } else if (roleType == Roles.PLAYER) {
-            Set<Character> characters = role.getCharacters();
+            List<Character> characters = role.getCharacters();
             System.out.println("\t This role has " + characters.size() + " characters");
             if (characters.size() > 0) {
                 for (Character character : characters) {
@@ -971,7 +966,6 @@ public class DataLoader implements CommandLineRunner {
     private void printUser(User user) {
         System.out.println("| ------------- " + user.getId() + " -------------- |");
         System.out.println("ID: " + user.getId());
-        System.out.println("Discord ID: " + user.getDiscordId());
         System.out.println("GameRoles (#): " + user.getGameRoles().size());
         System.out.println("\n");
     }

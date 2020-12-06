@@ -7,11 +7,8 @@ import reactor.core.publisher.Mono;
 public interface GameService extends ReactiveCrudService<Game, String> {
     Mono<Game> findByGameRoles(GameRole gameRole);
 
-    Game createGameWithMC(String discordId, String name);
+    Game createGameWithMC(String userId, String name);
 
-    Mono<Game> deleteGameByTextChannelId(String textChannelId);
+    Mono<Game> findAndDeleteById(String gameId);
 
-    Mono<Game> findGameByTextChannelId(String textChannelId);
-
-    Mono<Game> appendChannels(String id, String textChannelId, String voiceChannelId);
 }

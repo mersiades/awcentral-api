@@ -58,7 +58,7 @@ class GameRoleServiceImplTest {
         Game mockGame1 = new Game();
         mockUser = new User();
         mockCharacter = new Character();
-        mockGameRole = new GameRole(MOCK_GAMEROLE_ID, Roles.MC, mockGame1, mockUser);
+        mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(Roles.MC).game(mockGame1).user(mockUser).build();
         gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, npcService, threatService);
         mockGameRole2 = new GameRole();
     }
@@ -144,7 +144,7 @@ class GameRoleServiceImplTest {
     void shouldFindAllGameRolesByUser() {
         // Given
         Game mockGame2 = new Game();
-        GameRole mockGameRole2 = new GameRole("mock-gamerole-id2", Roles.MC, mockGame2, mockUser);
+        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id2").role(Roles.MC).game(mockGame2).user(mockUser).build();
         when(gameRoleRepository.findAllByUser(any())).thenReturn(Flux.just(mockGameRole, mockGameRole2));
 
         // When

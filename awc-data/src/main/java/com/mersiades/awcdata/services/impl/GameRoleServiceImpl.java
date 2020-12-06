@@ -74,6 +74,11 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
+    public Flux<GameRole> findAllByUserId(String userId) {
+        return gameRoleRepository.findAllByUserId(userId);
+    }
+
+    @Override
     public Character addNewCharacter(String gameRoleId) {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
         Character newCharacter = new Character();
