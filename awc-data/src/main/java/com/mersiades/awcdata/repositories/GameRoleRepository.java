@@ -11,6 +11,8 @@ public interface GameRoleRepository extends ReactiveMongoRepository<GameRole, St
 
     Flux<GameRole> findAllByUser(User user);
 
+    Flux<GameRole> findAllByUserId(String userid);
+
     Flux<GameRole> findAllByGame(Game game);
 
     Mono<GameRole> findByGameIdAndUserId(String gameId, String userId);

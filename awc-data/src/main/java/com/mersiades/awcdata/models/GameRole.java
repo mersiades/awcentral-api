@@ -9,8 +9,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Document
@@ -30,38 +30,14 @@ public class GameRole {
     @DBRef
     private User user;
 
-    private Set<Npc> npcs = new HashSet<>();
+    @Builder.Default
+    private List<Npc> npcs = new ArrayList<>();
 
-    private Set<Threat> threats = new HashSet<>();
+    @Builder.Default
+    private List<Threat> threats = new ArrayList<>();
 
-    private Set<Character> characters = new HashSet<>();
-
-    public GameRole(Roles role) {
-        this.role = role;
-    }
-
-    public GameRole(String id, Roles role) {
-        this.id = id;
-        this.role = role;
-    }
-
-    public GameRole(Roles role, Game game, User user) {
-        this.role = role;
-        this.game = game;
-        this.user = user;
-    }
-
-    public GameRole(Roles role, User user) {
-        this.role = role;
-        this.user = user;
-    }
-
-    public GameRole(String id, Roles role, Game game, User user) {
-        this.id = id;
-        this.role = role;
-        this.game = game;
-        this.user = user;
-    }
+    @Builder.Default
+    private List<Character> characters = new ArrayList<>();
 
     @Override
     public String toString() {

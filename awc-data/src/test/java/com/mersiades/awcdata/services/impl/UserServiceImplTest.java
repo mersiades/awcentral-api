@@ -34,7 +34,6 @@ class UserServiceImplTest {
 
         mockUser1 = User.builder()
                 .id(MOCK_USER_ID_1)
-                .discordId(DISCORD_USER_ID_1)
                 .build();
 
         userService = new UserServiceImpl(userRepository);
@@ -116,17 +115,17 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).deleteById(anyString());
     }
 
-    @Test
-    void shouldFindUserByDiscordId() {
-        // Given
-        when(userRepository.findByDiscordId(anyString())).thenReturn(Mono.just(mockUser1));
-
-        // When
-        User returnedUser = userService.findByDiscordId(DISCORD_USER_ID_1).block();
-
-        // Then
-        assert returnedUser != null;
-        assertEquals(mockUser1.getId(), returnedUser.getId());
-        verify(userRepository, times(1)).findByDiscordId(anyString());
-    }
+//    @Test
+//    void shouldFindUserByDiscordId() {
+//        // Given
+//        when(userRepository.findByDiscordId(anyString())).thenReturn(Mono.just(mockUser1));
+//
+//        // When
+//        User returnedUser = userService.findByDiscordId(DISCORD_USER_ID_1).block();
+//
+//        // Then
+//        assert returnedUser != null;
+//        assertEquals(mockUser1.getId(), returnedUser.getId());
+//        verify(userRepository, times(1)).findByDiscordId(anyString());
+//    }
 }

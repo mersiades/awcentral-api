@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 
 public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Flux<GameRole> findAllByUser(User user);
+    Flux<GameRole> findAllByUserId(String userId);
 
     Character addNewCharacter(String gameRoleId);
 

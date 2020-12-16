@@ -26,7 +26,6 @@ class GameServiceImplTest {
 
     public static final String MOCK_GAME_ID_1 = "mock-game-id-1";
     public static final String MOCK_GAMEROLE_ID = "mock-gamerole-id";
-    public static final String MOCK_TEXT_CHANNEL_ID_1 = "mock-text-channel-id-1";
 
     @Mock
     GameRepository gameRepository;
@@ -49,12 +48,10 @@ class GameServiceImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         mockUser = new User();
-        mockGameRole = new GameRole(MOCK_GAMEROLE_ID, Roles.MC, mockGame1, mockUser);
+        mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(Roles.MC).game(mockGame1).user(mockUser).build();
         mockGame1 = new Game(MOCK_GAME_ID_1,
-                MOCK_TEXT_CHANNEL_ID_1,
-                "mock-voice-channel-id-1",
                 "Michael's Mock Game",
-                mockGameRole);
+                List.of(mockGameRole));
         gameService = new GameServiceImpl(gameRepository, userService, gameRoleService);
     }
 
@@ -148,79 +145,5 @@ class GameServiceImplTest {
         verify(gameRepository, times(1)).findByGameRoles(any(GameRole.class));
     }
 
-    @Test
-    void shouldCreateGameWithMC() {
-        // Given
-        String mockDiscordId = "mock-discord-id";
-        String mockGameName = "Michael's new mock game";
-        when(userService.findByDiscordId(anyString())).thenReturn(Mono.just(mockUser));
-        when(gameRepository.save(any())).thenReturn(Mono.just(mockGame1));
-        when(gameRoleService.save(any())).thenReturn(Mono.just(mockGameRole));
 
-        // When
-        Game returnedGame = gameService.createGameWithMC(mockDiscordId, mockGameName);
-        
-        // Then
-        assertEquals(mockGameName, returnedGame.getName());
-        verify(userService, times(1)).findByDiscordId(anyString());
-        verify(gameRepository, times(1)).save(any(Game.class));
-        verify(gameRoleService, times(1)).save(any(GameRole.class));
-    }
-
-    @Test
-    void shouldDeleteGameByTextChannelId() {
-        // Given
-        when(gameRepository.deleteGameByTextChannelId(anyString())).thenReturn(Mono.just(mockGame1));
-
-        // When
-        Game deletedGame = gameService.deleteGameByTextChannelId(MOCK_TEXT_CHANNEL_ID_1).block();
-
-        // Then
-        assert deletedGame != null;
-        assertEquals(MOCK_GAME_ID_1, deletedGame.getId());
-        verify(gameRepository, times(1)).deleteGameByTextChannelId(anyString());
-    }
-
-    @Test
-    void shouldFindGameByTextChannelId() {
-        // Given
-        when(gameRepository.findGameByTextChannelId(anyString())).thenReturn(Mono.just(mockGame1));
-
-        // When
-        Game returnedGame = gameService.findGameByTextChannelId(MOCK_GAME_ID_1).block();
-
-        // Then
-        assert returnedGame != null;
-        assertEquals(MOCK_GAME_ID_1, returnedGame.getId());
-        verify(gameRepository, times(1)).findGameByTextChannelId(anyString());
-    }
-
-    @Test
-    void shouldAppendChannelsToGame() {
-        // Given
-        String mockGameId = "mock-game-id-2";
-        String mockTextChannelId = "mock-text-channel-id-1";
-        String mockVoiceChannelId = "mock-voice-channel-id-1";
-        Game mockGame2 = Game.builder()
-                .id(mockGameId)
-                .name("mock-game-name-2")
-                .build();
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame2));
-
-        // This seems so wrong, like I'm not testing the method at all, just replicating the outcome
-        mockGame2.setVoiceChannelId(mockVoiceChannelId);
-        mockGame2.setTextChannelId(mockTextChannelId);
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame2));
-
-        // When
-        Game updatedGame = gameService.appendChannels(mockGameId, mockTextChannelId, mockVoiceChannelId).block();
-
-        // Then
-        assert updatedGame != null;
-        assertEquals(mockTextChannelId, updatedGame.getTextChannelId());
-        assertEquals(mockVoiceChannelId, updatedGame.getVoiceChannelId());
-        verify(gameRepository, times(1)).findById(anyString());
-        verify(gameRepository, times(1)).save(any(Game.class));
-
-    }
 }
