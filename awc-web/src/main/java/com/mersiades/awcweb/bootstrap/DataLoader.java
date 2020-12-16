@@ -17,8 +17,8 @@ import java.util.UUID;
 @Component
 public class DataLoader implements CommandLineRunner {
 
-    final String KEYCLOAK_ID_1 = "652d9d38-a08c-4275-847c-7a20f679d9ee";
-    final String KEYCLOAK_ID_2 = "f5977240-79c1-48c4-9097-cc9cdb3d2288";
+    final String KEYCLOAK_ID_1 = "1b7bf4fe-ddb5-42b9-8aa3-a4feac1110c3";
+    final String KEYCLOAK_ID_2 = "7085c3c9-6267-46c6-929c-dd41bd07ba93";
     final String MOCK_GAME_1_ID = "0ca6cc54-77a5-4d6e-ba2e-ee1543d6a249";
     final String MOCK_GAME_2_ID = "ecb645d2-06d3-46dc-ad7f-20bbd167085d";
     final String DAVE_AS_PLAYER_ID = "2a7aba8d-f6e8-4880-8021-99809c800acc";
