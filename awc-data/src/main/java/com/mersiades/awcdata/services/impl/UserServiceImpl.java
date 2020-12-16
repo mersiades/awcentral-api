@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -48,12 +46,12 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    @Override
-    public Mono<User> findByDiscordId(String discordId) {
-        User newUser = User.builder().id(UUID.randomUUID().toString()).discordId(discordId).build();
-        return userRepository.findByDiscordId(discordId)
-                // If user doesn't already exist, return the newUser and save it to db
-                .switchIfEmpty(Mono.just(newUser).flatMap(userRepository::save));
-
-    }
+//    @Override
+//    public Mono<User> findByDiscordId(String discordId) {
+//        User newUser = User.builder().id(UUID.randomUUID().toString()).discordId(discordId).build();
+//        return userRepository.findByDiscordId(discordId)
+//                // If user doesn't already exist, return the newUser and save it to db
+//                .switchIfEmpty(Mono.just(newUser).flatMap(userRepository::save));
+//
+//    }
 }

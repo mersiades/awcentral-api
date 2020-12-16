@@ -5,6 +5,7 @@ import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.services.*;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
@@ -12,34 +13,42 @@ import java.util.List;
 public class Query implements GraphQLQueryResolver {
 
     private final UserService userService;
+    private final GameRoleService gameRoleService;
     private final GameService gameService;
     private final MoveService moveService;
     private final PlaybookService playbookService;
     private final PlaybookCreatorService playbookCreatorService;
 
-    public Query(UserService userService, GameService gameService, MoveService moveService, PlaybookService playbookService, PlaybookCreatorService playbookCreatorService) {
+    public Query(UserService userService, GameRoleService gameRoleService, GameService gameService, MoveService moveService, PlaybookService playbookService, PlaybookCreatorService playbookCreatorService) {
         this.userService = userService;
+        this.gameRoleService = gameRoleService;
         this.gameService = gameService;
         this.moveService = moveService;
         this.playbookService = playbookService;
         this.playbookCreatorService = playbookCreatorService;
     }
 
-    public User userByDiscordId(String discordId) {
-        System.out.println("Fetching User by Discord id: " + discordId);
-        return userService.findByDiscordId(discordId).block();
+//    public User userByDiscordId(String discordId) {
+//        System.out.println("Fetching User by Discord id: " + discordId);
+//        return userService.findByDiscordId(discordId).block();
+//    }
+
+    @CrossOrigin
+    public List<GameRole> gameRolesByUserId(String id) {
+        System.out.println("Fetching GameRoles for user: " + id);
+        return gameRoleService.findAllByUserId(id).collectList().block();
     }
 
-    public Game gameByTextChannelId(String textChannelId) {
-        System.out.println("Fetching Game by textChannelId: " + textChannelId);
-        return gameService.findGameByTextChannelId(textChannelId).block();
+    public Game game(String gameId) {
+        System.out.println("Fetching Game by id: " + gameId);
+        return gameService.findById(gameId).block();
     }
 
-    public Game gameForPlayer(String textChannelId, String userId) {
-        System.out.println("Fetching Game for player: " + textChannelId);
+    public Game gameForPlayer(String gameId, String userId) {
+        System.out.println("Fetching Game for player: " + gameId);
 
         // Get the Game
-        Game game = gameService.findGameByTextChannelId(textChannelId).block();
+        Game game = gameService.findById(gameId).block();
 
         // Get the User's GameRole from the Game
         assert game != null;

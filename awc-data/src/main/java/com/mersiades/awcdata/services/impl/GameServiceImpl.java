@@ -63,16 +63,16 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game createGameWithMC(String discordId, String name) {
+    public Game createGameWithMC(String userId, String name) {
         System.out.println("createGameWithMC in gameServiceImpl");
         // Create the new game
-        Game newGame = new Game(UUID.randomUUID().toString(), name);
+        Game newGame = Game.builder().id(UUID.randomUUID().toString()).name(name).build();
 
         // Find the User who created the game to associate with GameRole
-        User creator = userService.findByDiscordId(discordId).block();
+        User creator = userService.findById(userId).block();
 
         // Create an MC GameRole for the Game creator and add it to the Game
-        GameRole mcGameRole = new GameRole(UUID.randomUUID().toString(), Roles.MC);
+        GameRole mcGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.MC).build();
         newGame.getGameRoles().add(mcGameRole);
         Game savedGame = gameRepository.save(newGame).block();
 
@@ -85,26 +85,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Mono<Game> deleteGameByTextChannelId(String textChannelId) {
-        return gameRepository.deleteGameByTextChannelId(textChannelId).map(game -> {
+    public Mono<Game> findAndDeleteById(String gameId) {
+        return gameRepository.findById(gameId).map(game -> {
             for (GameRole gameRole: game.getGameRoles()) {
                 gameRoleService.delete(gameRole);
             }
+            gameRepository.delete(game);
             return game;
         });
     }
 
-    @Override
-    public Mono<Game> findGameByTextChannelId(String textChannelId) {
-        return gameRepository.findGameByTextChannelId(textChannelId);
-    }
-
-    @Override
-    public Mono<Game> appendChannels(String id, String textChannelId, String voiceChannelId) {
-        return gameRepository.findById(id).flatMap(game -> {
-            game.setTextChannelId(textChannelId);
-            game.setVoiceChannelId(voiceChannelId);
-            return gameRepository.save(game);
-        });
-    }
 }

@@ -7,8 +7,4 @@ import reactor.core.publisher.Mono;
 
 public interface GameRepository extends ReactiveMongoRepository<Game, String> {
     Mono<Game> findByGameRoles(GameRole gameRole);
-
-    Mono<Game> deleteGameByTextChannelId(String textChannelId);
-
-    Mono<Game> findGameByTextChannelId(String textChannelId);
 }
