@@ -1,0 +1,17 @@
+# https://github.com/graphql-java-kickstart/graphql-spring-boot/issues/165#issuecomment-469183385
+#graphql:
+#  servlet:
+#    websocket:
+#      enabled: false
+
+spring:
+  data:
+    mongodb:
+      port: 57363
+      host: localhost
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://keycloak.aw-central.com/auth/realms/awc-realm
+          jwk-set-uri: https://keycloak.aw-central.com/auth/realms/awc-realm/protocol/openid-connect/certs
