@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 public interface GameService extends ReactiveCrudService<Game, String> {
     Mono<Game> findByGameRoles(GameRole gameRole);
 
-    Game createGameWithMC(String userId, String name);
+    Game createGameWithMC(String userId, String name) throws Exception;
 
     Mono<Game> findAndDeleteById(String gameId);
 

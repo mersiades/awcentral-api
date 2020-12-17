@@ -20,7 +20,7 @@ public class Mutation implements GraphQLMutationResolver {
         this.gameRoleService = gameRoleService;
     }
 
-    public Game createGame(String userId, String name) {
+    public Game createGame(String userId, String name) throws Exception {
         System.out.println("Creating Game for User: " + userId);
         return gameService.createGameWithMC(userId, name);
     }

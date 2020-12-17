@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -63,19 +64,29 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game createGameWithMC(String userId, String name) {
+    public Game createGameWithMC(String userId, String name) throws Exception {
         System.out.println("createGameWithMC in gameServiceImpl");
         // Create the new game
         Game newGame = Game.builder().id(UUID.randomUUID().toString()).name(name).build();
 
         // Find the User who created the game to associate with GameRole
-        User creator = userService.findById(userId).block();
+        Optional<User> creatorOptional = userService.findById(userId).blockOptional();
+
+        User creator;
+        if (creatorOptional.isEmpty()) {
+            User newUser = User.builder().id(userId).build();
+            creator = userService.save(newUser).block();
+        } else {
+            creator = creatorOptional.get();
+        }
 
         // Create an MC GameRole for the Game creator and add it to the Game
         GameRole mcGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.MC).build();
         newGame.getGameRoles().add(mcGameRole);
         Game savedGame = gameRepository.save(newGame).block();
 
+        assert creator != null;
+        userService.addGameroleToUser(creator.getId(), mcGameRole);
         // Add the Game and User to the MC's GameRole
         mcGameRole.setGame(savedGame);
         mcGameRole.setUser(creator);
