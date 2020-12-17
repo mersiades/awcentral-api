@@ -1,3 +1,4 @@
+
 spring:
   security:
     oauth2:
@@ -5,3 +6,5 @@ spring:
         jwt:
           issuer-uri: https://keycloak.aw-central.com/auth/realms/awc-realm
           jwk-set-uri: https://keycloak.aw-central.com/auth/realms/awc-realm/protocol/openid-connect/certs
+server:
+  port: 5000
