@@ -1,8 +1,8 @@
 # https://github.com/graphql-java-kickstart/graphql-spring-boot/issues/165#issuecomment-469183385
-#graphql:
-#  servlet:
-#    websocket:
-#      enabled: false
+graphql:
+  servlet:
+    websocket:
+      enabled: false
 
 spring:
   data:
