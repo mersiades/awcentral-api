@@ -111,7 +111,15 @@ public class GameServiceImpl implements GameService {
     public Game addInvitee(String gameId, String email) {
         Game game = findById(gameId).blockOptional().orElseThrow(NoSuchElementException::new);
         game.getInvitees().add(email);
-        gameRepository.save(game);
+        gameRepository.save(game).block();
+        return game;
+    }
+
+    @Override
+    public Game removeInvitee(String gameId, String email) {
+        Game game = findById(gameId).blockOptional().orElseThrow(NoSuchElementException::new);
+        game.getInvitees().remove(email);
+        gameRepository.save(game).block();
         return game;
     }
 

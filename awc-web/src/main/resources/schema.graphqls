@@ -188,6 +188,7 @@ type Mutation {
     createGame(userId: String!,
         name: String!): Game
     addInvitee(gameId: String!, email: String!): Game
+    removeInvitee(gameId: String!, email: String!): Game
     deleteGame(gameId: String!): Game
     createCharacter(gameRoleId: String!): Character
     setCharacterPlaybook(gameRoleId: String!,

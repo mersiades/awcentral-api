@@ -13,4 +13,8 @@ public interface GameService extends ReactiveCrudService<Game, String> {
 
     Game addInvitee(String gameId, String email);
 
+    Game removeInvitee(String gameId, String email);
+
+
+
 }
