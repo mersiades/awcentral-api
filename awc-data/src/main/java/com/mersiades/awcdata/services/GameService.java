@@ -11,4 +11,6 @@ public interface GameService extends ReactiveCrudService<Game, String> {
 
     Mono<Game> findAndDeleteById(String gameId);
 
+    Game addInvitee(String gameId, String email);
+
 }

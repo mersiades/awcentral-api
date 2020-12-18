@@ -49,9 +49,7 @@ class GameServiceImplTest {
         MockitoAnnotations.initMocks(this);
         mockUser = new User();
         mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(Roles.MC).game(mockGame1).user(mockUser).build();
-        mockGame1 = new Game(MOCK_GAME_ID_1,
-                "Michael's Mock Game",
-                List.of(mockGameRole));
+        mockGame1 = Game.builder().id(MOCK_GAME_ID_1).name("Michael's Mock Game").gameRoles(List.of(mockGameRole)).build();
         gameService = new GameServiceImpl(gameRepository, userService, gameRoleService);
     }
 

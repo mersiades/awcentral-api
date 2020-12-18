@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -104,6 +105,14 @@ public class GameServiceImpl implements GameService {
             gameRepository.delete(game);
             return game;
         });
+    }
+
+    @Override
+    public Game addInvitee(String gameId, String email) {
+        Game game = findById(gameId).blockOptional().orElseThrow(NoSuchElementException::new);
+        game.getInvitees().add(email);
+        gameRepository.save(game);
+        return game;
     }
 
 }

@@ -61,6 +61,7 @@ type Game {
     id: ID!
     name: String!
     gameRoles: [GameRole]
+    invitees: [String]
 }
 
 type Npc {
@@ -186,6 +187,7 @@ type Query {
 type Mutation {
     createGame(userId: String!,
         name: String!): Game
+    addInvitee(gameId: String!, email: String!): Game
     deleteGame(gameId: String!): Game
     createCharacter(gameRoleId: String!): Character
     setCharacterPlaybook(gameRoleId: String!,
