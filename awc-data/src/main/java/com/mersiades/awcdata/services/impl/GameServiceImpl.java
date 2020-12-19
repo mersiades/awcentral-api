@@ -97,6 +97,31 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Game addUserToGame(String gameId, String userId) throws Exception {
+        User user = userService.findOrCreateUser(userId);
+
+        // Create Player Gamerole for user
+        GameRole gameRole = GameRole.builder().id(UUID.randomUUID().toString())
+                .role(Roles.PLAYER)
+                .build();
+
+        Game game = gameRepository.findById(gameId).block();
+
+        assert game != null;
+        game.getGameRoles().add(gameRole);
+        this.save(game).block();
+
+        assert user != null;
+        userService.addGameroleToUser(user.getId(), gameRole);
+        // Do I need to save user here? No, I don't think so
+
+        gameRole.setUser(user);
+        gameRole.setGame(game);
+        gameRoleService.save(gameRole).block();
+        return game;
+    }
+
+    @Override
     public Mono<Game> findAndDeleteById(String gameId) {
         return gameRepository.findById(gameId).map(game -> {
             for (GameRole gameRole: game.getGameRoles()) {
@@ -121,6 +146,11 @@ public class GameServiceImpl implements GameService {
         game.getInvitees().remove(email);
         gameRepository.save(game).block();
         return game;
+    }
+
+    @Override
+    public Flux<Game> findAllByInvitee(String email) {
+        return gameRepository.findAllByInviteesContaining(email);
     }
 
 }

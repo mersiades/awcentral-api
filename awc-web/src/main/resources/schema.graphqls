@@ -179,6 +179,7 @@ type Query {
     gameRolesByUserId(id: String!): [GameRole]
     game(gameId:String!): Game
     gameForPlayer(gameId:String!, userId:String!): Game
+    gamesForInvitee(email: String!): [Game]
     allMoves: [Move]
     playbooks: [Playbook]
     playbookCreator(playbookType: PlayBooks!): PlaybookCreator
@@ -190,6 +191,7 @@ type Mutation {
     addInvitee(gameId: String!, email: String!): Game
     removeInvitee(gameId: String!, email: String!): Game
     deleteGame(gameId: String!): Game
+    addUserToGame(gameId: String!, userId: String!): Game
     createCharacter(gameRoleId: String!): Character
     setCharacterPlaybook(gameRoleId: String!,
         characterId: String!,

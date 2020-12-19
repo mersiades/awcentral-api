@@ -28,11 +28,6 @@ public class Query implements GraphQLQueryResolver {
         this.playbookCreatorService = playbookCreatorService;
     }
 
-//    public User userByDiscordId(String discordId) {
-//        System.out.println("Fetching User by Discord id: " + discordId);
-//        return userService.findByDiscordId(discordId).block();
-//    }
-
     @CrossOrigin
     public List<GameRole> gameRolesByUserId(String id) {
         System.out.println("Fetching GameRoles for user: " + id);
@@ -62,6 +57,11 @@ public class Query implements GraphQLQueryResolver {
 
         // Return the game, but with only the User's (player) GameRole
         return game;
+    }
+
+    public List<Game> gamesForInvitee(String email) {
+        System.out.println("Fetching Games for invitee: " + email);
+        return gameService.findAllByInvitee(email).collectList().block();
     }
 
     public List<Move> allMoves() {

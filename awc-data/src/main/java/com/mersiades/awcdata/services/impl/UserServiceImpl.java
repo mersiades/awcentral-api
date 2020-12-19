@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -55,5 +56,19 @@ public class UserServiceImpl implements UserService {
         System.out.println("Adding gamerole to user");
         user.getGameRoles().add(gameRole);
         return userRepository.save(user).block();
+    }
+
+    @Override
+    public User findOrCreateUser(String userId) {
+        Optional<User> userOptional = this.findById(userId).blockOptional();
+
+        User user;
+        if (userOptional.isEmpty()) {
+            User newUser = User.builder().id(userId).build();
+            user = this.save(newUser).block();
+        } else {
+            user = userOptional.get();
+        }
+        return user;
     }
 }
