@@ -20,9 +20,9 @@ public class Mutation implements GraphQLMutationResolver {
         this.gameRoleService = gameRoleService;
     }
 
-    public Game createGame(String userId, String name) throws Exception {
+    public Game createGame(String userId, String displayName, String email, String name) throws Exception {
         System.out.println("Creating Game for User: " + userId);
-        return gameService.createGameWithMC(userId, name);
+        return gameService.createGameWithMC(userId, displayName, email, name);
     }
 
     public Game addInvitee(String gameId, String email) {
@@ -35,9 +35,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.removeInvitee(gameId, email);
     }
 
-    public Game addUserToGame(String gameId, String userId) throws Exception {
+    public Game addUserToGame(String gameId, String userId, String displayName, String email) throws Exception {
         System.out.println("Adding User to Game: " + gameId);
-        return gameService.addUserToGame(gameId, userId);
+        return gameService.addUserToGame(gameId, userId, displayName, email);
     }
 
     public Game deleteGame(String gameId) {

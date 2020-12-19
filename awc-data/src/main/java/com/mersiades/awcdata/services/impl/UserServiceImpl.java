@@ -59,12 +59,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findOrCreateUser(String userId) {
+    public User findOrCreateUser(String userId, String displayName, String email) {
         Optional<User> userOptional = this.findById(userId).blockOptional();
 
         User user;
         if (userOptional.isEmpty()) {
-            User newUser = User.builder().id(userId).build();
+            User newUser = User.builder().id(userId).displayName(displayName).email(email).build();
             user = this.save(newUser).block();
         } else {
             user = userOptional.get();

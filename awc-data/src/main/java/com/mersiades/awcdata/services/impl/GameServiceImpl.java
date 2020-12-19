@@ -13,7 +13,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -65,25 +64,17 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game createGameWithMC(String userId, String name) throws Exception {
+    public Game createGameWithMC(String userId, String displayName, String email, String name) throws Exception {
         System.out.println("createGameWithMC in gameServiceImpl");
         // Create the new game
         Game newGame = Game.builder().id(UUID.randomUUID().toString()).name(name).build();
 
-        // Find the User who created the game to associate with GameRole
-        Optional<User> creatorOptional = userService.findById(userId).blockOptional();
-
-        User creator;
-        if (creatorOptional.isEmpty()) {
-            User newUser = User.builder().id(userId).build();
-            creator = userService.save(newUser).block();
-        } else {
-            creator = creatorOptional.get();
-        }
+        User creator = userService.findOrCreateUser(userId, displayName, email);
 
         // Create an MC GameRole for the Game creator and add it to the Game
         GameRole mcGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.MC).build();
         newGame.getGameRoles().add(mcGameRole);
+        newGame.getUsers().add(creator);
         Game savedGame = gameRepository.save(newGame).block();
 
         assert creator != null;
@@ -97,8 +88,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game addUserToGame(String gameId, String userId) throws Exception {
-        User user = userService.findOrCreateUser(userId);
+    public Game addUserToGame(String gameId, String userId, String displayName, String email) throws Exception {
+        User user = userService.findOrCreateUser(userId, displayName, email);
 
         // Create Player Gamerole for user
         GameRole gameRole = GameRole.builder().id(UUID.randomUUID().toString())
@@ -109,6 +100,7 @@ public class GameServiceImpl implements GameService {
 
         assert game != null;
         game.getGameRoles().add(gameRole);
+        game.getUsers().add(user);
         this.save(game).block();
 
         assert user != null;

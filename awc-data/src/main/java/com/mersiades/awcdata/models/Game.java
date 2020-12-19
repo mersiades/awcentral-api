@@ -20,6 +20,10 @@ public class Game {
 
     private String name;
 
+    @DBRef
+    @Builder.Default
+    private List<User> users = new ArrayList<>();
+
     @Builder.Default
     private List<String> invitees = new ArrayList<>();
 

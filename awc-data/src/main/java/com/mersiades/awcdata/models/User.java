@@ -19,6 +19,10 @@ public class User {
     @Id
     private String id;
 
+    private String displayName;
+
+    private String email;
+
     // one to many
     @DBRef
     @Builder.Default
