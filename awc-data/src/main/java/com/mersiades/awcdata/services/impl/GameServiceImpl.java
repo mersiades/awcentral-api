@@ -74,7 +74,7 @@ public class GameServiceImpl implements GameService {
         // Create an MC GameRole for the Game creator and add it to the Game
         GameRole mcGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.MC).build();
         newGame.getGameRoles().add(mcGameRole);
-        newGame.getUsers().add(creator);
+        newGame.setMc(creator);
         Game savedGame = gameRepository.save(newGame).block();
 
         assert creator != null;
@@ -100,7 +100,8 @@ public class GameServiceImpl implements GameService {
 
         assert game != null;
         game.getGameRoles().add(gameRole);
-        game.getUsers().add(user);
+        game.getPlayers().add(user);
+        game.getInvitees().remove(email);
         this.save(game).block();
 
         assert user != null;

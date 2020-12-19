@@ -62,9 +62,10 @@ type User {
 type Game {
     id: ID!
     name: String!
+    mc: User
+    players: [User]
     gameRoles: [GameRole]
     invitees: [String]
-    users: [User]
 }
 
 type Npc {

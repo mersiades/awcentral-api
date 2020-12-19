@@ -113,6 +113,8 @@ public class MockDataLoader implements CommandLineRunner {
 
         mockGame1.getGameRoles().add(daveAsMC);
         mockGame1.getGameRoles().add(sarahAsPlayer);
+        mockGame1.setMc(mockUser1);
+        mockGame1.getPlayers().add(mockUser2);
         gameService.save(mockGame1).block();
 
         mockUser1.getGameRoles().add(daveAsMC);
@@ -150,6 +152,8 @@ public class MockDataLoader implements CommandLineRunner {
 
         mockGame2.getGameRoles().add(daveAsPlayer);
         mockGame2.getGameRoles().add(sarahAsMC);
+        mockGame2.setMc(mockUser2);
+        mockGame2.getPlayers().add(mockUser1);
         gameService.save(mockGame2).block();
 
         mockUser1.getGameRoles().add(daveAsPlayer);
