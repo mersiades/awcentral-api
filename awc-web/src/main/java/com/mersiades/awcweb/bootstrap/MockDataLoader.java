@@ -29,7 +29,11 @@ public class MockDataLoader implements CommandLineRunner {
     private final UserService userService;
 
     final String KEYCLOAK_ID_1 = System.getenv("DAVE_ID");
+    final String KEYCLOAK_DISPLAY_NAME_1 = "dave";
+    final String KEYCLOAK_EMAIL_1 = "dave@email.com";
     final String KEYCLOAK_ID_2 = System.getenv("SARA_ID");
+    final String KEYCLOAK_DISPLAY_NAME_2 = "sara";
+    final String KEYCLOAK_EMAIL_2 = "sara@email.com";
     final String MOCK_GAME_1_ID = "0ca6cc54-77a5-4d6e-ba2e-ee1543d6a249";
     final String MOCK_GAME_2_ID = "ecb645d2-06d3-46dc-ad7f-20bbd167085d";
     final String DAVE_AS_PLAYER_ID = "2a7aba8d-f6e8-4880-8021-99809c800acc";
@@ -79,9 +83,15 @@ public class MockDataLoader implements CommandLineRunner {
     private void loadMockData() {
 
         // -------------------------------------- Set up mock Users -------------------------------------- //
-        User mockUser1 = User.builder().id(KEYCLOAK_ID_1).build();
+        User mockUser1 = User.builder()
+                .id(KEYCLOAK_ID_1)
+                .displayName(KEYCLOAK_DISPLAY_NAME_1)
+                .email(KEYCLOAK_EMAIL_1).build();
 
-        User mockUser2 = User.builder().id(KEYCLOAK_ID_2).build();
+        User mockUser2 = User.builder()
+                .id(KEYCLOAK_ID_2)
+                .displayName(KEYCLOAK_DISPLAY_NAME_2)
+                .email(KEYCLOAK_EMAIL_2).build();
 
         // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
         Game mockGame1 = Game.builder().id(MOCK_GAME_1_ID).name("Mock Game 1").build();
@@ -103,6 +113,8 @@ public class MockDataLoader implements CommandLineRunner {
 
         mockGame1.getGameRoles().add(daveAsMC);
         mockGame1.getGameRoles().add(sarahAsPlayer);
+        mockGame1.setMc(mockUser1);
+        mockGame1.getPlayers().add(mockUser2);
         gameService.save(mockGame1).block();
 
         mockUser1.getGameRoles().add(daveAsMC);
@@ -140,6 +152,8 @@ public class MockDataLoader implements CommandLineRunner {
 
         mockGame2.getGameRoles().add(daveAsPlayer);
         mockGame2.getGameRoles().add(sarahAsMC);
+        mockGame2.setMc(mockUser2);
+        mockGame2.getPlayers().add(mockUser1);
         gameService.save(mockGame2).block();
 
         mockUser1.getGameRoles().add(daveAsPlayer);

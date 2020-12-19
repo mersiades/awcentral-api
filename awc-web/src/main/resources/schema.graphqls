@@ -54,13 +54,18 @@ enum LookCategories {
 
 type User {
     id: ID!
+    displayName: String
+    email: String
     gameRoles: [GameRole]
 }
 
 type Game {
     id: ID!
     name: String!
+    mc: User
+    players: [User]
     gameRoles: [GameRole]
+    invitees: [String]
 }
 
 type Npc {
@@ -178,6 +183,7 @@ type Query {
     gameRolesByUserId(id: String!): [GameRole]
     game(gameId:String!): Game
     gameForPlayer(gameId:String!, userId:String!): Game
+    gamesForInvitee(email: String!): [Game]
     allMoves: [Move]
     playbooks: [Playbook]
     playbookCreator(playbookType: PlayBooks!): PlaybookCreator
@@ -185,8 +191,16 @@ type Query {
 
 type Mutation {
     createGame(userId: String!,
+        displayName: String!,
+        email: String!
         name: String!): Game
+    addInvitee(gameId: String!, email: String!): Game
+    removeInvitee(gameId: String!, email: String!): Game
     deleteGame(gameId: String!): Game
+    addUserToGame(gameId: String!,
+        userId: String!,
+        displayName: String!,
+        email: String!): Game
     createCharacter(gameRoleId: String!): Character
     setCharacterPlaybook(gameRoleId: String!,
         characterId: String!,
