@@ -22,6 +22,10 @@ public class Game {
 
     private User mc;
 
+    private String commsApp;
+
+    private String commsUrl;
+
     @DBRef
     @Builder.Default
     private List<User> players = new ArrayList<>();

@@ -134,6 +134,22 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Game addCommsApp(String gameId, String app) {
+        Game game = findById(gameId).blockOptional().orElseThrow(NoSuchElementException::new);
+        game.setCommsApp(app);
+        gameRepository.save(game).block();
+        return game;
+    }
+
+    @Override
+    public Game addCommsUrl(String gameId, String url) {
+        Game game = findById(gameId).blockOptional().orElseThrow(NoSuchElementException::new);
+        game.setCommsUrl(url);
+        gameRepository.save(game).block();
+        return game;
+    }
+
+    @Override
     public Game removeInvitee(String gameId, String email) {
         Game game = findById(gameId).blockOptional().orElseThrow(NoSuchElementException::new);
         game.getInvitees().remove(email);

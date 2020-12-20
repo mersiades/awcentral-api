@@ -94,7 +94,12 @@ public class MockDataLoader implements CommandLineRunner {
                 .email(KEYCLOAK_EMAIL_2).build();
 
         // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
-        Game mockGame1 = Game.builder().id(MOCK_GAME_1_ID).name("Mock Game 1").build();
+        Game mockGame1 = Game.builder()
+                .id(MOCK_GAME_1_ID)
+                .name("Mock Game 1")
+                .commsApp("Zoom")
+                .commsUrl("https://zoom.com/somethingsomething?something=something&somethingelse=somethingelse")
+                .build();
 
         GameRole daveAsMC = GameRole.builder().id(DAVE_AS_PLAYER_ID).role(Roles.MC).build();
         GameRole sarahAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
@@ -134,7 +139,12 @@ public class MockDataLoader implements CommandLineRunner {
         npcService.saveAll(Flux.just(mockNpc1, mockNpc2)).blockLast();
 
         // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
-        Game mockGame2 = Game.builder().id(MOCK_GAME_2_ID).name("Mock Game 2").build();
+        Game mockGame2 = Game.builder()
+                .id(MOCK_GAME_2_ID)
+                .name("Mock Game 2")
+                .commsApp("Discord")
+                .commsUrl("https://discord.com/something")
+                .build();
 
         GameRole daveAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
         GameRole sarahAsMC =  GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.MC).build();
