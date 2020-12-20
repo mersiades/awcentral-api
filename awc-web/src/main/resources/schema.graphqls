@@ -63,6 +63,8 @@ type Game {
     id: ID!
     name: String!
     mc: User
+    commsApp: String
+    commsUrl: String
     players: [User]
     gameRoles: [GameRole]
     invitees: [String]
@@ -196,6 +198,8 @@ type Mutation {
         name: String!): Game
     addInvitee(gameId: String!, email: String!): Game
     removeInvitee(gameId: String!, email: String!): Game
+    addCommsApp(gameId: String!, app: String!): Game
+    addCommsUrl(gameId: String!, url: String!): Game
     deleteGame(gameId: String!): Game
     addUserToGame(gameId: String!,
         userId: String!,

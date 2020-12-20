@@ -16,6 +16,10 @@ public interface GameService extends ReactiveCrudService<Game, String> {
 
     Game addInvitee(String gameId, String email);
 
+    Game addCommsApp(String gameId, String app);
+
+    Game addCommsUrl(String gameId, String url);
+
     Game removeInvitee(String gameId, String email);
 
     Flux<Game> findAllByInvitee(String email);

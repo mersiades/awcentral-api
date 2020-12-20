@@ -30,6 +30,16 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.addInvitee(gameId, email);
     }
 
+    public Game addCommsApp(String gameId, String app) {
+        System.out.println("Adding comms app to Game: " + gameId);
+        return gameService.addCommsApp(gameId, app);
+    }
+
+    public Game addCommsUrl(String gameId, String url) {
+        System.out.println("Adding comms url to Game: " + gameId);
+        return gameService.addCommsUrl(gameId, url);
+    }
+
     public Game removeInvitee(String gameId, String email) {
         System.out.println("Removing invitee from Game: " + gameId);
         return gameService.removeInvitee(gameId, email);
