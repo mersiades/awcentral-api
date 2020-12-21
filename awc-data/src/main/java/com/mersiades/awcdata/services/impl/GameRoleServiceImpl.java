@@ -54,7 +54,6 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     @Override
     public void delete(GameRole gameRole) {
-        System.out.println("gameRole in gamerRoleService.delete= " + gameRole);
         gameRoleRepository.delete(gameRole).block();
     }
 
@@ -65,12 +64,6 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     @Override
     public Flux<GameRole> findAllByUser(User user) {
-        System.out.println("user = " + user);
-        if (user.getGameRoles() == null) {
-            System.out.println("gameRoles: null");
-        } else {
-            System.out.println("gameRoles: " + user.getGameRoles().toString());
-        }
         return gameRoleRepository.findAllByUser(user);
     }
 
@@ -169,7 +162,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         characterService.save(character).block();
         gameRoleRepository.save(gameRole).block();
 
-        return null;
+        return character;
     }
 
     private void createOrUpdateCharacterStat(Character character, StatsOption statsOption, Stats stat) {

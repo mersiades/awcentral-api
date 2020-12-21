@@ -17,6 +17,7 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,9 +49,11 @@ class GameServiceImplTest {
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mockUser = new User();
+        mockUser = User.builder().id("mock-user-id").email("mock-email").displayName("mock-displayname").build();
         mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(Roles.MC).game(mockGame1).user(mockUser).build();
-        mockGame1 = Game.builder().id(MOCK_GAME_ID_1).name("Michael's Mock Game").gameRoles(List.of(mockGameRole)).build();
+        List<GameRole> gameRoles = new ArrayList<>();
+        gameRoles.add(mockGameRole);
+        mockGame1 = Game.builder().id(MOCK_GAME_ID_1).name("Michael's Mock Game").gameRoles(gameRoles).build();
         gameService = new GameServiceImpl(gameRepository, userService, gameRoleService);
     }
 
@@ -145,6 +148,58 @@ class GameServiceImplTest {
         assertEquals(MOCK_GAMEROLE_ID, returnedGame.getGameRoles().stream().findFirst().orElseThrow().getId());
         verify(gameRepository, times(1)).findByGameRoles(any(GameRole.class));
     }
+
+    @Test
+    void shouldCreateGameForMc() throws Exception {
+        // Given
+        String mockGameName = "mock-game-name";
+        when(userService.findOrCreateUser(anyString(), anyString(), anyString())).thenReturn(mockUser);
+        when(gameRepository.save(any())).thenReturn(Mono.just(mockGame1));
+        when(gameRoleService.save(any())).thenReturn(Mono.just(mockGameRole));
+
+        // When
+        Game returnedGame = gameService.createGameWithMC(mockUser.getId(),
+                mockUser.getDisplayName(),
+                mockUser.getEmail(),
+                mockGameName);
+
+        // Then
+        assert returnedGame != null;
+        assertEquals(mockGameName, returnedGame.getName());
+        assertEquals(mockUser.getId(), returnedGame.getMc().getId());
+        verify(userService, times(1)).findOrCreateUser(anyString(),anyString(),anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
+        verify(gameRoleService, times(1)).save(any(GameRole.class));
+    }
+
+    @Test
+    void shouldAddNewUserToGame() throws Exception {
+        // Given
+        User mockNewUser = User.builder().id("mock-new-user-id").displayName("new-displayname").email("new-email").build();
+        mockGame1.getInvitees().add("mock-invitee-email");
+        when(userService.findOrCreateUser(anyString(), anyString(), anyString())).thenReturn(mockNewUser);
+        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameService.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(gameRoleService.save(any())).thenReturn(Mono.just(mockGameRole));
+
+        // When
+        Game returnedGame = gameService.addUserToGame(mockGame1.getId(),
+                mockNewUser.getId(),
+                mockNewUser.getDisplayName(),
+                mockNewUser.getEmail());
+
+        // Then
+        assert returnedGame != null;
+        System.out.println("returnedGame = " + returnedGame);
+        assertEquals(1, returnedGame.getPlayers().size());
+        assertEquals(2, returnedGame.getGameRoles().size());
+        verify(userService, times(1)).findOrCreateUser(anyString(),anyString(),anyString());
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRoleService, times(1)).save(any(GameRole.class));
+    }
+
+    @Test
+    void shouldAddExistingUserToGame() throws Exception {}
 
 
 }

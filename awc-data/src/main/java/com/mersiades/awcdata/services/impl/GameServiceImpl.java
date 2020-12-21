@@ -65,7 +65,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game createGameWithMC(String userId, String displayName, String email, String name) throws Exception {
-        System.out.println("createGameWithMC in gameServiceImpl");
         // Create the new game
         Game newGame = Game.builder().id(UUID.randomUUID().toString()).name(name).build();
 
