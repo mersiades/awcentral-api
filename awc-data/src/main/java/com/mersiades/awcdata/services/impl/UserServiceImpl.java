@@ -71,4 +71,16 @@ public class UserServiceImpl implements UserService {
         }
         return user;
     }
+
+    @Override
+    public void removeGameroleFromUser(String userId, String gameId) {
+        User user = this.findById(userId).block();
+        assert user != null;
+        Optional<GameRole> gameRoleOptional = user.getGameRoles().stream()
+                .filter(gameRole -> gameRole.getGame().getId().equals(gameId))
+                .findFirst();
+
+        gameRoleOptional.ifPresent(gameRole -> user.getGameRoles().remove(gameRole));
+        this.save(user).block();
+    }
 }

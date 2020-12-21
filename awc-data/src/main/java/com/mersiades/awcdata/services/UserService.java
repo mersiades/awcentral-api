@@ -7,4 +7,6 @@ public interface UserService extends ReactiveCrudService<User, String> {
     User addGameroleToUser(String userId, GameRole gameRole) throws Exception;
 
     User findOrCreateUser(String userId, String displayName, String email);
+
+    void removeGameroleFromUser(String userId, String gameId);
 }
