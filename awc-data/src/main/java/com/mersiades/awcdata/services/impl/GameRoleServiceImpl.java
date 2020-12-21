@@ -55,7 +55,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public void delete(GameRole gameRole) {
         System.out.println("gameRole in gamerRoleService.delete= " + gameRole);
-        gameRoleRepository.delete(gameRole);
+        gameRoleRepository.delete(gameRole).block();
     }
 
     @Override

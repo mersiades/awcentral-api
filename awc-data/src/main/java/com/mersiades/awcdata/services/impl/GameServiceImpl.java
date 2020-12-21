@@ -50,7 +50,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void delete(Game game) {
-        gameRepository.delete(game);
+        gameRepository.delete(game).block();
     }
 
     @Override
@@ -106,7 +106,6 @@ public class GameServiceImpl implements GameService {
 
         assert user != null;
         userService.addGameroleToUser(user.getId(), gameRole);
-        // Do I need to save user here? No, I don't think so
 
         gameRole.setUser(user);
         gameRole.setGame(game);
@@ -115,14 +114,20 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Mono<Game> findAndDeleteById(String gameId) {
-        return gameRepository.findById(gameId).map(game -> {
-            for (GameRole gameRole: game.getGameRoles()) {
-                gameRoleService.delete(gameRole);
-            }
-            gameRepository.delete(game);
-            return game;
-        });
+    public Game findAndDeleteById(String gameId) {
+        Game game = gameRepository.findById(gameId).blockOptional().orElseThrow(NoSuchElementException::new);
+
+        // Remove Gameroles from mc and players
+        userService.removeGameroleFromUser(game.getMc().getId(), gameId);
+        game.getPlayers().forEach(player -> userService.removeGameroleFromUser(player.getId(), gameId));
+
+        // Delete Gameroles
+        game.getGameRoles().forEach(gameRoleService::delete);
+
+        // Delete Game
+        this.delete(game);
+
+        return game;
     }
 
     @Override

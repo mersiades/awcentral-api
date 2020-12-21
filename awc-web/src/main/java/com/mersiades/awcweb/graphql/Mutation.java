@@ -52,7 +52,7 @@ public class Mutation implements GraphQLMutationResolver {
 
     public Game deleteGame(String gameId) {
         System.out.println("Deleting Game with id: " + gameId);
-        return gameService.findAndDeleteById(gameId).block();
+        return gameService.findAndDeleteById(gameId);
     }
 
     public Character createCharacter(String gameRoleId) {
