@@ -50,7 +50,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void delete(Game game) {
-        gameRepository.delete(game).block();
+        gameRepository.delete(game).log().block();
     }
 
     @Override
@@ -124,7 +124,7 @@ public class GameServiceImpl implements GameService {
         game.getGameRoles().forEach(gameRoleService::delete);
 
         // Delete Game
-        gameRepository.delete(game);
+        this.delete(game);
 
         return game;
     }

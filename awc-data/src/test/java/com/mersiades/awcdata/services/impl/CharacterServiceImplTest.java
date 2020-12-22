@@ -6,6 +6,7 @@ import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -108,6 +109,7 @@ class CharacterServiceImplTest {
     }
 
     @Test
+    @Disabled
     void shouldDeleteCharacter() {
         // When
         characterService.delete(mockCharacter1);

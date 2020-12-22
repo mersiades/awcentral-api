@@ -54,7 +54,8 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     @Override
     public void delete(GameRole gameRole) {
-        gameRoleRepository.delete(gameRole).block();
+        gameRole.getCharacters().forEach(characterService::delete);
+        gameRoleRepository.delete(gameRole).log().block();
     }
 
     @Override
