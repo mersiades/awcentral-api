@@ -65,7 +65,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game createGameWithMC(String userId, String displayName, String email, String name) throws Exception {
-        System.out.println("createGameWithMC in gameServiceImpl");
         // Create the new game
         Game newGame = Game.builder().id(UUID.randomUUID().toString()).name(name).build();
 
@@ -102,7 +101,7 @@ public class GameServiceImpl implements GameService {
         game.getGameRoles().add(gameRole);
         game.getPlayers().add(user);
         game.getInvitees().remove(email);
-        this.save(game).block();
+        gameRepository.save(game).block();
 
         assert user != null;
         userService.addGameroleToUser(user.getId(), gameRole);
@@ -125,7 +124,7 @@ public class GameServiceImpl implements GameService {
         game.getGameRoles().forEach(gameRoleService::delete);
 
         // Delete Game
-        this.delete(game);
+        gameRepository.delete(game);
 
         return game;
     }

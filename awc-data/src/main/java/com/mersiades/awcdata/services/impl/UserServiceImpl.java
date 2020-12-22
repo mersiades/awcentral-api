@@ -60,12 +60,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findOrCreateUser(String userId, String displayName, String email) {
-        Optional<User> userOptional = this.findById(userId).blockOptional();
+        Optional<User> userOptional = userRepository.findById(userId).blockOptional();
 
         User user;
         if (userOptional.isEmpty()) {
             User newUser = User.builder().id(userId).displayName(displayName).email(email).build();
-            user = this.save(newUser).block();
+            user = userRepository.save(newUser).block();
         } else {
             user = userOptional.get();
         }
@@ -74,13 +74,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeGameroleFromUser(String userId, String gameId) {
-        User user = this.findById(userId).block();
+        User user = userRepository.findById(userId).block();
         assert user != null;
         Optional<GameRole> gameRoleOptional = user.getGameRoles().stream()
                 .filter(gameRole -> gameRole.getGame().getId().equals(gameId))
                 .findFirst();
 
         gameRoleOptional.ifPresent(gameRole -> user.getGameRoles().remove(gameRole));
-        this.save(user).block();
+        userRepository.save(user).block();
     }
 }

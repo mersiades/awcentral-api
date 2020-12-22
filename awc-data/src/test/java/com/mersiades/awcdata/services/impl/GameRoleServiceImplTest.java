@@ -1,13 +1,15 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.enums.Roles;
+import com.mersiades.awcdata.enums.Stats;
 import com.mersiades.awcdata.models.Character;
-import com.mersiades.awcdata.models.Game;
-import com.mersiades.awcdata.models.GameRole;
-import com.mersiades.awcdata.models.User;
+import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
-import com.mersiades.awcdata.services.*;
+import com.mersiades.awcdata.services.CharacterService;
+import com.mersiades.awcdata.services.GameRoleService;
+import com.mersiades.awcdata.services.StatsOptionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -18,9 +20,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class GameRoleServiceImplTest {
@@ -48,6 +50,8 @@ class GameRoleServiceImplTest {
 
     Character mockCharacter;
 
+    StatsOption mockStatsOption;
+
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -60,6 +64,15 @@ class GameRoleServiceImplTest {
         mockUser.getGameRoles().add(mockGameRole);
         gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, statsOptionService);
         mockGameRole2 = new GameRole();
+        mockStatsOption = StatsOption.builder()
+                .id("mock-statsoption-id")
+                .COOL(2)
+                .HARD(2)
+                .HOT(2)
+                .SHARP(2)
+                .WEIRD(2)
+                .playbookType(Playbooks.ANGEL)
+                .build();
     }
 
 
@@ -159,6 +172,22 @@ class GameRoleServiceImplTest {
     }
 
     @Test
+    void shouldFindAllGameRolesByUserId() {
+        // Given
+        Game mockGame2 = new Game();
+        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id2").role(Roles.MC).game(mockGame2).user(mockUser).build();
+        when(gameRoleRepository.findAllByUserId(anyString())).thenReturn(Flux.just(mockGameRole, mockGameRole2));
+
+        // When
+        List<GameRole> returnedGameRoles = gameRoleService.findAllByUserId(mockUser.getId()).collectList().block();
+
+        // Then
+        assert returnedGameRoles != null;
+        assertEquals(2, returnedGameRoles.size());
+        verify(gameRoleRepository, times(1)).findAllByUserId(anyString());
+    }
+
+    @Test
     void shouldAddNewCharacterToGameRole() {
         // Given
         when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
@@ -211,4 +240,115 @@ class GameRoleServiceImplTest {
         verify(characterService, times(1)).save(any(Character.class));
         verify(gameRoleRepository, times(1)).save(any(GameRole.class));
     }
+
+    @Test
+    void shouldSetNewCharacterLook() {
+        // Given
+        String mockLook = "Handsome";
+        mockGameRole.getCharacters().add(mockCharacter);
+        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+
+        // When
+        Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook, LookCategories.FACE);
+        Optional<Look> lookOptional = returnedCharacter.getLookByCategory(LookCategories.FACE);
+
+        // Then
+        assertTrue(lookOptional.isPresent());
+        Look savedLook = lookOptional.get();
+        assertEquals(mockLook, savedLook.getLook());
+        verify(gameRoleRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+    }
+
+    @Test
+    void shouldUpdateCharacterLook() {
+        // Given
+        String mockLook = "Ugly";
+        Look existingLook = Look.builder().id("mock-look-id").category(LookCategories.FACE).look("Handsome").build();
+        mockCharacter.getLooks().add(existingLook);
+        mockGameRole.getCharacters().add(mockCharacter);
+        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+
+        // When
+        Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook, LookCategories.FACE);
+
+        System.out.println("returnedCharacter = " + returnedCharacter);
+        Optional<Look> lookOptional = returnedCharacter.getLookByCategory(LookCategories.FACE);
+
+        // Then
+        assertTrue(lookOptional.isPresent());
+        Look savedLook = lookOptional.get();
+        assertEquals(mockLook, savedLook.getLook());
+        verify(gameRoleRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+    }
+    
+    @Test
+    void shouldAddNewCharacterStat() {
+        // Given
+        mockGameRole.getCharacters().add(mockCharacter);
+        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        when(statsOptionService.findById(anyString())).thenReturn(Mono.just(mockStatsOption));
+        
+        // When
+        Character returnedCharacter = gameRoleService.setCharacterStats(mockGameRole.getId(), mockCharacter.getId(), mockStatsOption.getId());
+
+        // Then
+        System.out.println("returnedCharacter = " + returnedCharacter);
+        assertEquals(mockStatsOption.getCOOL(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.COOL).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getHARD(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.HARD).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getHOT(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.HOT).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getSHARP(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.SHARP).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getWEIRD(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.WEIRD).orElseThrow().getValue());
+
+        verify(statsOptionService, times(1)).findById(anyString());
+        verify(gameRoleRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+    }
+
+    @Test
+    void shouldUpdateCharacterStat() {
+        // Given
+        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(Stats.COOL).value(1).build();
+        CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(Stats.HARD).value(1).build();
+        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(Stats.HOT).value(1).build();
+        CharacterStat mockCharacterStatSharp = CharacterStat.builder().stat(Stats.SHARP).value(1).build();
+        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(Stats.WEIRD).value(1).build();
+        mockCharacter.getStatsBlock().setStats(List.of(mockCharacterStatCool,
+                mockCharacterStatHard,
+                mockCharacterStatHot,
+                mockCharacterStatSharp,
+                mockCharacterStatWeird));
+        mockGameRole.getCharacters().add(mockCharacter);
+        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        when(statsOptionService.findById(anyString())).thenReturn(Mono.just(mockStatsOption));
+
+        // When
+        Character returnedCharacter = gameRoleService.setCharacterStats(mockGameRole.getId(), mockCharacter.getId(), mockStatsOption.getId());
+
+        // Then
+        System.out.println("returnedCharacter = " + returnedCharacter);
+        assertEquals(mockStatsOption.getCOOL(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.COOL).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getHARD(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.HARD).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getHOT(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.HOT).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getSHARP(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.SHARP).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getWEIRD(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.WEIRD).orElseThrow().getValue());
+
+        verify(statsOptionService, times(1)).findById(anyString());
+        verify(gameRoleRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+    }
+
 }
