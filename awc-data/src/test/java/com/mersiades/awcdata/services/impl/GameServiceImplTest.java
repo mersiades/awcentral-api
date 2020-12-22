@@ -184,7 +184,7 @@ class GameServiceImplTest {
         mockGame1.getInvitees().add("mock-invitee-email");
         when(userService.findOrCreateUser(anyString(), anyString(), anyString())).thenReturn(mockNewUser);
         when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameService.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
         when(gameRoleService.save(any())).thenReturn(Mono.just(mockGameRole));
 
         // When
@@ -200,6 +200,7 @@ class GameServiceImplTest {
         assertEquals(2, returnedGame.getGameRoles().size());
         verify(userService, times(1)).findOrCreateUser(anyString(),anyString(),anyString());
         verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
         verify(gameRoleService, times(1)).save(any(GameRole.class));
     }
 
@@ -219,8 +220,8 @@ class GameServiceImplTest {
         mockGame1.getGameRoles().add(mockPlayerGameRole);
         when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
         doNothing().when(userService).removeGameroleFromUser(anyString(), anyString());
-        doNothing().when(userRepository).delete(any(User.class));
-        when(gameService.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        doNothing().when(gameRoleService).delete(any(GameRole.class));
+        doNothing().when(gameRepository).delete(any(Game.class));
 
         // When
         Game returnedGame = gameService.findAndDeleteById(mockGame1.getId());

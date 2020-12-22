@@ -101,7 +101,7 @@ public class GameServiceImpl implements GameService {
         game.getGameRoles().add(gameRole);
         game.getPlayers().add(user);
         game.getInvitees().remove(email);
-        this.save(game).block();
+        gameRepository.save(game).block();
 
         assert user != null;
         userService.addGameroleToUser(user.getId(), gameRole);
@@ -124,7 +124,7 @@ public class GameServiceImpl implements GameService {
         game.getGameRoles().forEach(gameRoleService::delete);
 
         // Delete Game
-        this.delete(game);
+        gameRepository.delete(game);
 
         return game;
     }

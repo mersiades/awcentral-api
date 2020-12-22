@@ -139,7 +139,8 @@ class UserServiceImplTest {
     @Test
     void shouldFindExistingUser()  {
         // Given
-        when(userService.findById(anyString())).thenReturn(Mono.just(mockUser1));
+        when(userRepository.findById(anyString())).thenReturn(Mono.just(mockUser1));
+//        when(userRepository.save(any(User.class))).thenReturn(Mono.just(mockUser1));
 
         // When
         User returnedUser = userService.findOrCreateUser(mockUser1.getId(), mockUser1.getDisplayName(), mockUser1.getEmail());
@@ -147,13 +148,15 @@ class UserServiceImplTest {
         // Then
         assert returnedUser != null;
         assertEquals(mockUser1.getId(), returnedUser.getId());
+        verify(userRepository, times(1)).findById(anyString());
+
     }
 
     @Test
     void shouldCreateNewUser()  {
         // Given
-        when(userService.findById(anyString())).thenReturn(Mono.empty());
-        when(userService.save(any(User.class))).thenReturn(Mono.just(mockUser1));
+        when(userRepository.findById(anyString())).thenReturn(Mono.empty());
+        when(userRepository.save(any(User.class))).thenReturn(Mono.just(mockUser1));
 
         // When
         User returnedUser = userService.findOrCreateUser(mockUser1.getId(), mockUser1.getDisplayName(), mockUser1.getEmail());
@@ -161,6 +164,8 @@ class UserServiceImplTest {
         // Then
         assert returnedUser != null;
         assertEquals(mockUser1.getId(), returnedUser.getId());
+        verify(userRepository, times(1)).findById(anyString());
+        verify(userRepository, times(1)).save(any(User.class));
     }
 
     @Test
@@ -171,15 +176,14 @@ class UserServiceImplTest {
         mockGame.getGameRoles().add(mockGameRole2);
         mockGameRole2.setGame(mockGame);
         mockUser1.getGameRoles().add(mockGameRole2);
-        when(userService.findById(anyString())).thenReturn(Mono.just(mockUser1));
-        when(userService.save(any(User.class))).thenReturn(Mono.just(mockUser1));
-//        when(userRepository.save(any(User.class))).thenReturn(Mono.just(mockUser1));
+        when(userRepository.findById(anyString())).thenReturn(Mono.just(mockUser1));
+        when(userRepository.save(any(User.class))).thenReturn(Mono.just(mockUser1));
 
         // When
         userService.removeGameroleFromUser(mockUser1.getId(), mockGame.getId());
 
         // Then
-//        verify(userRepository, times(1)).findById(anyString());
-//        verify(userRepository, times(1)).save(any(User.class));
+        verify(userRepository, times(1)).findById(anyString());
+        verify(userRepository, times(1)).save(any(User.class));
     }
 }
