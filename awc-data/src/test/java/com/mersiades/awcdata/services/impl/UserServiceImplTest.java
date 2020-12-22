@@ -1,5 +1,7 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awcdata.models.Game;
+import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.repositories.UserRepository;
 import com.mersiades.awcdata.services.UserService;
@@ -34,6 +36,8 @@ class UserServiceImplTest {
 
         mockUser1 = User.builder()
                 .id(MOCK_USER_ID_1)
+                .email("mock-user-email")
+                .displayName("mock-user-displayname")
                 .build();
 
         userService = new UserServiceImpl(userRepository);
@@ -115,17 +119,67 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).deleteById(anyString());
     }
 
-//    @Test
-//    void shouldFindUserByDiscordId() {
-//        // Given
-//        when(userRepository.findByDiscordId(anyString())).thenReturn(Mono.just(mockUser1));
-//
-//        // When
-//        User returnedUser = userService.findByDiscordId(DISCORD_USER_ID_1).block();
-//
-//        // Then
-//        assert returnedUser != null;
-//        assertEquals(mockUser1.getId(), returnedUser.getId());
-//        verify(userRepository, times(1)).findByDiscordId(anyString());
-//    }
+    @Test
+    void shouldAddAGameRoleToUser() throws Exception {
+        // Given
+        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id-2").build();
+        when(userRepository.findById(anyString())).thenReturn(Mono.just(mockUser1));
+        when(userRepository.save(any(User.class))).thenReturn(Mono.just(mockUser1));
+
+        // When
+        User savedUser = userService.addGameroleToUser(mockUser1.getId(), mockGameRole2);
+
+        // Then
+        assert savedUser != null;
+        assertEquals(1, savedUser.getGameRoles().size());
+        verify(userRepository, times(1)).findById(anyString());
+        verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    void shouldFindExistingUser()  {
+        // Given
+        when(userService.findById(anyString())).thenReturn(Mono.just(mockUser1));
+
+        // When
+        User returnedUser = userService.findOrCreateUser(mockUser1.getId(), mockUser1.getDisplayName(), mockUser1.getEmail());
+
+        // Then
+        assert returnedUser != null;
+        assertEquals(mockUser1.getId(), returnedUser.getId());
+    }
+
+    @Test
+    void shouldCreateNewUser()  {
+        // Given
+        when(userService.findById(anyString())).thenReturn(Mono.empty());
+        when(userService.save(any(User.class))).thenReturn(Mono.just(mockUser1));
+
+        // When
+        User returnedUser = userService.findOrCreateUser(mockUser1.getId(), mockUser1.getDisplayName(), mockUser1.getEmail());
+
+        // Then
+        assert returnedUser != null;
+        assertEquals(mockUser1.getId(), returnedUser.getId());
+    }
+
+    @Test
+    void shouldRemoveAGameRoleFromUser() throws Exception {
+        // Given
+        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id-2").build();
+        Game mockGame = Game.builder().id("mock-game-id").build();
+        mockGame.getGameRoles().add(mockGameRole2);
+        mockGameRole2.setGame(mockGame);
+        mockUser1.getGameRoles().add(mockGameRole2);
+        when(userService.findById(anyString())).thenReturn(Mono.just(mockUser1));
+        when(userService.save(any(User.class))).thenReturn(Mono.just(mockUser1));
+//        when(userRepository.save(any(User.class))).thenReturn(Mono.just(mockUser1));
+
+        // When
+        userService.removeGameroleFromUser(mockUser1.getId(), mockGame.getId());
+
+        // Then
+//        verify(userRepository, times(1)).findById(anyString());
+//        verify(userRepository, times(1)).save(any(User.class));
+    }
 }

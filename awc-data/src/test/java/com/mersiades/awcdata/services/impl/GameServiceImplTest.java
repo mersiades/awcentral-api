@@ -5,6 +5,7 @@ import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.repositories.GameRepository;
+import com.mersiades.awcdata.repositories.UserRepository;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
@@ -18,10 +19,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class GameServiceImplTest {
@@ -31,6 +32,9 @@ class GameServiceImplTest {
 
     @Mock
     GameRepository gameRepository;
+
+    @Mock
+    UserRepository userRepository;
 
     @Mock
     UserService userService;
@@ -44,16 +48,16 @@ class GameServiceImplTest {
 
     GameRole mockGameRole;
 
-    User mockUser;
+    User mockMc;
 
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mockUser = User.builder().id("mock-user-id").email("mock-email").displayName("mock-displayname").build();
-        mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(Roles.MC).game(mockGame1).user(mockUser).build();
+        mockMc = User.builder().id("mock-user-id").email("mock-email").displayName("mock-displayname").build();
+        mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(Roles.MC).game(mockGame1).user(mockMc).build();
         List<GameRole> gameRoles = new ArrayList<>();
         gameRoles.add(mockGameRole);
-        mockGame1 = Game.builder().id(MOCK_GAME_ID_1).name("Michael's Mock Game").gameRoles(gameRoles).build();
+        mockGame1 = Game.builder().id(MOCK_GAME_ID_1).name("Michael's Mock Game").mc(mockMc).gameRoles(gameRoles).build();
         gameService = new GameServiceImpl(gameRepository, userService, gameRoleService);
     }
 
@@ -153,25 +157,26 @@ class GameServiceImplTest {
     void shouldCreateGameForMc() throws Exception {
         // Given
         String mockGameName = "mock-game-name";
-        when(userService.findOrCreateUser(anyString(), anyString(), anyString())).thenReturn(mockUser);
+        when(userService.findOrCreateUser(anyString(), anyString(), anyString())).thenReturn(mockMc);
         when(gameRepository.save(any())).thenReturn(Mono.just(mockGame1));
         when(gameRoleService.save(any())).thenReturn(Mono.just(mockGameRole));
 
         // When
-        Game returnedGame = gameService.createGameWithMC(mockUser.getId(),
-                mockUser.getDisplayName(),
-                mockUser.getEmail(),
+        Game returnedGame = gameService.createGameWithMC(mockMc.getId(),
+                mockMc.getDisplayName(),
+                mockMc.getEmail(),
                 mockGameName);
 
         // Then
         assert returnedGame != null;
         assertEquals(mockGameName, returnedGame.getName());
-        assertEquals(mockUser.getId(), returnedGame.getMc().getId());
+        assertEquals(mockMc.getId(), returnedGame.getMc().getId());
         verify(userService, times(1)).findOrCreateUser(anyString(),anyString(),anyString());
         verify(gameRepository, times(1)).save(any(Game.class));
         verify(gameRoleService, times(1)).save(any(GameRole.class));
     }
 
+    // This should be an integration test, not unit
     @Test
     void shouldAddNewUserToGame() throws Exception {
         // Given
@@ -198,8 +203,113 @@ class GameServiceImplTest {
         verify(gameRoleService, times(1)).save(any(GameRole.class));
     }
 
+    // I'm having trouble mocking the void methods
+    // This should be an integration test, not unit
     @Test
-    void shouldAddExistingUserToGame() throws Exception {}
+    @Disabled
+    void shouldFindGameByIdAndDelete() throws Exception {
+        // Given
+        User mockPlayer = User.builder().id("mock-player-user-id").displayName("player-displayname").email("player-email").build();
+        GameRole mockPlayerGameRole = GameRole.builder()
+                .id("mock-gamerole-id-2")
+                .role(Roles.PLAYER)
+                .user(mockPlayer)
+                .game(mockGame1).build();
+        mockGame1.getPlayers().add(mockPlayer);
+        mockGame1.getGameRoles().add(mockPlayerGameRole);
+        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        doNothing().when(userService).removeGameroleFromUser(anyString(), anyString());
+        doNothing().when(userRepository).delete(any(User.class));
+        when(gameService.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
 
+        // When
+        Game returnedGame = gameService.findAndDeleteById(mockGame1.getId());
+
+        // Then
+        assert returnedGame != null;
+        System.out.println("returnedGame = " + returnedGame);
+    }
+
+    @Test
+    void shouldAddInviteeToGame() {
+        // Given
+        String mockInvitee = "mock@invitee.com";
+        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.addInvitee(mockGame1.getId(), mockInvitee);
+
+        // Then
+        assert returnedGame != null;
+        assertTrue(returnedGame.getInvitees().contains(mockInvitee));
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldAddCommsAppToGame() {
+        // Given
+        String mockCommsApp = "Discord";
+        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.addCommsApp(mockGame1.getId(), mockCommsApp);
+
+        // Then
+        assert returnedGame != null;
+        assertEquals(returnedGame.getCommsApp(), mockCommsApp);
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldAddCommsUrlToGame() {
+        // Given
+        String mockCommsUrl = "https://mock-url.com";
+        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.addCommsUrl(mockGame1.getId(), mockCommsUrl);
+
+        // Then
+        assert returnedGame != null;
+        assertEquals(returnedGame.getCommsUrl(), mockCommsUrl);
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldRemoveInviteeFromGame() {
+        // Given
+        String mockInvitee = "mock@invitee.com";
+        mockGame1.getInvitees().add(mockInvitee);
+        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.removeInvitee(mockGame1.getId(), mockInvitee);
+
+        // Then
+        assert returnedGame != null;
+        assertFalse(returnedGame.getInvitees().contains(mockInvitee));
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldFindAllGamesForInvitee() {
+        // Given
+        String mockInvitee = "mock@invitee.com";
+        Game mockGame2 = Game.builder().invitees(Collections.singletonList(mockInvitee)).build();
+        mockGame1.getInvitees().add(mockInvitee);
+        when(gameRepository.findAllByInviteesContaining(anyString())).thenReturn(Flux.just(mockGame1, mockGame2));
+
+        // When
+        List<Game> returnedGames = gameService.findAllByInvitee(mockInvitee).collectList().block();
+
+        // Then
+        assert returnedGames != null;
+        assertEquals(2, returnedGames.size());
+        verify(gameRepository, times(1)).findAllByInviteesContaining(anyString());
+    }
 
 }
