@@ -91,6 +91,13 @@ public class GameRoleServiceImpl implements GameRoleService {
         assert gameRole != null;
         Character character = gameRole.getCharacters().stream()
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+        // Reset fields if already filled
+        character.setName(null);
+        character.getLooks().clear();
+        character.setStatsBlock(new StatsBlock());
+        character.getGear().clear();
+
+        // Set new playbook
         character.setPlaybook(playbookType);
         characterService.save(character).block();
         gameRoleRepository.save(gameRole).block();
