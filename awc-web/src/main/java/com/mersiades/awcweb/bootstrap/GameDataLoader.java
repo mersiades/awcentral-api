@@ -339,9 +339,40 @@ public class GameDataLoader implements CommandLineRunner {
                 "On the others’ turns, answer their questions as you like.\n" +
                 "\n" +
                 "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.");
-        playbookCreatorService.save(angelCreator).block();
 
-        List<PlaybookCreator> playbookCreators = playbookCreatorService.findAll().collectList().block();
+        /* ----------------------------- BATTLEBABE PLAYBOOK CREATOR --------------------------------- */
+        GearInstructions battlebabeGearInstructions = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .youGet("You get:")
+                .youGetItems(List.of("2 custom weapons", "fashion suitable to your look, including at your option fashion worth 1-armor or body armor worth 2-armor (you detail)"))
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .startingBarter(4)
+                .build();
+
+        PlaybookCreator battlebabePlaybookCreator = PlaybookCreator.builder()
+                .playbookType(Playbooks.BATTLEBABE)
+                .gearInstructions(battlebabeGearInstructions)
+                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
+                "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .movesInstructions("You get all the basic moves. Choose 2 battlebabe moves.\n" +
+                        "You can use all the battle moves, but when you get the chance, look up _**standing overwatch**_, _**boarding a moving vehicle**_, and the _**subterfuge**_ moves.")
+                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
+                        "\n" +
+                        "List the other characters’ names.\n" +
+                        "\n" +
+                        "Go around again for Hx. On your turn, ask the other players which of their characters you can trust.\n" +
+                        "\n" +
+                        "- For the characters you can trust, write Hx-1.\n" +
+                        "- For the characters you can’t trust, write Hx+3.\n" +
+                        "\n" +
+                        "You are indifferent to what is safe, and drawn to what is not.\n" +
+                        "\n" +
+                        "On the others’ turns, answer their questions as you like.\n" +
+                        "\n" +
+                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                .build();
+
+        playbookCreatorService.saveAll(Flux.just(angelCreator, battlebabePlaybookCreator)).blockLast();
     }
 
     public void loadStatsOptions() {
@@ -353,7 +384,12 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption angel4 = new StatsOption(Playbooks.ANGEL, 2, 0, -1, 2, -1);
         statsOptionService.saveAll(Flux.just(angel1, angel2, angel3, angel4)).blockLast();
 
-        List<StatsOption> statsOptions = statsOptionService.findAll().collectList().block();
+        /* ----------------------------- BATTLEBABE STATS OPTIONS --------------------------------- */
+        StatsOption battlebabe1 = StatsOption.builder().playbookType(Playbooks.BATTLEBABE).COOL(3).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build();
+        StatsOption battlebabe2 = StatsOption.builder().playbookType(Playbooks.BATTLEBABE).COOL(3).HARD(-1).HOT(2).SHARP(0).WEIRD(-1).build();
+        StatsOption battlebabe3 = StatsOption.builder().playbookType(Playbooks.BATTLEBABE).COOL(3).HARD(-2).HOT(1).SHARP(1).WEIRD(1).build();
+        StatsOption battlebabe4 = StatsOption.builder().playbookType(Playbooks.BATTLEBABE).COOL(3).HARD(0).HOT(1).SHARP(1).WEIRD(-1).build();
+        statsOptionService.saveAll(Flux.just(battlebabe1, battlebabe2, battlebabe3, battlebabe4)).blockLast();
     }
 
     private void loadLooks() {
@@ -390,7 +426,38 @@ public class GameDataLoader implements CommandLineRunner {
                 angel10, angel11, angel12, angel13, angel14, angel15, angel16, angel17, angel18, angel19,
                 angel20, angel21, angel22, angel23, angel24, angel25, angel26)).blockLast();
 
-        List<Look> looks = lookService.findAll().collectList().block();
+        /* ----------------------------- BATTLEBABE LOOKS --------------------------------- */
+        Look battlebabe1 = new Look(Playbooks.BATTLEBABE, LookCategories.GENDER, "man");
+        Look battlebabe2 = new Look(Playbooks.BATTLEBABE, LookCategories.GENDER, "woman");
+        Look battlebabe3 = new Look(Playbooks.BATTLEBABE, LookCategories.GENDER, "ambiguous");
+        Look battlebabe4 = new Look(Playbooks.BATTLEBABE, LookCategories.GENDER, "transgressing");
+        Look battlebabe5 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.CLOTHES).look("formal wear").build();
+        Look battlebabe6 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.CLOTHES).look("display wear").build();
+        Look battlebabe7 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.CLOTHES).look("luxe wear").build();
+        Look battlebabe8 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.CLOTHES).look("casual wear").build();
+        Look battlebabe9 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.CLOTHES).look("showy armor").build();
+        Look battlebabe10 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.FACE).look("smooth face").build();
+        Look battlebabe11 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.FACE).look("sweet face").build();
+        Look battlebabe12 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.FACE).look("handsome face").build();
+        Look battlebabe13 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.FACE).look("sharp face").build();
+        Look battlebabe14 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.FACE).look("girlish face").build();
+        Look battlebabe15 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.FACE).look("boyish face").build();
+        Look battlebabe16 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.FACE).look("striking face").build();
+        Look battlebabe17 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.EYES).look("calculating eyes").build();
+        Look battlebabe18 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.EYES).look("merciless eyes").build();
+        Look battlebabe19 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.EYES).look("frosty eyes").build();
+        Look battlebabe20 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.EYES).look("arresting eyes").build();
+        Look battlebabe21 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.EYES).look("indifferent eyes").build();
+        Look battlebabe22 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.BODY).look("sweet body").build();
+        Look battlebabe23 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.BODY).look("slim body").build();
+        Look battlebabe24 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.BODY).look("gorgeous body").build();
+        Look battlebabe25 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.BODY).look("muscular body").build();
+        Look battlebabe26 = Look.builder().playbookType(Playbooks.BATTLEBABE).category(LookCategories.BODY).look("angular body").build();
+
+        lookService.saveAll(Flux.just(battlebabe1, battlebabe2, battlebabe3, battlebabe4, battlebabe5, battlebabe6,
+                battlebabe7, battlebabe8, battlebabe9, battlebabe10, battlebabe11, battlebabe12, battlebabe13,
+                battlebabe14, battlebabe15, battlebabe16, battlebabe17, battlebabe18, battlebabe19, battlebabe20,
+                battlebabe21, battlebabe22, battlebabe23, battlebabe24, battlebabe25, battlebabe26)).blockLast();
     }
 
     private void loadNames() {
@@ -429,7 +496,37 @@ public class GameDataLoader implements CommandLineRunner {
                 kim, lan, di, dez, core, wheels, doc, buzz, key, line, gabe, biz, bish, inch, grip, setter))
                 .blockLast();
 
-        List<Name> names = nameService.findAll().collectList().block();
+        /* ----------------------------- BATTLEBABE NAMES --------------------------------- */
+        Name snow = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Snow").build();
+        Name crimson = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Crimson").build();
+        Name shadow = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Shadow").build();
+        Name azure = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Azure").build();
+        Name midnight = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Midnight").build();
+        Name scarlet = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Scarlet").build();
+        Name violetta = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Violetta").build();
+        Name amber = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Amber").build();
+        Name rouge = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Rouge").build();
+        Name damson = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Damson").build();
+        Name sunset = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Sunset").build();
+        Name emerald = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Emerald").build();
+        Name ruby = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Ruby").build();
+        Name raksha = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Raksha").build();
+        Name kickskirt = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Kickskirt").build();
+        Name kite = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Kite").build();
+        Name monsoon = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Monsoon").build();
+        Name smith = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Smith").build();
+        Name beastie = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Beastie").build();
+        Name baaba = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Baaba").build();
+        Name melody = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Melody").build();
+        Name mar = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Mar").build();
+        Name tavi = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Tavi").build();
+        Name absinthe = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Absinthe").build();
+        Name honeytree = Name.builder().playbookType(Playbooks.BATTLEBABE).name("Honeytree").build();
+
+        nameService.saveAll(Flux.just(snow,crimson,shadow,beastie,azure, midnight, scarlet, violetta, amber, rouge,
+                damson, sunset, emerald, ruby, raksha, kickskirt, kite, monsoon, smith, baaba, melody, mar, tavi,
+                absinthe, honeytree)).blockLast();
+
     }
 
     private void loadMoves() {
@@ -727,7 +824,85 @@ public class GameDataLoader implements CommandLineRunner {
         moveService.saveAll(Flux.just(angelSpecial, sixthSense, infirmary, profCompassion,
                 battlefieldGrace, healingTouch, touchedByDeath)).blockLast();
 
-        List<Move> moves = moveService.findAll().collectList().block();
+        /* ----------------------------- BATTLEBABE MOVES --------------------------------- */
+        System.out.println("|| --- Loading Battlebabe moves --- ||");
+        Move battlebabeSpecial = Move.builder().name("BATTLEBABE SPECIAL").description("If you and another character have sex, nullify the other character’s sex move. Whatever it is, it just doesn’t happen.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
+        Move dangerousAndSexy = Move.builder().name("DANGEROUS & SEXY").description("_**Dangerous & sexy**_: when you enter into a charged situation, roll+hot.\n" +
+                "\n" +
+                "On a 10+, hold 2. On a 7–9, hold 1.\n" +
+                "\n" +
+                "Spend your hold 1 for 1 to make eye contact with an NPC present, who freezes or flinches and can’t take action until you break it off.\n" +
+                "\n" +
+                "On a miss, your enemies identify you immediately as their foremost threat.").stat(Stats.HOT).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
+        Move iceCold = Move.builder().name("ICE_COLD").description("_**Ice cold**_: when you go aggro on an NPC, roll+cool instead of roll+hard. When you go aggro on another player’s character, roll+Hx instead of roll+hard.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
+        Move merciless = Move.builder().name("MERCILESS").description("_**Merciless**_: when you inflict harm, inflict +1harm.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
+        Move visionsOfDeath = Move.builder().name("VISIONS_OF_DEATH").description("_**Visions of death**_: when you go into battle, roll+weird.\n" +
+                "\n" +
+                "On a 10+, name one person who’ll die and one who’ll live.\n" +
+                "\n" +
+                "On a 7–9, name one person who’ll die OR one person who’ll live. Don’t name a player’s character; name NPCs only.\n" +
+                "\n" +
+                "The MC will make your vision come true, if it’s even remotely possible.\n" +
+                "\n" +
+                "On a miss, you foresee your own death, and accordingly take -1 throughout the battle.").stat(Stats.WEIRD).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
+        Move perfectInstincts = Move.builder().name("PERFECT_INSTINCTS").description("_**Perfect instincts**_: when you’ve read a charged situation and you’re acting on the MC’s answers, take +2 instead of +1.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
+        Move impossibleReflexes = Move.builder().name("IMPOSSIBLE_REFLEXES").description("_**Impossible reflexes**_: the way you move unencumbered counts as armor. If you’re naked or nearly naked, 2-armor; if you’re wearing non-armor fashion, 1-armor. If you’re wearing armor, use it instead.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
+
+        moveService.saveAll(Flux.just(battlebabeSpecial, dangerousAndSexy, iceCold, merciless, visionsOfDeath, perfectInstincts, impossibleReflexes)).blockLast();
+
+        /* ----------------------------- BRAINER MOVES --------------------------------- */
+        System.out.println("|| --- Loading Brainer moves --- ||");
+        Move brainerSpecial = Move.builder().name("BRAINER_SPECIAL").description("If you and another character have sex, you automatically do a _**deep brain scan**_ on them, whether you have the move or not. Roll+weird as normal. However, the MC chooses which questions the other character’s player answers.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+        Move unnaturalLust = Move.builder().name("UNNATURAL_LUST_TRANSFIXION").description("_**Unnatural lust transfixion**_: when you try to seduce someone, roll+weird instead of roll+hot.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+        Move brainReceptivity = Move.builder().name("CASUAL_BRAIN_RECEPTIVITY").description("_**Casual brain receptivity**_: when you read someone, roll+weird instead of roll+sharp. Your victim has to be able to see you, but you don’t have to interact.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+        Move brainAttunement = Move.builder().name("PRETERNATURAL_BRAIN_ATTUNEMENT").description("_**Preternatural at-will brain attunement**_: you get +1weird (weird+3).\n").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+        Move brainScan = Move.builder().name("DEEP_BRAIN_SCAN").description("_**Deep brain scan**_: when you have time and physical intimacy with someone — mutual intimacy like holding them in your arms, or 1-sided intimacy like they’re restrained to a table — you can read them more deeply than normal. Roll+weird.\n" +
+                "\n" +
+                "On a 10+, hold 3. On a 7–9, hold 1. While you’re reading them, spend your hold to ask their player questions, 1 for 1:\n" +
+                "\n" +
+                "- *What was your character’s lowest moment?*\n" +
+                "- *For what does your character crave forgiveness, and of whom?*\n" +
+                "- *What are your character’s secret pains?*\n" +
+                "- *In what ways are your character’s mind and soul vulnerable?*\n" +
+                "\n" +
+                "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit").stat(Stats.WEIRD).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+        Move whisperProjection = Move.builder().name("DIRECT_BRAIN_WHISPER_PROJECTION").description("_**Direct-brain whisper projection**_: you can roll+weird to get the effects of going aggro, without going aggro. Your victim has to be able to see you, but you don’t have to interact. If your victim forces your hand, your mind counts as a weapon (1-harm ap close loud-optional).").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+        Move puppetStrings = Move.builder().name("IN_BRAIN_PUPPET_STRINGS").description("_**In-brain puppet strings**_: when you have time and physical intimacy with someone — again, mutual or 1-sided — you can plant a command inside their mind. Roll+weird.\n" +
+                "\n" +
+                "On a 10+, hold 3. On a 7–9, hold 1.\n" +
+                "\n" +
+                "At your will, no matter the circumstances, you can spend your hold 1 for 1:\n" +
+                "\n" +
+                "- *Inflict 1-harm (ap).*\n" +
+                "- *They take -1 right now.*\n" +
+                "\n" +
+                "If they fulill your command, that counts for all your remaining hold.\n" +
+                "\n" +
+                "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit.").stat(Stats.WEIRD).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+
+        moveService.saveAll(Flux.just(brainerSpecial, unnaturalLust, brainReceptivity, brainAttunement, brainScan, whisperProjection, puppetStrings)).blockLast();
+
+        /* ----------------------------- CHOPPER MOVES --------------------------------- */
+        System.out.println("|| --- Loading Chopper moves --- ||");
+        Move chopperSpecial = Move.builder().name("CHOPPER_SPECIAL").description("If you and another character have sex, they immediately change their sheet to say Hx+3 with you. They also choose whether to give you -1 or +1 to your Hx with them, on your sheet.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.CHOPPER).build();
+        Move packAlpha = Move.builder().name("PACK_ALPHA").description("_**Pack alpha**_: when you try to impose your will on your gang, roll+hard.\n" +
+                "\n" +
+                "On a 10+, all 3. On a 7–9, choose 1:\n" +
+                "\n" +
+                "- *They do what you want (otherwise, they refuse)*\n" +
+                "- *They don’t fight back over it (otherwise, they do fight back)*\n" +
+                "- *You don’t have to make an example of one of them (otherwise, you must)*\n" +
+                "\n" +
+                "On a miss, someone in your gang makes a bid, idle or serious, to replace you for alpha.").stat(Stats.HARD).kind(MoveKinds.CHARACTER).playbook(Playbooks.CHOPPER).build();
+        Move fuckingThieves = Move.builder().name("FUCKING_THIEVES").description("_**Fucking thieves**_: when you have your gang search their pockets and saddlebags for something, roll+hard. It has to be something small enough to fit.\n" +
+                "\n" +
+                "On a 10+, one of you happens to have just the thing, or close enough.\n" +
+                "\n" +
+                "On a 7–9, one of you happens to have something pretty close, unless what you’re looking for is hi-tech, in which case no dice.\n" +
+                "\n" +
+                "On a miss, one of you used to have just the thing, but it turns out that some asswipe stole it from you.").stat(Stats.HARD).kind(MoveKinds.CHARACTER).playbook(Playbooks.CHOPPER).build();
+
+        moveService.saveAll(Flux.just(chopperSpecial, packAlpha, fuckingThieves)).blockLast();
     }
 
     private void createPlaybooks() {
@@ -748,14 +923,33 @@ public class GameDataLoader implements CommandLineRunner {
         List<StatsOption> statsOptionsAngel = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
         assert statsOptionsAngel != null;
 
-        for (StatsOption statsOption : statsOptionsAngel) {
-            playbookCreatorAngel.getStatsOptions().add(statsOption);
-        }
-
+        statsOptionsAngel.forEach(statsOption -> playbookCreatorAngel.getStatsOptions().add(statsOption));
         namesAngel.forEach(name -> playbookCreatorAngel.getNames().add(name));
         looksAngel.forEach(look -> playbookCreatorAngel.getLooks().add(look));
         playbookCreatorService.save(playbookCreatorAngel).block();
         playbookAngel.setCreator(playbookCreatorAngel);
         playbookService.save(playbookAngel).block();
+
+        // -------------------------------------- BATTLEBABE -------------------------------------- //
+        PlaybookCreator playbookCreatorBattlebabe = playbookCreatorService.findByPlaybookType(Playbooks.BATTLEBABE).block();
+        assert playbookCreatorBattlebabe != null;
+
+        Playbook playbookBattlebabe = playbookService.findByPlaybookType(Playbooks.BATTLEBABE).block();
+        assert playbookBattlebabe != null;
+
+        List<Name> namesBattlebabe = nameService.findAllByPlaybookType(Playbooks.BATTLEBABE).collectList().block();
+        assert namesBattlebabe != null;
+
+        List<Look> looksBattlebabe = lookService.findAllByPlaybookType(Playbooks.BATTLEBABE).collectList().block();
+        assert looksBattlebabe != null;
+
+        List<StatsOption> statsOptionsBattlebabe = statsOptionService.findAllByPlaybookType(Playbooks.BATTLEBABE).collectList().block();
+        assert statsOptionsBattlebabe != null;
+
+        statsOptionsBattlebabe.forEach(statsOption -> playbookCreatorBattlebabe.getStatsOptions().add(statsOption));
+        namesBattlebabe.forEach(name -> playbookCreatorBattlebabe.getNames().add(name));
+        looksBattlebabe.forEach(look -> playbookCreatorBattlebabe.getLooks().add(look));
+        playbookCreatorService.save(playbookCreatorBattlebabe).block();
+        playbookBattlebabe.setCreator(playbookCreatorBattlebabe);
     }
 }
