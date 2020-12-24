@@ -52,6 +52,20 @@ enum LookCategories {
     BODY
 }
 
+enum UniqueType {
+    ANGEL_KIT,
+    CUSTOM_WEAPONS,
+    BRAINER_GEAR,
+    GANG,
+    CAR,
+    WEAPONS,
+    HOLDING,
+    FOLLOWERS,
+    ESTABLISHMENT,
+    WORKSPACE,
+    SKINNER_GEAR
+}
+
 type User {
     id: ID!
     displayName: String
@@ -179,6 +193,53 @@ type PlaybookCreator {
     names: [Name]
     looks: [Look]
     statsOptions: [StatsOption]
+    playbookUniqueCreator: PlaybookUniqueCreator
+}
+
+type PlaybookUniqueCreator {
+    id: ID!
+    type: UniqueType!
+    angelKitCreator: AngelKitCreator
+    customWeaponsCreator: CustomWeaponsCreator
+    brainerGearCreator: BrainerGearCreator
+}
+
+type AngelKitCreator {
+    id: ID!
+    angelKitInstructions: String!
+    startingStock: Int!
+}
+
+type CustomWeaponsCreator {
+    id: ID!
+    firearmsTitle: String!
+    firearmsBaseInstructions: String!
+    firearmsBaseOptions: [TaggedItem]
+    firearmsOptionsInstructions: String!
+    firearmsOptionsOptions: [ItemCharacteristic]
+    handTitle: String!
+    handBaseInstructions: String!
+    handBaseOptions: [TaggedItem]
+    handOptionsInstructions: String!
+    handOptionsOptions: [ItemCharacteristic]
+}
+
+type BrainerGearCreator {
+    id: ID!
+    gear: [String]!
+}
+
+
+type TaggedItem {
+    id: ID!
+    description: String!
+    tags: [String]
+}
+
+type ItemCharacteristic {
+    id: ID!
+    description: String!
+    tag: String
 }
 
 type Query {

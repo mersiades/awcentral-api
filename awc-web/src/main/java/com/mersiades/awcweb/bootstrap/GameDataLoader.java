@@ -1,10 +1,10 @@
 package com.mersiades.awcweb.bootstrap;
 
-import com.mersiades.awcdata.enums.LookCategories;
-import com.mersiades.awcdata.enums.MoveKinds;
-import com.mersiades.awcdata.enums.Playbooks;
-import com.mersiades.awcdata.enums.Stats;
+import com.mersiades.awcdata.enums.*;
 import com.mersiades.awcdata.models.*;
+import com.mersiades.awcdata.models.uniquecreators.AngelKitCreator;
+import com.mersiades.awcdata.models.uniquecreators.BrainerGearCreator;
+import com.mersiades.awcdata.models.uniquecreators.CustomWeaponsCreator;
 import com.mersiades.awcdata.repositories.*;
 import com.mersiades.awcdata.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -301,6 +301,22 @@ public class GameDataLoader implements CommandLineRunner {
     public void loadPlaybookCreators() {
         System.out.println("|| --- Loading playbook creators --- ||");
         /* ----------------------------- ANGEL PLAYBOOK CREATOR --------------------------------- */
+        AngelKitCreator angelKitCreator = AngelKitCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .angelKitInstructions("Your angel kit has all kinds of crap in it: scissors, rags, tape, needles, clamps, gloves, chill coils, wipes, alcohol, injectable tourniquets & bloodslower, instant blood packets (coffee reddener), tubes of meatmesh, bonepins & site injectors, biostabs, chemostabs, narcostabs (chillstabs) in quantity, and a roll of heart jumpshock patches for when it comes to that. It’s big enough to fill the trunk of a car.\n" +
+                "\n" +
+                "When you use it, spend its stock; you can spend 0–3 of its stock per use.\n" +
+                "\n" +
+                "You can resupply it for 1-barter per 2-stock, if your circumstances let you barter for medical supplies.\n" +
+                "\n" +
+                "It begins play holding 6-stock.")
+                .startingStock(6)
+                .build();
+        PlaybookUniqueCreator angelUniqueCreator = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.ANGEL_KIT)
+                .angelKitCreator(angelKitCreator)
+                .build();
         GearInstructions angelGearInstructions = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
                 .youGet("You get:")
@@ -315,30 +331,94 @@ public class GameDataLoader implements CommandLineRunner {
                 .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
                 .startingBarter(2)
                 .build();
-        PlaybookCreator angelCreator = new PlaybookCreator(Playbooks.ANGEL, angelGearInstructions, "Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
-                "\n" +
-                "Each time you improve, choose one of the options. Check it off; you can’t choose it again.", "You get all the basic moves. Choose 2 angel moves.\n" +
-                "\n" +
-                "You can use all the battle moves, but when you get the chance, look up _**keeping an eye out**_, and _**baiting a trap**_, as well as the rules for harm.", "Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
-                "\n" +
-                "List the other characters’ names.\n" +
-                "\n" +
-                "Go around again for Hx. On your turn, ask 1, 2, or all 3:\n" +
-                "\n" +
-                "- Which one of you do I figure is doomed to self-destruction?\n" +
-                "For that character, write Hx-2.\n" +
-                "- Which one of you put a hand in when it mattered, and helped me save a life?\n" +
-                "For that character, write Hx+2.\n" +
-                "- Which one of you has been beside me all along, and has seen everything I’ve seen?\n" +
-                "For that character, write Hx+3.\n" +
-                "\n" +
-                "For everyone else, write Hx+1. You keep your eyes open.\n" +
-                "\n" +
-                "On the others’ turns, answer their questions as you like.\n" +
-                "\n" +
-                "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.");
+        PlaybookCreator angelCreator = PlaybookCreator.builder()
+                .playbookType(Playbooks.ANGEL)
+                .gearInstructions(angelGearInstructions)
+                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
+                        "\n" +
+                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .movesInstructions("You get all the basic moves. Choose 2 angel moves.\n" +
+                        "\n" +
+                        "You can use all the battle moves, but when you get the chance, look up _**keeping an eye out**_, and _**baiting a trap**_, as well as the rules for harm.")
+                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
+                        "\n" +
+                        "List the other characters’ names.\n" +
+                        "\n" +
+                        "Go around again for Hx. On your turn, ask 1, 2, or all 3:\n" +
+                        "\n" +
+                        "- Which one of you do I figure is doomed to self-destruction?\n" +
+                        "For that character, write Hx-2.\n" +
+                        "- Which one of you put a hand in when it mattered, and helped me save a life?\n" +
+                        "For that character, write Hx+2.\n" +
+                        "- Which one of you has been beside me all along, and has seen everything I’ve seen?\n" +
+                        "For that character, write Hx+3.\n" +
+                        "\n" +
+                        "For everyone else, write Hx+1. You keep your eyes open.\n" +
+                        "\n" +
+                        "On the others’ turns, answer their questions as you like.\n" +
+                        "\n" +
+                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                .playbookUniqueCreator(angelUniqueCreator)
+                .build();
+
 
         /* ----------------------------- BATTLEBABE PLAYBOOK CREATOR --------------------------------- */
+        TaggedItem firearmBase1 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("handgun").tags(List.of("2-harm", "close", "reload", "loud")).build();
+        TaggedItem firearmBase2 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("shotgun").tags(List.of("3-harm", "close", "reload", "messy")).build();
+        TaggedItem firearmBase3 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("rifle").tags(List.of("2-harm","far", "reload", "loud")).build();
+        TaggedItem firearmBase4 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("crossbow").tags(List.of("2-harm", "close", "slow")).build();
+
+        ItemCharacteristic firearmOption1 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("ornate").tag("+valuable").build();
+        ItemCharacteristic firearmOption2 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("antique").tag("+valuable").build();
+        ItemCharacteristic firearmOption3 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("semiautomatic").tag("-reload").build();
+        ItemCharacteristic firearmOption4 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("3-round burst").tag("+1harm").build();
+        ItemCharacteristic firearmOption5 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("automatic").tag("+area").build();
+        ItemCharacteristic firearmOption6 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("silenced").tag("-loud").build();
+        ItemCharacteristic firearmOption7 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("hi-powered").tag("+close/far").build();
+        ItemCharacteristic firearmOption8 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("hi-powered").tag("+1harm").build();
+        ItemCharacteristic firearmOption9 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("ap ammo").tag("+ap").build();
+        ItemCharacteristic firearmOption10 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("scoped").tag("+far").build();
+        ItemCharacteristic firearmOption11 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("scoped").tag("+1harm").build();
+        ItemCharacteristic firearmOption12 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("big").tag("+1harm").build();
+
+        TaggedItem handBase1 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("staff").tags(List.of("1-harm", "hand", "area")).build();
+        TaggedItem handBase2 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("haft").tags(List.of("1-harm", "hand")).build();
+        TaggedItem handBase3 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("handle").tags(List.of("1-harm", "hand")).build();
+        TaggedItem handBase4 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("chain").tags(List.of("1-harm", "hand", "area")).build();
+
+        ItemCharacteristic handOption1 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("ornate").tag("+valuable").build();
+        ItemCharacteristic handOption2 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("antique").tag("+valuable").build();
+        ItemCharacteristic handOption3 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("head").tag("+1harm").build();
+        ItemCharacteristic handOption4 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("spikes").tag("+1harm").build();
+        ItemCharacteristic handOption5 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("blade").tag("+1harm").build();
+        ItemCharacteristic handOption6 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("long blade*").tag("+2harm").build();
+        ItemCharacteristic handOption7 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("heavy blade*").tag("+2harm").build();
+        ItemCharacteristic handOption8 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("blades*").tag("+2harm").build();
+        ItemCharacteristic handOption9 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("hidden").tag("+infinite").build();
+
+        CustomWeaponsCreator customWeaponsCreator = CustomWeaponsCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .firearmsTitle("CUSTOM FIREARMS")
+                .firearmsBaseInstructions("Base (choose 1):")
+                .firearmsBaseOptions(List.of(firearmBase1, firearmBase2, firearmBase3, firearmBase4))
+                .firearmsOptionsInstructions("Options (choose 2):")
+                .firearmsOptionsOptions(List.of(firearmOption1, firearmOption2, firearmOption3, firearmOption4,
+                        firearmOption5, firearmOption6, firearmOption7, firearmOption8, firearmOption9, firearmOption11,
+                        firearmOption12))
+                .handTitle("CUSTOM HAND WEAPONS")
+                .handBaseInstructions("Base (choose 1):")
+                .handBaseOptions(List.of(handBase1, handBase2, handBase3, handBase4))
+                .handOptionsInstructions("Options (choose 2, * counts as 2 options):")
+                .handOptionsOptions(List.of(handOption1, handOption2, handOption3, handOption4, handOption5,
+                        handOption6, handOption7, handOption8, handOption9))
+                .build();
+
+        PlaybookUniqueCreator battlebabeUniqueCreator = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.CUSTOM_WEAPONS)
+                .customWeaponsCreator(customWeaponsCreator)
+                .build();
+
         GearInstructions battlebabeGearInstructions = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
                 .youGet("You get:")
@@ -368,9 +448,31 @@ public class GameDataLoader implements CommandLineRunner {
                         "On the others’ turns, answer their questions as you like.\n" +
                         "\n" +
                         "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                .playbookUniqueCreator(battlebabeUniqueCreator)
                 .build();
 
         /* ----------------------------- BRAINER PLAYBOOK CREATOR --------------------------------- */
+        BrainerGearCreator brainerGearCreator = BrainerGearCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .gear(List.of("implant syringe (tag hi-tech)" +
+                        "_After you’ve tagged someone, if a brainer move allows you to inflict harm on them, inflict +1harm._",
+                        "brain relay (area close hi-tech)" +
+                                "_For purposes of brainer moves, if someone can see your brain relay, they can see you._",
+                        "receptivity drugs (tag hi-tech)" +
+                                "_Tagging someone gives you +1hold if you then use a brainer move on them._",
+                        "violation glove (hand hi-tech)" +
+                                "_For purposes of brainer moves, mere skin contact counts as time and intimacy._",
+                        "pain-wave projector (1-harm ap area loud reload hi-tech)" +
+                                "_Goes off like a reusable grenade. Hits everyone but you._",
+                        "deep ear plugs (worn hi-tech)" +
+                                "_Protects the wearer from all brainer moves and gear._"))
+                .build();
+
+        PlaybookUniqueCreator brainerUniqueCreator = PlaybookUniqueCreator.builder().type(UniqueType.BRAINER_GEAR)
+                .id(UUID.randomUUID().toString())
+                .brainerGearCreator(brainerGearCreator)
+                .build();
+
         GearInstructions brainerGearInstructions = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
                 .youGet("You get:")
@@ -404,6 +506,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "On the others’ turns, answer their questions as you like.\n" +
                         "\n" +
                         "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                .playbookUniqueCreator(brainerUniqueCreator)
                 .build();
 
         playbookCreatorService.saveAll(Flux.just(angelCreator, battlebabePlaybookCreator, playbookCreatorBrainer)).blockLast();

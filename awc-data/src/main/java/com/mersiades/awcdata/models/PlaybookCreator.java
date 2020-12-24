@@ -37,6 +37,8 @@ public class PlaybookCreator {
     // one to one
     private Playbook playbook;
 
+    private PlaybookUniqueCreator playbookUniqueCreator;
+
     // one to many
     private Set<Name> names = new HashSet<>();
 
