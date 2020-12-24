@@ -34,6 +34,8 @@ public class Character {
 
     private List<Look> looks = new ArrayList<>();
 
+    private PlaybookUnique playbookUnique;
+
     private GameRole gameRole;
 
     public Character() {

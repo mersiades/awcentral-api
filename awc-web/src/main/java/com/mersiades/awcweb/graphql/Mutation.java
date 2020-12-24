@@ -87,4 +87,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCharacterGear(gameRoleId, characterId, gear);
     }
 
+    public Character setBrainerGear(String gameRoleId, String characterId, List<String> brainerGear) {
+        System.out.println("Setting CharacterStats for Character: " + characterId);
+        return gameRoleService.setBrainerGear(gameRoleId, characterId, brainerGear);
+    }
+
 }

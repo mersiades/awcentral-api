@@ -24,4 +24,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character setCharacterStats(String gameRoleId, String characterId, String statsOptionId);
 
     Character setCharacterGear(String gameRoleId, String characterId, List<String> gear);
+
+    Character setBrainerGear(String gameRoleId, String characterId, List<String> brainerGear);
 }

@@ -118,6 +118,7 @@ type Character {
     playbook: PlayBooks
     looks: [Look]
     statsBlock: StatsBlock
+    playbookUnique: PlaybookUnique
 }
 
 type GameRole {
@@ -242,6 +243,17 @@ type ItemCharacteristic {
     tag: String
 }
 
+type PlaybookUnique {
+    id: ID!
+    type: UniqueType
+    brainerGear: BrainerGear
+}
+
+type BrainerGear {
+    id:ID!
+    brainerGear: [String]
+}
+
 type Query {
     gameRolesByUserId(id: String!): [GameRole]
     game(gameId:String!): Game
@@ -283,4 +295,7 @@ type Mutation {
     setCharacterGear(gameRoleId: String!,
         characterId: String!,
         gear: [String]! ): Character
+    setBrainerGear(gameRoleId: String!,
+        characterId: String!,
+        brainerGear: [String]! ): Character
 }

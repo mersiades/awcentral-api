@@ -3,6 +3,7 @@ package com.mersiades.awcdata.services.impl;
 import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.enums.Stats;
+import com.mersiades.awcdata.enums.UniqueType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
@@ -191,6 +192,41 @@ public class GameRoleServiceImpl implements GameRoleService {
         gameRoleRepository.save(gameRole).block();
 
         return character;
+    }
+
+    @Override
+    public Character setBrainerGear(String gameRoleId, String characterId, List<String> brainerGear) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        BrainerGear brainerGear1 = BrainerGear.builder()
+                .id(UUID.randomUUID().toString())
+                .brainerGear(brainerGear)
+                .build();
+
+        if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.BRAINER_GEAR) {
+            // make new brainerGear & set
+            PlaybookUnique brainerUnique = PlaybookUnique.builder()
+                    .id(UUID.randomUUID().toString())
+                    .type(UniqueType.BRAINER_GEAR)
+                    .brainerGear(brainerGear1)
+                    .build();
+
+            character.setPlaybookUnique(brainerUnique);
+        } else {
+            character.getPlaybookUnique().setBrainerGear(brainerGear1);
+        }
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return null;
     }
 
     private void createOrUpdateCharacterStat(Character character, StatsOption statsOption, Stats stat) {
