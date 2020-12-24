@@ -219,4 +219,7 @@ type Mutation {
     setCharacterStats(gameRoleId: String!,
         characterId: String!,
         statsOptionId: String! ): Character
+    setCharacterGear(gameRoleId: String!,
+        characterId: String!,
+        gear: [String]! ): Character
 }

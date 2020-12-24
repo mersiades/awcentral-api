@@ -9,6 +9,8 @@ import com.mersiades.awcdata.services.GameService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class Mutation implements GraphQLMutationResolver {
 
@@ -78,6 +80,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Character setCharacterStats(String gameRoleId, String characterId, String statsOptionId) {
         System.out.println("Setting CharacterStats for Character: " + characterId);
         return gameRoleService.setCharacterStats(gameRoleId, characterId, statsOptionId);
+    }
+
+    public Character setCharacterGear(String gameRoleId, String characterId, List<String> gear) {
+        System.out.println("Setting CharacterStats for Character: " + characterId);
+        return gameRoleService.setCharacterGear(gameRoleId, characterId, gear);
     }
 
 }
