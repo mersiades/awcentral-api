@@ -76,7 +76,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public Character setCharacterStats(String gameRoleId, String characterId, String statsOptionId) {
-        System.out.println("Setting CharacterStats for for Character: " + characterId);
+        System.out.println("Setting CharacterStats for Character: " + characterId);
         return gameRoleService.setCharacterStats(gameRoleId, characterId, statsOptionId);
     }
 

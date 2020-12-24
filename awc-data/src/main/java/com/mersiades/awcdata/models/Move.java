@@ -26,6 +26,10 @@ public class Move  {
     // Enum type string
     private Stats stat;
 
+    private StatModifier statModifier;
+
+    private RollModifier rollModifier;
+
     // Enum type string
     private MoveKinds kind;
 
