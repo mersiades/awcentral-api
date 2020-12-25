@@ -374,12 +374,10 @@ public class GameDataLoader implements CommandLineRunner {
         ItemCharacteristic firearmOption4 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("3-round burst").tag("+1harm").build();
         ItemCharacteristic firearmOption5 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("automatic").tag("+area").build();
         ItemCharacteristic firearmOption6 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("silenced").tag("-loud").build();
-        ItemCharacteristic firearmOption7 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("hi-powered").tag("+close/far").build();
-        ItemCharacteristic firearmOption8 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("hi-powered").tag("+1harm").build();
-        ItemCharacteristic firearmOption9 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("ap ammo").tag("+ap").build();
-        ItemCharacteristic firearmOption10 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("scoped").tag("+far").build();
-        ItemCharacteristic firearmOption11 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("scoped").tag("+1harm").build();
-        ItemCharacteristic firearmOption12 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("big").tag("+1harm").build();
+        ItemCharacteristic firearmOption7 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("hi-powered").tag("close/far, or +1harm at far").build();
+        ItemCharacteristic firearmOption8 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("ap ammo").tag("+ap").build();
+        ItemCharacteristic firearmOption9 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("scoped").tag("+far, or +1harm at far").build();
+        ItemCharacteristic firearmOption10 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("big").tag("+1harm").build();
 
         TaggedItem handBase1 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("staff").tags(List.of("1-harm", "hand", "area")).build();
         TaggedItem handBase2 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("haft").tags(List.of("1-harm", "hand")).build();
@@ -403,8 +401,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .firearmsBaseOptions(List.of(firearmBase1, firearmBase2, firearmBase3, firearmBase4))
                 .firearmsOptionsInstructions("Options (choose 2):")
                 .firearmsOptionsOptions(List.of(firearmOption1, firearmOption2, firearmOption3, firearmOption4,
-                        firearmOption5, firearmOption6, firearmOption7, firearmOption8, firearmOption9, firearmOption11,
-                        firearmOption12))
+                        firearmOption5, firearmOption6, firearmOption7, firearmOption8, firearmOption9, firearmOption10))
                 .handTitle("CUSTOM HAND WEAPONS")
                 .handBaseInstructions("Base (choose 1):")
                 .handBaseOptions(List.of(handBase1, handBase2, handBase3, handBase4))

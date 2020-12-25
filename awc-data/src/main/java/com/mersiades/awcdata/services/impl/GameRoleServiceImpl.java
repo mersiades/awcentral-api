@@ -98,6 +98,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.getLooks().clear();
         character.setStatsBlock(new StatsBlock());
         character.getGear().clear();
+        character.setPlaybookUnique(null);
 
         // Set new playbook
         character.setPlaybook(playbookType);
