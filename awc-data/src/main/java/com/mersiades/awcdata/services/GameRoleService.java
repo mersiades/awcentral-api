@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Flux<GameRole> findAllByUser(User user);
+
     Flux<GameRole> findAllByUserId(String userId);
 
     Character addNewCharacter(String gameRoleId);
@@ -26,4 +27,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character setCharacterGear(String gameRoleId, String characterId, List<String> gear);
 
     Character setBrainerGear(String gameRoleId, String characterId, List<String> brainerGear);
+
+    Character setAngelKit(String gameRoleId, String characterId, int stock, Boolean hasSupplier);
 }

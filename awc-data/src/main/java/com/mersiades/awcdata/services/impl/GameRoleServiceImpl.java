@@ -1,14 +1,12 @@
 package com.mersiades.awcdata.services.impl;
 
-import com.mersiades.awcdata.enums.LookCategories;
-import com.mersiades.awcdata.enums.Playbooks;
-import com.mersiades.awcdata.enums.Stats;
-import com.mersiades.awcdata.enums.UniqueType;
+import com.mersiades.awcdata.enums.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
+import com.mersiades.awcdata.services.MoveService;
 import com.mersiades.awcdata.services.StatsOptionService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -25,12 +23,14 @@ public class GameRoleServiceImpl implements GameRoleService {
     private final GameRoleRepository gameRoleRepository;
     private final CharacterService characterService;
     private final StatsOptionService statsOptionService;
+    private final MoveService moveService;
 
     public GameRoleServiceImpl(GameRoleRepository gameRoleRepository, CharacterService characterService,
-                               StatsOptionService statsOptionService) {
+                               StatsOptionService statsOptionService, MoveService moveService) {
         this.gameRoleRepository = gameRoleRepository;
         this.characterService = characterService;
         this.statsOptionService = statsOptionService;
+        this.moveService = moveService;
 
     }
 
@@ -227,6 +227,49 @@ public class GameRoleServiceImpl implements GameRoleService {
         gameRoleRepository.save(gameRole).block();
 
         return null;
+    }
+
+    @Override
+    public Character setAngelKit(String gameRoleId, String characterId, int stock, Boolean hasSupplier) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.ANGEL_KIT) {
+            // Make new AngelKit & set
+            List<Move> angelKitMoves = moveService
+                    .findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.UNIQUE)
+                    .collectList().block();
+
+            AngelKit angelKit = AngelKit.builder().id(UUID.randomUUID().toString())
+                    .hasSupplier(hasSupplier)
+                    .stock(stock).build();
+
+            assert angelKitMoves != null;
+            angelKitMoves.forEach(move -> angelKit.getAngelKitMoves().add(move));
+
+            PlaybookUnique angelUnique = PlaybookUnique.builder()
+                    .id(UUID.randomUUID().toString())
+                    .type(UniqueType.ANGEL_KIT)
+                    .angelKit(angelKit)
+                    .build();
+
+            character.setPlaybookUnique(angelUnique);
+        } else {
+            // Update existing AngelKit
+            character.getPlaybookUnique().getAngelKit().setStock(stock);
+            character.getPlaybookUnique().getAngelKit().setHasSupplier(hasSupplier);
+        }
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
     }
 
     private void createOrUpdateCharacterStat(Character character, StatsOption statsOption, Stats stat) {

@@ -9,6 +9,7 @@ import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
+import com.mersiades.awcdata.services.MoveService;
 import com.mersiades.awcdata.services.StatsOptionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -40,6 +41,9 @@ class GameRoleServiceImplTest {
     @Mock
     StatsOptionService statsOptionService;
 
+    @Mock
+    MoveService moveService;
+
     GameRoleService gameRoleService;
 
     GameRole mockGameRole;
@@ -62,7 +66,7 @@ class GameRoleServiceImplTest {
         mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(Roles.MC).game(mockGame1).user(mockUser).build();
         mockGame1.getGameRoles().add(mockGameRole);
         mockUser.getGameRoles().add(mockGameRole);
-        gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, statsOptionService);
+        gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, statsOptionService, moveService);
         mockGameRole2 = new GameRole();
         mockStatsOption = StatsOption.builder()
                 .id("mock-statsoption-id")

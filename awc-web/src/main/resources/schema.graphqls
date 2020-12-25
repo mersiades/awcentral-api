@@ -18,6 +18,7 @@ enum MoveKinds {
     PERIPHERAL
     BATTLE
     ROAD_WAR
+    UNIQUE
 }
 
 enum PlayBooks {
@@ -135,6 +136,8 @@ type Move {
     name: String!
     description: String
     stat: Stats
+    statModifier: StatModifier
+    rollModifier: RollModifier
     kind: MoveKinds!
     playbook: PlayBooks
 }
@@ -247,11 +250,33 @@ type PlaybookUnique {
     id: ID!
     type: UniqueType
     brainerGear: BrainerGear
+    angelKit: AngelKit
 }
 
 type BrainerGear {
     id:ID!
     brainerGear: [String]
+}
+
+type AngelKit {
+    id: ID!
+    description: String!
+    stock: Int!
+    angelKitMoves: [Move]
+    hasSupplier: Boolean!
+    supplierText: String!
+}
+
+type RollModifier {
+    id: ID!
+    movesToModify: [Move]!
+    statToRollWith: [Stats]!
+}
+
+type StatModifier {
+    id: ID!
+    statToModify: Stats!
+    modification: Int!
 }
 
 type Query {
@@ -298,4 +323,8 @@ type Mutation {
     setBrainerGear(gameRoleId: String!,
         characterId: String!,
         brainerGear: [String]! ): Character
+    setAngelKit(gameRoleId: String!,
+        characterId: String!,
+        stock: Int!,
+        hasSupplier: Boolean! ): Character
 }

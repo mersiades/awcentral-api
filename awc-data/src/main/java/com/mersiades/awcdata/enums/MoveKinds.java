@@ -5,6 +5,7 @@ public enum MoveKinds {
     BASIC("BASIC"),
     PERIPHERAL("PERIPHERAL"),
     BATTLE("BATTLE"),
+    UNIQUE("UNIQUE"),
     ROAD_WAR("ROAD_WAR");
 
     private String code;

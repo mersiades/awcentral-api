@@ -1022,10 +1022,38 @@ public class GameDataLoader implements CommandLineRunner {
                 "On a 7–9, heal 1 segment, but you’re also opening your brain, so roll that move next.\n" +
                 "\n" +
                 "On a miss: first, you don’t heal them. Second, you’ve opened both your brain and theirs to the world’s psychic maelstrom, without protection or preparation. For you, and for your patient if your patient’s a fellow player’s character, treat it as though you’ve made that move and missed the roll. For patients belonging to the MC, their experience and fate are up to the MC.\n", Stats.WEIRD, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move touchedByDeath = new Move("HEALING TOUCH", "_**Touched by death**_: when someone is unconscious in your care, you can use them for _**augury**_. When someone has died in your care, you can use their body for _**augury**_.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
+        Move touchedByDeath = new Move("TOUCHED BY DEATH", "_**Touched by death**_: when someone is unconscious in your care, you can use them for _**augury**_. When someone has died in your care, you can use their body for _**augury**_.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
 
         moveService.saveAll(Flux.just(angelSpecial, sixthSense, infirmary, profCompassion,
                 battlefieldGrace, healingTouch, touchedByDeath)).blockLast();
+
+        /* ----------------------------- ANGEL KIT MOVES --------------------------------- */
+
+        Move stabilizeAndHeal = Move.builder().name("STABILIZE AND HEAL SOMEONE").description("_**stabilize and heal someone at 9:00 or past**_: roll+stock spent.\n" +
+                "\n" +
+                "On a hit, they stabilize and heal to 6:00, and choose 2 (on a 10+) or 1 (on a 7–9):\n" +
+                "\n" +
+                "- *They fight you and you have to narcostab them. How long will they be out?*\n" +
+                "- *The pain and drugs make them babble the truth to you. Ask them what secret they spill.*\n" +
+                "- *They respond very well to treatment. Recover 1 of the stock you spent, if you spent any.*\n" +
+                "- *They’re at your complete mercy. What do you do to them?*\n" +
+                "- *Their course of recovery teaches you something about your craft. Mark experience.*\n" +
+                "- *They owe you for your time, attention, and supplies, and you’re going to hold them to it.*\n" +
+                "\n" +
+                "On a miss, they take 1-harm instead.").playbook(Playbooks.ANGEL).kind(MoveKinds.UNIQUE).build();
+        Move speedTheRecoveryOfSomeone = Move.builder().name("SPEED THE RECOVERY OF SOMEONE")
+                .description("_**speed the recovery of someone at 3:00 or 6:00**_: don’t roll. They choose: you spend 1-stock and they spend 4 days (3:00) or 1 week (6:00) blissed out on chillstabs, immobile but happy, or else they do their time in agony like everyone else.")
+                .playbook(Playbooks.ANGEL).kind(MoveKinds.UNIQUE).build();
+        Move reviveSomeone = Move.builder().name("REVIVE SOMEONE").description("_**revive someone whose life has become untenable**_, spend 2-stock. They come back, but you get to choose how they come back. Choose from the regular “when life is untenable” list, or else choose 1:\n" +
+                "\n" +
+                "- *They come back in your deep, deep debt.*\n" +
+                "- *They come back with a prosthetic (you detail).*\n" +
+                "- *You and they both come back with +1weird (max weird+3).*")
+                .playbook(Playbooks.ANGEL).kind(MoveKinds.UNIQUE).build();
+        Move treatAnNpc = Move.builder().name("TREAT AN NPC").description("_**treat an NPC**_: spend 1-stock. They’re stable now and they’ll recover in time. ")
+                .playbook(Playbooks.ANGEL).kind(MoveKinds.UNIQUE).build();
+
+        moveService.saveAll(Flux.just(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc)).blockLast();
 
         /* ----------------------------- BATTLEBABE MOVES --------------------------------- */
         System.out.println("|| --- Loading Battlebabe moves --- ||");
