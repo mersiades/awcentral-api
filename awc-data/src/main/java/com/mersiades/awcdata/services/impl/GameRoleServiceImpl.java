@@ -3,6 +3,8 @@ package com.mersiades.awcdata.services.impl;
 import com.mersiades.awcdata.enums.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
+import com.mersiades.awcdata.models.uniques.AngelKit;
+import com.mersiades.awcdata.models.uniques.BrainerGear;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;

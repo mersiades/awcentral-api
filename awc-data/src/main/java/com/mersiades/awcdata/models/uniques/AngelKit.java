@@ -1,5 +1,6 @@
-package com.mersiades.awcdata.models;
+package com.mersiades.awcdata.models.uniques;
 
+import com.mersiades.awcdata.models.Move;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

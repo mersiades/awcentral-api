@@ -1,6 +1,9 @@
 package com.mersiades.awcdata.models;
 
 import com.mersiades.awcdata.enums.UniqueType;
+import com.mersiades.awcdata.models.uniques.AngelKit;
+import com.mersiades.awcdata.models.uniques.BrainerGear;
+import com.mersiades.awcdata.models.uniques.CustomWeapons;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.mersiades.awcdata.models;
+package com.mersiades.awcdata.models.uniques;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
