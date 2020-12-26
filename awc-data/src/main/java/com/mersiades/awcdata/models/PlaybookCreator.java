@@ -36,6 +36,10 @@ public class PlaybookCreator {
     @Builder.Default
     private List<CharacterMove> playbookMoves = new ArrayList<>();
 
+    private int defaultMoveCount;
+
+    private int moveChoiceCount;
+
     @Builder.Default
     private List<Name> names = new ArrayList<>();
 

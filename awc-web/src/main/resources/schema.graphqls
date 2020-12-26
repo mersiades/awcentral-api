@@ -132,26 +132,26 @@ type GameRole {
 }
 
 type Move {
-    id: ID
+    id: ID!
     name: String!
-    description: String
+    kind: MoveKinds!
+    description: String!
+    playbook: PlayBooks!
     stat: Stats
     statModifier: StatModifier
     rollModifier: RollModifier
-    kind: MoveKinds!
-    playbook: PlayBooks
 }
 
 type CharacterMove {
-    id: ID
+    id: ID!
     isSelected: Boolean!
     name: String!
-    description: String
+    kind: MoveKinds!
+    description: String!
+    playbook: PlayBooks!
     stat: Stats
     statModifier: StatModifier
     rollModifier: RollModifier
-    kind: MoveKinds!
-    playbook: PlayBooks
 }
 
 type Playbook {
@@ -211,6 +211,8 @@ type PlaybookCreator {
     statsOptions: [StatsOption]
     playbookUniqueCreator: PlaybookUniqueCreator
     playbookMoves: [CharacterMove]
+    defaultMoveCount: Int
+    moveChoiceCount: Int
 }
 
 type PlaybookUniqueCreator {
