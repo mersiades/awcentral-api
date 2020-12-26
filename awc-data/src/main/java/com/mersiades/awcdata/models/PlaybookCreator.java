@@ -34,7 +34,7 @@ public class PlaybookCreator {
     private PlaybookUniqueCreator playbookUniqueCreator;
 
     @Builder.Default
-    private List<Move> playbookMoves = new ArrayList<>();
+    private List<CharacterMove> playbookMoves = new ArrayList<>();
 
     @Builder.Default
     private List<Name> names = new ArrayList<>();

@@ -411,9 +411,9 @@ public class GameDataLoader implements CommandLineRunner {
                 "Spend your hold 1 for 1 to make eye contact with an NPC present, who freezes or flinches and can’t take action until you break it off.\n" +
                 "\n" +
                 "On a miss, your enemies identify you immediately as their foremost threat.").stat(Stats.HOT).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
-        Move iceCold = Move.builder().name("ICE_COLD").description("_**Ice cold**_: when you go aggro on an NPC, roll+cool instead of roll+hard. When you go aggro on another player’s character, roll+Hx instead of roll+hard.").rollModifier(iceColdMod).stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
+        Move iceCold = Move.builder().name("ICE COLD").description("_**Ice cold**_: when you go aggro on an NPC, roll+cool instead of roll+hard. When you go aggro on another player’s character, roll+Hx instead of roll+hard.").rollModifier(iceColdMod).stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
         Move merciless = Move.builder().name("MERCILESS").description("_**Merciless**_: when you inflict harm, inflict +1harm.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
-        Move visionsOfDeath = Move.builder().name("VISIONS_OF_DEATH").description("_**Visions of death**_: when you go into battle, roll+weird.\n" +
+        Move visionsOfDeath = Move.builder().name("VISIONS OF DEATH").description("_**Visions of death**_: when you go into battle, roll+weird.\n" +
                 "\n" +
                 "On a 10+, name one person who’ll die and one who’ll live.\n" +
                 "\n" +
@@ -422,8 +422,8 @@ public class GameDataLoader implements CommandLineRunner {
                 "The MC will make your vision come true, if it’s even remotely possible.\n" +
                 "\n" +
                 "On a miss, you foresee your own death, and accordingly take -1 throughout the battle.").stat(Stats.WEIRD).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
-        Move perfectInstincts = Move.builder().name("PERFECT_INSTINCTS").description("_**Perfect instincts**_: when you’ve read a charged situation and you’re acting on the MC’s answers, take +2 instead of +1.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
-        Move impossibleReflexes = Move.builder().name("IMPOSSIBLE_REFLEXES").description("_**Impossible reflexes**_: the way you move unencumbered counts as armor. If you’re naked or nearly naked, 2-armor; if you’re wearing non-armor fashion, 1-armor. If you’re wearing armor, use it instead.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
+        Move perfectInstincts = Move.builder().name("PERFECT INSTINCTS").description("_**Perfect instincts**_: when you’ve read a charged situation and you’re acting on the MC’s answers, take +2 instead of +1.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
+        Move impossibleReflexes = Move.builder().name("IMPOSSIBLE REFLEXES").description("_**Impossible reflexes**_: the way you move unencumbered counts as armor. If you’re naked or nearly naked, 2-armor; if you’re wearing non-armor fashion, 1-armor. If you’re wearing armor, use it instead.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
 
         moveService.saveAll(Flux.just(battlebabeSpecial, dangerousAndSexy, iceCold, merciless, visionsOfDeath, perfectInstincts, impossibleReflexes)).blockLast();
 
@@ -431,11 +431,11 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Brainer moves --- ||");
         RollModifier lustMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(seduceOrManip)).statToRollWith(Collections.singletonList(Stats.WEIRD)).build();
         StatModifier attunementMod = StatModifier.builder().id(UUID.randomUUID().toString()).statToModify(Stats.WEIRD).modification(1).build();
-        Move brainerSpecial = Move.builder().name("BRAINER_SPECIAL").description("If you and another character have sex, you automatically do a _**deep brain scan**_ on them, whether you have the move or not. Roll+weird as normal. However, the MC chooses which questions the other character’s player answers.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move unnaturalLust = Move.builder().name("UNNATURAL_LUST_TRANSFIXION").description("_**Unnatural lust transfixion**_: when you try to seduce someone, roll+weird instead of roll+hot.").stat(null).rollModifier(lustMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move brainReceptivity = Move.builder().name("CASUAL_BRAIN_RECEPTIVITY").description("_**Casual brain receptivity**_: when you read someone, roll+weird instead of roll+sharp. Your victim has to be able to see you, but you don’t have to interact.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move brainAttunement = Move.builder().name("PRETERNATURAL_BRAIN_ATTUNEMENT").description("_**Preternatural at-will brain attunement**_: you get +1weird (weird+3).\n").statModifier(attunementMod).stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move brainScan = Move.builder().name("DEEP_BRAIN_SCAN").description("_**Deep brain scan**_: when you have time and physical intimacy with someone — mutual intimacy like holding them in your arms, or 1-sided intimacy like they’re restrained to a table — you can read them more deeply than normal. Roll+weird.\n" +
+        Move brainerSpecial = Move.builder().name("BRAINER SPECIAL").description("If you and another character have sex, you automatically do a _**deep brain scan**_ on them, whether you have the move or not. Roll+weird as normal. However, the MC chooses which questions the other character’s player answers.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+        Move unnaturalLust = Move.builder().name("UNNATURAL LUST TRANSFIXION").description("_**Unnatural lust transfixion**_: when you try to seduce someone, roll+weird instead of roll+hot.").stat(null).rollModifier(lustMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+        Move brainReceptivity = Move.builder().name("CASUAL BRAIN RECEPTIVITY").description("_**Casual brain receptivity**_: when you read someone, roll+weird instead of roll+sharp. Your victim has to be able to see you, but you don’t have to interact.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+        Move brainAttunement = Move.builder().name("PRETERNATURAL BRAIN ATTUNEMENT").description("_**Preternatural at-will brain attunement**_: you get +1weird (weird+3).\n").statModifier(attunementMod).stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+        Move brainScan = Move.builder().name("DEEP BRAIN SCAN").description("_**Deep brain scan**_: when you have time and physical intimacy with someone — mutual intimacy like holding them in your arms, or 1-sided intimacy like they’re restrained to a table — you can read them more deeply than normal. Roll+weird.\n" +
                 "\n" +
                 "On a 10+, hold 3. On a 7–9, hold 1. While you’re reading them, spend your hold to ask their player questions, 1 for 1:\n" +
                 "\n" +
@@ -445,8 +445,8 @@ public class GameDataLoader implements CommandLineRunner {
                 "- *In what ways are your character’s mind and soul vulnerable?*\n" +
                 "\n" +
                 "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit").stat(Stats.WEIRD).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move whisperProjection = Move.builder().name("DIRECT_BRAIN_WHISPER_PROJECTION").description("_**Direct-brain whisper projection**_: you can roll+weird to get the effects of going aggro, without going aggro. Your victim has to be able to see you, but you don’t have to interact. If your victim forces your hand, your mind counts as a weapon (1-harm ap close loud-optional).").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move puppetStrings = Move.builder().name("IN_BRAIN_PUPPET_STRINGS").description("_**In-brain puppet strings**_: when you have time and physical intimacy with someone — again, mutual or 1-sided — you can plant a command inside their mind. Roll+weird.\n" +
+        Move whisperProjection = Move.builder().name("DIRECT BRAIN WHISPER PROJECTION").description("_**Direct-brain whisper projection**_: you can roll+weird to get the effects of going aggro, without going aggro. Your victim has to be able to see you, but you don’t have to interact. If your victim forces your hand, your mind counts as a weapon (1-harm ap close loud-optional).").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+        Move puppetStrings = Move.builder().name("IN BRAIN PUPPET STRINGS").description("_**In-brain puppet strings**_: when you have time and physical intimacy with someone — again, mutual or 1-sided — you can plant a command inside their mind. Roll+weird.\n" +
                 "\n" +
                 "On a 10+, hold 3. On a 7–9, hold 1.\n" +
                 "\n" +
@@ -464,7 +464,7 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- CHOPPER MOVES --------------------------------- */
         System.out.println("|| --- Loading Chopper moves --- ||");
         Move chopperSpecial = Move.builder().name("CHOPPER_SPECIAL").description("If you and another character have sex, they immediately change their sheet to say Hx+3 with you. They also choose whether to give you -1 or +1 to your Hx with them, on your sheet.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.CHOPPER).build();
-        Move packAlpha = Move.builder().name("PACK_ALPHA").description("_**Pack alpha**_: when you try to impose your will on your gang, roll+hard.\n" +
+        Move packAlpha = Move.builder().name("PACK ALPHA").description("_**Pack alpha**_: when you try to impose your will on your gang, roll+hard.\n" +
                 "\n" +
                 "On a 10+, all 3. On a 7–9, choose 1:\n" +
                 "\n" +
@@ -473,7 +473,7 @@ public class GameDataLoader implements CommandLineRunner {
                 "- *You don’t have to make an example of one of them (otherwise, you must)*\n" +
                 "\n" +
                 "On a miss, someone in your gang makes a bid, idle or serious, to replace you for alpha.").stat(Stats.HARD).kind(MoveKinds.CHARACTER).playbook(Playbooks.CHOPPER).build();
-        Move fuckingThieves = Move.builder().name("FUCKING_THIEVES").description("_**Fucking thieves**_: when you have your gang search their pockets and saddlebags for something, roll+hard. It has to be something small enough to fit.\n" +
+        Move fuckingThieves = Move.builder().name("FUCKING THIEVES").description("_**Fucking thieves**_: when you have your gang search their pockets and saddlebags for something, roll+hard. It has to be something small enough to fit.\n" +
                 "\n" +
                 "On a 10+, one of you happens to have just the thing, or close enough.\n" +
                 "\n" +
@@ -758,8 +758,18 @@ public class GameDataLoader implements CommandLineRunner {
     public void loadPlaybookCreators() {
         System.out.println("|| --- Loading playbook creators --- ||");
         /* ----------------------------- ANGEL PLAYBOOK CREATOR --------------------------------- */
-        List<Move> angelMoves = moveRepository
-                .findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.CHARACTER).collectList().block();
+        List<CharacterMove> angelMoves = moveRepository
+                .findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.CHARACTER)
+                .map(move -> {
+                    CharacterMove characterMove;
+                    if (move.getName().equals("ANGEL SPECIAL")) {
+                        characterMove = CharacterMove.createFromMove(move, true);
+                    } else {
+                        characterMove = CharacterMove.createFromMove(move, true);
+                    }
+                    return characterMove;
+                })
+                .collectList().block();
 
         AngelKitCreator angelKitCreator = AngelKitCreator.builder()
                 .id(UUID.randomUUID().toString())
@@ -824,8 +834,18 @@ public class GameDataLoader implements CommandLineRunner {
 
 
         /* ----------------------------- BATTLEBABE PLAYBOOK CREATOR --------------------------------- */
-        List<Move> battlebabeMoves = moveRepository
-                .findAllByPlaybookAndKind(Playbooks.BATTLEBABE, MoveKinds.CHARACTER).collectList().block();
+        List<CharacterMove> battlebabeMoves = moveRepository
+                .findAllByPlaybookAndKind(Playbooks.BATTLEBABE, MoveKinds.CHARACTER)
+                .map(move -> {
+                    CharacterMove characterMove;
+                    if (move.getName().equals("BATTLEBABE SPECIAL")) {
+                        characterMove = CharacterMove.createFromMove(move, true);
+                    } else {
+                        characterMove = CharacterMove.createFromMove(move, true);
+                    }
+                    return characterMove;
+                })
+                .collectList().block();
 
         TaggedItem firearmBase1 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("handgun").tags(List.of("2-harm", "close", "reload", "loud")).build();
         TaggedItem firearmBase2 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("shotgun").tags(List.of("3-harm", "close", "reload", "messy")).build();
@@ -914,8 +934,18 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         /* ----------------------------- BRAINER PLAYBOOK CREATOR --------------------------------- */
-        List<Move> brainerMoves = moveRepository
-                .findAllByPlaybookAndKind(Playbooks.BRAINER, MoveKinds.CHARACTER).collectList().block();
+        List<CharacterMove> brainerMoves = moveRepository
+                .findAllByPlaybookAndKind(Playbooks.BRAINER, MoveKinds.CHARACTER)
+                .map(move -> {
+                    CharacterMove characterMove;
+                    if (move.getName().equals("BRAINER SPECIAL")) {
+                         characterMove = CharacterMove.createFromMove(move, true);
+                    } else {
+                         characterMove = CharacterMove.createFromMove(move, false);
+                    }
+                    return characterMove;
+                })
+                .collectList().block();
 
         BrainerGearCreator brainerGearCreator = BrainerGearCreator.builder()
                 .id(UUID.randomUUID().toString())

@@ -20,20 +20,16 @@ public class Move  {
 
     private String name;
 
-    // Long string
     private String description;
 
-    // Enum type string
     private Stats stat;
 
     private StatModifier statModifier;
 
     private RollModifier rollModifier;
 
-    // Enum type string
     private MoveKinds kind;
 
-    // enum type string
     private Playbooks playbook;
 
     public Move(String name, String description, Stats stat, MoveKinds kind, Playbooks playbook) {
