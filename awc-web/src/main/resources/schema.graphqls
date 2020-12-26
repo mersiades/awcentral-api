@@ -120,6 +120,7 @@ type Character {
     looks: [Look]
     statsBlock: StatsBlock
     playbookUnique: PlaybookUnique
+    characterMoves: [CharacterMove]
 }
 
 type GameRole {
@@ -342,4 +343,7 @@ type Mutation {
         characterId: String!,
         stock: Int!,
         hasSupplier: Boolean! ): Character
+    setCharacterMoves(gameRoleId: String!,
+        characterId: String!,
+        moveIds: [String]!): Character
 }

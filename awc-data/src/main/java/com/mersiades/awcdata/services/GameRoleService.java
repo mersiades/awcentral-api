@@ -29,4 +29,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character setBrainerGear(String gameRoleId, String characterId, List<String> brainerGear);
 
     Character setAngelKit(String gameRoleId, String characterId, int stock, Boolean hasSupplier);
+
+    Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds);
 }

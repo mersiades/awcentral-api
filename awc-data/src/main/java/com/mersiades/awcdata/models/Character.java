@@ -30,11 +30,16 @@ public class Character {
 
     private Playbooks playbook;
 
+//    @Builder.Default
     private List<String> gear = new ArrayList<>();
 
+//    @Builder.Default
     private List<Look> looks = new ArrayList<>();
 
     private PlaybookUnique playbookUnique;
+
+//    @Builder.Default
+    private List<CharacterMove> characterMoves = new ArrayList<>();
 
     private GameRole gameRole;
 

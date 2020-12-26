@@ -6,10 +6,7 @@ import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.AngelKit;
 import com.mersiades.awcdata.models.uniques.BrainerGear;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
-import com.mersiades.awcdata.services.CharacterService;
-import com.mersiades.awcdata.services.GameRoleService;
-import com.mersiades.awcdata.services.MoveService;
-import com.mersiades.awcdata.services.StatsOptionService;
+import com.mersiades.awcdata.services.*;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,14 +23,16 @@ public class GameRoleServiceImpl implements GameRoleService {
     private final CharacterService characterService;
     private final StatsOptionService statsOptionService;
     private final MoveService moveService;
+    private final PlaybookCreatorService playbookCreatorService;
 
     public GameRoleServiceImpl(GameRoleRepository gameRoleRepository, CharacterService characterService,
-                               StatsOptionService statsOptionService, MoveService moveService) {
+                               StatsOptionService statsOptionService, MoveService moveService,
+                               PlaybookCreatorService playbookCreatorService) {
         this.gameRoleRepository = gameRoleRepository;
         this.characterService = characterService;
         this.statsOptionService = statsOptionService;
         this.moveService = moveService;
-
+        this.playbookCreatorService = playbookCreatorService;
     }
 
     @Override
@@ -267,6 +266,38 @@ public class GameRoleServiceImpl implements GameRoleService {
             character.getPlaybookUnique().getAngelKit().setStock(stock);
             character.getPlaybookUnique().getAngelKit().setHasSupplier(hasSupplier);
         }
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
+    public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(character.getPlaybook()).block();
+        assert playbookCreator != null;
+
+        List<CharacterMove> characterMoves = playbookCreator.getPlaybookMoves();
+
+        characterMoves.forEach(characterMove -> {
+            if (moveIds.contains(characterMove.getId())) {
+                characterMove.setIsSelected(true);
+            }
+            characterMove.setId(UUID.randomUUID().toString());
+        });
+
+
+        character.setCharacterMoves(characterMoves);
 
         // Save to db
         characterService.save(character).block();

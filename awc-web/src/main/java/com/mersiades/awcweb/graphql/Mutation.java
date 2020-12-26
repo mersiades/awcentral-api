@@ -93,8 +93,13 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public Character setAngelKit(String gameRoleId, String characterId, int stock, Boolean hasSupplier) {
-        System.out.println("Setting CharacterStats for Character: " + characterId);
+        System.out.println("Setting AngelKit for Character: " + characterId);
         return gameRoleService.setAngelKit(gameRoleId, characterId, stock, hasSupplier);
+    }
+
+    public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
+        System.out.println("Setting CharacterStats for Character: " + characterId);
+        return gameRoleService.setCharacterMoves(gameRoleId, characterId, moveIds);
     }
 
 }
