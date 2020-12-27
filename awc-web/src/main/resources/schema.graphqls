@@ -237,6 +237,7 @@ type Character {
 type GameRole {
     id: ID!
     role: Roles
+    userId: String!
     game: Game
     npcs: [Npc]
     threats: [Threat]

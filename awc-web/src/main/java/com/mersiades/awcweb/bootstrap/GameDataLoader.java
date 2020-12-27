@@ -816,12 +816,9 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "Go around again for Hx. On your turn, ask 1, 2, or all 3:\n" +
                         "\n" +
-                        "- Which one of you do I figure is doomed to self-destruction?\n" +
-                        "For that character, write Hx-2.\n" +
-                        "- Which one of you put a hand in when it mattered, and helped me save a life?\n" +
-                        "For that character, write Hx+2.\n" +
-                        "- Which one of you has been beside me all along, and has seen everything I’ve seen?\n" +
-                        "For that character, write Hx+3.\n" +
+                        "- *Which one of you do I figure is doomed to self-destruction?* For that character, write Hx-2.\n" +
+                        "- *Which one of you put a hand in when it mattered, and helped me save a life?* For that character, write Hx+2.\n" +
+                        "- *Which one of you has been beside me all along, and has seen everything I’ve seen?* For that character, write Hx+3.\n" +
                         "\n" +
                         "For everyone else, write Hx+1. You keep your eyes open.\n" +
                         "\n" +
