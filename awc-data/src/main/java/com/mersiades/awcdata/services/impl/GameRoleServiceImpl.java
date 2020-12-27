@@ -5,6 +5,7 @@ import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.AngelKit;
 import com.mersiades.awcdata.models.uniques.BrainerGear;
+import com.mersiades.awcdata.models.uniques.CustomWeapons;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.*;
 import org.springframework.stereotype.Service;
@@ -100,6 +101,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setStatsBlock(new StatsBlock());
         character.getGear().clear();
         character.setPlaybookUnique(null);
+        character.setCharacterMoves(null);
 
         // Set new playbook
         character.setPlaybook(playbookType);
@@ -265,6 +267,42 @@ public class GameRoleServiceImpl implements GameRoleService {
             // Update existing AngelKit
             character.getPlaybookUnique().getAngelKit().setStock(stock);
             character.getPlaybookUnique().getAngelKit().setHasSupplier(hasSupplier);
+        }
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
+    public Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons) {
+
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.CUSTOM_WEAPONS) {
+            // Create new PlaybookUnique for Battlebabe
+            CustomWeapons customWeapons = CustomWeapons.builder().id(UUID.randomUUID().toString())
+                    .weapons(weapons)
+                    .build();
+
+            PlaybookUnique battlebabeUnique = PlaybookUnique.builder()
+                    .id(UUID.randomUUID().toString())
+                    .type(UniqueType.CUSTOM_WEAPONS)
+                    .customWeapons(customWeapons)
+                    .build();
+
+            character.setPlaybookUnique(battlebabeUnique);
+        } else {
+            // Update existing PlaybookUnique
+            character.getPlaybookUnique().getCustomWeapons().setWeapons(weapons);
         }
 
         // Save to db

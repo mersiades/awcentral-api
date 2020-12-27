@@ -1,3 +1,5 @@
+# ------------------------------------------------ ENUMS ---------------------------------------------- #
+
 enum Roles {
     MC
     PLAYER
@@ -67,85 +69,10 @@ enum UniqueType {
     SKINNER_GEAR
 }
 
-type User {
-    id: ID!
-    displayName: String
-    email: String
-    gameRoles: [GameRole]
-}
-
-type Game {
-    id: ID!
-    name: String!
-    mc: User
-    commsApp: String
-    commsUrl: String
-    players: [User]
-    gameRoles: [GameRole]
-    invitees: [String]
-}
-
-type Npc {
-    id: ID
-    name: String
-    description: String
-}
-
-type Threat {
-    id: ID
-    name: String
-    threatKind: Threats
-    impulse: String
-    description: String
-    stakes: String
-}
-
-type CharacterStat {
-    id: ID
-    stat: Stats
-    value: Int
-    isHighlighted: Boolean
-}
-
-type StatsBlock {
-    id: ID
-    stats: [CharacterStat]
-}
-
-type Character {
-    id: ID!
-    name: String
-    gear: [String]
-    playbook: PlayBooks
-    looks: [Look]
-    statsBlock: StatsBlock
-    playbookUnique: PlaybookUnique
-    characterMoves: [CharacterMove]
-}
-
-type GameRole {
-    id: ID!
-    role: Roles
-    game: Game
-    npcs: [Npc]
-    threats: [Threat]
-    characters: [Character]
-}
+# ---------------------------------------- STATIC GAME DATA TYPES -------------------------------------- #
 
 type Move {
     id: ID!
-    name: String!
-    kind: MoveKinds!
-    description: String!
-    playbook: PlayBooks!
-    stat: Stats
-    statModifier: StatModifier
-    rollModifier: RollModifier
-}
-
-type CharacterMove {
-    id: ID!
-    isSelected: Boolean!
     name: String!
     kind: MoveKinds!
     description: String!
@@ -249,17 +176,83 @@ type BrainerGearCreator {
     gear: [String]!
 }
 
+# ---------------------------------------- GAME & CHARACTER TYPES --------------------------------------- #
 
-type TaggedItem {
+type User {
     id: ID!
-    description: String!
-    tags: [String]
+    displayName: String
+    email: String
+    gameRoles: [GameRole]
 }
 
-type ItemCharacteristic {
+type Game {
     id: ID!
+    name: String!
+    mc: User
+    commsApp: String
+    commsUrl: String
+    players: [User]
+    gameRoles: [GameRole]
+    invitees: [String]
+}
+
+type Npc {
+    id: ID
+    name: String
+    description: String
+}
+
+type Threat {
+    id: ID
+    name: String
+    threatKind: Threats
+    impulse: String
+    description: String
+    stakes: String
+}
+
+type CharacterStat {
+    id: ID
+    stat: Stats
+    value: Int
+    isHighlighted: Boolean
+}
+
+type StatsBlock {
+    id: ID
+    stats: [CharacterStat]
+}
+
+type Character {
+    id: ID!
+    name: String
+    gear: [String]
+    playbook: PlayBooks
+    looks: [Look]
+    statsBlock: StatsBlock
+    playbookUnique: PlaybookUnique
+    characterMoves: [CharacterMove]
+}
+
+type GameRole {
+    id: ID!
+    role: Roles
+    game: Game
+    npcs: [Npc]
+    threats: [Threat]
+    characters: [Character]
+}
+
+type CharacterMove {
+    id: ID!
+    isSelected: Boolean!
+    name: String!
+    kind: MoveKinds!
     description: String!
-    tag: String
+    playbook: PlayBooks!
+    stat: Stats
+    statModifier: StatModifier
+    rollModifier: RollModifier
 }
 
 type PlaybookUnique {
@@ -267,6 +260,7 @@ type PlaybookUnique {
     type: UniqueType
     brainerGear: BrainerGear
     angelKit: AngelKit
+    customWeapons: CustomWeapons
 }
 
 type BrainerGear {
@@ -283,6 +277,25 @@ type AngelKit {
     supplierText: String!
 }
 
+type CustomWeapons {
+    id: ID!
+    weapons: [String]!
+}
+
+# ----------------------------------------------- OTHER ---------------------------------------------- #
+
+type TaggedItem {
+    id: ID!
+    description: String!
+    tags: [String]
+}
+
+type ItemCharacteristic {
+    id: ID!
+    description: String!
+    tag: String
+}
+
 type RollModifier {
     id: ID!
     movesToModify: [Move]!
@@ -294,6 +307,7 @@ type StatModifier {
     statToModify: Stats!
     modification: Int!
 }
+# ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
     gameRolesByUserId(id: String!): [GameRole]
@@ -304,6 +318,8 @@ type Query {
     playbooks: [Playbook]
     playbookCreator(playbookType: PlayBooks!): PlaybookCreator
 }
+
+# --------------------------------------------- MUTATIONS -------------------------------------------- #
 
 type Mutation {
     createGame(userId: String!,
@@ -343,7 +359,12 @@ type Mutation {
         characterId: String!,
         stock: Int!,
         hasSupplier: Boolean! ): Character
+    setCustomWeapons(gameRoleId: String!,
+        characterId: String!,
+        weapons: [String]! ): Character
     setCharacterMoves(gameRoleId: String!,
         characterId: String!,
         moveIds: [String]!): Character
 }
+
+# ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

@@ -97,6 +97,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setAngelKit(gameRoleId, characterId, stock, hasSupplier);
     }
 
+    public Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons) {
+        System.out.println("Setting CustomWeapons for Character: " + characterId);
+        return gameRoleService.setCustomWeapons(gameRoleId, characterId, weapons);
+    }
+
     public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
         System.out.println("Setting CharacterStats for Character: " + characterId);
         return gameRoleService.setCharacterMoves(gameRoleId, characterId, moveIds);

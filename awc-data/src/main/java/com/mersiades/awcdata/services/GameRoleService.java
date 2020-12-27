@@ -31,4 +31,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character setAngelKit(String gameRoleId, String characterId, int stock, Boolean hasSupplier);
 
     Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds);
+
+    Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons);
 }

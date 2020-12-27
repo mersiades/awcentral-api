@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -15,5 +18,6 @@ public class CustomWeapons {
     @Id
     private String id;
 
-    // TODO: Add in the rest
+    @Builder.Default
+    private List<String> weapons = new ArrayList<>();
 }
