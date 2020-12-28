@@ -24,7 +24,9 @@ public class Character {
 
     private String name;
 
-    private StatsBlock statsBlock = new StatsBlock();
+    private StatsBlock statsBlock = StatsBlock.builder().id(UUID.randomUUID().toString()).build();
+
+    private List<HxStat> hxBlock = new ArrayList<>();
 
     // TODO: add harm
 

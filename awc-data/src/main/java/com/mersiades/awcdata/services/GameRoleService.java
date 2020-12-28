@@ -4,6 +4,7 @@ import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.GameRole;
+import com.mersiades.awcdata.models.HxStat;
 import com.mersiades.awcdata.models.User;
 import reactor.core.publisher.Flux;
 
@@ -33,4 +34,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds);
 
     Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons);
+
+    Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats);
 }

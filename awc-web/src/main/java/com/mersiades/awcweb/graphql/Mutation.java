@@ -4,6 +4,7 @@ import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.Game;
+import com.mersiades.awcdata.models.HxStat;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -103,8 +104,13 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
-        System.out.println("Setting CharacterStats for Character: " + characterId);
+        System.out.println("Setting Moves for Character: " + characterId);
         return gameRoleService.setCharacterMoves(gameRoleId, characterId, moveIds);
+    }
+
+    public Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats) {
+        System.out.println("Setting Hx for Character: " + characterId);
+        return gameRoleService.setCharacterHx(gameRoleId, characterId, hxStats);
     }
 
 }

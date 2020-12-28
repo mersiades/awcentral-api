@@ -83,7 +83,7 @@ type Move {
 }
 
 type Playbook {
-    id: ID
+    id: ID!
     playbookType: PlayBooks!
     barterInstructions: String!
     intro: String!
@@ -92,20 +92,20 @@ type Playbook {
 }
 
 type Name {
-    id: ID
+    id: ID!
     playbookType: PlayBooks
     name: String
 }
 
 type Look {
-    id: ID
+    id: ID!
     playbookType: PlayBooks
     category: LookCategories
     look: String
 }
 
 type StatsOption {
-    id: ID
+    id: ID!
     playbookType: PlayBooks
     COOL: Int
     HARD: Int
@@ -212,10 +212,17 @@ type Threat {
 }
 
 type CharacterStat {
-    id: ID
+    id: ID!
     stat: Stats
     value: Int
     isHighlighted: Boolean
+}
+
+type HxStat {
+    id: ID!
+    characterId: String!
+    characterName: String!
+    hxValue: Int!
 }
 
 type StatsBlock {
@@ -230,6 +237,7 @@ type Character {
     playbook: PlayBooks
     looks: [Look]
     statsBlock: StatsBlock
+    hxBlock: [HxStat]
     playbookUnique: PlaybookUnique
     characterMoves: [CharacterMove]
 }
@@ -308,6 +316,14 @@ type StatModifier {
     statToModify: Stats!
     modification: Int!
 }
+
+# ---------------------------------------------- QUERIES --------------------------------------------- #
+
+input HxInput {
+    characterId: String!
+    characterName: String!
+    hxValue: Int!
+}
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -366,6 +382,9 @@ type Mutation {
     setCharacterMoves(gameRoleId: String!,
         characterId: String!,
         moveIds: [String]!): Character
+    setCharacterHx(gameRoleId: String!,
+        characterId: String!,
+        hxStats: [HxInput]!): Character
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

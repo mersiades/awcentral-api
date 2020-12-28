@@ -25,15 +25,17 @@ public class GameRoleServiceImpl implements GameRoleService {
     private final StatsOptionService statsOptionService;
     private final MoveService moveService;
     private final PlaybookCreatorService playbookCreatorService;
+    private final StatsBlockService statsBlockService;
 
     public GameRoleServiceImpl(GameRoleRepository gameRoleRepository, CharacterService characterService,
                                StatsOptionService statsOptionService, MoveService moveService,
-                               PlaybookCreatorService playbookCreatorService) {
+                               PlaybookCreatorService playbookCreatorService, StatsBlockService statsBlockService) {
         this.gameRoleRepository = gameRoleRepository;
         this.characterService = characterService;
         this.statsOptionService = statsOptionService;
         this.moveService = moveService;
         this.playbookCreatorService = playbookCreatorService;
+        this.statsBlockService = statsBlockService;
     }
 
     @Override
@@ -80,8 +82,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character addNewCharacter(String gameRoleId) {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
-        Character newCharacter = new Character();
-        System.out.println("newCharacter = " + newCharacter);
+        Character newCharacter = Character.builder().build();
         characterService.save(newCharacter).block();
         assert gameRole != null;
         gameRole.getCharacters().add(newCharacter);
@@ -171,6 +172,27 @@ public class GameRoleServiceImpl implements GameRoleService {
                 createOrUpdateCharacterStat(character, statsOption, stat);
             }
         });
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
+    public Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        hxStats.forEach(hxStat -> hxStat.setId(UUID.randomUUID().toString()));
+
+        character.setHxBlock(hxStats);
 
         // Save to db
         characterService.save(character).block();
@@ -368,7 +390,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 break;
         }
 
-        Optional<CharacterStat> optionalStat = character.getStatsBlock().getCharacterStatbyStat(stat);
+        Optional<CharacterStat> optionalStat = character.getStatsBlock().getCharacterStatByStat(stat);
         if (optionalStat.isEmpty()) {
             CharacterStat newStat = CharacterStat.builder()
                     .id(UUID.randomUUID().toString())

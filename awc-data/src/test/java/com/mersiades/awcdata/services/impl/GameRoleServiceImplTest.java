@@ -44,6 +44,9 @@ class GameRoleServiceImplTest {
     @Mock
     PlaybookCreatorService playbookCreatorService;
 
+    @Mock
+    StatsBlockService statsBlockService;
+
     GameRoleService gameRoleService;
 
     GameRole mockGameRole;
@@ -66,7 +69,7 @@ class GameRoleServiceImplTest {
         mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(Roles.MC).game(mockGame1).user(mockUser).build();
         mockGame1.getGameRoles().add(mockGameRole);
         mockUser.getGameRoles().add(mockGameRole);
-        gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, statsOptionService, moveService, playbookCreatorService);
+        gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, statsOptionService, moveService, playbookCreatorService, statsBlockService);
         mockGameRole2 = new GameRole();
         mockStatsOption = StatsOption.builder()
                 .id("mock-statsoption-id")
@@ -307,11 +310,11 @@ class GameRoleServiceImplTest {
 
         // Then
         System.out.println("returnedCharacter = " + returnedCharacter);
-        assertEquals(mockStatsOption.getCOOL(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.COOL).orElseThrow().getValue());
-        assertEquals(mockStatsOption.getHARD(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.HARD).orElseThrow().getValue());
-        assertEquals(mockStatsOption.getHOT(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.HOT).orElseThrow().getValue());
-        assertEquals(mockStatsOption.getSHARP(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.SHARP).orElseThrow().getValue());
-        assertEquals(mockStatsOption.getWEIRD(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.WEIRD).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getCOOL(), returnedCharacter.getStatsBlock().getCharacterStatByStat(Stats.COOL).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getHARD(), returnedCharacter.getStatsBlock().getCharacterStatByStat(Stats.HARD).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getHOT(), returnedCharacter.getStatsBlock().getCharacterStatByStat(Stats.HOT).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getSHARP(), returnedCharacter.getStatsBlock().getCharacterStatByStat(Stats.SHARP).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getWEIRD(), returnedCharacter.getStatsBlock().getCharacterStatByStat(Stats.WEIRD).orElseThrow().getValue());
 
         verify(statsOptionService, times(1)).findById(anyString());
         verify(gameRoleRepository, times(1)).findById(anyString());
@@ -343,11 +346,11 @@ class GameRoleServiceImplTest {
 
         // Then
         System.out.println("returnedCharacter = " + returnedCharacter);
-        assertEquals(mockStatsOption.getCOOL(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.COOL).orElseThrow().getValue());
-        assertEquals(mockStatsOption.getHARD(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.HARD).orElseThrow().getValue());
-        assertEquals(mockStatsOption.getHOT(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.HOT).orElseThrow().getValue());
-        assertEquals(mockStatsOption.getSHARP(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.SHARP).orElseThrow().getValue());
-        assertEquals(mockStatsOption.getWEIRD(), returnedCharacter.getStatsBlock().getCharacterStatbyStat(Stats.WEIRD).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getCOOL(), returnedCharacter.getStatsBlock().getCharacterStatByStat(Stats.COOL).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getHARD(), returnedCharacter.getStatsBlock().getCharacterStatByStat(Stats.HARD).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getHOT(), returnedCharacter.getStatsBlock().getCharacterStatByStat(Stats.HOT).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getSHARP(), returnedCharacter.getStatsBlock().getCharacterStatByStat(Stats.SHARP).orElseThrow().getValue());
+        assertEquals(mockStatsOption.getWEIRD(), returnedCharacter.getStatsBlock().getCharacterStatByStat(Stats.WEIRD).orElseThrow().getValue());
 
         verify(statsOptionService, times(1)).findById(anyString());
         verify(gameRoleRepository, times(1)).findById(anyString());
