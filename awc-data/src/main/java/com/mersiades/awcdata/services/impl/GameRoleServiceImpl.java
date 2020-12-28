@@ -25,17 +25,15 @@ public class GameRoleServiceImpl implements GameRoleService {
     private final StatsOptionService statsOptionService;
     private final MoveService moveService;
     private final PlaybookCreatorService playbookCreatorService;
-    private final StatsBlockService statsBlockService;
 
     public GameRoleServiceImpl(GameRoleRepository gameRoleRepository, CharacterService characterService,
                                StatsOptionService statsOptionService, MoveService moveService,
-                               PlaybookCreatorService playbookCreatorService, StatsBlockService statsBlockService) {
+                               PlaybookCreatorService playbookCreatorService) {
         this.gameRoleRepository = gameRoleRepository;
         this.characterService = characterService;
         this.statsOptionService = statsOptionService;
         this.moveService = moveService;
         this.playbookCreatorService = playbookCreatorService;
-        this.statsBlockService = statsBlockService;
     }
 
     @Override
@@ -96,10 +94,11 @@ public class GameRoleServiceImpl implements GameRoleService {
         assert gameRole != null;
         Character character = gameRole.getCharacters().stream()
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
         // Reset fields if already filled
         character.setName(null);
         character.getLooks().clear();
-        character.setStatsBlock(new StatsBlock());
+        character.setStatsBlock(null);
         character.getGear().clear();
         character.setPlaybookUnique(null);
         character.setCharacterMoves(null);
@@ -384,13 +383,14 @@ public class GameRoleServiceImpl implements GameRoleService {
             case WEIRD:
                 value = statsOption.getWEIRD();
                 break;
-            // TODO: I can probably add Hx in here, too
             default:
                 value = 0;
                 break;
         }
 
-        Optional<CharacterStat> optionalStat = character.getStatsBlock().getCharacterStatByStat(stat);
+        Optional<CharacterStat> optionalStat = character.getStatsBlock().stream()
+                .filter(characterStat -> characterStat.getStat().equals(stat)).findFirst();
+
         if (optionalStat.isEmpty()) {
             CharacterStat newStat = CharacterStat.builder()
                     .id(UUID.randomUUID().toString())
@@ -398,7 +398,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                     .value(value)
                     .isHighlighted(false)
                     .build();
-            character.getStatsBlock().getStats().add(newStat);
+            character.getStatsBlock().add(newStat);
         } else {
             optionalStat.get().setValue(value);
         }

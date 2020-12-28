@@ -225,18 +225,13 @@ type HxStat {
     hxValue: Int!
 }
 
-type StatsBlock {
-    id: ID
-    stats: [CharacterStat]
-}
-
 type Character {
     id: ID!
     name: String
     gear: [String]
     playbook: PlayBooks
     looks: [Look]
-    statsBlock: StatsBlock
+    statsBlock: [CharacterStat]
     hxBlock: [HxStat]
     playbookUnique: PlaybookUnique
     characterMoves: [CharacterMove]
