@@ -1,5 +1,7 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awcdata.enums.MoveKinds;
+import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Move;
 import com.mersiades.awcdata.repositories.MoveRepository;
 import com.mersiades.awcdata.services.MoveService;
@@ -44,5 +46,10 @@ public class MoveServiceImpl implements MoveService {
     @Override
     public void deleteById(String id) {
         moveRepository.deleteById(id);
+    }
+
+    @Override
+    public Flux<Move> findAllByPlaybookAndKind(Playbooks playbookType, MoveKinds kind) {
+        return moveRepository.findAllByPlaybookAndKind(playbookType, kind);
     }
 }

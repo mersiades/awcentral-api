@@ -1,3 +1,5 @@
+# ------------------------------------------------ ENUMS ---------------------------------------------- #
+
 enum Roles {
     MC
     PLAYER
@@ -18,6 +20,7 @@ enum MoveKinds {
     PERIPHERAL
     BATTLE
     ROAD_WAR
+    UNIQUE
 }
 
 enum PlayBooks {
@@ -51,6 +54,129 @@ enum LookCategories {
     EYES,
     BODY
 }
+
+enum UniqueType {
+    ANGEL_KIT,
+    CUSTOM_WEAPONS,
+    BRAINER_GEAR,
+    GANG,
+    CAR,
+    WEAPONS,
+    HOLDING,
+    FOLLOWERS,
+    ESTABLISHMENT,
+    WORKSPACE,
+    SKINNER_GEAR
+}
+
+# ---------------------------------------- STATIC GAME DATA TYPES -------------------------------------- #
+
+type Move {
+    id: ID!
+    name: String!
+    kind: MoveKinds!
+    description: String!
+    playbook: PlayBooks!
+    stat: Stats
+    statModifier: StatModifier
+    rollModifier: RollModifier
+}
+
+type Playbook {
+    id: ID!
+    playbookType: PlayBooks!
+    barterInstructions: String!
+    intro: String!
+    introComment: String!
+    playbookImageUrl: String!
+}
+
+type Name {
+    id: ID!
+    playbookType: PlayBooks
+    name: String
+}
+
+type Look {
+    id: ID!
+    playbookType: PlayBooks
+    category: LookCategories
+    look: String
+}
+
+type StatsOption {
+    id: ID!
+    playbookType: PlayBooks
+    COOL: Int
+    HARD: Int
+    HOT: Int
+    SHARP: Int
+    WEIRD: Int
+}
+
+type GearInstructions {
+    id: ID!
+    youGet: String
+    youGetItems: [String]
+    inAddition: String
+    introduceChoice: String
+    numberCanChoose: Int
+    chooseableGear: [String]
+    withMC: String
+    startingBarter: Int
+}
+
+type PlaybookCreator {
+    id: ID!
+    playbookType: PlayBooks
+    playbook: Playbook
+    gearInstructions: GearInstructions
+    improvementInstructions: String
+    movesInstructions: String
+    hxInstructions: String
+    names: [Name]
+    looks: [Look]
+    statsOptions: [StatsOption]
+    playbookUniqueCreator: PlaybookUniqueCreator
+    playbookMoves: [CharacterMove]
+    defaultMoveCount: Int
+    moveChoiceCount: Int
+}
+
+type PlaybookUniqueCreator {
+    id: ID!
+    type: UniqueType!
+    angelKitCreator: AngelKitCreator
+    customWeaponsCreator: CustomWeaponsCreator
+    brainerGearCreator: BrainerGearCreator
+}
+
+type AngelKitCreator {
+    id: ID!
+    angelKitInstructions: String!
+    startingStock: Int!
+}
+
+type CustomWeaponsCreator {
+    id: ID!
+    firearmsTitle: String!
+    firearmsBaseInstructions: String!
+    firearmsBaseOptions: [TaggedItem]
+    firearmsOptionsInstructions: String!
+    firearmsOptionsOptions: [ItemCharacteristic]
+    handTitle: String!
+    handBaseInstructions: String!
+    handBaseOptions: [TaggedItem]
+    handOptionsInstructions: String!
+    handOptionsOptions: [ItemCharacteristic]
+}
+
+type BrainerGearCreator {
+    id: ID!
+    gear: [String]!
+}
+
+# ---------------------------------------- GAME & CHARACTER TYPES --------------------------------------- #
 
 type User {
     id: ID!
@@ -86,15 +212,17 @@ type Threat {
 }
 
 type CharacterStat {
-    id: ID
+    id: ID!
     stat: Stats
     value: Int
     isHighlighted: Boolean
 }
 
-type StatsBlock {
-    id: ID
-    stats: [CharacterStat]
+type HxStat {
+    id: ID!
+    characterId: String!
+    characterName: String!
+    hxValue: Int!
 }
 
 type Character {
@@ -103,83 +231,95 @@ type Character {
     gear: [String]
     playbook: PlayBooks
     looks: [Look]
-    statsBlock: StatsBlock
+    statsBlock: [CharacterStat]
+    hxBlock: [HxStat]
+    playbookUnique: PlaybookUnique
+    characterMoves: [CharacterMove]
 }
 
 type GameRole {
     id: ID!
     role: Roles
+    userId: String!
     game: Game
     npcs: [Npc]
     threats: [Threat]
     characters: [Character]
 }
 
-type Move {
-    id: ID
+type CharacterMove {
+    id: ID!
+    isSelected: Boolean!
     name: String!
-    description: String
-    stat: Stats
     kind: MoveKinds!
-    playbook: PlayBooks
+    description: String!
+    playbook: PlayBooks!
+    stat: Stats
+    statModifier: StatModifier
+    rollModifier: RollModifier
 }
 
-type Playbook {
-    id: ID
-    playbookType: PlayBooks!
-    barterInstructions: String!
-    intro: String!
-    introComment: String!
-    playbookImageUrl: String!
-}
-
-type Name {
-    id: ID
-    playbookType: PlayBooks
-    name: String
-}
-
-type Look {
-    id: ID
-    playbookType: PlayBooks
-    category: LookCategories
-    look: String
-}
-
-type StatsOption {
-    id: ID
-    playbookType: PlayBooks
-    COOL: Int
-    HARD: Int
-    HOT: Int
-    SHARP: Int
-    WEIRD: Int
-}
-
-type GearInstructions {
+type PlaybookUnique {
     id: ID!
-    youGet: String
-    youGetItems: [String]
-    inAddition: String
-    introduceChoice: String
-    numberCanChoose: Int
-    chooseableGear: [String]
-    withMC: String
-    startingBarter: Int
+    type: UniqueType
+    brainerGear: BrainerGear
+    angelKit: AngelKit
+    customWeapons: CustomWeapons
 }
 
-type PlaybookCreator {
-    id: ID!
-    playbookType: PlayBooks
-    playbook: Playbook
-    gearInstructions: GearInstructions
-    improvementInstructions: String
-    movesInstructions: String
-    hxInstructions: String
-    names: [Name]
-    looks: [Look]
-    statsOptions: [StatsOption]
+type BrainerGear {
+    id:ID!
+    brainerGear: [String]
 }
+
+type AngelKit {
+    id: ID!
+    description: String!
+    stock: Int!
+    angelKitMoves: [Move]
+    hasSupplier: Boolean!
+    supplierText: String!
+}
+
+type CustomWeapons {
+    id: ID!
+    weapons: [String]!
+}
+
+# ----------------------------------------------- OTHER ---------------------------------------------- #
+
+type TaggedItem {
+    id: ID!
+    description: String!
+    tags: [String]
+}
+
+type ItemCharacteristic {
+    id: ID!
+    description: String!
+    tag: String
+}
+
+type RollModifier {
+    id: ID!
+    movesToModify: [Move]!
+    statToRollWith: [Stats]!
+}
+
+type StatModifier {
+    id: ID!
+    statToModify: Stats!
+    modification: Int!
+}
+
+# ---------------------------------------------- QUERIES --------------------------------------------- #
+
+input HxInput {
+    characterId: String!
+    characterName: String!
+    hxValue: Int!
+}
+# ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
     gameRolesByUserId(id: String!): [GameRole]
@@ -190,6 +330,8 @@ type Query {
     playbooks: [Playbook]
     playbookCreator(playbookType: PlayBooks!): PlaybookCreator
 }
+
+# --------------------------------------------- MUTATIONS -------------------------------------------- #
 
 type Mutation {
     createGame(userId: String!,
@@ -219,4 +361,25 @@ type Mutation {
     setCharacterStats(gameRoleId: String!,
         characterId: String!,
         statsOptionId: String! ): Character
+    setCharacterGear(gameRoleId: String!,
+        characterId: String!,
+        gear: [String]! ): Character
+    setBrainerGear(gameRoleId: String!,
+        characterId: String!,
+        brainerGear: [String]! ): Character
+    setAngelKit(gameRoleId: String!,
+        characterId: String!,
+        stock: Int!,
+        hasSupplier: Boolean! ): Character
+    setCustomWeapons(gameRoleId: String!,
+        characterId: String!,
+        weapons: [String]! ): Character
+    setCharacterMoves(gameRoleId: String!,
+        characterId: String!,
+        moveIds: [String]!): Character
+    setCharacterHx(gameRoleId: String!,
+        characterId: String!,
+        hxStats: [HxInput]!): Character
 }
+
+# ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

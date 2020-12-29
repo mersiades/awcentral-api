@@ -1,0 +1,22 @@
+package com.mersiades.awcdata.models;
+
+import com.mersiades.awcdata.enums.Stats;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class StatModifier {
+
+    @Id
+    private String id;
+
+    private Stats statToModify;
+
+    private int modification;
+}

@@ -4,10 +4,13 @@ import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.Game;
+import com.mersiades.awcdata.models.HxStat;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class Mutation implements GraphQLMutationResolver {
@@ -76,8 +79,38 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public Character setCharacterStats(String gameRoleId, String characterId, String statsOptionId) {
-        System.out.println("Setting CharacterStats for for Character: " + characterId);
+        System.out.println("Setting CharacterStats for Character: " + characterId);
         return gameRoleService.setCharacterStats(gameRoleId, characterId, statsOptionId);
+    }
+
+    public Character setCharacterGear(String gameRoleId, String characterId, List<String> gear) {
+        System.out.println("Setting CharacterStats for Character: " + characterId);
+        return gameRoleService.setCharacterGear(gameRoleId, characterId, gear);
+    }
+
+    public Character setBrainerGear(String gameRoleId, String characterId, List<String> brainerGear) {
+        System.out.println("Setting setBrainerGear for Character: " + characterId);
+        return gameRoleService.setBrainerGear(gameRoleId, characterId, brainerGear);
+    }
+
+    public Character setAngelKit(String gameRoleId, String characterId, int stock, Boolean hasSupplier) {
+        System.out.println("Setting AngelKit for Character: " + characterId);
+        return gameRoleService.setAngelKit(gameRoleId, characterId, stock, hasSupplier);
+    }
+
+    public Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons) {
+        System.out.println("Setting CustomWeapons for Character: " + characterId);
+        return gameRoleService.setCustomWeapons(gameRoleId, characterId, weapons);
+    }
+
+    public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
+        System.out.println("Setting Moves for Character: " + characterId);
+        return gameRoleService.setCharacterMoves(gameRoleId, characterId, moveIds);
+    }
+
+    public Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats) {
+        System.out.println("Setting Hx for Character: " + characterId);
+        return gameRoleService.setCharacterHx(gameRoleId, characterId, hxStats);
     }
 
 }
