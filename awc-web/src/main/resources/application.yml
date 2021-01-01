@@ -4,8 +4,3 @@ graphql:
     websocket:
       enabled: false
 
-spring:
-  data:
-    mongodb:
-      port: 57363
-      host: localhost
