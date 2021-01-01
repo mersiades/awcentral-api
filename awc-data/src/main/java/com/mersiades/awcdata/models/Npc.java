@@ -16,21 +16,4 @@ public class Npc {
 
     private String description;
 
-    // many to one
-    private GameRole gameRole;
-
-    public Npc(GameRole gameRole, String name) {
-        this.name = name;
-    }
-
-    public Npc(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Npc(GameRole gameRole, String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
 }

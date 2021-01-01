@@ -16,13 +16,8 @@ public class Threat {
     @Id
     private String id;
 
-    /* The GameRole that created/owns the Threat */
-    // many to one
-    private GameRole gameRole;
-
     private String name;
 
-    // enum type string
     private Threats threatKind;
 
     private String impulse;
@@ -31,13 +26,4 @@ public class Threat {
 
     private String stakes;
 
-    public Threat(String id) {
-        this.id = id;
-    }
-
-    public Threat(String name, Threats threatKind, String impulse) {
-        this.name = name;
-        this.threatKind = threatKind;
-        this.impulse = impulse;
-    }
 }

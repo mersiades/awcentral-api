@@ -1,4 +1,20 @@
 [![<mersiades>](https://circleci.com/gh/mersiades/awcentral.svg?style=svg&circle-token=a03c2f7515d94f5c89541091557b734860340ddc)](https://app.circleci.com/pipelines/github/mersiades/awcentral)
 
-# awcentral
+## awcentral
 A web interface to play Apocalypse World online
+
+### Running the app
+
+#### Local
+
+- start the db with `brew services start mongodb/brew/mongodb-community`
+- run `AWCWebApplication` in IDE
+
+### Deploying the app 
+
+- run `mvn clean package`
+- manually deploy to AWS Elastic Beanstalk environment
+
+### Testing the app
+
+- run `mvn clean install`

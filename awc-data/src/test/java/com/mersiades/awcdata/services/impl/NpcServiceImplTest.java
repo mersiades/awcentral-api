@@ -40,7 +40,7 @@ class NpcServiceImplTest {
                 .id(MOCK_NPC_ID_1)
                 .name("Mrs Mock NPC")
                 .description("just a mock npc")
-                .gameRole(mockGameRole1)
+//                .gameRole(mockGameRole1)
                 .build();
 
         npcService = new NpcServiceImpl(npcRepository);
