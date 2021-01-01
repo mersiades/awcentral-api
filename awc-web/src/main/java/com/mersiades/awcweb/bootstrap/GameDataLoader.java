@@ -1275,7 +1275,6 @@ public class GameDataLoader implements CommandLineRunner {
         Playbook playbookAngel = playbookService.findByPlaybookType(Playbooks.ANGEL).block();
         assert playbookAngel != null;
 
-        System.out.println(playbookAngel.getCreator());
         if (playbookAngel.getCreator() == null) {
             PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(Playbooks.ANGEL).block();
             assert playbookCreatorAngel != null;
