@@ -2,7 +2,6 @@ package com.mersiades.awcweb.bootstrap;
 
 import com.mersiades.awcdata.enums.Roles;
 import com.mersiades.awcdata.enums.Threats;
-import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.*;
 import com.mersiades.awcdata.services.*;
@@ -13,7 +12,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -104,12 +102,11 @@ public class MockDataLoader implements CommandLineRunner {
         GameRole daveAsMC = GameRole.builder().id(DAVE_AS_PLAYER_ID).role(Roles.MC).build();
         GameRole sarahAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
 
-        Npc mockNpc1 = new Npc(daveAsMC, "Vision", "Badass truck driver");
-        Npc mockNpc2 = new Npc(daveAsMC, "Nbeke");
+        Npc mockNpc1 = Npc.builder().name("Vision").description("Badass truck; driver").build();
+        Npc mockNpc2 = Npc.builder().name("Nbeke").build();
 
-        Threat mockThreat1 = new Threat("Tum Tum", Threats.WARLORD, "Slaver: to own and sell people");
-        Threat mockThreat2 = new Threat("Gnarly", Threats.GROTESQUE, "Cannibal: craves satiety and plenty");
-
+        Threat mockThreat1 = Threat.builder().name("Tum Tum").threatKind(Threats.WARLORD).impulse("Slaver: to own and sell people").build();
+        Threat mockThreat2 = Threat.builder().name("Gnarly").threatKind(Threats.GROTESQUE).impulse("Cannibal: craves satiety and plenty").build();
 
         daveAsMC.getNpcs().add(mockNpc1);
         daveAsMC.getNpcs().add(mockNpc2);
@@ -149,11 +146,11 @@ public class MockDataLoader implements CommandLineRunner {
         GameRole daveAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
         GameRole sarahAsMC =  GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.MC).build();
 
-        Npc mockNpc3 = new Npc(sarahAsMC, "Batty", "Overly polite gun for hire");
-        Npc mockNpc4 = new Npc(sarahAsMC, "Farley");
+        Npc mockNpc3 = Npc.builder().name("Batty").description("Overly polite gun for hire").build();
+        Npc mockNpc4 = Npc.builder().name("Farley").build();
 
-        Threat mockThreat3 = new Threat("Fleece", Threats.BRUTE, "Hunting pack: to victimize anyone vulnerable");
-        Threat mockThreat4 = new Threat("Wet Rot", Threats.AFFLICTION, "Condition: to expose people to danger");
+        Threat mockThreat3 = Threat.builder().name("Fleece").threatKind(Threats.BRUTE).impulse("Hunting pack: to victimize anyone vulnerable").build();
+        Threat mockThreat4 = Threat.builder().name("Wet Rot").threatKind(Threats.AFFLICTION).impulse("Condition: to expose people to danger").build();
 
         sarahAsMC.getNpcs().add(mockNpc3);
         sarahAsMC.getNpcs().add(mockNpc4);
@@ -190,77 +187,5 @@ public class MockDataLoader implements CommandLineRunner {
 //        characterService.save(mockCharacter1);
 //        characterService.save(mockCharacter2);
 
-        // ----------------------------------------------------------------------------------------------- //
-//        npcService.save(mockNpc1);
-//        npcService.save(mockNpc2);
-//        npcService.save(mockNpc3);
-//        npcService.save(mockNpc4);
-//        threatService.save(mockThreat1);
-//        threatService.save(mockThreat2);
-//        threatService.save(mockThreat3);
-//        threatService.save(mockThreat4);
-
-
-        // -------------------------------------- Print MockUser1 -------------------------------------- //
-        printUser(mockUser1);
-        System.out.println("\t ********** Game Role 1 **********");
-        printGameRole(daveAsMC);
-        System.out.println("\t ********** Game Role 2 **********");
-        printGameRole(daveAsPlayer);
-        // -------------------------------------- Print MockUser2 -------------------------------------- //
-        printUser(mockUser2);
-        System.out.println("\t ********** Game Role 1 **********");
-        printGameRole(sarahAsPlayer);
-        System.out.println("\t ********** Game Role 2 **********");
-        printGameRole(sarahAsMC);
-        // -------------------------------------- Print MockGame1 -------------------------------------- //
-        // -------------------------------------- Print MockGame2 -------------------------------------- //
-    }
-
-    private void printGameRole(GameRole role) {
-        System.out.println("\t Game: " + role.getGame().getName());
-        Roles roleType = role.getRole();
-        System.out.println("\t Role: " + role.getRole());
-        if (roleType == Roles.MC) {
-            List<Npc> npcs = role.getNpcs();
-            List<Threat> threats = role.getThreats();
-            System.out.println("\t This role has " + npcs.size() + " NPCs");
-            if (npcs.size() > 0) {
-                for (Npc npc : npcs) {
-                    System.out.println("\t\t NPC name: " + npc.getName());
-                    if (npc.getDescription() != null) {
-                        System.out.println("\t\t NPC description: " + npc.getDescription());
-                    }
-                    System.out.println("\n");
-                }
-            }
-            System.out.println("\t This role has " + threats.size() + " threats");
-            if (threats.size() > 0) {
-                for (Threat threat : threats) {
-                    System.out.println("\t\t Threat name: " + threat.getName());
-                    System.out.println("\t\t Threat kind: " + threat.getThreatKind());
-                    System.out.println("\t\t Threat impulse: " + threat.getImpulse());
-                    System.out.println("\n");
-                }
-            }
-        } else if (roleType == Roles.PLAYER) {
-            List<Character> characters = role.getCharacters();
-            System.out.println("\t This role has " + characters.size() + " characters");
-            if (characters.size() > 0) {
-                for (Character character : characters) {
-                    System.out.println("\t\t Character name: " + character.getName());
-                    System.out.println("\t\t Playbook: " + character.getPlaybook());
-                    System.out.println("\t\t Gear: " + character.getGear());
-                    System.out.println("\n");
-                }
-            }
-        }
-    }
-
-    private void printUser(User user) {
-        System.out.println("| ------------- " + user.getId() + " -------------- |");
-        System.out.println("ID: " + user.getId());
-        System.out.println("GameRoles (#): " + user.getGameRoles().size());
-        System.out.println("\n");
     }
 }
