@@ -230,6 +230,7 @@ type Character {
     name: String
     gear: [String]
     playbook: PlayBooks
+    hasCompletedCharacterCreation: Boolean
     looks: [Look]
     statsBlock: [CharacterStat]
     hxBlock: [HxStat]

@@ -80,7 +80,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character addNewCharacter(String gameRoleId) {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
-        Character newCharacter = Character.builder().build();
+        Character newCharacter = Character.builder().hasCompletedCharacterCreation(false).build();
         characterService.save(newCharacter).block();
         assert gameRole != null;
         gameRole.getCharacters().add(newCharacter);
