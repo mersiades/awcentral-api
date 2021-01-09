@@ -7,9 +7,9 @@ spring:
           jwk-set-uri: http://localhost:8180/auth/realms/awc-realm/protocol/openid-connect/certs
   data:
     mongodb:
-      uri: mongodb+srv://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@awcentral-cluster-1.nnjlp.mongodb.net/dev-awcentral?retryWrites=true&w=majority
+      port: 27017
+      host: localhost
+      database: mongo-dev
 #  data:
 #    mongodb:
-#      port: 27017
-#      host: localhost
-#      database: mongo-dev
+#      uri: mongodb+srv://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@awcentral-cluster-1.nnjlp.mongodb.net/dev-awcentral?retryWrites=true&w=majority

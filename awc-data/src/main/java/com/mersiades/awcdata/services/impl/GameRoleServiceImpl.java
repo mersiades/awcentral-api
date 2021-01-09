@@ -74,7 +74,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     @Override
     public Flux<GameRole> findAllByUserId(String userId) {
-        return gameRoleRepository.findAllByUserId(userId);
+        return gameRoleRepository.findAllByUserId(userId).log();
     }
 
     @Override

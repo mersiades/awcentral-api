@@ -29,7 +29,7 @@ public class PlaybookCreator {
 
     private String hxInstructions;
 
-    private Playbook playbook;
+//    private Playbook playbook;
 
     private PlaybookUniqueCreator playbookUniqueCreator;
 
