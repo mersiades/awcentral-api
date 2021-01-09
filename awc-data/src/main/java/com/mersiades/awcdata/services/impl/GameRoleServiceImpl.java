@@ -201,6 +201,25 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
+    public Character finishCharacterCreation(String gameRoleId, String characterId) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        character.setHasCompletedCharacterCreation(true);
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
     public Character setCharacterGear(String gameRoleId, String characterId, List<String> gear) {
         // Get the GameRole
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
