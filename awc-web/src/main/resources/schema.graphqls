@@ -129,7 +129,6 @@ type GearInstructions {
 type PlaybookCreator {
     id: ID!
     playbookType: PlayBooks
-    playbook: Playbook
     gearInstructions: GearInstructions
     improvementInstructions: String
     movesInstructions: String
@@ -191,6 +190,7 @@ type Game {
     mc: User
     commsApp: String
     commsUrl: String
+    hasFinishedPreGame: Boolean
     players: [User]
     gameRoles: [GameRole]
     invitees: [String]
