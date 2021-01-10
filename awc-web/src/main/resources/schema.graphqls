@@ -383,6 +383,7 @@ type Mutation {
         hxStats: [HxInput]!): Character
     finishCharacterCreation(gameRoleId: String!,
         characterId: String!): Character
+    finishPreGame(gameId: String!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #
