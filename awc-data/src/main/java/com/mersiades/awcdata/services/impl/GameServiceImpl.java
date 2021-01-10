@@ -168,8 +168,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Mono<Game> finishPreGame(String gameId) {
-//        Game game = findById(gameId).blockOptional().orElseThrow(NoSuchElementException::new);
-
         return findById(gameId).map(game -> {
             game.setHasFinishedPreGame(true);
             return game;

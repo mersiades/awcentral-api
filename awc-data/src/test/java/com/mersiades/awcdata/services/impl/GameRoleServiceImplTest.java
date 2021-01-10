@@ -1,11 +1,9 @@
 package com.mersiades.awcdata.services.impl;
 
-import com.mersiades.awcdata.enums.LookCategories;
-import com.mersiades.awcdata.enums.Playbooks;
-import com.mersiades.awcdata.enums.Roles;
-import com.mersiades.awcdata.enums.Stats;
+import com.mersiades.awcdata.enums.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
+import com.mersiades.awcdata.models.uniquecreators.AngelKitCreator;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +15,7 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -365,4 +364,262 @@ class GameRoleServiceImplTest {
         verify(gameRoleRepository, times(1)).save(any(GameRole.class));
     }
 
+    @Test
+    public void shouldSetCharacterHx() {
+        // Given
+        mockGameRole.getCharacters().add(mockCharacter);
+        Character mockCharacter2 = Character.builder()
+                .id("mock-character-2-id")
+                .name("Mock Character 2")
+                .playbook(Playbooks.DRIVER)
+                .build();
+
+        Character mockCharacter3 = Character.builder()
+                .id("mock-character-3-id")
+                .name("Mock Character 3")
+                .playbook(Playbooks.HARDHOLDER)
+                .build();
+
+        HxStat hxStat1 = HxStat.builder()
+                .characterId(mockCharacter2.getId())
+                .characterName(mockCharacter2.getName())
+                .hxValue(1)
+                .build();
+
+        HxStat hxStat2 = HxStat.builder()
+                .characterId(mockCharacter3.getId())
+                .characterName(mockCharacter3.getName())
+                .hxValue(-1)
+                .build();
+
+        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .setCharacterHx(mockGameRole.getId(), mockCharacter.getId(), List.of(hxStat1, hxStat2));
+
+        // Then
+        assertEquals(2, returnedCharacter.getHxBlock().size());
+        assertTrue(returnedCharacter.getHxBlock().contains(hxStat1));
+        assertTrue(returnedCharacter.getHxBlock().contains(hxStat2));
+        verify(gameRoleRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+    }
+
+    @Test
+    public void shouldSetCharacterGear() {
+        // Given
+        mockGameRole.getCharacters().add(mockCharacter);
+
+        String item1 = "A big knife";
+        String item2 = "Mechanic's toolkit";
+
+        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .setCharacterGear(mockGameRole.getId(), mockCharacter.getId(), List.of(item1, item2));
+
+        // Then
+        assertEquals(2, returnedCharacter.getGear().size());
+        assertTrue(returnedCharacter.getGear().contains(item1));
+        assertTrue(returnedCharacter.getGear().contains(item2));
+        verify(gameRoleRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+    }
+
+    @Test
+    public void shouldSetBrainerGear() {
+        // Given
+        mockGameRole.getCharacters().add(mockCharacter);
+
+        String item1 = "Weird glove";
+        String item2 = "Funny hat";
+
+        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .setBrainerGear(mockGameRole.getId(), mockCharacter.getId(), List.of(item1, item2));
+
+        // Then
+        assertEquals(2, returnedCharacter.getPlaybookUnique().getBrainerGear().getBrainerGear().size());
+        assertTrue(returnedCharacter.getPlaybookUnique().getBrainerGear().getBrainerGear().contains(item1));
+        assertTrue(returnedCharacter.getPlaybookUnique().getBrainerGear().getBrainerGear().contains(item2));
+        verify(gameRoleRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+    }
+
+    @Test
+    public void shouldSetAngelKit() {
+        // Given
+        mockGameRole.getCharacters().add(mockCharacter);
+
+        Move stabilizeAndHeal = Move.builder().name("STABILIZE AND HEAL SOMEONE")
+                .description("_**stabilize and heal someone at 9:00")
+                .playbook(Playbooks.ANGEL)
+                .kind(MoveKinds.UNIQUE).build();
+        Move speedTheRecoveryOfSomeone = Move.builder().name("SPEED THE RECOVERY OF SOMEONE")
+                .description("_**speed the recovery of someone at 3:00 or 6:0")
+                .playbook(Playbooks.ANGEL)
+                .kind(MoveKinds.UNIQUE).build();
+        Move reviveSomeone = Move.builder().name("REVIVE SOMEONE")
+                .description("_**revive someone whose life")
+                .playbook(Playbooks.ANGEL).
+                        kind(MoveKinds.UNIQUE).build();
+        Move treatAnNpc = Move.builder().name("TREAT AN NPC")
+                .description("_**treat an NPC ")
+                .playbook(Playbooks.ANGEL)
+                .kind(MoveKinds.UNIQUE).build();
+
+        int stock = 6;
+
+        Boolean hasSupplier = false;
+
+        when(moveService.findAllByPlaybookAndKind(any(Playbooks.class), any(MoveKinds.class)))
+                .thenReturn(Flux.just(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc));
+        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .setAngelKit(mockGameRole.getId(), mockCharacter.getId(), stock, hasSupplier);
+
+        // Then
+        assertEquals(List.of(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc),
+                returnedCharacter.getPlaybookUnique().getAngelKit().getAngelKitMoves());
+
+        verify(moveService, times(1)).findAllByPlaybookAndKind(any(Playbooks.class), any(MoveKinds.class));
+        verify(gameRoleRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+    }
+
+    @Test
+    public void shouldSetCustomWeapons() {
+        // Given
+        mockGameRole.getCharacters().add(mockCharacter);
+        String weapon1 = "Crossbow with scope";
+        String weapon2 = "Ornate staff";
+
+        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .setCustomWeapons(mockGameRole.getId(), mockCharacter.getId(), List.of(weapon1, weapon2));
+
+        // Then
+        assertEquals(2, returnedCharacter.getPlaybookUnique().getCustomWeapons().getWeapons().size());
+        assertTrue(returnedCharacter.getPlaybookUnique().getCustomWeapons().getWeapons().contains(weapon1));
+        assertTrue(returnedCharacter.getPlaybookUnique().getCustomWeapons().getWeapons().contains(weapon2));
+        verify(gameRoleRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+
+    }
+
+    @Test
+    public void shouldSetCharacterMoves() {
+        // Given
+        mockCharacter.setPlaybook(Playbooks.ANGEL);
+        mockGameRole.getCharacters().add(mockCharacter);
+
+        String moveId1 = "angel-special-id";
+        String moveId2 = "sixth-sense-id";
+        String moveId3 = "infirmary-id";
+
+        RollModifier sixthSenseMod = RollModifier.builder().id(UUID.randomUUID().toString()).statToRollWith(Collections.singletonList(Stats.SHARP)).build();
+        Move move1 = new Move("ANGEL SPECIAL", "If you and", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
+        Move move2 = Move.builder().name("SIXTH SENSE").description("_**Sixth sense**_: ").rollModifier(sixthSenseMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.ANGEL).build();
+        Move move3 = new Move("INFIRMARY", "_**Infirmary**_:", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
+
+        CharacterMove angelSpecial = CharacterMove.createFromMove(move1, true);
+        angelSpecial.setId(moveId1);
+        CharacterMove sixthSense = CharacterMove.createFromMove(move2, true);
+        sixthSense.setId(moveId2);
+        CharacterMove infirmary = CharacterMove.createFromMove(move3, true);
+        infirmary.setId(moveId3);
+
+        List<CharacterMove> angelMoves = List.of(angelSpecial, sixthSense, infirmary);
+
+        AngelKitCreator angelKitCreator = AngelKitCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .angelKitInstructions("Your angel kit has...")
+                .startingStock(6)
+                .build();
+
+        PlaybookUniqueCreator angelUniqueCreator = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.ANGEL_KIT)
+                .angelKitCreator(angelKitCreator)
+                .build();
+
+        GearInstructions angelGearInstructions = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .build();
+
+        PlaybookCreator angelCreator = PlaybookCreator.builder()
+                .playbookType(Playbooks.ANGEL)
+                .gearInstructions(angelGearInstructions)
+                .improvementInstructions("Whenever you roll ")
+                .movesInstructions("You get all the basic moves.")
+                .hxInstructions("Everyone introduces their")
+                .playbookUniqueCreator(angelUniqueCreator)
+                .playbookMoves(angelMoves)
+                .defaultMoveCount(1)
+                .moveChoiceCount(2)
+                .build();
+
+        when(playbookCreatorService.findByPlaybookType(any(Playbooks.class))).thenReturn(Mono.just(angelCreator));
+        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .setCharacterMoves(mockGameRole.getId(), mockCharacter.getId(), List.of(moveId1, moveId2, moveId3));
+
+        // Then
+        assertEquals(3, returnedCharacter.getCharacterMoves().size());
+        assertTrue(returnedCharacter.getCharacterMoves().contains(angelSpecial));
+        assertTrue(returnedCharacter.getCharacterMoves().contains(sixthSense));
+        assertTrue(returnedCharacter.getCharacterMoves().contains(infirmary));
+        verify(playbookCreatorService, times(1)).findByPlaybookType(any(Playbooks.class));
+        verify(gameRoleRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+    }
+
+    @Test
+    public void shouldFinishCharacterCreation() {
+        // Given
+        mockGameRole.getCharacters().add(mockCharacter);
+
+        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .finishCharacterCreation(mockGameRole.getId(), mockCharacter.getId());
+
+        // Then
+        assertTrue(returnedCharacter.getHasCompletedCharacterCreation());
+        verify(gameRoleRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+
+    }
 }

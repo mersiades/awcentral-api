@@ -313,4 +313,18 @@ class GameServiceImplTest {
         verify(gameRepository, times(1)).findAllByInviteesContaining(anyString());
     }
 
+    @Test
+    public void shouldFinishPreGame() {
+        // Given
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.finishPreGame(mockGame1.getId()).block();
+
+        // Then
+        assert returnedGame != null;
+        assertTrue(returnedGame.getHasFinishedPreGame());
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
 }
