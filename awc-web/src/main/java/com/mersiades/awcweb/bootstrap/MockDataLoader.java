@@ -102,6 +102,7 @@ public class MockDataLoader implements CommandLineRunner {
                     .name("Mock Game 1")
                     .commsApp("Zoom")
                     .commsUrl("https://zoom.com/somethingsomething?something=something&somethingelse=somethingelse")
+                    .hasFinishedPreGame(false)
                     .build();
 
             GameRole daveAsMC = GameRole.builder().id(DAVE_AS_PLAYER_ID).role(Roles.MC).build();
@@ -146,6 +147,7 @@ public class MockDataLoader implements CommandLineRunner {
                     .name("Mock Game 2")
                     .commsApp("Discord")
                     .commsUrl("https://discord.com/something")
+                    .hasFinishedPreGame(false)
                     .build();
 
             GameRole daveAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();

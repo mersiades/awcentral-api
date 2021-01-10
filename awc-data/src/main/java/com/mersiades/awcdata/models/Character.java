@@ -31,6 +31,8 @@ public class Character {
 
     private GameRole gameRole;
 
+    private Boolean hasCompletedCharacterCreation;
+
     // TODO: add harm
 
     @Builder.Default
@@ -47,18 +49,6 @@ public class Character {
 
     @Builder.Default
     private List<CharacterMove> characterMoves = new ArrayList<>();
-
-
-//    public Character() {
-//        this.id = UUID.randomUUID().toString();
-//    }
-//
-//    public Character(String id, String name, GameRole gameRole, Playbooks playbook) {
-//        this.id = id;
-//        this.name = name;
-//        this.gameRole = gameRole;
-//        this.playbook = playbook;
-//    }
 
     public Optional<Look> getLookByCategory(LookCategories category) {
         return this.looks.stream()

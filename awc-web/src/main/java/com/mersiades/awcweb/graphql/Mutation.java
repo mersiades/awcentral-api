@@ -58,6 +58,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.findAndDeleteById(gameId);
     }
 
+    public Game finishPreGame(String gameId) {
+        System.out.println("Finishing pre-game for Game with id: " + gameId);
+        return gameService.finishPreGame(gameId).block();
+    }
+
     public Character createCharacter(String gameRoleId) {
         System.out.println("Creating Character for for GameRole: " + gameRoleId);
         return gameRoleService.addNewCharacter(gameRoleId);
@@ -111,6 +116,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats) {
         System.out.println("Setting Hx for Character: " + characterId);
         return gameRoleService.setCharacterHx(gameRoleId, characterId, hxStats);
+    }
+
+    public Character finishCharacterCreation(String gameRoleId, String characterId) {
+        System.out.println("Finishing character creation for Character: " + characterId);
+        return gameRoleService.finishCharacterCreation(gameRoleId, characterId);
     }
 
 }

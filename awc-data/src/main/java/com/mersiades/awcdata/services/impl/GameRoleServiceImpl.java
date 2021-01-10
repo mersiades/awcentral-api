@@ -80,7 +80,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character addNewCharacter(String gameRoleId) {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
-        Character newCharacter = Character.builder().build();
+        Character newCharacter = Character.builder().hasCompletedCharacterCreation(false).build();
         characterService.save(newCharacter).block();
         assert gameRole != null;
         gameRole.getCharacters().add(newCharacter);
@@ -251,7 +251,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         characterService.save(character).block();
         gameRoleRepository.save(gameRole).block();
 
-        return null;
+        return character;
     }
 
     @Override
@@ -357,6 +357,25 @@ public class GameRoleServiceImpl implements GameRoleService {
 
 
         character.setCharacterMoves(characterMoves);
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
+    public Character finishCharacterCreation(String gameRoleId, String characterId) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        character.setHasCompletedCharacterCreation(true);
 
         // Save to db
         characterService.save(character).block();

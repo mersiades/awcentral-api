@@ -66,7 +66,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game createGameWithMC(String userId, String displayName, String email, String name) throws Exception {
         // Create the new game
-        Game newGame = Game.builder().id(UUID.randomUUID().toString()).name(name).build();
+        Game newGame = Game.builder().id(UUID.randomUUID().toString()).name(name).hasFinishedPreGame(false).build();
 
         User creator = userService.findOrCreateUser(userId, displayName, email);
 
@@ -164,6 +164,14 @@ public class GameServiceImpl implements GameService {
     @Override
     public Flux<Game> findAllByInvitee(String email) {
         return gameRepository.findAllByInviteesContaining(email);
+    }
+
+    @Override
+    public Mono<Game> finishPreGame(String gameId) {
+        return findById(gameId).map(game -> {
+            game.setHasFinishedPreGame(true);
+            return game;
+        }).flatMap(gameRepository::save);
     }
 
 }

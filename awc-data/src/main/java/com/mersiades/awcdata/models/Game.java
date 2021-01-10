@@ -26,12 +26,14 @@ public class Game {
 
     private String commsUrl;
 
-    @DBRef
-    @Builder.Default
-    private List<User> players = new ArrayList<>();
+    private Boolean hasFinishedPreGame;
 
     @Builder.Default
     private List<String> invitees = new ArrayList<>();
+
+    @DBRef
+    @Builder.Default
+    private List<User> players = new ArrayList<>();
 
     @DBRef
     @Builder.Default

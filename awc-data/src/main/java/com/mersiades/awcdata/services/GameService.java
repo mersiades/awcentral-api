@@ -23,4 +23,6 @@ public interface GameService extends ReactiveCrudService<Game, String> {
     Game removeInvitee(String gameId, String email);
 
     Flux<Game> findAllByInvitee(String email);
+
+    Mono<Game> finishPreGame(String gameId);
 }
