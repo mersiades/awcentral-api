@@ -6,6 +6,7 @@ import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.repositories.GameRepository;
 import com.mersiades.awcdata.repositories.UserRepository;
+import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
@@ -42,6 +43,9 @@ class GameServiceImplTest {
     @Mock
     GameRoleService gameRoleService;
 
+    @Mock
+    CharacterService characterService;
+
     GameService gameService;
 
     Game mockGame1;
@@ -58,7 +62,7 @@ class GameServiceImplTest {
         List<GameRole> gameRoles = new ArrayList<>();
         gameRoles.add(mockGameRole);
         mockGame1 = Game.builder().id(MOCK_GAME_ID_1).name("Michael's Mock Game").mc(mockMc).gameRoles(gameRoles).build();
-        gameService = new GameServiceImpl(gameRepository, userService, gameRoleService);
+        gameService = new GameServiceImpl(gameRepository, userService, gameRoleService, characterService);
     }
 
     @Test
