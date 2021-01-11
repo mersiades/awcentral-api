@@ -1,31 +1,43 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awcdata.enums.LookCategories;
+import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.enums.Roles;
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
+import com.mersiades.awcdata.models.Look;
 import com.mersiades.awcdata.models.User;
+import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.repositories.GameRepository;
+import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
 public class GameServiceImpl implements GameService {
 
+    @Value("${spring.profiles.active:}")
+    private String activeProfiles;
+
     private final GameRepository gameRepository;
     private final UserService userService;
     private final GameRoleService gameRoleService;
+    private final CharacterService characterService;
 
-    public GameServiceImpl(GameRepository gameRepository, UserService userService, GameRoleService gameRoleService) {
+    public GameServiceImpl(GameRepository gameRepository, UserService userService, GameRoleService gameRoleService, CharacterService characterService) {
         this.gameRepository = gameRepository;
         this.userService = userService;
         this.gameRoleService = gameRoleService;
+        this.characterService = characterService;
     }
 
     @Override
@@ -163,7 +175,71 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Flux<Game> findAllByInvitee(String email) {
-        return gameRepository.findAllByInviteesContaining(email);
+        // Add a demo game if running demo profile
+        if (activeProfiles != null && activeProfiles.equals("demo")) {
+            GameRole nateGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.MC).build();
+            GameRole claireGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
+            GameRole ruthGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
+
+            User nate = User.builder().id(UUID.randomUUID().toString())
+                    .email("nate@email.com").displayName("Nate").gameRoles(List.of(nateGameRole)).build();
+            User claire = User.builder().id(UUID.randomUUID().toString())
+                    .email("claire@email.com").displayName("Claire").gameRoles(List.of(claireGameRole)).build();
+            User ruth = User.builder().id(UUID.randomUUID().toString())
+                    .email("ruth@email.com").displayName("Ruth").gameRoles(List.of(ruthGameRole)).build();
+
+            Look angel2 = new Look(Playbooks.ANGEL, LookCategories.GENDER, "woman");
+            Look angel6 = new Look(Playbooks.ANGEL, LookCategories.CLOTHES, "utility wear");
+            Look angel10 = new Look(Playbooks.ANGEL, LookCategories.FACE, "strong face");
+            Look angel15 = new Look(Playbooks.ANGEL, LookCategories.EYES, "quick eyes");
+            Look angel21 = new Look(Playbooks.ANGEL, LookCategories.BODY, "compact body");
+
+            Character claireChar = Character.builder()
+                    .id(UUID.randomUUID().toString())
+                    .playbook(Playbooks.ANGEL)
+                    .looks(List.of(angel2, angel6, angel10, angel15, angel21))
+                    .name("Nee")
+                    .build();
+
+            Look brainer3 = new Look(Playbooks.BRAINER, LookCategories.GENDER, "ambiguous");
+            Look brainer6 = Look.builder().playbookType(Playbooks.BRAINER)
+                    .category(LookCategories.CLOTHES).look("high formal wear").build();
+            Look brainer12 = Look.builder().playbookType(Playbooks.BRAINER)
+                    .category(LookCategories.FACE).look("pale face").build();
+            Look brainer17 = Look.builder().playbookType(Playbooks.BRAINER)
+                    .category(LookCategories.EYES).look("dead eyes").build();
+            Look brainer23 = Look.builder().playbookType(Playbooks.BRAINER)
+                    .category(LookCategories.BODY).look("awkward angular body").build();
+
+            Character ruthChar = Character.builder()
+                    .id(UUID.randomUUID().toString())
+                    .playbook(Playbooks.BRAINER)
+                    .looks(List.of(brainer3, brainer6, brainer12, brainer17, brainer23))
+                    .name("Jackson")
+                    .build();
+
+            nateGameRole.setUser(nate);
+            claireGameRole.setUser(claire);
+            claireGameRole.setCharacters(List.of(claireChar));
+            ruthGameRole.setUser(ruth);
+            ruthGameRole.setCharacters(List.of(ruthChar));
+            userService.saveAll(Flux.just(nate, claire, ruth)).log().blockLast();
+            gameRoleService.saveAll(Flux.just(nateGameRole, claireGameRole, ruthGameRole)).blockLast();
+            characterService.saveAll(Flux.just(claireChar, ruthChar)).log().blockLast();
+
+            return gameRepository.findAllByInviteesContaining(email).log("Games found: ")
+                    .defaultIfEmpty(Game.builder()
+                            .name("Demo game")
+                            .players(List.of(claire, ruth))
+                            .mc(nate)
+                            .gameRoles(List.of(nateGameRole, claireGameRole, ruthGameRole))
+                            .commsApp("Discord")
+                            .commsUrl("https://discord.com/not-a-real-discord-channel")
+                            .build())
+                    .flatMap(gameRepository::save).log();
+        } else {
+            return gameRepository.findAllByInviteesContaining(email);
+        }
     }
 
     @Override
