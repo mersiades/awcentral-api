@@ -175,7 +175,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Flux<Game> findAllByInvitee(String email) {
-        System.out.println("activeProfiles = " + activeProfiles);
         // Add a demo game if running demo profile
         if (activeProfiles != null && activeProfiles.equals("demo")) {
             GameRole nateGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.MC).build();
