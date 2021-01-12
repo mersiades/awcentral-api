@@ -76,7 +76,7 @@ type Move {
     name: String!
     kind: MoveKinds!
     description: String!
-    playbook: PlayBooks!
+    playbook: PlayBooks
     stat: Stats
     statModifier: StatModifier
     rollModifier: RollModifier

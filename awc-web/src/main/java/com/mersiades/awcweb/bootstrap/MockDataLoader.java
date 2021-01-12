@@ -1,7 +1,10 @@
 package com.mersiades.awcweb.bootstrap;
 
+import com.mersiades.awcdata.enums.LookCategories;
+import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.enums.Roles;
 import com.mersiades.awcdata.enums.Threats;
+import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.*;
 import com.mersiades.awcdata.services.*;
@@ -26,6 +29,8 @@ public class MockDataLoader implements CommandLineRunner {
     private final ThreatService threatService;
     private final NpcService npcService;
     private final UserService userService;
+    private final LookService lookService;
+    private final CharacterService characterService;
 
     final String KEYCLOAK_ID_1 = System.getenv("DAVE_ID");
     final String KEYCLOAK_DISPLAY_NAME_1 = "dave";
@@ -36,6 +41,7 @@ public class MockDataLoader implements CommandLineRunner {
     final String MOCK_GAME_1_ID = "0ca6cc54-77a5-4d6e-ba2e-ee1543d6a249";
     final String MOCK_GAME_2_ID = "ecb645d2-06d3-46dc-ad7f-20bbd167085d";
     final String DAVE_AS_PLAYER_ID = "2a7aba8d-f6e8-4880-8021-99809c800acc";
+    final String SARA_AS_PLAYER_ID = "be6b09af-9c96-452a-8b05-922be820c88f";
 
     @Autowired
     UserRepository userRepository;
@@ -59,17 +65,22 @@ public class MockDataLoader implements CommandLineRunner {
                           GameRoleService gameRoleService,
                           ThreatService threatService,
                           NpcService npcService,
-                          UserService userService) {
+                          UserService userService,
+                          LookService lookService,
+                          CharacterService characterService) {
         this.gameService = gameService;
         this.gameRoleService = gameRoleService;
         this.threatService = threatService;
         this.npcService = npcService;
         this.userService = userService;
+        this.lookService = lookService;
+        this.characterService = characterService;
     }
 
     @Override
     public void run(String... args) {
          loadMockData();
+         loadMockCharacters();
 
         System.out.println("Character count: " + Objects.requireNonNull(characterRepository.count().block()).toString());
         System.out.println("Game count: " + Objects.requireNonNull(gameRepository.count().block()).toString());
@@ -77,6 +88,40 @@ public class MockDataLoader implements CommandLineRunner {
         System.out.println("Npc count: " + Objects.requireNonNull(npcRepository.count().block()).toString());
         System.out.println("Threat count: " + Objects.requireNonNull(threatRepository.count().block()).toString());
         System.out.println("User count: " + Objects.requireNonNull(userRepository.count().block()).toString());
+    }
+
+    private void loadMockCharacters() {
+        GameRole sarahAsPlayer = gameRoleService.findById(SARA_AS_PLAYER_ID).block();
+        List<Look> looks = lookService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
+        assert looks != null;
+        Look genderLook = looks.stream()
+                .filter(look -> look.getCategory().equals(LookCategories.GENDER)).findFirst().orElseThrow();
+        Look clothesLook = looks.stream()
+                .filter(look -> look.getCategory().equals(LookCategories.CLOTHES)).findFirst().orElseThrow();
+        Look bodyLook = looks.stream()
+                .filter(look -> look.getCategory().equals(LookCategories.BODY)).findFirst().orElseThrow();
+        Look faceLook = looks.stream()
+                .filter(look -> look.getCategory().equals(LookCategories.FACE)).findFirst().orElseThrow();
+        Look eyesLook = looks.stream()
+                .filter(look -> look.getCategory().equals(LookCategories.EYES)).findFirst().orElseThrow();
+        // ---------------------------------- Add Characters to Players --------------------------------- //
+        Character mockCharacter1 = Character.builder()
+                .name("Doc")
+                .playbook(Playbooks.ANGEL)
+                .looks(List.of(genderLook, clothesLook, bodyLook, faceLook, eyesLook))
+                .gear(List.of("Shotgun", "Rusty screwdriver"))
+                .hasCompletedCharacterCreation(true)
+                .build();
+        assert sarahAsPlayer != null;
+        if (sarahAsPlayer.getCharacters().size() == 0) {
+            sarahAsPlayer.getCharacters().add(mockCharacter1);
+
+//        Character mockCharacter2 = new Character("Leah", daveAsPlayer, Playbooks.SAVVYHEAD, "workshop with tools");
+//        daveAsPlayer.getCharacters().add(mockCharacter2);
+
+            characterService.save(mockCharacter1).block();
+            gameRoleService.save(sarahAsPlayer).block();
+        }
     }
 
     private void loadMockData() {
@@ -106,7 +151,7 @@ public class MockDataLoader implements CommandLineRunner {
                     .build();
 
             GameRole daveAsMC = GameRole.builder().id(DAVE_AS_PLAYER_ID).role(Roles.MC).build();
-            GameRole sarahAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
+            GameRole sarahAsPlayer = GameRole.builder().id(SARA_AS_PLAYER_ID).role(Roles.PLAYER).build();
 
             Npc mockNpc1 = Npc.builder().name("Vision").description("Badass truck; driver").build();
             Npc mockNpc2 = Npc.builder().name("Nbeke").build();
@@ -183,17 +228,10 @@ public class MockDataLoader implements CommandLineRunner {
 
             threatService.saveAll(Flux.just(mockThreat3, mockThreat4)).blockLast();
             npcService.saveAll(Flux.just(mockNpc3, mockNpc4)).blockLast();
+
         }
 
-        // ---------------------------------- Add Characters to Players --------------------------------- //
-//        Character mockCharacter1 = new Character("October", sarahAsPlayer, Playbooks.ANGEL, "not much gear");
-//        sarahAsPlayer.getCharacters().add(mockCharacter1);
-//
-//        Character mockCharacter2 = new Character("Leah", daveAsPlayer, Playbooks.SAVVYHEAD, "workshop with tools");
-//        daveAsPlayer.getCharacters().add(mockCharacter2);
-//
-//        characterService.save(mockCharacter1);
-//        characterService.save(mockCharacter2);
+
 
     }
 }
