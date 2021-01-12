@@ -38,4 +38,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats);
 
     Character finishCharacterCreation(String gameRoleId, String characterId);
+
+    Character setCharacterBarter(String gameRoleId, String characterId, int amount);
 }

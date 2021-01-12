@@ -1,9 +1,6 @@
 package com.mersiades.awcweb.bootstrap;
 
-import com.mersiades.awcdata.enums.LookCategories;
-import com.mersiades.awcdata.enums.Playbooks;
-import com.mersiades.awcdata.enums.Roles;
-import com.mersiades.awcdata.enums.Threats;
+import com.mersiades.awcdata.enums.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.*;
@@ -18,6 +15,7 @@ import reactor.core.publisher.Flux;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 @Order(value = 1)
@@ -31,6 +29,8 @@ public class MockDataLoader implements CommandLineRunner {
     private final UserService userService;
     private final LookService lookService;
     private final CharacterService characterService;
+    private final StatsOptionService statsOptionService;
+    private final MoveService moveService;
 
     final String KEYCLOAK_ID_1 = System.getenv("DAVE_ID");
     final String KEYCLOAK_DISPLAY_NAME_1 = "dave";
@@ -67,7 +67,7 @@ public class MockDataLoader implements CommandLineRunner {
                           NpcService npcService,
                           UserService userService,
                           LookService lookService,
-                          CharacterService characterService) {
+                          CharacterService characterService, StatsOptionService statsOptionService, MoveService moveService) {
         this.gameService = gameService;
         this.gameRoleService = gameRoleService;
         this.threatService = threatService;
@@ -75,6 +75,8 @@ public class MockDataLoader implements CommandLineRunner {
         this.userService = userService;
         this.lookService = lookService;
         this.characterService = characterService;
+        this.statsOptionService = statsOptionService;
+        this.moveService = moveService;
     }
 
     @Override
@@ -104,12 +106,37 @@ public class MockDataLoader implements CommandLineRunner {
                 .filter(look -> look.getCategory().equals(LookCategories.FACE)).findFirst().orElseThrow();
         Look eyesLook = looks.stream()
                 .filter(look -> look.getCategory().equals(LookCategories.EYES)).findFirst().orElseThrow();
+
+        StatsOption angelStatsOption = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL).blockFirst();
+
+        assert angelStatsOption != null;
+        CharacterStat angelCool = CharacterStat.builder().id(UUID.randomUUID().toString())
+                .stat(Stats.COOL).value(angelStatsOption.getCOOL()).isHighlighted(false).build();
+        CharacterStat angelHard = CharacterStat.builder().id(UUID.randomUUID().toString())
+                .stat(Stats.HARD).value(angelStatsOption.getHARD()).isHighlighted(true).build();
+        CharacterStat angelHot = CharacterStat.builder().id(UUID.randomUUID().toString())
+                .stat(Stats.HOT).value(angelStatsOption.getHOT()).isHighlighted(true).build();
+        CharacterStat angelSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
+                .stat(Stats.SHARP).value(angelStatsOption.getSHARP()).isHighlighted(false).build();
+        CharacterStat angelWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
+                .stat(Stats.WEIRD).value(angelStatsOption.getWEIRD()).isHighlighted(false).build();
+
+        List<Move> angelMoves = moveService.findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.CHARACTER)
+                .filter(move -> move.getName().equals("ANGEL SPECIAL") || move.getName().equals("SIXTH SENSE") || move.getName().equals("INFIRMARY"))
+                .collectList().block();
+
+        assert angelMoves != null;
+        List<CharacterMove> characterMoves = angelMoves.stream().map(move -> CharacterMove.createFromMove(move, true)).collect(Collectors.toList());
+
         // ---------------------------------- Add Characters to Players --------------------------------- //
         Character mockCharacter1 = Character.builder()
                 .name("Doc")
                 .playbook(Playbooks.ANGEL)
                 .looks(List.of(genderLook, clothesLook, bodyLook, faceLook, eyesLook))
                 .gear(List.of("Shotgun", "Rusty screwdriver"))
+                .statsBlock(List.of(angelCool, angelHard, angelHot, angelSharp, angelWeird))
+                .barter(2)
+                .characterMoves(characterMoves)
                 .hasCompletedCharacterCreation(true)
                 .build();
         assert sarahAsPlayer != null;

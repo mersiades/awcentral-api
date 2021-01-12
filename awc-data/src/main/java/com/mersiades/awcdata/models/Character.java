@@ -33,6 +33,8 @@ public class Character {
 
     private Boolean hasCompletedCharacterCreation;
 
+    private int barter;
+
     // TODO: add harm
 
     @Builder.Default

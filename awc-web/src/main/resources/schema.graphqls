@@ -236,6 +236,7 @@ type Character {
     hxBlock: [HxStat]
     playbookUnique: PlaybookUnique
     characterMoves: [CharacterMove]
+    barter: Int
 }
 
 type GameRole {
@@ -329,6 +330,7 @@ type Query {
     gamesForInvitee(email: String!): [Game]
     allMoves: [Move]
     playbooks: [Playbook]
+    playbook(playbookType: PlayBooks!): Playbook
     playbookCreator(playbookType: PlayBooks!): PlaybookCreator
 }
 
@@ -365,6 +367,9 @@ type Mutation {
     setCharacterGear(gameRoleId: String!,
         characterId: String!,
         gear: [String]! ): Character
+    setCharacterBarter(gameRoleId: String!,
+        characterId: String!,
+        amount: Int! ): Character
     setBrainerGear(gameRoleId: String!,
         characterId: String!,
         brainerGear: [String]! ): Character
