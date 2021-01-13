@@ -123,6 +123,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCharacterHx(gameRoleId, characterId, hxStats);
     }
 
+    public Character adjustCharacterHx(String gameRoleId, String characterId, String hxId, int value) {
+        System.out.println("Setting Hx for Character: " + characterId);
+        return gameRoleService.adjustCharacterHx(gameRoleId, characterId, hxId, value);
+    }
+
     public Character finishCharacterCreation(String gameRoleId, String characterId) {
         System.out.println("Finishing character creation for Character: " + characterId);
         return gameRoleService.finishCharacterCreation(gameRoleId, characterId);
