@@ -80,7 +80,18 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character addNewCharacter(String gameRoleId) {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
-        Character newCharacter = Character.builder().hasCompletedCharacterCreation(false).build();
+
+        CharacterHarm harm = CharacterHarm.builder()
+                .id(UUID.randomUUID().toString())
+                .hasChangedPlaybook(false)
+                .hasComeBackHard(false)
+                .hasComeBackWeird(false)
+                .hasDied(false)
+                .isStabilized(false)
+                .value(0)
+                .build();
+
+        Character newCharacter = Character.builder().hasCompletedCharacterCreation(false).harm(harm).build();
         characterService.save(newCharacter).block();
         assert gameRole != null;
         gameRole.getCharacters().add(newCharacter);
@@ -418,6 +429,25 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
         character.setBarter(amount);
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
+    public Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        character.setHarm(harm);
 
         // Save to db
         characterService.save(character).block();

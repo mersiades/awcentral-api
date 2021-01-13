@@ -2,10 +2,8 @@ package com.mersiades.awcdata.services;
 
 import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
+import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.Character;
-import com.mersiades.awcdata.models.GameRole;
-import com.mersiades.awcdata.models.HxStat;
-import com.mersiades.awcdata.models.User;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -39,8 +37,9 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character adjustCharacterHx(String gameRoleId, String characterId, String hxId, int value);
 
-    Character finishCharacterCreation(String gameRoleId, String characterId);
-
     Character setCharacterBarter(String gameRoleId, String characterId, int amount);
 
+    Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm);
+
+    Character finishCharacterCreation(String gameRoleId, String characterId);
 }

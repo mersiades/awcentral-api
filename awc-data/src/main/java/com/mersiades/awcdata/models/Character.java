@@ -35,7 +35,7 @@ public class Character {
 
     private int barter;
 
-    // TODO: add harm
+    private CharacterHarm harm;
 
     @Builder.Default
     private List<CharacterStat> statsBlock = new ArrayList<>();
