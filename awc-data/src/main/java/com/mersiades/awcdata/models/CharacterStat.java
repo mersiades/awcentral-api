@@ -19,4 +19,7 @@ public class CharacterStat {
 
     private Boolean isHighlighted;
 
+    // The id of StatModifierRepository applied to the CharacterStat
+    private String modifier;
+
 }

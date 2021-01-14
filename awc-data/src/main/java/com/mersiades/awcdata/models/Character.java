@@ -37,8 +37,7 @@ public class Character {
 
     private CharacterHarm harm;
 
-    @Builder.Default
-    private List<CharacterStat> statsBlock = new ArrayList<>();
+    private StatsBlock statsBlock;
 
     @Builder.Default
     private List<HxStat> hxBlock = new ArrayList<>();

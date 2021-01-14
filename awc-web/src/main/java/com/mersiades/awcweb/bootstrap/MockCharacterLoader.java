@@ -108,6 +108,11 @@ public class MockCharacterLoader implements CommandLineRunner {
         CharacterStat angelWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
                 .stat(Stats.WEIRD).value(angelStatsOption.getWEIRD()).isHighlighted(false).build();
 
+        StatsBlock angelStatsBlock1 = StatsBlock.builder().id(UUID.randomUUID().toString())
+                .statsOptionId(angelStatsOption.getId())
+                .stats(List.of(angelCool, angelHard, angelHot, angelSharp, angelWeird))
+                .build();
+
         AngelKit angelKit = AngelKit.builder().id(UUID.randomUUID().toString())
                 .hasSupplier(false)
                 .stock(2).build();
@@ -157,11 +162,15 @@ public class MockCharacterLoader implements CommandLineRunner {
         CharacterStat battlebabeWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
                 .stat(Stats.WEIRD).value(battlebabeStatsOption.getWEIRD()).isHighlighted(false).build();
 
+        StatsBlock battlebabeStatsBlock = StatsBlock.builder().id(UUID.randomUUID().toString())
+                .statsOptionId(battlebabeStatsOption.getId())
+                .stats(List.of(battlebabeCool, battlebabeHard, battlebabeHot, battlebabeSharp, battlebabeWeird))
+                .build();
+
         CustomWeapons customWeapons = CustomWeapons.builder()
                 .id(UUID.randomUUID().toString())
                 .weapons(List.of("antique rifle (2-harm, load, valuable", "Ornate staff (1-harm, valuable)"))
                 .build();
-
 
         PlaybookUnique battlebabeUnique = PlaybookUnique.builder()
                 .id(UUID.randomUUID().toString())
@@ -208,6 +217,11 @@ public class MockCharacterLoader implements CommandLineRunner {
         CharacterStat brainerWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
                 .stat(Stats.WEIRD).value(brainerStatsOption.getWEIRD()).isHighlighted(false).build();
 
+        StatsBlock brainerStatsBlock = StatsBlock.builder().id(UUID.randomUUID().toString())
+                .statsOptionId(brainerStatsOption.getId())
+                .stats(List.of(brainerCool, brainerHard, brainerHot, brainerSharp, brainerWeird))
+                .build();
+
         BrainerGear brainerGear = BrainerGear.builder()
                 .id(UUID.randomUUID().toString())
                 .brainerGear(List.of("brain relay", "violation glove"))
@@ -248,7 +262,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .playbook(Playbooks.ANGEL)
                 .looks(List.of(genderLook, clothesLook, bodyLook, faceLook, eyesLook))
                 .gear(List.of("Shotgun", "Rusty screwdriver"))
-                .statsBlock(List.of(angelCool, angelHard, angelHot, angelSharp, angelWeird))
+                .statsBlock(angelStatsBlock1)
                 .barter(2)
                 .playbookUnique(angelUnique)
                 .characterMoves(characterMoves)
@@ -261,7 +275,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .playbook(Playbooks.BATTLEBABE)
                 .looks(List.of(genderLookBattlebabe, clothesLookBattlebabe, bodyLookBattlebabe, faceLookBattlebabe, eyesLookBattlebabe))
                 .gear(List.of("Black leather boots", "Broken motorcycle helmet"))
-                .statsBlock(List.of(battlebabeCool, battlebabeHard, battlebabeHot, battlebabeSharp, battlebabeWeird))
+                .statsBlock(battlebabeStatsBlock)
                 .barter(2)
                 .playbookUnique(battlebabeUnique)
                 .characterMoves(characterMoves2)
@@ -274,7 +288,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .playbook(Playbooks.BRAINER)
                 .looks(List.of(genderLookBrainer, bodyLookBrainer, clothesLookBrainer, faceLookBrainer, eyesLookBrainer))
                 .gear(List.of("Sharp kitchen knife", "Wireless radio"))
-                .statsBlock(List.of(brainerCool, brainerHard, brainerHot, brainerSharp, brainerWeird))
+                .statsBlock(brainerStatsBlock)
                 .barter(2)
                 .playbookUnique(brainerUnique)
                 .characterMoves(characterMoves3)
@@ -287,7 +301,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .playbook(Playbooks.ANGEL)
                 .looks(List.of(genderLook, clothesLook, bodyLook, faceLook, eyesLook))
                 .gear(List.of("Shiny scalpel", "Beatles LP collection"))
-                .statsBlock(List.of(angelCool, angelHard, angelHot, angelSharp, angelWeird))
+                .statsBlock(angelStatsBlock1)
                 .barter(2)
                 .playbookUnique(angelUnique)
                 .characterMoves(characterMoves4)

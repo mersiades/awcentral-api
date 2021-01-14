@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class GameRoleServiceImpl implements GameRoleService {
@@ -25,15 +26,17 @@ public class GameRoleServiceImpl implements GameRoleService {
     private final StatsOptionService statsOptionService;
     private final MoveService moveService;
     private final PlaybookCreatorService playbookCreatorService;
+    private final StatModifierService statModifierService;
 
     public GameRoleServiceImpl(GameRoleRepository gameRoleRepository, CharacterService characterService,
                                StatsOptionService statsOptionService, MoveService moveService,
-                               PlaybookCreatorService playbookCreatorService) {
+                               PlaybookCreatorService playbookCreatorService, StatModifierService statModifierService) {
         this.gameRoleRepository = gameRoleRepository;
         this.characterService = characterService;
         this.statsOptionService = statsOptionService;
         this.moveService = moveService;
         this.playbookCreatorService = playbookCreatorService;
+        this.statModifierService = statModifierService;
     }
 
     @Override
@@ -176,7 +179,14 @@ public class GameRoleServiceImpl implements GameRoleService {
         StatsOption statsOption = statsOptionService.findById(statsOptionId).block();
         assert statsOption != null;
 
-        // Create or update each CharacterStat
+        StatsBlock statsBlock = StatsBlock.builder()
+                .id(UUID.randomUUID().toString())
+                .statsOptionId(statsOptionId)
+                .build();
+
+        character.setStatsBlock(statsBlock);
+
+        // Create or update each CharacterStat in the StatsBlock
         Arrays.asList(Stats.values().clone()).forEach(stat -> {
             if (!stat.equals(Stats.HX)) {
                 createOrUpdateCharacterStat(character, statsOption, stat);
@@ -380,22 +390,35 @@ public class GameRoleServiceImpl implements GameRoleService {
         PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(character.getPlaybook()).block();
         assert playbookCreator != null;
 
-        List<CharacterMove> characterMoves = playbookCreator.getPlaybookMoves();
+        List<CharacterMove> characterMoves = playbookCreator.getPlaybookMoves()
+                .stream().filter(characterMove -> moveIds.contains(characterMove.getId())).collect(Collectors.toList());
 
+        // Preemptively remove moved-based stat modifications
+        character.getStatsBlock().getStats().forEach(characterStat -> {
+            if (characterStat.getModifier() != null) {
+                StatModifier statModifier = statModifierService.findById(characterStat.getModifier()).block();
+                assert statModifier != null;
+                characterStat.setValue(characterStat.getValue() - statModifier.getModification());
+                characterStat.setModifier(null);
+            }
+        });
+
+        // Flesh out each CharacterMove
         characterMoves.forEach(characterMove -> {
             // Mark the CharacterMoves as selected
-            if (moveIds.contains(characterMove.getId())) {
-                characterMove.setIsSelected(true);
-                // If any of the CharacterMoves are the kind that modify CharacterStats,
-                // find the stat and modify it
-                if (characterMove.getStatModifier() != null) {
-                    character.getStatsBlock().forEach(characterStat -> {
-                        if (characterStat.getStat().equals(characterMove.getStatModifier().getStatToModify())) {
-                            characterStat.setValue(characterStat.getValue() + 1);
-                        }
-                    });
-                }
+            characterMove.setIsSelected(true);
+            // Adjust CharacterStat if CharacterMove has a StatModifier
+            if (characterMove.getStatModifier() != null) {
+                CharacterStat statToBeModified = character.getStatsBlock().getStats()
+                        .stream()
+                        .filter(characterStat -> characterStat.getStat().equals(characterMove.getStatModifier().getStatToModify()))
+                        .findFirst().orElseThrow();
+
+                statToBeModified.setValue(statToBeModified.getValue() + characterMove.getStatModifier().getModification());
+                statToBeModified.setModifier(characterMove.getStatModifier().getId());
+
             }
+            // Give CharacterMove an id
             characterMove.setId(UUID.randomUUID().toString());
         });
 
@@ -490,7 +513,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 break;
         }
 
-        Optional<CharacterStat> optionalStat = character.getStatsBlock().stream()
+        Optional<CharacterStat> optionalStat = character.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(stat)).findFirst();
 
         if (optionalStat.isEmpty()) {
@@ -500,7 +523,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                     .value(value)
                     .isHighlighted(false)
                     .build();
-            character.getStatsBlock().add(newStat);
+            character.getStatsBlock().getStats().add(newStat);
         } else {
             optionalStat.get().setValue(value);
         }

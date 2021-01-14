@@ -218,6 +218,12 @@ type CharacterStat {
     isHighlighted: Boolean
 }
 
+type StatsBlock {
+    id: ID!
+    StatsOptionId: String!
+    stats: [CharacterStat]
+}
+
 type HxStat {
     id: ID!
     characterId: String!
@@ -242,7 +248,7 @@ type Character {
     playbook: PlayBooks
     hasCompletedCharacterCreation: Boolean
     looks: [Look]
-    statsBlock: [CharacterStat]
+    statsBlock: StatsBlock
     hxBlock: [HxStat]
     playbookUnique: PlaybookUnique
     characterMoves: [CharacterMove]

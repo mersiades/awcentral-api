@@ -27,6 +27,7 @@ public class GameDataLoader implements CommandLineRunner {
     private final LookService lookService;
     private final StatsOptionService statsOptionService;
     private final MoveService moveService;
+    private final StatModifierService statModifierService;
 
     @Autowired
     LookRepository lookRepository;
@@ -51,13 +52,15 @@ public class GameDataLoader implements CommandLineRunner {
                           NameService nameService,
                           LookService lookService,
                           StatsOptionService statsOptionService,
-                          MoveService moveService) {
+                          MoveService moveService,
+                          StatModifierService statModifierService) {
         this.playbookCreatorService = playbookCreatorService;
         this.playbookService = playbookService;
         this.nameService = nameService;
         this.lookService = lookService;
         this.statsOptionService = statsOptionService;
         this.moveService = moveService;
+        this.statModifierService = statModifierService;
     }
 
     @Override
@@ -466,10 +469,11 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Brainer moves --- ||");
         RollModifier lustMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(seduceOrManip)).statToRollWith(Collections.singletonList(Stats.WEIRD)).build();
         StatModifier attunementMod = StatModifier.builder().id(UUID.randomUUID().toString()).statToModify(Stats.WEIRD).modification(1).build();
+        StatModifier savedAttunementMod = statModifierService.save(attunementMod).block();
         Move brainerSpecial = Move.builder().name("BRAINER SPECIAL").description("If you and another character have sex, you automatically do a _**deep brain scan**_ on them, whether you have the move or not. Roll+weird as normal. However, the MC chooses which questions the other character’s player answers.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
         Move unnaturalLust = Move.builder().name("UNNATURAL LUST TRANSFIXION").description("_**Unnatural lust transfixion**_: when you try to seduce someone, roll+weird instead of roll+hot.").stat(null).rollModifier(lustMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
         Move brainReceptivity = Move.builder().name("CASUAL BRAIN RECEPTIVITY").description("_**Casual brain receptivity**_: when you read someone, roll+weird instead of roll+sharp. Your victim has to be able to see you, but you don’t have to interact.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move brainAttunement = Move.builder().name("PRETERNATURAL BRAIN ATTUNEMENT").description("_**Preternatural at-will brain attunement**_: you get +1weird (weird+3).\n").statModifier(attunementMod).stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+        Move brainAttunement = Move.builder().name("PRETERNATURAL BRAIN ATTUNEMENT").description("_**Preternatural at-will brain attunement**_: you get +1weird (weird+3).\n").statModifier(savedAttunementMod).stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
         Move brainScan = Move.builder().name("DEEP BRAIN SCAN").description("_**Deep brain scan**_: when you have time and physical intimacy with someone — mutual intimacy like holding them in your arms, or 1-sided intimacy like they’re restrained to a table — you can read them more deeply than normal. Roll+weird.\n" +
                 "\n" +
                 "On a 10+, hold 3. On a 7–9, hold 1. While you’re reading them, spend your hold to ask their player questions, 1 for 1:\n" +
@@ -490,7 +494,7 @@ public class GameDataLoader implements CommandLineRunner {
                 "- *Inflict 1-harm (ap).*\n" +
                 "- *They take -1 right now.*\n" +
                 "\n" +
-                "If they fulill your command, that counts for all your remaining hold.\n" +
+                "If they fulfill your command, that counts for all your remaining hold.\n" +
                 "\n" +
                 "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit.").stat(Stats.WEIRD).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
 
