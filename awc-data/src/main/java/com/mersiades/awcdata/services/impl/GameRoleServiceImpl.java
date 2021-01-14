@@ -383,13 +383,24 @@ public class GameRoleServiceImpl implements GameRoleService {
         List<CharacterMove> characterMoves = playbookCreator.getPlaybookMoves();
 
         characterMoves.forEach(characterMove -> {
+            // Mark the CharacterMoves as selected
             if (moveIds.contains(characterMove.getId())) {
                 characterMove.setIsSelected(true);
+                // If any of the CharacterMoves are the kind that modify CharacterStats,
+                // find the stat and modify it
+                if (characterMove.getStatModifier() != null) {
+                    character.getStatsBlock().forEach(characterStat -> {
+                        if (characterStat.getStat().equals(characterMove.getStatModifier().getStatToModify())) {
+                            characterStat.setValue(characterStat.getValue() + 1);
+                        }
+                    });
+                }
             }
             characterMove.setId(UUID.randomUUID().toString());
         });
 
 
+        // This will also overwrite an existing set of CharacterMoves
         character.setCharacterMoves(characterMoves);
 
         // Save to db
