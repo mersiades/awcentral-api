@@ -590,10 +590,27 @@ class GameRoleServiceImplTest {
                 .moveChoiceCount(2)
                 .build();
 
+        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(Stats.COOL).value(1).build();
+        CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(Stats.HARD).value(1).build();
+        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(Stats.HOT).value(1).build();
+        CharacterStat mockCharacterStatSharp = CharacterStat.builder().stat(Stats.SHARP).value(1).build();
+        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(Stats.WEIRD).value(1).build();
+        StatsBlock statsBlock = StatsBlock.builder()
+                .id("mock-stats-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCharacterStatCool,
+                        mockCharacterStatHard,
+                        mockCharacterStatHot,
+                        mockCharacterStatSharp,
+                        mockCharacterStatWeird))
+                .build();
+        mockCharacter.setStatsBlock(statsBlock);
+
         when(playbookCreatorService.findByPlaybookType(any(Playbooks.class))).thenReturn(Mono.just(angelCreator));
         when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
         when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
         when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        when(statModifierService.findById(anyString())).thenReturn(Mono.empty());
 
         // When
         Character returnedCharacter = gameRoleService
