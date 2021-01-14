@@ -220,7 +220,7 @@ type CharacterStat {
 
 type StatsBlock {
     id: ID!
-    StatsOptionId: String!
+    statsOptionId: String!
     stats: [CharacterStat]
 }
 
@@ -417,6 +417,8 @@ type Mutation {
         characterId: String!, hxId: String!, value: Int!): Character
     setCharacterHarm(gameRoleId: String!,
         characterId: String!, harm: HarmInput!): Character
+    toggleStatHighlight(gameRoleId: String!,
+        characterId: String!, stat: Stats): Character
     finishCharacterCreation(gameRoleId: String!,
         characterId: String!): Character
     finishPreGame(gameId: String!): Game

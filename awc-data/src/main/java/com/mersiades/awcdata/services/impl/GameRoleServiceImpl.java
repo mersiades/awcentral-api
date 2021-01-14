@@ -490,6 +490,29 @@ public class GameRoleServiceImpl implements GameRoleService {
         return character;
     }
 
+    @Override
+    public Character toggleStatHighlight(String gameRoleId, String characterId, Stats stat) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        character.getStatsBlock().getStats().forEach(characterStat -> {
+            if (characterStat.getStat().equals(stat)) {
+                characterStat.setIsHighlighted(!characterStat.getIsHighlighted());
+            }
+        });
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
     private void createOrUpdateCharacterStat(Character character, StatsOption statsOption, Stats stat) {
         int value;
         switch (stat) {

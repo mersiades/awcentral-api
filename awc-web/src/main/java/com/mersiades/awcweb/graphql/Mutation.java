@@ -2,6 +2,7 @@ package com.mersiades.awcweb.graphql;
 
 import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
+import com.mersiades.awcdata.enums.Stats;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.CharacterHarm;
 import com.mersiades.awcdata.models.Game;
@@ -132,6 +133,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm) {
         System.out.println("Setting harm for Character: " + characterId);
         return gameRoleService.setCharacterHarm(gameRoleId, characterId, harm);
+    }
+
+    public Character toggleStatHighlight(String gameRoleId, String characterId, Stats stat) {
+        System.out.println("Setting harm for Character: " + characterId);
+        return gameRoleService.toggleStatHighlight(gameRoleId, characterId, stat);
     }
 
     public Character finishCharacterCreation(String gameRoleId, String characterId) {

@@ -2,6 +2,7 @@ package com.mersiades.awcdata.services;
 
 import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
+import com.mersiades.awcdata.enums.Stats;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.Character;
 import reactor.core.publisher.Flux;
@@ -41,5 +42,8 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm);
 
+    Character toggleStatHighlight(String gameRoleId, String characterId, Stats stat);
+
     Character finishCharacterCreation(String gameRoleId, String characterId);
+
 }
