@@ -193,6 +193,20 @@ public class GameRoleServiceImpl implements GameRoleService {
             }
         });
 
+        // Adjust CharacterStat if Character has a Move with a StatModifier
+        if (character.getCharacterMoves() != null) {
+            character.getCharacterMoves().forEach(characterMove -> {
+                if (characterMove.getStatModifier() != null) {
+                    character.getStatsBlock().getStats().forEach(characterStat -> {
+                        if (characterStat.getStat().equals(characterMove.getStatModifier().getStatToModify())) {
+                            characterStat.setValue(characterStat.getValue() + characterMove.getStatModifier().getModification());
+                            characterStat.setModifier(characterMove.getStatModifier().getId());
+                        }
+                    });
+                }
+            });
+        }
+
         // Save to db
         characterService.save(character).block();
         gameRoleRepository.save(gameRole).block();
