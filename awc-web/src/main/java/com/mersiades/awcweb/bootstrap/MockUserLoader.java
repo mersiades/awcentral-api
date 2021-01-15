@@ -19,7 +19,7 @@ import java.util.UUID;
 @Component
 @Order(value = 1)
 @Profile("dev")
-public class MockDataLoader implements CommandLineRunner {
+public class MockUserLoader implements CommandLineRunner {
 
     private final GameService gameService;
     private final GameRoleService gameRoleService;
@@ -33,9 +33,22 @@ public class MockDataLoader implements CommandLineRunner {
     final String KEYCLOAK_ID_2 = System.getenv("SARA_ID");
     final String KEYCLOAK_DISPLAY_NAME_2 = "sara";
     final String KEYCLOAK_EMAIL_2 = "sara@email.com";
+    final String KEYCLOAK_ID_3 = System.getenv("JOHN_ID");
+    final String KEYCLOAK_DISPLAY_NAME_3 = "john";
+    final String KEYCLOAK_EMAIL_3 = "john@email.com";
+    final String KEYCLOAK_ID_4 = System.getenv("MAYA_ID");
+    final String KEYCLOAK_DISPLAY_NAME_4 = "maya";
+    final String KEYCLOAK_EMAIL_4 = "maya@email.com";
+    final String KEYCLOAK_ID_5 = System.getenv("AHMAD_ID");
+    final String KEYCLOAK_DISPLAY_NAME_5 = "ahmad";
+    final String KEYCLOAK_EMAIL_5 = "ahmad@email.com";
     final String MOCK_GAME_1_ID = "0ca6cc54-77a5-4d6e-ba2e-ee1543d6a249";
     final String MOCK_GAME_2_ID = "ecb645d2-06d3-46dc-ad7f-20bbd167085d";
     final String DAVE_AS_PLAYER_ID = "2a7aba8d-f6e8-4880-8021-99809c800acc";
+    final String SARA_AS_PLAYER_ID = "be6b09af-9c96-452a-8b05-922be820c88f";
+    final String JOHN_AS_PLAYER_ID = "5ffe67b72e21523778660910)";
+    final String MAYA_AS_PLAYER_ID = "5ffe67b72e21523778660911)";
+    final String AHMAD_AS_PLAYER_ID = "5ffe67b72e21523778660912)";
 
     @Autowired
     UserRepository userRepository;
@@ -55,7 +68,7 @@ public class MockDataLoader implements CommandLineRunner {
     @Autowired
     GameRoleRepository gameRoleRepository;
 
-    public MockDataLoader(GameService gameService,
+    public MockUserLoader(GameService gameService,
                           GameRoleService gameRoleService,
                           ThreatService threatService,
                           NpcService npcService,
@@ -69,9 +82,8 @@ public class MockDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-         loadMockData();
+        loadMockData();
 
-        System.out.println("Character count: " + Objects.requireNonNull(characterRepository.count().block()).toString());
         System.out.println("Game count: " + Objects.requireNonNull(gameRepository.count().block()).toString());
         System.out.println("GameRole count: " + Objects.requireNonNull(gameRoleRepository.count().block()).toString());
         System.out.println("Npc count: " + Objects.requireNonNull(npcRepository.count().block()).toString());
@@ -96,6 +108,21 @@ public class MockDataLoader implements CommandLineRunner {
                     .displayName(KEYCLOAK_DISPLAY_NAME_2)
                     .email(KEYCLOAK_EMAIL_2).build();
 
+            User mockUser3 = User.builder()
+                    .id(KEYCLOAK_ID_3)
+                    .displayName(KEYCLOAK_DISPLAY_NAME_3)
+                    .email(KEYCLOAK_EMAIL_3).build();
+
+            User mockUser4 = User.builder()
+                    .id(KEYCLOAK_ID_4)
+                    .displayName(KEYCLOAK_DISPLAY_NAME_4)
+                    .email(KEYCLOAK_EMAIL_4).build();
+
+            User mockUser5 = User.builder()
+                    .id(KEYCLOAK_ID_5)
+                    .displayName(KEYCLOAK_DISPLAY_NAME_5)
+                    .email(KEYCLOAK_EMAIL_5).build();
+
             // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
             Game mockGame1 = Game.builder()
                     .id(MOCK_GAME_1_ID)
@@ -106,7 +133,10 @@ public class MockDataLoader implements CommandLineRunner {
                     .build();
 
             GameRole daveAsMC = GameRole.builder().id(DAVE_AS_PLAYER_ID).role(Roles.MC).build();
-            GameRole sarahAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
+            GameRole sarahAsPlayer = GameRole.builder().id(SARA_AS_PLAYER_ID).role(Roles.PLAYER).build();
+            GameRole johnAsPlayer = GameRole.builder().id(JOHN_AS_PLAYER_ID).role(Roles.PLAYER).build();
+            GameRole mayaAsPlayer = GameRole.builder().id(MAYA_AS_PLAYER_ID).role(Roles.PLAYER).build();
+            GameRole ahmadAsPlayer = GameRole.builder().id(AHMAD_AS_PLAYER_ID).role(Roles.PLAYER).build();
 
             Npc mockNpc1 = Npc.builder().name("Vision").description("Badass truck; driver").build();
             Npc mockNpc2 = Npc.builder().name("Nbeke").build();
@@ -121,22 +151,34 @@ public class MockDataLoader implements CommandLineRunner {
 
             mockGame1.getGameRoles().add(daveAsMC);
             mockGame1.getGameRoles().add(sarahAsPlayer);
+            mockGame1.getGameRoles().add(johnAsPlayer);
+            mockGame1.getGameRoles().add(mayaAsPlayer);
+            mockGame1.getGameRoles().add(ahmadAsPlayer);
             mockGame1.setMc(mockUser1);
             mockGame1.getPlayers().add(mockUser2);
+            mockGame1.getPlayers().add(mockUser3);
+            mockGame1.getPlayers().add(mockUser4);
+            mockGame1.getPlayers().add(mockUser5);
             gameService.save(mockGame1).block();
 
             mockUser1.getGameRoles().add(daveAsMC);
-//        userService.save(mockUser1);
 
             mockUser2.getGameRoles().add(sarahAsPlayer);
-//        userService.save(mockUser2);
-
+            mockUser3.getGameRoles().add(johnAsPlayer);
+            mockUser4.getGameRoles().add(mayaAsPlayer);
+            mockUser5.getGameRoles().add(ahmadAsPlayer);
 
             daveAsMC.setUser(mockUser1);
             daveAsMC.setGame(mockGame1);
             sarahAsPlayer.setGame(mockGame1);
             sarahAsPlayer.setUser(mockUser2);
-            gameRoleService.saveAll(Flux.just(daveAsMC, sarahAsPlayer)).blockLast();
+            johnAsPlayer.setGame(mockGame1);
+            johnAsPlayer.setUser(mockUser3);
+            mayaAsPlayer.setGame(mockGame1);
+            mayaAsPlayer.setUser(mockUser4);
+            ahmadAsPlayer.setGame(mockGame1);
+            ahmadAsPlayer.setUser(mockUser5);
+            gameRoleService.saveAll(Flux.just(daveAsMC, sarahAsPlayer, johnAsPlayer, mayaAsPlayer, ahmadAsPlayer)).blockLast();
 
             threatService.saveAll(Flux.just(mockThreat1, mockThreat2)).blockLast();
             npcService.saveAll(Flux.just(mockNpc1, mockNpc2)).blockLast();
@@ -172,7 +214,7 @@ public class MockDataLoader implements CommandLineRunner {
 
             mockUser1.getGameRoles().add(daveAsPlayer);
             mockUser2.getGameRoles().add(sarahAsMC);
-            userService.saveAll(Flux.just(mockUser1, mockUser2)).blockLast();
+            userService.saveAll(Flux.just(mockUser1, mockUser2, mockUser3, mockUser4, mockUser5)).blockLast();
 
 
             daveAsPlayer.setUser(mockUser1);
@@ -183,17 +225,9 @@ public class MockDataLoader implements CommandLineRunner {
 
             threatService.saveAll(Flux.just(mockThreat3, mockThreat4)).blockLast();
             npcService.saveAll(Flux.just(mockNpc3, mockNpc4)).blockLast();
+
         }
 
-        // ---------------------------------- Add Characters to Players --------------------------------- //
-//        Character mockCharacter1 = new Character("October", sarahAsPlayer, Playbooks.ANGEL, "not much gear");
-//        sarahAsPlayer.getCharacters().add(mockCharacter1);
-//
-//        Character mockCharacter2 = new Character("Leah", daveAsPlayer, Playbooks.SAVVYHEAD, "workshop with tools");
-//        daveAsPlayer.getCharacters().add(mockCharacter2);
-//
-//        characterService.save(mockCharacter1);
-//        characterService.save(mockCharacter2);
 
     }
 }

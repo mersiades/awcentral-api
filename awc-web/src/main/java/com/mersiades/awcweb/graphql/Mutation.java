@@ -2,7 +2,9 @@ package com.mersiades.awcweb.graphql;
 
 import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
+import com.mersiades.awcdata.enums.Stats;
 import com.mersiades.awcdata.models.Character;
+import com.mersiades.awcdata.models.CharacterHarm;
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.HxStat;
 import com.mersiades.awcdata.services.GameRoleService;
@@ -93,6 +95,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCharacterGear(gameRoleId, characterId, gear);
     }
 
+    public Character setCharacterBarter(String gameRoleId, String characterId, int amount) {
+        System.out.println("Setting barter for Character: " + characterId);
+        return gameRoleService.setCharacterBarter(gameRoleId, characterId, amount);
+    }
+
     public Character setBrainerGear(String gameRoleId, String characterId, List<String> brainerGear) {
         System.out.println("Setting setBrainerGear for Character: " + characterId);
         return gameRoleService.setBrainerGear(gameRoleId, characterId, brainerGear);
@@ -116,6 +123,21 @@ public class Mutation implements GraphQLMutationResolver {
     public Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats) {
         System.out.println("Setting Hx for Character: " + characterId);
         return gameRoleService.setCharacterHx(gameRoleId, characterId, hxStats);
+    }
+
+    public Character adjustCharacterHx(String gameRoleId, String characterId, String hxId, int value) {
+        System.out.println("Adjusting Hx for Character: " + characterId);
+        return gameRoleService.adjustCharacterHx(gameRoleId, characterId, hxId, value);
+    }
+
+    public Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm) {
+        System.out.println("Setting harm for Character: " + characterId);
+        return gameRoleService.setCharacterHarm(gameRoleId, characterId, harm);
+    }
+
+    public Character toggleStatHighlight(String gameRoleId, String characterId, Stats stat) {
+        System.out.println("Setting harm for Character: " + characterId);
+        return gameRoleService.toggleStatHighlight(gameRoleId, characterId, stat);
     }
 
     public Character finishCharacterCreation(String gameRoleId, String characterId) {

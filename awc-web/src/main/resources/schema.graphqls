@@ -76,7 +76,7 @@ type Move {
     name: String!
     kind: MoveKinds!
     description: String!
-    playbook: PlayBooks!
+    playbook: PlayBooks
     stat: Stats
     statModifier: StatModifier
     rollModifier: RollModifier
@@ -218,11 +218,27 @@ type CharacterStat {
     isHighlighted: Boolean
 }
 
+type StatsBlock {
+    id: ID!
+    statsOptionId: String!
+    stats: [CharacterStat]
+}
+
 type HxStat {
     id: ID!
     characterId: String!
     characterName: String!
     hxValue: Int!
+}
+
+type CharacterHarm {
+    id: ID!
+    value: Int!
+    isStabilized: Boolean!
+    hasComeBackHard: Boolean!
+    hasComeBackWeird: Boolean!
+    hasChangedPlaybook: Boolean!
+    hasDied: Boolean!
 }
 
 type Character {
@@ -232,10 +248,12 @@ type Character {
     playbook: PlayBooks
     hasCompletedCharacterCreation: Boolean
     looks: [Look]
-    statsBlock: [CharacterStat]
+    statsBlock: StatsBlock
     hxBlock: [HxStat]
     playbookUnique: PlaybookUnique
     characterMoves: [CharacterMove]
+    barter: Int
+    harm: CharacterHarm
 }
 
 type GameRole {
@@ -313,12 +331,22 @@ type StatModifier {
     modification: Int!
 }
 
-# ---------------------------------------------- QUERIES --------------------------------------------- #
+# ---------------------------------------------- INPUTS --------------------------------------------- #
 
 input HxInput {
     characterId: String!
     characterName: String!
     hxValue: Int!
+}
+
+input HarmInput {
+    id: ID!
+    value: Int!
+    isStabilized: Boolean!
+    hasComeBackHard: Boolean!
+    hasComeBackWeird: Boolean!
+    hasChangedPlaybook: Boolean!
+    hasDied: Boolean!
 }
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
@@ -329,6 +357,7 @@ type Query {
     gamesForInvitee(email: String!): [Game]
     allMoves: [Move]
     playbooks: [Playbook]
+    playbook(playbookType: PlayBooks!): Playbook
     playbookCreator(playbookType: PlayBooks!): PlaybookCreator
 }
 
@@ -365,6 +394,9 @@ type Mutation {
     setCharacterGear(gameRoleId: String!,
         characterId: String!,
         gear: [String]! ): Character
+    setCharacterBarter(gameRoleId: String!,
+        characterId: String!,
+        amount: Int! ): Character
     setBrainerGear(gameRoleId: String!,
         characterId: String!,
         brainerGear: [String]! ): Character
@@ -381,6 +413,12 @@ type Mutation {
     setCharacterHx(gameRoleId: String!,
         characterId: String!,
         hxStats: [HxInput]!): Character
+    adjustCharacterHx(gameRoleId: String!,
+        characterId: String!, hxId: String!, value: Int!): Character
+    setCharacterHarm(gameRoleId: String!,
+        characterId: String!, harm: HarmInput!): Character
+    toggleStatHighlight(gameRoleId: String!,
+        characterId: String!, stat: Stats): Character
     finishCharacterCreation(gameRoleId: String!,
         characterId: String!): Character
     finishPreGame(gameId: String!): Game

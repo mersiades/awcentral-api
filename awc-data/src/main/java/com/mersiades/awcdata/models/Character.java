@@ -33,10 +33,11 @@ public class Character {
 
     private Boolean hasCompletedCharacterCreation;
 
-    // TODO: add harm
+    private int barter;
 
-    @Builder.Default
-    private List<CharacterStat> statsBlock = new ArrayList<>();
+    private CharacterHarm harm;
+
+    private StatsBlock statsBlock;
 
     @Builder.Default
     private List<HxStat> hxBlock = new ArrayList<>();

@@ -72,6 +72,10 @@ public class Query implements GraphQLQueryResolver {
         return playbookService.findAll().collectList().block();
     }
 
+    public Playbook playbook(Playbooks playbookType) {
+        return playbookService.findByPlaybookType(playbookType).block();
+    }
+
     public PlaybookCreator playbookCreator(Playbooks playbookType) {
         return playbookCreatorService.findByPlaybookType(playbookType).block();
     }

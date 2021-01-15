@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class GameRoleServiceImpl implements GameRoleService {
@@ -25,15 +26,17 @@ public class GameRoleServiceImpl implements GameRoleService {
     private final StatsOptionService statsOptionService;
     private final MoveService moveService;
     private final PlaybookCreatorService playbookCreatorService;
+    private final StatModifierService statModifierService;
 
     public GameRoleServiceImpl(GameRoleRepository gameRoleRepository, CharacterService characterService,
                                StatsOptionService statsOptionService, MoveService moveService,
-                               PlaybookCreatorService playbookCreatorService) {
+                               PlaybookCreatorService playbookCreatorService, StatModifierService statModifierService) {
         this.gameRoleRepository = gameRoleRepository;
         this.characterService = characterService;
         this.statsOptionService = statsOptionService;
         this.moveService = moveService;
         this.playbookCreatorService = playbookCreatorService;
+        this.statModifierService = statModifierService;
     }
 
     @Override
@@ -80,7 +83,18 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character addNewCharacter(String gameRoleId) {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
-        Character newCharacter = Character.builder().hasCompletedCharacterCreation(false).build();
+
+        CharacterHarm harm = CharacterHarm.builder()
+                .id(UUID.randomUUID().toString())
+                .hasChangedPlaybook(false)
+                .hasComeBackHard(false)
+                .hasComeBackWeird(false)
+                .hasDied(false)
+                .isStabilized(false)
+                .value(0)
+                .build();
+
+        Character newCharacter = Character.builder().hasCompletedCharacterCreation(false).harm(harm).build();
         characterService.save(newCharacter).block();
         assert gameRole != null;
         gameRole.getCharacters().add(newCharacter);
@@ -165,7 +179,14 @@ public class GameRoleServiceImpl implements GameRoleService {
         StatsOption statsOption = statsOptionService.findById(statsOptionId).block();
         assert statsOption != null;
 
-        // Create or update each CharacterStat
+        StatsBlock statsBlock = StatsBlock.builder()
+                .id(UUID.randomUUID().toString())
+                .statsOptionId(statsOptionId)
+                .build();
+
+        character.setStatsBlock(statsBlock);
+
+        // Create or update each CharacterStat in the StatsBlock
         Arrays.asList(Stats.values().clone()).forEach(stat -> {
             if (!stat.equals(Stats.HX)) {
                 createOrUpdateCharacterStat(character, statsOption, stat);
@@ -192,6 +213,29 @@ public class GameRoleServiceImpl implements GameRoleService {
         hxStats.forEach(hxStat -> hxStat.setId(UUID.randomUUID().toString()));
 
         character.setHxBlock(hxStats);
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
+    public Character adjustCharacterHx(String gameRoleId, String characterId, String hxId, int value) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        character.getHxBlock().forEach(hxStat -> {
+            if (hxStat.getCharacterId().equals(hxId)) {
+                hxStat.setHxValue(value);
+            }
+        });
 
         // Save to db
         characterService.save(character).block();
@@ -346,16 +390,40 @@ public class GameRoleServiceImpl implements GameRoleService {
         PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(character.getPlaybook()).block();
         assert playbookCreator != null;
 
-        List<CharacterMove> characterMoves = playbookCreator.getPlaybookMoves();
+        List<CharacterMove> characterMoves = playbookCreator.getPlaybookMoves()
+                .stream().filter(characterMove -> moveIds.contains(characterMove.getId())).collect(Collectors.toList());
 
-        characterMoves.forEach(characterMove -> {
-            if (moveIds.contains(characterMove.getId())) {
-                characterMove.setIsSelected(true);
+        // Preemptively remove moved-based stat modifications
+        character.getStatsBlock().getStats().forEach(characterStat -> {
+            if (characterStat.getModifier() != null) {
+                StatModifier statModifier = statModifierService.findById(characterStat.getModifier()).block();
+                assert statModifier != null;
+                characterStat.setValue(characterStat.getValue() - statModifier.getModification());
+                characterStat.setModifier(null);
             }
+        });
+
+        // Flesh out each CharacterMove
+        characterMoves.forEach(characterMove -> {
+            // Mark the CharacterMoves as selected
+            characterMove.setIsSelected(true);
+            // Adjust CharacterStat if CharacterMove has a StatModifier
+            if (characterMove.getStatModifier() != null) {
+                CharacterStat statToBeModified = character.getStatsBlock().getStats()
+                        .stream()
+                        .filter(characterStat -> characterStat.getStat().equals(characterMove.getStatModifier().getStatToModify()))
+                        .findFirst().orElseThrow();
+
+                statToBeModified.setValue(statToBeModified.getValue() + characterMove.getStatModifier().getModification());
+                statToBeModified.setModifier(characterMove.getStatModifier().getId());
+
+            }
+            // Give CharacterMove an id
             characterMove.setId(UUID.randomUUID().toString());
         });
 
 
+        // This will also overwrite an existing set of CharacterMoves
         character.setCharacterMoves(characterMoves);
 
         // Save to db
@@ -376,6 +444,67 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
         character.setHasCompletedCharacterCreation(true);
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
+    public Character setCharacterBarter(String gameRoleId, String characterId, int amount) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        character.setBarter(amount);
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
+    public Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        character.setHarm(harm);
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
+    public Character toggleStatHighlight(String gameRoleId, String characterId, Stats stat) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        character.getStatsBlock().getStats().forEach(characterStat -> {
+            if (characterStat.getStat().equals(stat)) {
+                characterStat.setIsHighlighted(!characterStat.getIsHighlighted());
+            }
+        });
 
         // Save to db
         characterService.save(character).block();
@@ -407,7 +536,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 break;
         }
 
-        Optional<CharacterStat> optionalStat = character.getStatsBlock().stream()
+        Optional<CharacterStat> optionalStat = character.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(stat)).findFirst();
 
         if (optionalStat.isEmpty()) {
@@ -417,7 +546,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                     .value(value)
                     .isHighlighted(false)
                     .build();
-            character.getStatsBlock().add(newStat);
+            character.getStatsBlock().getStats().add(newStat);
         } else {
             optionalStat.get().setValue(value);
         }
