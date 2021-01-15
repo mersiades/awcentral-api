@@ -3,11 +3,9 @@ package com.mersiades.awcdata.services.impl;
 import com.mersiades.awcdata.enums.LookCategories;
 import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.enums.Roles;
-import com.mersiades.awcdata.models.Game;
-import com.mersiades.awcdata.models.GameRole;
-import com.mersiades.awcdata.models.Look;
-import com.mersiades.awcdata.models.User;
+import com.mersiades.awcdata.enums.Stats;
 import com.mersiades.awcdata.models.Character;
+import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.GameRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
@@ -194,10 +192,27 @@ public class GameServiceImpl implements GameService {
             Look angel15 = new Look(Playbooks.ANGEL, LookCategories.EYES, "quick eyes");
             Look angel21 = new Look(Playbooks.ANGEL, LookCategories.BODY, "compact body");
 
+            CharacterStat angelCool = CharacterStat.builder().id(UUID.randomUUID().toString())
+                    .stat(Stats.COOL).value(1).isHighlighted(false).build();
+            CharacterStat angelHard = CharacterStat.builder().id(UUID.randomUUID().toString())
+                    .stat(Stats.HARD).value(0).isHighlighted(true).build();
+            CharacterStat angelHot = CharacterStat.builder().id(UUID.randomUUID().toString())
+                    .stat(Stats.HOT).value(1).isHighlighted(true).build();
+            CharacterStat angelSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
+                    .stat(Stats.SHARP).value(2).isHighlighted(false).build();
+            CharacterStat angelWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
+                    .stat(Stats.WEIRD).value(-1).isHighlighted(false).build();
+
+            StatsBlock angelStatsBlock1 = StatsBlock.builder().id(UUID.randomUUID().toString())
+                    .statsOptionId("demo-stats-option-id-1")
+                    .stats(List.of(angelCool, angelHard, angelHot, angelSharp, angelWeird))
+                    .build();
+
             Character claireChar = Character.builder()
                     .id(UUID.randomUUID().toString())
                     .playbook(Playbooks.ANGEL)
                     .looks(List.of(angel2, angel6, angel10, angel15, angel21))
+                    .statsBlock(angelStatsBlock1)
                     .name("Nee")
                     .build();
 
@@ -211,11 +226,28 @@ public class GameServiceImpl implements GameService {
             Look brainer23 = Look.builder().playbookType(Playbooks.BRAINER)
                     .category(LookCategories.BODY).look("awkward angular body").build();
 
+            CharacterStat brainerCool = CharacterStat.builder().id(UUID.randomUUID().toString())
+                    .stat(Stats.COOL).value(1).isHighlighted(false).build();
+            CharacterStat brainerHard = CharacterStat.builder().id(UUID.randomUUID().toString())
+                    .stat(Stats.HARD).value(1).isHighlighted(true).build();
+            CharacterStat brainerHot = CharacterStat.builder().id(UUID.randomUUID().toString())
+                    .stat(Stats.HOT).value(-2).isHighlighted(true).build();
+            CharacterStat brainerSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
+                    .stat(Stats.SHARP).value(1).isHighlighted(false).build();
+            CharacterStat brainerWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
+                    .stat(Stats.WEIRD).value(2).isHighlighted(false).build();
+
+            StatsBlock brainerStatsBlock = StatsBlock.builder().id(UUID.randomUUID().toString())
+                    .statsOptionId("demo-stats-option-id-2")
+                    .stats(List.of(brainerCool, brainerHard, brainerHot, brainerSharp, brainerWeird))
+                    .build();
+
             Character ruthChar = Character.builder()
                     .id(UUID.randomUUID().toString())
                     .playbook(Playbooks.BRAINER)
                     .looks(List.of(brainer3, brainer6, brainer12, brainer17, brainer23))
                     .name("Jackson")
+                    .statsBlock(brainerStatsBlock)
                     .build();
 
             nateGameRole.setUser(nate);
