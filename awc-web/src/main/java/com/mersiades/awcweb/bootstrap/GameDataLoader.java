@@ -116,53 +116,153 @@ public class GameDataLoader implements CommandLineRunner {
     private void loadMoves() {
         System.out.println("|| --- Loading basic moves --- ||");
         /* ----------------------------- BASIC MOVES --------------------------------- */
-        Move doSomethingUnderFire = new Move("DO SOMETHING UNDER FIRE", "When you _**do something under fire**_, or dig in to endure fire, roll+cool. On a 10+, you do it. On a 7–9, you flinch, hesitate, or stall: the MC can offer you a worse outcome, a hard bargain, or an ugly choice. On a miss, be prepared for the worst.", Stats.COOL, MoveKinds.BASIC, null);
-        Move goAggro = new Move("GO AGGRO ON SOMEONE", "When you _**go aggro on someone**_, make it clear what you want them to do and what you’ll do to them. Roll+hard. On a 10+, they have to choose:\n" +
-                "\n" +
-                "- *Force your hand and suck it up.*\n" +
-                "- *Cave and do what you want.*\n" +
-                "\n" +
-                "On a 7–9, they can choose 1 of the above, or 1 of the following:\n" +
-                "\n" +
-                "- *Get the hell out of your way.*\n" +
-                "- *Barricade themselves securely in.*\n" +
-                "- *Give you something they think you want, or tell you what you want to hear.*\n" +
-                "- *Back off calmly, hands where you can see.*\n" +
-                "\n" +
-                "On a miss, be prepared for the worst.", Stats.HARD, MoveKinds.BASIC, null);
-        Move sucker = new Move("SUCKER SOMEONE", "When you _**attack someone unsuspecting or helpless**_, ask the MC if you could miss. If you could, treat it as going aggro, but your victim has no choice to cave and do what you want. If you couldn’t, you simply inflict harm as established.", null, MoveKinds.BASIC, null);
-        Move doBattle = new Move("DO BATTLE", "When you’re _**in battle**_, you can bring the battle moves into play.", null, MoveKinds.BASIC, null);
-        Move seduceOrManip = new Move("SEDUCE OR MANIPULATE SOMEONE", "When you _**try to seduce, manipulate, bluff, fast-talk, or lie to someone**_, tell them what you want them to do, give them a reason, and roll+hot. **For NPCs**: on a 10+, they’ll go along with you, unless or until some fact or action betrays the reason you gave them. On a 7–9, they’ll go along with you, but they need some concrete assurance, corroboration, or evidence first. **For PCs**: on a 10+, both. On a 7–9, choose 1:\n" +
-                "\n" +
-                "- *If they go along with you, they mark experience.*\n" +
-                "- *If they refuse, erase one of their stat highlights for the remainder of the session.*\n" +
-                "\n" +
-                "What they do then is up to them.\n" +
-                "\n" +
-                "On a miss, for either NPCs or PCs, be prepared for the worst.", Stats.HOT, MoveKinds.BASIC, null);
-        Move helpOrInterfere = new Move("HELP OR INTERFERE WITH SOMEONE", "When you _**help**_ or _**interfere**_ with someone who’s making a roll, roll+Hx. On a 10+, they take +2 (help) or -2 (interfere) to their roll. On a 7–9, they take +1 (help) or -1 (interfere) to their roll. On a miss, be prepared for the worst.", Stats.HX, MoveKinds.BASIC, null);
-        Move readASitch = new Move("READ A SITCH", "When you _**read a charged situation**_, roll+sharp. On a hit, you can ask the MC questions. Whenever you act on one of the MC’s answers, take +1. On a 10+, ask 3. On a 7–9, ask 1:\n" +
-                "\n" +
-                "- *Where’s my best escape route / way in / way past?*\n" +
-                "- *Which enemy is most vulnerable to me?*\n" +
-                "- *Which enemy is the biggest threat?*\n" +
-                "- *What should I be on the lookout for?*\n" +
-                "- *What’s my enemy’s true position?*\n" +
-                "- *Who’s in control here?*\n" +
-                "\n" +
-                "On a miss, ask 1 anyway, but be prepared for the worst.", Stats.SHARP, MoveKinds.BASIC, null);
-        Move readAPerson = new Move("READ A PERSON", "When you _**read a person**_ in a charged interaction, roll+sharp. On a 10+, hold 3. On a 7–9, hold 1. While you’re interacting with them, spend your hold to ask their player questions, 1 for 1:\n" +
-                "\n" +
-                "- *Is your character telling the truth?*\n" +
-                "- *What’s your character really feeling?*\n" +
-                "- *What does your character intend to do?*\n" +
-                "- *What does your character wish I’d do?*\n" +
-                "- *How could I get your character to__?*\n" +
-                "\n" +
-                "On a miss, ask 1 anyway, but be prepared for the worst.", Stats.SHARP, MoveKinds.BASIC, null);
-        Move openBrain = new Move("OPEN YOUR BRAIN", "When you _**open your brain to the world’s psychic maelstrom**_, roll+weird. On a hit, the MC tells you something new and interesting about the current situation, and might ask you a question or two; answer them. On a 10+, the MC gives you good detail. On a 7–9, the MC gives you an impression. If you already know all there is to know, the MC will tell you that. On a miss, be prepared for the worst.", Stats.WEIRD, MoveKinds.BASIC, null);
-        Move lifestyleAndGigs = new Move("LIFESTYLE AND GIGS", "_**At the beginning of the session**_, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions. If you need jingle during a session, tell the MC you’d like to work a gig.", null, MoveKinds.BASIC, null);
-        Move sessionEnd = new Move("SESSION END", "_**At the end of every session**_, choose a character who knows you better than they used to. If there’s more than one, choose one at your whim. Tell that player to add +1 to their Hx with you on their sheet. If this brings them to Hx+4, they reset to Hx+1 (and therefore mark experience). If no one knows you better, choose a character who doesn’t know you as well as they thought, or choose any character at your whim. Tell that player to take -1 to their Hx with you on their sheet. If this brings them to Hx -3, they reset to Hx=0 (and therefore mark experience).", null, MoveKinds.BASIC, null);
+        Move doSomethingUnderFire = Move.builder()
+                .name("DO SOMETHING UNDER FIRE")
+                .description("When you _**do something under fire**_, or dig in to endure fire, roll+cool.\n" +
+                        "\n" +
+                        "On a 10+, you do it.\n" +
+                        "\n" +
+                        "On a 7–9, you flinch, hesitate, or stall: the MC can offer you a worse outcome, a hard bargain, or an ugly choice.\n" +
+                        "\n" +
+                        "On a miss, be prepared for the worst.")
+                .stat(Stats.COOL)
+                .kind(MoveKinds.BASIC)
+                .playbook(null)
+                .build();
+        Move goAggro = Move.builder()
+                .name("GO AGGRO ON SOMEONE")
+                .description("When you _**go aggro on someone**_, make it clear what you want them to do and what you’ll do to them. Roll+hard.\n" +
+                        "\n" +
+                        "On a 10+, they have to choose:\n" +
+                        "\n" +
+                        "- *Force your hand and suck it up.*\n" +
+                        "- *Cave and do what you want.*\n" +
+                        "\n" +
+                        "On a 7–9, they can choose 1 of the above, or 1 of the following:\n" +
+                        "\n" +
+                        "- *Get the hell out of your way.*\n" +
+                        "- *Barricade themselves securely in.*\n" +
+                        "- *Give you something they think you want, or tell you what you want to hear.*\n" +
+                        "- *Back off calmly, hands where you can see.*\n" +
+                        "\n" +
+                        "On a miss, be prepared for the worst.")
+                .stat(Stats.HARD)
+                .kind(MoveKinds.BASIC)
+                .playbook(null)
+                .build();
+        Move sucker = Move.builder()
+                .name("SUCKER SOMEONE")
+                .description("When you _**attack someone unsuspecting or helpless**_, ask the MC if you could miss. If you could, treat it as going aggro, but your victim has no choice to cave and do what you want. If you couldn’t, you simply inflict harm as established.")
+                .stat(null)
+                .kind(MoveKinds.BASIC)
+                .playbook(null)
+                .build();
+        Move doBattle = Move.builder()
+                .name("DO BATTLE")
+                .description("When you’re _**in battle**_, you can bring the battle moves into play.")
+                .stat(null)
+                .kind(MoveKinds.BASIC)
+                .playbook(null)
+                .build();
+        Move seduceOrManip = Move.builder()
+                .name("SEDUCE OR MANIPULATE SOMEONE")
+                .description("When you _**try to seduce, manipulate, bluff, fast-talk, or lie to someone**_, tell them what you want them to do, give them a reason, and roll+hot.\n" +
+                        "\n" +
+                        "**For NPCs**: on a 10+, they’ll go along with you, unless or until some fact or action betrays the reason you gave them.\n" +
+                        "\n" +
+                        "On a 7–9, they’ll go along with you, but they need some concrete assurance, corroboration, or evidence first.\n" +
+                        "\n" +
+                        "**For PCs**: on a 10+, both. On a 7–9, choose 1:\n" +
+                        "\n" +
+                        "- *If they go along with you, they mark experience.*\n" +
+                        "- *If they refuse, erase one of their stat highlights for the remainder of the session.*\n" +
+                        "\n" +
+                        "What they do then is up to them.\n" +
+                        "\n" +
+                        "On a miss, for either NPCs or PCs, be prepared for the worst.")
+                .stat(Stats.HOT)
+                .kind(MoveKinds.BASIC)
+                .playbook(null)
+                .build();
+        Move helpOrInterfere = Move.builder()
+                .name("HELP OR INTERFERE WITH SOMEONE")
+                .description("When you _**help**_ or _**interfere**_ with someone who’s making a roll, roll+Hx.\n" +
+                        "\n" +
+                        "On a 10+, they take +2 (help) or -2 (interfere) to their roll.\n" +
+                        "\n" +
+                        "On a 7–9, they take +1 (help) or -1 (interfere) to their roll.\n" +
+                        "\n" +
+                        "On a miss, be prepared for the worst.")
+                .stat(Stats.HX)
+                .kind(MoveKinds.BASIC)
+                .playbook(null)
+                .build();
+        Move readASitch = Move.builder()
+                .name("READ A SITCH")
+                .description("When you _**read a charged situation**_, roll+sharp.\n" +
+                        "\n" +
+                        "On a hit, you can ask the MC questions. Whenever you act on one of the MC’s answers, take +1. On a 10+, ask 3. On a 7–9, ask 1:\n" +
+                        "\n" +
+                        "- *Where’s my best escape route / way in / way past?*\n" +
+                        "- *Which enemy is most vulnerable to me?*\n" +
+                        "- *Which enemy is the biggest threat?*\n" +
+                        "- *What should I be on the lookout for?*\n" +
+                        "- *What’s my enemy’s true position?*\n" +
+                        "- *Who’s in control here?*\n" +
+                        "\n" +
+                        "On a miss, ask 1 anyway, but be prepared for the worst.")
+                .stat(Stats.SHARP)
+                .kind(MoveKinds.BASIC)
+                .playbook(null)
+                .build();
+        Move readAPerson = Move.builder()
+                .name("READ A PERSON")
+                .description("When you _**read a person**_ in a charged interaction, roll+sharp.\n" +
+                        "\n" +
+                        "On a 10+, hold 3. On a 7–9, hold 1. While you’re interacting with them, spend your hold to ask their player questions, 1 for 1:\n" +
+                        "\n" +
+                        "- *Is your character telling the truth?*\n" +
+                        "- *What’s your character really feeling?*\n" +
+                        "- *What does your character intend to do?*\n" +
+                        "- *What does your character wish I’d do?*\n" +
+                        "- *How could I get your character to__?*\n" +
+                        "\n" +
+                        "On a miss, ask 1 anyway, but be prepared for the worst.")
+                .stat(Stats.SHARP)
+                .kind(MoveKinds.BASIC)
+                .playbook(null)
+                .build();
+        Move openBrain = Move.builder()
+                .name("OPEN YOUR BRAIN")
+                .description("When you _**open your brain to the world’s psychic maelstrom**_, roll+weird.\n" +
+                        "\n" +
+                        "On a hit, the MC tells you something new and interesting about the current situation, and might ask you a question or two; answer them.\n" +
+                        "\n" +
+                        "On a 10+, the MC gives you good detail. On a 7–9, the MC gives you an impression. If you already know all there is to know, the MC will tell you that.\n" +
+                        "\n" +
+                        "On a miss, be prepared for the worst.")
+                .stat(Stats.WEIRD)
+                .kind(MoveKinds.BASIC)
+                .playbook(null)
+                .build();
+        Move lifestyleAndGigs = Move.builder()
+                .name("LIFESTYLE AND GIGS")
+                .description("_**At the beginning of the session**_, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions. If you need jingle during a session, tell the MC you’d like to work a gig.")
+                .stat(null)
+                .kind(MoveKinds.BASIC)
+                .playbook(null)
+                .build();
+        Move sessionEnd = Move.builder()
+                .name("SESSION END")
+                .description("_**At the end of every session**_, choose a character who knows you better than they used to. If there’s more than one, choose one at your whim.\n" +
+                        "\n" +
+                        "Tell that player to add +1 to their Hx with you on their sheet. If this brings them to Hx+4, they reset to Hx+1 (and therefore mark experience).\n" +
+                        "\n" +
+                        "If no one knows you better, choose a character who doesn’t know you as well as they thought, or choose any character at your whim. Tell that player to take -1 to their Hx with you on their sheet. If this brings them to Hx -3, they reset to Hx=0 (and therefore mark experience).")
+                .stat(null)
+                .kind(MoveKinds.BASIC)
+                .playbook(null)
+                .build();
 
         moveService.saveAll(Flux.just(doSomethingUnderFire, goAggro, sucker, doBattle, seduceOrManip, helpOrInterfere,
                 readASitch, readAPerson, openBrain, lifestyleAndGigs, sessionEnd)).blockLast();
