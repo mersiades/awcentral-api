@@ -16,6 +16,8 @@ import reactor.core.publisher.Flux;
 
 import java.util.*;
 
+import static com.mersiades.awcdata.enums.Stats.*;
+
 @Component
 @Order(value = 0)
 @Profile("!test")
@@ -125,8 +127,8 @@ public class GameDataLoader implements CommandLineRunner {
                         "On a 7–9, you flinch, hesitate, or stall: the MC can offer you a worse outcome, a hard bargain, or an ugly choice.\n" +
                         "\n" +
                         "On a miss, be prepared for the worst.")
-                .stat(Stats.COOL)
                 .kind(MoveKinds.BASIC)
+                .stat(Stats.COOL)
                 .playbook(null)
                 .build();
         Move goAggro = Move.builder()
@@ -146,22 +148,22 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *Back off calmly, hands where you can see.*\n" +
                         "\n" +
                         "On a miss, be prepared for the worst.")
-                .stat(Stats.HARD)
                 .kind(MoveKinds.BASIC)
+                .stat(HARD)
                 .playbook(null)
                 .build();
         Move sucker = Move.builder()
                 .name("SUCKER SOMEONE")
                 .description("When you _**attack someone unsuspecting or helpless**_, ask the MC if you could miss. If you could, treat it as going aggro, but your victim has no choice to cave and do what you want. If you couldn’t, you simply inflict harm as established.")
-                .stat(null)
                 .kind(MoveKinds.BASIC)
+                .stat(null)
                 .playbook(null)
                 .build();
         Move doBattle = Move.builder()
                 .name("DO BATTLE")
                 .description("When you’re _**in battle**_, you can bring the battle moves into play.")
-                .stat(null)
                 .kind(MoveKinds.BASIC)
+                .stat(null)
                 .playbook(null)
                 .build();
         Move seduceOrManip = Move.builder()
@@ -180,8 +182,8 @@ public class GameDataLoader implements CommandLineRunner {
                         "What they do then is up to them.\n" +
                         "\n" +
                         "On a miss, for either NPCs or PCs, be prepared for the worst.")
-                .stat(Stats.HOT)
                 .kind(MoveKinds.BASIC)
+                .stat(Stats.HOT)
                 .playbook(null)
                 .build();
         Move helpOrInterfere = Move.builder()
@@ -193,8 +195,8 @@ public class GameDataLoader implements CommandLineRunner {
                         "On a 7–9, they take +1 (help) or -1 (interfere) to their roll.\n" +
                         "\n" +
                         "On a miss, be prepared for the worst.")
-                .stat(Stats.HX)
                 .kind(MoveKinds.BASIC)
+                .stat(Stats.HX)
                 .playbook(null)
                 .build();
         Move readASitch = Move.builder()
@@ -211,8 +213,8 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *Who’s in control here?*\n" +
                         "\n" +
                         "On a miss, ask 1 anyway, but be prepared for the worst.")
-                .stat(Stats.SHARP)
                 .kind(MoveKinds.BASIC)
+                .stat(Stats.SHARP)
                 .playbook(null)
                 .build();
         Move readAPerson = Move.builder()
@@ -228,8 +230,8 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *How could I get your character to__?*\n" +
                         "\n" +
                         "On a miss, ask 1 anyway, but be prepared for the worst.")
-                .stat(Stats.SHARP)
                 .kind(MoveKinds.BASIC)
+                .stat(Stats.SHARP)
                 .playbook(null)
                 .build();
         Move openBrain = Move.builder()
@@ -241,15 +243,15 @@ public class GameDataLoader implements CommandLineRunner {
                         "On a 10+, the MC gives you good detail. On a 7–9, the MC gives you an impression. If you already know all there is to know, the MC will tell you that.\n" +
                         "\n" +
                         "On a miss, be prepared for the worst.")
-                .stat(Stats.WEIRD)
                 .kind(MoveKinds.BASIC)
+                .stat(Stats.WEIRD)
                 .playbook(null)
                 .build();
         Move lifestyleAndGigs = Move.builder()
                 .name("LIFESTYLE AND GIGS")
                 .description("_**At the beginning of the session**_, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions. If you need jingle during a session, tell the MC you’d like to work a gig.")
-                .stat(null)
                 .kind(MoveKinds.BASIC)
+                .stat(null)
                 .playbook(null)
                 .build();
         Move sessionEnd = Move.builder()
@@ -259,8 +261,8 @@ public class GameDataLoader implements CommandLineRunner {
                         "Tell that player to add +1 to their Hx with you on their sheet. If this brings them to Hx+4, they reset to Hx+1 (and therefore mark experience).\n" +
                         "\n" +
                         "If no one knows you better, choose a character who doesn’t know you as well as they thought, or choose any character at your whim. Tell that player to take -1 to their Hx with you on their sheet. If this brings them to Hx -3, they reset to Hx=0 (and therefore mark experience).")
-                .stat(null)
                 .kind(MoveKinds.BASIC)
+                .stat(null)
                 .playbook(null)
                 .build();
 
@@ -269,170 +271,324 @@ public class GameDataLoader implements CommandLineRunner {
 
         System.out.println("|| --- Loading peripheral moves --- ||");
         /* ----------------------------- PERIPHERAL MOVES --------------------------------- */
-        Move sufferHarm = new Move("SUFFER HARM", "When you _**suffer harm**_, roll+harm suffered (after armor, if you’re wearing any).\n" +
-                "\n" +
-                "On a 10+, the MC can choose 1:\n" +
-                "\n" +
-                "- *You’re out of action: unconscious, trapped, incoherent or panicked.*\n" +
-                "- *It’s worse than it seemed. Take an additional 1-harm.*\n" +
-                "- *Choose 2 from the 7–9 list below.*\n" +
-                "\n" +
-                "On a 7–9, the MC can choose 1:\n" +
-                "\n" +
-                "- *You lose your footing.*\n" +
-                "- *You lose your grip on whatever you’re holding.*\n" +
-                "- *You lose track of someone or something you’re attending to.*\n" +
-                "- *You miss noticing something important.*\n" +
-                "\n" +
-                "On a miss, the MC can nevertheless choose something from the 7–9 list above. If she does, though, it’s instead of some of the harm you’re suffering, so you take -1harm.", null, MoveKinds.PERIPHERAL, null);
-        Move inflictHarm = new Move("INFLICT HARM ON PC", "When you _**inflict harm on another player’s character**_, the other character gets +1Hx with you (on their sheet) for every segment of harm you inflict. If this brings them to Hx+4, they reset to Hx+1 as usual, and therefore mark experience.", Stats.HX, MoveKinds.PERIPHERAL, null);
-        Move healPcHarm = new Move("HEAL PC HARM", "When you _**heal another player’s character’s harm**_, you get +1Hx with them (on your sheet) for every segment of harm you heal. If this brings you to Hx+4, you reset to Hx+1 as usual, and therefore mark experience.", Stats.HX, MoveKinds.PERIPHERAL, null);
-        Move giveBarter = new Move("GIVE BARTER", "When you _**give 1-barter to someone, but with strings attached**_, it counts as manipulating them and hitting the roll with a 10+, no leverage or roll required.", null, MoveKinds.PERIPHERAL, null);
-        Move goToMarket = new Move("GO TO THE MARKET", "When you _**go into a holding’s bustling market**_, looking for some particular thing to buy, and it’s not obvious whether you should be able to just go buy one like that, roll+sharp.\n" +
-                "\n" +
-                "On a 10+, yes, you can just go buy it like that.\n" +
-                "\n" +
-                "On a 7–9, the MC chooses 1:\n" +
-                "\n" +
-                "- *It costs 1-barter more than you’d expect.*\n" +
-                "- *It’s not openly for sale, but you find someone who can lead you to someone selling it.*\n" +
-                "- *It’s not openly for sale, but you find someone who sold it recently, who may be willing to introduce you to their previous buyer.*\n" +
-                "- *It’s not available for sale, but you find something similar. Will it do?*\n" +
-                "\n" +
-                "On a miss, the MC chooses 1, plus it costs 1-barter more.", Stats.SHARP, MoveKinds.PERIPHERAL, null);
-        Move makeWantKnown = new Move("MAKE WANT KNOWN", "When you _**make known that you want a thing and drop jingle to speed it on its way**_, roll+barter spent (max roll+3). It has to be a thing you could legitimately get this way. On a 10+ it comes to you, no strings attached. On a 7–9 it comes to you, or something pretty close. On a miss, it comes to you, but with strings very much attached.", null, MoveKinds.PERIPHERAL, null);
-        Move insight = new Move("INSIGHT", "When you are able to go to someone for _**insight**_, ask them what they think your best course is, and the MC will tell you. If you pursue that course, take +1 to any rolls you make in the pursuit. If you pursue that course but don’t accomplish your ends, you mark experience.", null, MoveKinds.PERIPHERAL, null);
-        Move augury = new Move("AUGURY", "When you are able to use something for _**augury**_, roll+weird.\n" +
-                "\n" +
-                "On a hit, you can choose 1:\n" +
-                "\n" +
-                "- *Reach through the world’s psychic maelstrom to something or someone connected to it.*\n" +
-                "- *Isolate and protect a person or thing from the world’s psychic maelstrom.*\n" +
-                "- *Isolate and contain a fragment of the world’s psychic maelstrom itself.*\n" +
-                "- *Insert information into the world’s psychic maelstrom.*\n" +
-                "- *Open a window into the world’s psychic maelstrom.*\n" +
-                "\n" +
-                "By default, the effect will last only as long as you maintain it, will reach only shallowly into the world’s psychic maelstrom as it is local to you, and will bleed instability.\n" +
-                "\n" +
-                "On a 10+, choose 2; on a 7–9, choose 1:\n" +
-                "\n" +
-                "- *It’ll persist (for a while) without your actively maintaining it.*\n" +
-                "- *It reaches deep into the world’s psychic maelstrom.*\n" +
-                "- *It reaches broadly throughout the world’s psychic maelstrom.*\n" +
-                "- *It’s stable and contained, no bleeding.*\n" +
-                "\n" +
-                "On a miss, whatever bad happens, your antenna takes the brunt of it.", Stats.WEIRD, MoveKinds.PERIPHERAL, null);
-        Move changeHighlightedStats = new Move("CHANGE HIGHLIGHTED STATS", "_**At the beginning of any session**_, or at the end if you forgot, anyone can say, “hey, let’s change highlighted stats.” When someone says it, do it. Go around the circle again, following the same procedure you used to highlight them in the first place: the high-Hx player highlights one stat, and the MC highlight another.", null, MoveKinds.PERIPHERAL, null);
+        Move sufferHarm = Move.builder()
+                .name("SUFFER HARM")
+                .description("When you _**suffer harm**_, roll+harm suffered (after armor, if you’re wearing any).\n" +
+                        "\n" +
+                        "On a 10+, the MC can choose 1:\n" +
+                        "\n" +
+                        "- *You’re out of action: unconscious, trapped, incoherent or panicked.*\n" +
+                        "- *It’s worse than it seemed. Take an additional 1-harm.*\n" +
+                        "- *Choose 2 from the 7–9 list below.*\n" +
+                        "\n" +
+                        "On a 7–9, the MC can choose 1:\n" +
+                        "\n" +
+                        "- *You lose your footing.*\n" +
+                        "- *You lose your grip on whatever you’re holding.*\n" +
+                        "- *You lose track of someone or something you’re attending to.*\n" +
+                        "- *You miss noticing something important.*\n" +
+                        "\n" +
+                        "On a miss, the MC can nevertheless choose something from the 7–9 list above. If she does, though, it’s instead of some of the harm you’re suffering, so you take -1harm.")
+                .kind(MoveKinds.PERIPHERAL)
+                .stat(null)
+                .playbook(null)
+                .build();
+        Move inflictHarm = Move.builder()
+                .name("INFLICT HARM ON PC")
+                .description("When you _**inflict harm on another player’s character**_, the other character gets +1Hx with you (on their sheet) for every segment of harm you inflict.\n" +
+                        "\n" +
+                        "If this brings them to Hx+4, they reset to Hx+1 as usual, and therefore mark experience.")
+                .kind(MoveKinds.PERIPHERAL)
+                .stat(null)
+                .playbook(null)
+                .build();
+        Move healPcHarm = Move.builder()
+                .name("HEAL PC HARM")
+                .description("When you _**heal another player’s character’s harm**_, you get +1Hx with them (on your sheet) for every segment of harm you heal.\n" +
+                        "\n" +
+                        "If this brings you to Hx+4, you reset to Hx+1 as usual, and therefore mark experience.")
+                .kind(MoveKinds.PERIPHERAL)
+                .stat(null)
+                .playbook(null)
+                .build();
+        Move giveBarter = Move.builder()
+                .name("GIVE BARTER")
+                .description("When you _**give 1-barter to someone, but with strings attached**_, it counts as manipulating them and hitting the roll with a 10+, no leverage or roll required.")
+                .kind(MoveKinds.PERIPHERAL)
+                .stat(null)
+                .playbook(null)
+                .build();
+        Move goToMarket = Move.builder()
+                .name("GO TO THE MARKET")
+                .description("When you _**go into a holding’s bustling market**_, looking for some particular thing to buy, and it’s not obvious whether you should be able to just go buy one like that, roll+sharp.\n" +
+                        "\n" +
+                        "On a 10+, yes, you can just go buy it like that.\n" +
+                        "\n" +
+                        "On a 7–9, the MC chooses 1:\n" +
+                        "\n" +
+                        "- *It costs 1-barter more than you’d expect.*\n" +
+                        "- *It’s not openly for sale, but you find someone who can lead you to someone selling it.*\n" +
+                        "- *It’s not openly for sale, but you find someone who sold it recently, who may be willing to introduce you to their previous buyer.*\n" +
+                        "- *It’s not available for sale, but you find something similar. Will it do?*\n" +
+                        "\n" +
+                        "On a miss, the MC chooses 1, plus it costs 1-barter more.")
+                .kind(MoveKinds.PERIPHERAL)
+                .stat(Stats.SHARP)
+                .playbook(null)
+                .build();
+        Move makeWantKnown = Move.builder()
+                .name("MAKE WANT KNOWN")
+                .description("When you _**make known that you want a thing and drop jingle to speed it on its way**_, roll+barter spent (max roll+3). It has to be a thing you could legitimately get this way.\n" +
+                        "\n" +
+                        "On a 10+ it comes to you, no strings attached.\n" +
+                        "\n" +
+                        "On a 7–9 it comes to you, or something pretty close.\n" +
+                        "\n" +
+                        "On a miss, it comes to you, but with strings very much attached.")
+                .kind(MoveKinds.PERIPHERAL)
+                .stat(null)
+                .playbook(null)
+                .build();
+        Move insight = Move.builder()
+                .name("INSIGHT")
+                .description("When you are able to go to someone for _**insight**_, ask them what they think your best course is, and the MC will tell you.\n" +
+                        "\n" +
+                        "If you pursue that course, take +1 to any rolls you make in the pursuit. If you pursue that course but don’t accomplish your ends, you mark experience.")
+                .kind(MoveKinds.PERIPHERAL)
+                .stat(null)
+                .playbook(null)
+                .build();
+        Move augury = Move.builder()
+                .name("AUGURY")
+                .description("When you are able to use something for _**augury**_, roll+weird.\n" +
+                        "\n" +
+                        "On a hit, you can choose 1:\n" +
+                        "\n" +
+                        "- *Reach through the world’s psychic maelstrom to something or someone connected to it.*\n" +
+                        "- *Isolate and protect a person or thing from the world’s psychic maelstrom.*\n" +
+                        "- *Isolate and contain a fragment of the world’s psychic maelstrom itself.*\n" +
+                        "- *Insert information into the world’s psychic maelstrom.*\n" +
+                        "- *Open a window into the world’s psychic maelstrom.*\n" +
+                        "\n" +
+                        "By default, the effect will last only as long as you maintain it, will reach only shallowly into the world’s psychic maelstrom as it is local to you, and will bleed instability.\n" +
+                        "\n" +
+                        "On a 10+, choose 2; on a 7–9, choose 1:\n" +
+                        "\n" +
+                        "- *It’ll persist (for a while) without your actively maintaining it.*\n" +
+                        "- *It reaches deep into the world’s psychic maelstrom.*\n" +
+                        "- *It reaches broadly throughout the world’s psychic maelstrom.*\n" +
+                        "- *It’s stable and contained, no bleeding.*\n" +
+                        "\n" +
+                        "On a miss, whatever bad happens, your antenna takes the brunt of it.")
+                .kind(MoveKinds.PERIPHERAL)
+                .stat(Stats.WEIRD)
+                .playbook(null)
+                .build();
+        Move changeHighlightedStats = Move.builder()
+                .name("CHANGE HIGHLIGHTED STATS")
+                .description("_**At the beginning of any session**_, or at the end if you forgot, anyone can say, “hey, let’s change highlighted stats.” When someone says it, do it.\n" +
+                        "\n" +
+                        "Go around the circle again, following the same procedure you used to highlight them in the first place: the high-Hx player highlights one stat, and the MC highlight another.")
+                .kind(MoveKinds.PERIPHERAL)
+                .stat(null)
+                .playbook(null)
+                .build();
 
         moveService.saveAll(Flux.just(sufferHarm, inflictHarm, healPcHarm, giveBarter, goToMarket, makeWantKnown,
                 insight, augury, changeHighlightedStats)).blockLast();
 
         System.out.println("|| --- Loading battle moves --- ||");
         /* ----------------------------- BATTLE MOVES --------------------------------- */
-        Move exchangeHarm = new Move("EXCHANGE HARM", "When you _**exchange harm**_, both sides simultaneously inflict and suffer harm as established:\n" +
-                "\n" +
-                "- *You inflict harm equal to the harm rating of your weapon, minus the armor rating of your enemy’s armor.*\n" +
-                "- *You suffer harm equal to the harm rating of your enemy’s weapon, minus the armor rating of your own armor.*", null, MoveKinds.BATTLE, null);
-        Move seizeByForce = new Move("SEIZE BY FORCE", "To _**seize something by force**_, exchange harm, but first roll+hard.\n" +
-                "\n" +
-                "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
-                "\n" +
-                "- *You inflict terrible harm (+1harm).*\n" +
-                "- *You suffer little harm (-1harm).*\n" +
-                "- *You take definite and undeniable control of it.*\n" +
-                "- *You impress, dismay, or frighten your enemy.*", Stats.HARD, MoveKinds.BATTLE, null);
-        Move assaultAPosition = new Move("ASSAULT A POSITION", "To _**assault a secure position**_, exchange harm, but first roll+hard.\n" +
-                "\n" +
-                "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
-                "\n" +
-                "- *You inflict terrible harm (+1harm).*\n" +
-                "- *You suffer little harm (-1harm).*\n" +
-                "- *You force your way into your enemy’s position.*\n" +
-                "- *You impress, dismay, or frighten your enemy.*", Stats.HARD, MoveKinds.BATTLE, null);
-        Move keepHoldOfSomething = new Move("KEEP HOLD OF SOMETHING", "To _**keep hold of something you have**_, exchange harm, but first roll+hard.\n" +
-                "\n" +
-                "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
-                "\n" +
-                "- *You inflict terrible harm (+1harm).*\n" +
-                "- *You suffer little harm (-1harm).*\n" +
-                "- *You keep definite control of it.*\n" +
-                "- *You impress, dismay, or frighten your enemy.*", Stats.HARD, MoveKinds.BATTLE, null);
-        Move fightFree = new Move("FIGHT FREE", "To _**fight your way free**_, exchange harm, but first roll+hard.\n" +
-                "\n" +
-                "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
-                "\n" +
-                "- *You inflict terrible harm (+1harm).*\n" +
-                "- *You suffer little harm (-1harm).*\n" +
-                "- *You win free and get away.*\n" +
-                "- *You impress, dismay, or frighten your enemy.*", Stats.HARD, MoveKinds.BATTLE, null);
-        Move defendSomeone = new Move("DEFEND SOMEONE", "To _**defend someone else from attack**_, exchange harm, but first roll+hard.\n" +
-                "\n" +
-                "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
-                "\n" +
-                "- *You inflict terrible harm (+1harm).*\n" +
-                "- *You suffer little harm (-1harm).*\n" +
-                "- *You protect them from harm.*\n" +
-                "- *You impress, dismay, or frighten your enemy.*", Stats.HARD, MoveKinds.BATTLE, null);
-        Move doSingleCombat = new Move("DO SINGLE COMBAT", "When you _**do single combat with someone**_, no quarters, exchange harm, but first roll+hard.\n" +
-                "\n" +
-                "On a 10+, both. On a 7–9, choose 1. On a miss, your opponent chooses 1 against you:\n" +
-                "\n" +
-                "- *You inflict terrible harm (+1harm).*\n" +
-                "- *You suffer little harm (-1harm).*\n" +
-                "\n" +
-                "After you exchange harm, do you prefer to end the fight now, or fight on? If both of you prefer to end the fight now, it ends. If both of you prefer to fight on, it continues, and you must make the move again. If one of you prefers to end the fight, though, and the other prefers to fight on, then the former must choose: flee, submit to the latter‘s mercy, or fight on after all.", Stats.HARD, MoveKinds.BATTLE, null);
-        Move layDownFire = new Move("LAY DOWN FIRE", "When you _**lay down fire**_, roll+hard.\n" +
-                "\n" +
-                "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
-                "\n" +
-                "- *You provide covering fire, allowing another character to move or act freely.*\n" +
-                "- *You provide supporting fire, giving another PC +1choice to their own battle move.*\n" +
-                "- *You provide suppressing fire, denying another character to move or act freely. (If a PC, they may still act under fire.)*\n" +
-                "- *You take an opportune shot, inflicting harm (but -1harm) on an enemy within your reach.*", Stats.HARD, MoveKinds.BATTLE, null);
-        Move standOverwatch = new Move("STAND OVERWATCH", "When you _**stand overwatch**_ for an ally, roll+cool. On a hit, if anyone attacks or interferes with your ally, you attack them and inflict harm as established, as well as warning your ally.\n" +
-                "\n" +
-                "On a 10+, choose 1:\n" +
-                "\n" +
-                "- *...And you inflict your harm before they can carry out their attack or interference.*\n" +
-                "- *...And you inflict terrible harm (+1harm).*\n" +
-                "\n" +
-                "On a miss, you are able to warn your ally but not attack your enemy.", Stats.COOL, MoveKinds.BATTLE, null);
-        Move keepAnEyeOut = new Move("KEEP AN EYE OUT", "When you _**keep an eye out**_ for what’s coming, roll+sharp.\n" +
-                "\n" +
-                "On a 10+, hold 3. On a 7–9, hold 2. On a miss, hold 1. During the battle, spend your hold, 1 for 1, to ask the MC what’s coming and choose 1:\n" +
-                "\n" +
-                "- *Direct a PC ally’s attention to an enemy. If they make a battle move against that enemy, they get +1choice to their move.*\n" +
-                "- *Give a PC ally an order, instruction, or suggestion. If they do it, they get +1 to any rolls they make in the effort.*\n" +
-                "- *Direct any ally’s attention to an enemy. If they attack that enemy, they inflict +1harm.*\n" +
-                "- *Direct any ally’s attention to a danger. They take -1harm from that danger.*", Stats.SHARP, MoveKinds.BATTLE, null);
-        Move beTheBait = new Move("BE THE BAIT", "When _**you’re the bait**_, roll+cool.\n" +
-                "\n" +
-                "On a 10+, choose 2. On a 7–9, choose 1:\n" +
-                "\n" +
-                "- *You draw your prey all the way into the trap. Otherwise, they only approach.*\n" +
-                "- *Your prey doesn’t suspect you. Otherwise, they’re wary and alert.*\n" +
-                "- *You don’t expose yourself to extra risk. Otherwise, any harm your prey inflicts is +1.*\n" +
-                "\n" +
-                "On a miss, the MC chooses 1 for you.", Stats.COOL, MoveKinds.BATTLE, null);
-        Move beTheCat = new Move("BE THE CAT", "When _**you’re the cat**_, roll+cool. On a hit, you catch your prey out.\n" +
-                "\n" +
-                "On a 10+, you’ve driven them first to a place of your choosing; say where.\n" +
-                "\n" +
-                "On a 7–9, you’ve had to follow them where they wanted to go; they say where.\n" +
-                "\n" +
-                "On a miss, your prey escapes you.", Stats.COOL, MoveKinds.BATTLE, null);
-        Move beTheMouse = new Move("BE THE MOUSE", "When _**you’re the mouse**_, roll+cool.\n" +
-                "\n" +
-                "On a 10+, you escape clean and leave your hunter hunting.\n" +
-                "\n" +
-                "On a 7–9, your hunter catches you out, but only after you’ve led them to a place of your choosing; say where.\n" +
-                "\n" +
-                "On a miss, your hunter catches you out and the MC says where.", Stats.COOL, MoveKinds.BATTLE, null);
-        Move catOrMouse = new Move("CAT OR MOUSE", "When _**it’s not certain whether you’re the cat or the mouse**_, roll+sharp. On a hit, you decide which you are.\n" +
-                "\n" +
-                "On a 10+, you take +1forward as well.\n" +
-                "\n" +
-                "On a miss, you’re the mouse.", Stats.SHARP, MoveKinds.BATTLE, null);
+        Move exchangeHarm = Move.builder()
+                .name("EXCHANGE HARM")
+                .description("When you _**exchange harm**_, both sides simultaneously inflict and suffer harm as established:\n" +
+                        "\n" +
+                        "- *You inflict harm equal to the harm rating of your weapon, minus the armor rating of your enemy’s armor.*\n" +
+                        "- *You suffer harm equal to the harm rating of your enemy’s weapon, minus the armor rating of your own armor.*")
+                .kind(MoveKinds.BATTLE)
+                .stat(null)
+                .playbook(null)
+                .build();
+        Move seizeByForce = Move.builder()
+                .name("SEIZE BY FORCE")
+                .description("To _**seize something by force**_, exchange harm, but first roll+hard.\n" +
+                        "\n" +
+                        "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
+                        "\n" +
+                        "- *You inflict terrible harm (+1harm).*\n" +
+                        "- *You suffer little harm (-1harm).*\n" +
+                        "- *You take definite and undeniable control of it.*\n" +
+                        "- *You impress, dismay, or frighten your enemy.*")
+                .kind(MoveKinds.BATTLE)
+                .stat(HARD)
+                .playbook(null)
+                .build();
+        Move assaultAPosition = Move.builder()
+                .name("ASSAULT A POSITION")
+                .description("To _**assault a secure position**_, exchange harm, but first roll+hard.\n" +
+                        "\n" +
+                        "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
+                        "\n" +
+                        "- *You inflict terrible harm (+1harm).*\n" +
+                        "- *You suffer little harm (-1harm).*\n" +
+                        "- *You force your way into your enemy’s position.*\n" +
+                        "- *You impress, dismay, or frighten your enemy.*")
+                .kind(MoveKinds.BATTLE)
+                .stat(HARD)
+                .playbook(null)
+                .build();
+        Move keepHoldOfSomething = Move.builder()
+                .name("KEEP HOLD OF SOMETHING")
+                .description("To _**keep hold of something you have**_, exchange harm, but first roll+hard.\n" +
+                        "\n" +
+                        "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
+                        "\n" +
+                        "- *You inflict terrible harm (+1harm).*\n" +
+                        "- *You suffer little harm (-1harm).*\n" +
+                        "- *You keep definite control of it.*\n" +
+                        "- *You impress, dismay, or frighten your enemy.*")
+                .kind(MoveKinds.BATTLE)
+                .stat(HARD)
+                .playbook(null)
+                .build();
+        Move fightFree = Move.builder()
+                .name("FIGHT FREE")
+                .description("To _**fight your way free**_, exchange harm, but first roll+hard.\n" +
+                        "\n" +
+                        "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
+                        "\n" +
+                        "- *You inflict terrible harm (+1harm).*\n" +
+                        "- *You suffer little harm (-1harm).*\n" +
+                        "- *You win free and get away.*\n" +
+                        "- *You impress, dismay, or frighten your enemy.*")
+                .kind(MoveKinds.BATTLE)
+                .stat(HARD)
+                .playbook(null)
+                .build();
+        Move defendSomeone = Move.builder()
+                .name("DEFEND SOMEONE")
+                .description("To _**defend someone else from attack**_, exchange harm, but first roll+hard.\n" +
+                        "\n" +
+                        "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
+                        "\n" +
+                        "- *You inflict terrible harm (+1harm).*\n" +
+                        "- *You suffer little harm (-1harm).*\n" +
+                        "- *You protect them from harm.*\n" +
+                        "- *You impress, dismay, or frighten your enemy.*")
+                .kind(MoveKinds.BATTLE)
+                .stat(HARD)
+                .playbook(null)
+                .build();
+        Move doSingleCombat = Move.builder()
+                .name("DO SINGLE COMBAT")
+                .description("When you _**do single combat with someone**_, no quarters, exchange harm, but first roll+hard.\n" +
+                        "\n" +
+                        "On a 10+, both. On a 7–9, choose 1. On a miss, your opponent chooses 1 against you:\n" +
+                        "\n" +
+                        "- *You inflict terrible harm (+1harm).*\n" +
+                        "- *You suffer little harm (-1harm).*\n" +
+                        "\n" +
+                        "After you exchange harm, do you prefer to end the fight now, or fight on? If both of you prefer to end the fight now, it ends. If both of you prefer to fight on, it continues, and you must make the move again.\n" +
+                        "\n" +
+                        "If one of you prefers to end the fight, though, and the other prefers to fight on, then the former must choose: flee, submit to the latter‘s mercy, or fight on after all.")
+                .kind(MoveKinds.BATTLE)
+                .stat(HARD)
+                .playbook(null)
+                .build();
+        Move layDownFire = Move.builder()
+                .name("LAY DOWN FIRE")
+                .description("When you _**lay down fire**_, roll+hard.\n" +
+                        "\n" +
+                        "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
+                        "\n" +
+                        "- *You provide covering fire, allowing another character to move or act freely.*\n" +
+                        "- *You provide supporting fire, giving another PC +1choice to their own battle move.*\n" +
+                        "- *You provide suppressing fire, denying another character to move or act freely. (If a PC, they may still act under fire.)*\n" +
+                        "- *You take an opportune shot, inflicting harm (but -1harm) on an enemy within your reach.*")
+                .kind(MoveKinds.BATTLE)
+                .stat(HARD)
+                .playbook(null)
+                .build();
+        Move standOverwatch = Move.builder()
+                .name("STAND OVERWATCH")
+                .description("When you _**stand overwatch**_ for an ally, roll+cool. On a hit, if anyone attacks or interferes with your ally, you attack them and inflict harm as established, as well as warning your ally.\n" +
+                        "\n" +
+                        "On a 10+, choose 1:\n" +
+                        "\n" +
+                        "- *...And you inflict your harm before they can carry out their attack or interference.*\n" +
+                        "- *...And you inflict terrible harm (+1harm).*\n" +
+                        "\n" +
+                        "On a miss, you are able to warn your ally but not attack your enemy.")
+                .kind(MoveKinds.BATTLE)
+                .stat(COOL)
+                .playbook(null)
+                .build();
+        Move keepAnEyeOut = Move.builder()
+                .name("KEEP AN EYE OUT")
+                .description("When you _**keep an eye out**_ for what’s coming, roll+sharp.\n" +
+                        "\n" +
+                        "On a 10+, hold 3. On a 7–9, hold 2. On a miss, hold 1. During the battle, spend your hold, 1 for 1, to ask the MC what’s coming and choose 1:\n" +
+                        "\n" +
+                        "- *Direct a PC ally’s attention to an enemy. If they make a battle move against that enemy, they get +1choice to their move.*\n" +
+                        "- *Give a PC ally an order, instruction, or suggestion. If they do it, they get +1 to any rolls they make in the effort.*\n" +
+                        "- *Direct any ally’s attention to an enemy. If they attack that enemy, they inflict +1harm.*\n" +
+                        "- *Direct any ally’s attention to a danger. They take -1harm from that danger.*")
+                .kind(MoveKinds.BATTLE)
+                .stat(SHARP)
+                .playbook(null)
+                .build();
+        Move beTheBait = Move.builder()
+                .name("BE THE BAIT")
+                .description("When _**you’re the bait**_, roll+cool.\n" +
+                        "\n" +
+                        "On a 10+, choose 2. On a 7–9, choose 1:\n" +
+                        "\n" +
+                        "- *You draw your prey all the way into the trap. Otherwise, they only approach.*\n" +
+                        "- *Your prey doesn’t suspect you. Otherwise, they’re wary and alert.*\n" +
+                        "- *You don’t expose yourself to extra risk. Otherwise, any harm your prey inflicts is +1.*\n" +
+                        "\n" +
+                        "On a miss, the MC chooses 1 for you.")
+                .kind(MoveKinds.BATTLE)
+                .stat(COOL)
+                .playbook(null)
+                .build();
+        Move beTheCat = Move.builder()
+                .name("BE THE CAT")
+                .description("When _**you’re the cat**_, roll+cool. On a hit, you catch your prey out.\n" +
+                        "\n" +
+                        "On a 10+, you’ve driven them first to a place of your choosing; say where.\n" +
+                        "\n" +
+                        "On a 7–9, you’ve had to follow them where they wanted to go; they say where.\n" +
+                        "\n" +
+                        "On a miss, your prey escapes you.")
+                .kind(MoveKinds.BATTLE)
+                .stat(COOL)
+                .playbook(null)
+                .build();
+        Move beTheMouse = Move.builder()
+                .name("BE THE MOUSE")
+                .description("When _**you’re the mouse**_, roll+cool.\n" +
+                        "\n" +
+                        "On a 10+, you escape clean and leave your hunter hunting.\n" +
+                        "\n" +
+                        "On a 7–9, your hunter catches you out, but only after you’ve led them to a place of your choosing; say where.\n" +
+                        "\n" +
+                        "On a miss, your hunter catches you out and the MC says where.")
+                .kind(MoveKinds.BATTLE)
+                .stat(COOL)
+                .playbook(null)
+                .build();
+        Move catOrMouse = Move.builder()
+                .name("CAT OR MOUSE")
+                .description("When _**it’s not certain whether you’re the cat or the mouse**_, roll+sharp. On a hit, you decide which you are.\n" +
+                        "\n" +
+                        "On a 10+, you take +1forward as well.\n" +
+                        "\n" +
+                        "On a miss, you’re the mouse.")
+                .kind(MoveKinds.BATTLE)
+                .stat(SHARP)
+                .playbook(null)
+                .build();
 
         moveService.saveAll(Flux.just(exchangeHarm, seizeByForce, assaultAPosition, keepHoldOfSomething,
                 fightFree, defendSomeone, doSingleCombat, layDownFire, standOverwatch, keepAnEyeOut,
@@ -440,51 +596,81 @@ public class GameDataLoader implements CommandLineRunner {
 
         System.out.println("|| --- Loading road war moves --- ||");
         /* ----------------------------- ROAD WAR MOVES --------------------------------- */
-        Move boardAMovingVehicle = new Move("BOARD A MOVING VEHICLE", "To _**board a moving vehicle**_, roll+cool, minus its speed. To board one moving vehicle from another, roll+cool, minus the difference between their speeds.\n" +
-                "\n" +
-                "On a 10+, you’re on and you made it look easy. Take +1forward.\n" +
-                "\n" +
-                "On a 7–9, you’re on, but jesus.\n" +
-                "\n" +
-                "On a miss, the MC chooses: you’re hanging on for dear life, or you’re down and good luck to you.", Stats.COOL, MoveKinds.ROAD_WAR, null);
-        Move outdistanceAnotherVehicle = new Move("OUTDISTANCE ANOTHER VEHICLE", "When you try to outdistance another vehicle, roll+cool, modified by the vehicles’ relative speed.\n" +
-                "\n" +
-                "On a 10+, you outdistance them and break away.\n" +
-                "\n" +
-                "On a 7–9, choose 1:\n" +
-                "\n" +
-                "- *You outdistance them and break away, but your vehicle suffers 1-harm ap from the strain.*\n" +
-                "- *You don’t escape them, but you can go to ground in a place you choose.*\n" +
-                "- *They overtake you, but their vehicle suffers 1-harm ap from the strain.*\n" +
-                "\n" +
-                "On a miss, your counterpart chooses 1 against you.", Stats.COOL, MoveKinds.ROAD_WAR, null);
-        Move overtakeAnotherVehicle = new Move("OVERTAKE ANOTHER VEHICLE", "When you _**try to overtake another vehicle**_, roll+cool, modified by the vehicles’ relative speed.\n" +
-                "\n" +
-                "On a 10+, you overtake them and draw alongside.\n" +
-                "\n" +
-                "On a 7–9, choose 1:\n" +
-                "\n" +
-                "- *You overtake them, but your vehicle suffers 1-harm ap the same.*\n" +
-                "- *You don’t overtake them, but you can drive them into a place you choose.*\n" +
-                "- *They outdistance you, but their vehicle suffers 1-harm ap the same.*\n" +
-                "\n" +
-                "On a miss, your counterpart chooses 1 against you.", Stats.COOL, MoveKinds.ROAD_WAR, null);
-        Move dealWithBadTerrain = new Move("DEAL WITH BAD TERRAIN", "When you have to _**deal with bad terrain**_, roll+cool, plus your vehicle’s handling.\n" +
-                "\n" +
-                "On a 10+, you fly through untouched.\n" +
-                "\n" +
-                "On a 7–9, choose 1:\n" +
-                "\n" +
-                "- *You slow down and pick your way forward.*\n" +
-                "- *You push too hard and your vehicle suffers harm as established.*\n" +
-                "- *You ditch out and go back or try to find another way.*\n" +
-                "\n" +
-                "On a miss, the MC chooses 1 for you; the others are impossible.", Stats.COOL, MoveKinds.ROAD_WAR, null);
-        Move shoulderAnotherVehicle = new Move("SHOULDER ANOTHER VEHICLE", "To _**shoulder another vehicle**_, roll+cool. On a hit, you shoulder it aside, inflicting v-harm as established.\n" +
-                "\n" +
-                "On a 10+, you inflict v-harm+1.\n" +
-                "\n" +
-                "On a miss, it shoulders you instead, inflicting v-harm as established.", Stats.COOL, MoveKinds.ROAD_WAR, null);
+        Move boardAMovingVehicle = Move.builder()
+                .name("BOARD A MOVING VEHICLE")
+                .description("To _**board a moving vehicle**_, roll+cool, minus its speed. To board one moving vehicle from another, roll+cool, minus the difference between their speeds.\n" +
+                        "\n" +
+                        "On a 10+, you’re on and you made it look easy. Take +1forward.\n" +
+                        "\n" +
+                        "On a 7–9, you’re on, but jesus.\n" +
+                        "\n" +
+                        "On a miss, the MC chooses: you’re hanging on for dear life, or you’re down and good luck to you.")
+                .kind(MoveKinds.ROAD_WAR)
+                .stat(COOL)
+                .playbook(null)
+                .build();
+        Move outdistanceAnotherVehicle = Move.builder()
+                .name("OUTDISTANCE ANOTHER VEHICLE")
+                .description("When you try to outdistance another vehicle, roll+cool, modified by the vehicles’ relative speed.\n" +
+                        "\n" +
+                        "On a 10+, you outdistance them and break away.\n" +
+                        "\n" +
+                        "On a 7–9, choose 1:\n" +
+                        "\n" +
+                        "- *You outdistance them and break away, but your vehicle suffers 1-harm ap from the strain.*\n" +
+                        "- *You don’t escape them, but you can go to ground in a place you choose.*\n" +
+                        "- *They overtake you, but their vehicle suffers 1-harm ap from the strain.*\n" +
+                        "\n" +
+                        "On a miss, your counterpart chooses 1 against you.")
+                .kind(MoveKinds.ROAD_WAR)
+                .stat(COOL)
+                .playbook(null)
+                .build();
+        Move overtakeAnotherVehicle = Move.builder()
+                .name("OVERTAKE ANOTHER VEHICLE")
+                .description("When you _**try to overtake another vehicle**_, roll+cool, modified by the vehicles’ relative speed.\n" +
+                        "\n" +
+                        "On a 10+, you overtake them and draw alongside.\n" +
+                        "\n" +
+                        "On a 7–9, choose 1:\n" +
+                        "\n" +
+                        "- *You overtake them, but your vehicle suffers 1-harm ap the same.*\n" +
+                        "- *You don’t overtake them, but you can drive them into a place you choose.*\n" +
+                        "- *They outdistance you, but their vehicle suffers 1-harm ap the same.*\n" +
+                        "\n" +
+                        "On a miss, your counterpart chooses 1 against you.")
+                .kind(MoveKinds.ROAD_WAR)
+                .stat(COOL)
+                .playbook(null)
+                .build();
+        Move dealWithBadTerrain = Move.builder()
+                .name("DEAL WITH BAD TERRAIN")
+                .description("When you have to _**deal with bad terrain**_, roll+cool, plus your vehicle’s handling.\n" +
+                        "\n" +
+                        "On a 10+, you fly through untouched.\n" +
+                        "\n" +
+                        "On a 7–9, choose 1:\n" +
+                        "\n" +
+                        "- *You slow down and pick your way forward.*\n" +
+                        "- *You push too hard and your vehicle suffers harm as established.*\n" +
+                        "- *You ditch out and go back or try to find another way.*\n" +
+                        "\n" +
+                        "On a miss, the MC chooses 1 for you; the others are impossible.")
+                .kind(MoveKinds.ROAD_WAR)
+                .stat(COOL)
+                .playbook(null)
+                .build();
+        Move shoulderAnotherVehicle = Move.builder()
+                .name("SHOULDER ANOTHER VEHICLE")
+                .description("To _**shoulder another vehicle**_, roll+cool. On a hit, you shoulder it aside, inflicting v-harm as established.\n" +
+                        "\n" +
+                        "On a 10+, you inflict v-harm+1.\n" +
+                        "\n" +
+                        "On a miss, it shoulders you instead, inflicting v-harm as established.")
+                .kind(MoveKinds.ROAD_WAR)
+                .stat(COOL)
+                .playbook(null)
+                .build();
 
         moveService.saveAll(Flux.just(boardAMovingVehicle, outdistanceAnotherVehicle, overtakeAnotherVehicle,
                 dealWithBadTerrain, shoulderAnotherVehicle)).blockLast();
@@ -540,7 +726,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- BATTLEBABE MOVES --------------------------------- */
         System.out.println("|| --- Loading Battlebabe moves --- ||");
-        RollModifier iceColdMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(goAggro)).statToRollWith(Arrays.asList(Stats.HARD, Stats.HX)).build();
+        RollModifier iceColdMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(goAggro)).statToRollWith(Arrays.asList(HARD, Stats.HX)).build();
         Move battlebabeSpecial = Move.builder().name("BATTLEBABE SPECIAL").description("If you and another character have sex, nullify the other character’s sex move. Whatever it is, it just doesn’t happen.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
         Move dangerousAndSexy = Move.builder().name("DANGEROUS & SEXY").description("_**Dangerous & sexy**_: when you enter into a charged situation, roll+hot.\n" +
                 "\n" +
@@ -611,14 +797,14 @@ public class GameDataLoader implements CommandLineRunner {
                 "- *They don’t fight back over it (otherwise, they do fight back)*\n" +
                 "- *You don’t have to make an example of one of them (otherwise, you must)*\n" +
                 "\n" +
-                "On a miss, someone in your gang makes a bid, idle or serious, to replace you for alpha.").stat(Stats.HARD).kind(MoveKinds.CHARACTER).playbook(Playbooks.CHOPPER).build();
+                "On a miss, someone in your gang makes a bid, idle or serious, to replace you for alpha.").stat(HARD).kind(MoveKinds.CHARACTER).playbook(Playbooks.CHOPPER).build();
         Move fuckingThieves = Move.builder().name("FUCKING THIEVES").description("_**Fucking thieves**_: when you have your gang search their pockets and saddlebags for something, roll+hard. It has to be something small enough to fit.\n" +
                 "\n" +
                 "On a 10+, one of you happens to have just the thing, or close enough.\n" +
                 "\n" +
                 "On a 7–9, one of you happens to have something pretty close, unless what you’re looking for is hi-tech, in which case no dice.\n" +
                 "\n" +
-                "On a miss, one of you used to have just the thing, but it turns out that some asswipe stole it from you.").stat(Stats.HARD).kind(MoveKinds.CHARACTER).playbook(Playbooks.CHOPPER).build();
+                "On a miss, one of you used to have just the thing, but it turns out that some asswipe stole it from you.").stat(HARD).kind(MoveKinds.CHARACTER).playbook(Playbooks.CHOPPER).build();
 
         moveService.saveAll(Flux.just(chopperSpecial, packAlpha, fuckingThieves)).blockLast();
 
@@ -655,9 +841,9 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- GUNLUGGER MOVES --------------------------------- */
         System.out.println("|| --- Loading Gunlugger moves --- ||");
-        RollModifier battleHardenedMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Arrays.asList(doSomethingUnderFire, standOverwatch)).statToRollWith(Collections.singletonList(Stats.HARD)).build();
-        RollModifier battlefieldInstinctsMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(openBrain)).statToRollWith(Collections.singletonList(Stats.HARD)).build();
-        StatModifier insanoMod = StatModifier.builder().id(UUID.randomUUID().toString()).statToModify(Stats.HARD).modification(1).build();
+        RollModifier battleHardenedMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Arrays.asList(doSomethingUnderFire, standOverwatch)).statToRollWith(Collections.singletonList(HARD)).build();
+        RollModifier battlefieldInstinctsMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(openBrain)).statToRollWith(Collections.singletonList(HARD)).build();
+        StatModifier insanoMod = StatModifier.builder().id(UUID.randomUUID().toString()).statToModify(HARD).modification(1).build();
         Move gunluggerSpecial = Move.builder().name("GUNLUGGER SPECIAL").description("If you and another character have sex, you take +1 forward. At your option, they take +1 forward too.").kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
         Move battleHardened = Move.builder().name("BATTLE-HARDENED").description("_**Battle-hardened**_: when you act under fire, or when you stand overwatch, roll+hard instead of roll+cool.").rollModifier(battleHardenedMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
         Move fuckThisShit = Move.builder().name("FUCK THIS SHIT").description("_**Fuck this shit**_: name your escape route and roll+hard.\n" +
@@ -666,7 +852,7 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "On a 7–9, you can go or stay, but if you go it costs you: leave something behind, or take something with you, the MC will tell you what.\n" +
                 "\n" +
-                "On a miss, you’re caught vulnerable, half in and half out.").stat(Stats.HARD).kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
+                "On a miss, you’re caught vulnerable, half in and half out.").stat(HARD).kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
         Move battlefieldInstincts = Move.builder().name("BATTLEFIELD INSTINCTS").description("_**Battlefield instincts**_: when you open your brain to the world’s psychic maelstrom, roll+hard instead of roll+weird, but only in battle.").rollModifier(battlefieldInstinctsMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
         Move insanoLikeDrano = Move.builder().name("INSANO LIKE DRANO").description("_**Insano like Drano**_: you get +1hard (hard+3).").statModifier(insanoMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
         Move preparedForTheInevitable = Move.builder().name("PREPARED FOR THE INEVITABLE").description("_**Prepared for the inevitable**_: you have a well-stocked and high-quality first aid kit. It counts as an angel kit (cf ) with a capacity of 2-stock.").kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
