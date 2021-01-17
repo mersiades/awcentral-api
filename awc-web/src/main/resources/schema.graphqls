@@ -368,6 +368,7 @@ type Mutation {
         displayName: String!,
         email: String!
         name: String!): Game
+    setGameName(gameId: String!, name: String!): Game
     addInvitee(gameId: String!, email: String!): Game
     removeInvitee(gameId: String!, email: String!): Game
     addCommsApp(gameId: String!, app: String!): Game

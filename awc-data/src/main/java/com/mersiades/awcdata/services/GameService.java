@@ -10,6 +10,8 @@ public interface GameService extends ReactiveCrudService<Game, String> {
 
     Game createGameWithMC(String userId, String displayName, String email, String name) throws Exception;
 
+    Mono<Game> setGameName(String gameId, String name);
+
     Game addUserToGame(String gameId, String userId, String displayName, String email) throws Exception;
 
     Game findAndDeleteById(String gameId);
@@ -25,4 +27,5 @@ public interface GameService extends ReactiveCrudService<Game, String> {
     Flux<Game> findAllByInvitee(String email);
 
     Mono<Game> finishPreGame(String gameId);
+
 }

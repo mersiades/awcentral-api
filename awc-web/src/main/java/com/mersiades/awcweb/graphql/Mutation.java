@@ -30,6 +30,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.createGameWithMC(userId, displayName, email, name);
     }
 
+    public Game setGameName(String gameId, String name) throws Exception {
+        System.out.println("Setting name for Game: " + gameId);
+        return gameService.setGameName(gameId, name).block();
+    }
+
     public Game addInvitee(String gameId, String email) {
         System.out.println("Adding invitee to Game: " + gameId);
         return gameService.addInvitee(gameId, email);

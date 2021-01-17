@@ -172,6 +172,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Mono<Game> setGameName(String gameId, String name) {
+        return gameRepository.findById(gameId).flatMap(game1 -> {
+            game1.setName(name);
+            return gameRepository.save(game1);
+        });
+    }
+
+    @Override
     public Flux<Game> findAllByInvitee(String email) {
         // Add a demo game if running demo profile
         if (activeProfiles != null && activeProfiles.equals("demo")) {
