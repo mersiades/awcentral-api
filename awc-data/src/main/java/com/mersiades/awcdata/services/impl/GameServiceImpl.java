@@ -1,9 +1,5 @@
 package com.mersiades.awcdata.services.impl;
 
-import com.mersiades.awcdata.enums.LookCategories;
-import com.mersiades.awcdata.enums.Playbooks;
-import com.mersiades.awcdata.enums.Roles;
-import com.mersiades.awcdata.enums.Stats;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.GameRepository;
@@ -11,6 +7,11 @@ import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
+import com.mersiades.awccontent.enums.LookCategories;
+import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.Roles;
+import com.mersiades.awccontent.enums.Stats;
+import com.mersiades.awccontent.models.Look;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

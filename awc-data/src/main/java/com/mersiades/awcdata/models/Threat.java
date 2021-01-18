@@ -1,6 +1,6 @@
 package com.mersiades.awcdata.models;
 
-import com.mersiades.awcdata.enums.Threats;
+import com.mersiades.awccontent.enums.Threats;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

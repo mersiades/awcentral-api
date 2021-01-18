@@ -1,19 +1,26 @@
 package com.mersiades.awcweb.bootstrap;
 
-import com.mersiades.awcdata.enums.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.AngelKit;
 import com.mersiades.awcdata.models.uniques.BrainerGear;
 import com.mersiades.awcdata.models.uniques.CustomWeapons;
 import com.mersiades.awcdata.repositories.CharacterRepository;
-import com.mersiades.awcdata.services.*;
+import com.mersiades.awcdata.services.CharacterService;
+import com.mersiades.awcdata.services.GameRoleService;
+import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.models.Look;
+import com.mersiades.awccontent.models.Move;
+import com.mersiades.awccontent.models.StatsOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import com.mersiades.awccontent.services.LookService;
+import com.mersiades.awccontent.services.MoveService;
+import com.mersiades.awccontent.services.StatsOptionService;
 
 import java.util.List;
 import java.util.Objects;

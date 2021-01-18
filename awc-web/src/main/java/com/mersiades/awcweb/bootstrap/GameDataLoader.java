@@ -1,22 +1,22 @@
 package com.mersiades.awcweb.bootstrap;
 
-import com.mersiades.awcdata.enums.*;
-import com.mersiades.awcdata.models.*;
-import com.mersiades.awcdata.models.uniquecreators.AngelKitCreator;
-import com.mersiades.awcdata.models.uniquecreators.BrainerGearCreator;
-import com.mersiades.awcdata.models.uniquecreators.CustomWeaponsCreator;
-import com.mersiades.awcdata.repositories.*;
-import com.mersiades.awcdata.services.*;
+import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.models.*;
+import com.mersiades.awccontent.models.uniquecreators.AngelKitCreator;
+import com.mersiades.awccontent.models.uniquecreators.BrainerGearCreator;
+import com.mersiades.awccontent.models.uniquecreators.CustomWeaponsCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import com.mersiades.awccontent.repositories.*;
+import com.mersiades.awccontent.services.*;
 
 import java.util.*;
 
-import static com.mersiades.awcdata.enums.Stats.*;
+import static com.mersiades.awccontent.enums.Stats.*;
 
 @Component
 @Order(value = 0)
@@ -128,7 +128,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, be prepared for the worst.")
                 .kind(MoveKinds.BASIC)
-                .stat(Stats.COOL)
+                .stat(COOL)
                 .playbook(null)
                 .build();
         Move goAggro = Move.builder()
@@ -214,7 +214,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, ask 1 anyway, but be prepared for the worst.")
                 .kind(MoveKinds.BASIC)
-                .stat(Stats.SHARP)
+                .stat(SHARP)
                 .playbook(null)
                 .build();
         Move readAPerson = Move.builder()
@@ -231,7 +231,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, ask 1 anyway, but be prepared for the worst.")
                 .kind(MoveKinds.BASIC)
-                .stat(Stats.SHARP)
+                .stat(SHARP)
                 .playbook(null)
                 .build();
         Move openBrain = Move.builder()
@@ -333,7 +333,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, the MC chooses 1, plus it costs 1-barter more.")
                 .kind(MoveKinds.PERIPHERAL)
-                .stat(Stats.SHARP)
+                .stat(SHARP)
                 .playbook(null)
                 .build();
         Move makeWantKnown = Move.builder()
@@ -677,8 +677,8 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- ANGEL MOVES --------------------------------- */
         System.out.println("|| --- Loading Angel moves --- ||");
-        RollModifier sixthSenseMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(openBrain)).statToRollWith(Collections.singletonList(Stats.SHARP)).build();
-        RollModifier profCompassionMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(helpOrInterfere)).statToRollWith(Collections.singletonList(Stats.SHARP)).build();
+        RollModifier sixthSenseMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(openBrain)).statToRollWith(Collections.singletonList(SHARP)).build();
+        RollModifier profCompassionMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(helpOrInterfere)).statToRollWith(Collections.singletonList(SHARP)).build();
         Move angelSpecial = new Move("ANGEL SPECIAL", "If you and another character have sex, your Hx with them on your sheet goes immediately to +3, and they immediately get +1 to their Hx with you on their sheet. If that brings their Hx with you to +4, they reset it to +1 instead, as usual, and so mark experience.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
         Move sixthSense = Move.builder().name("SIXTH SENSE").description("_**Sixth sense**_: when you open your brain to the world’s psychic maelstrom, roll+sharp instead of +weird.").rollModifier(sixthSenseMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.ANGEL).build();
         Move infirmary = new Move("INFIRMARY", "_**Infirmary**_: you get an infirmary, a workspace with life support, a drug lab and a crew of 2 (Shigusa & Mox, maybe). Get patients into it and you can work on them like a savvyhead on tech (_cf_).", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
@@ -810,21 +810,21 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- DRIVER MOVES --------------------------------- */
         System.out.println("|| --- Loading Driver moves --- ||");
-        RollModifier weatherEyeMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(openBrain)).statToRollWith(Collections.singletonList(Stats.COOL)).build();
+        RollModifier weatherEyeMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(openBrain)).statToRollWith(Collections.singletonList(COOL)).build();
         Move driverSpecial = Move.builder().name("DRIVER SPECIAL").description("If you and another character have sex, roll+cool.\n" +
                 "\n" +
                 "On a 10+, it’s cool, no big deal.\n" +
                 "\n" +
                 "On a 7–9, give them +1 to their Hx with you on their sheet, but give yourself -1 to your Hx with them on yours.\n" +
                 "\n" +
-                "On a miss, you gotta go: take -1 ongoing, until you prove that it’s not like they own you or nothing.").stat(Stats.COOL).kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
+                "On a miss, you gotta go: take -1 ongoing, until you prove that it’s not like they own you or nothing.").stat(COOL).kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
         Move combatDriver = Move.builder().name("COMBAT DRIVER").description("_**Combat driver**_: when you use your vehicle as a weapon, inflict +1harm. When you inflict v-harm, add +1 to your target’s roll. When you suffer v-harm, take -1 to your roll.").kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
         Move eyeOnTheDoor = Move.builder().name("EYE ON THE DOOR").description("_**Eye on the door**_: name your escape route and roll+cool.\n" +
                 "\n" +
                 "On a 10+, you’re gone.\n" +
                 "On a 7–9, you can go or stay, but if you go it costs you: leave something behind or take something with you, the MC will tell you what.\n" +
                 "\n" +
-                "On a miss, you’re caught vulnerable, half in and half out.").stat(Stats.COOL).kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
+                "On a miss, you’re caught vulnerable, half in and half out.").stat(COOL).kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
         Move weatherEye = Move.builder().name("WEATHER EYE").description("_**Weather eye**_: when you open your brain to the world’s psychic maelstrom, roll+cool instead of roll+weird.").rollModifier(weatherEyeMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
         Move reputation = Move.builder().name("REPUTATION").description("_**Reputation**_: when you meet someone important (your call), roll+cool.\n" +
                 "\n" +
@@ -832,7 +832,7 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "On a 10+, you take +1forward for dealing with them as well.\n" +
                 "\n" +
-                "On a miss, they’ve heard of you, but the MC decides what they’ve heard.").stat(Stats.COOL).kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
+                "On a miss, they’ve heard of you, but the MC decides what they’ve heard.").stat(COOL).kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
         Move daredevil = Move.builder().name("DAREDEVIL").description("_**Daredevil**_: if you go straight into danger without hedging your bets, you get +1armor. If you happen to be leading a gang or convoy, it gets +1armor too.").kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
         Move collector = Move.builder().name("COLLECTOR").description("_**Collector**_: you get 2 additional cars (you detail).").kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
         Move myOtherCarIsATank = Move.builder().name("MY OTHER CAR IS A TANK").description("_**My other car is a tank**_: you get a specialized battle vehicle (detail with the MC).").kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
@@ -1083,17 +1083,8 @@ public class GameDataLoader implements CommandLineRunner {
     public void loadPlaybookCreators() {
         System.out.println("|| --- Loading playbook creators --- ||");
         /* ----------------------------- ANGEL PLAYBOOK CREATOR --------------------------------- */
-        List<CharacterMove> angelMoves = moveRepository
+        List<Move> angelMoves = moveRepository
                 .findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.CHARACTER)
-                .map(move -> {
-                    CharacterMove characterMove;
-                    if (move.getName().equals("ANGEL SPECIAL")) {
-                        characterMove = CharacterMove.createFromMove(move, true);
-                    } else {
-                        characterMove = CharacterMove.createFromMove(move, false);
-                    }
-                    return characterMove;
-                })
                 .collectList().block();
 
         AngelKitCreator angelKitCreator = AngelKitCreator.builder()
@@ -1158,17 +1149,8 @@ public class GameDataLoader implements CommandLineRunner {
 
 
         /* ----------------------------- BATTLEBABE PLAYBOOK CREATOR --------------------------------- */
-        List<CharacterMove> battlebabeMoves = moveRepository
+        List<Move> battlebabeMoves = moveRepository
                 .findAllByPlaybookAndKind(Playbooks.BATTLEBABE, MoveKinds.CHARACTER)
-                .map(move -> {
-                    CharacterMove characterMove;
-                    if (move.getName().equals("BATTLEBABE SPECIAL")) {
-                        characterMove = CharacterMove.createFromMove(move, true);
-                    } else {
-                        characterMove = CharacterMove.createFromMove(move, false);
-                    }
-                    return characterMove;
-                })
                 .collectList().block();
 
         TaggedItem firearmBase1 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("handgun").tags(List.of("2-harm", "close", "reload", "loud")).build();
@@ -1260,17 +1242,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         /* ----------------------------- BRAINER PLAYBOOK CREATOR --------------------------------- */
-        List<CharacterMove> brainerMoves = moveRepository
+        List<Move> brainerMoves = moveRepository
                 .findAllByPlaybookAndKind(Playbooks.BRAINER, MoveKinds.CHARACTER)
-                .map(move -> {
-                    CharacterMove characterMove;
-                    if (move.getName().equals("BRAINER SPECIAL")) {
-                        characterMove = CharacterMove.createFromMove(move, true);
-                    } else {
-                        characterMove = CharacterMove.createFromMove(move, false);
-                    }
-                    return characterMove;
-                })
                 .collectList().block();
 
         BrainerGearCreator brainerGearCreator = BrainerGearCreator.builder()
@@ -1555,8 +1528,6 @@ public class GameDataLoader implements CommandLineRunner {
 
         playbookService.saveAll(Flux.just(angel, battlebabe, brainer, chopper, driver, gunlugger, hardholder,
                 maestroD, hocus, savvyhead, skinner)).blockLast();
-
-        List<Playbook> playbooks = playbookService.findAll().collectList().block();
     }
 
     private void createPlaybooks() {

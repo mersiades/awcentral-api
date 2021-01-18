@@ -1,16 +1,22 @@
 package com.mersiades.awcdata.services.impl;
 
-import com.mersiades.awcdata.enums.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.AngelKit;
 import com.mersiades.awcdata.models.uniques.BrainerGear;
 import com.mersiades.awcdata.models.uniques.CustomWeapons;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
-import com.mersiades.awcdata.services.*;
+import com.mersiades.awcdata.services.CharacterService;
+import com.mersiades.awcdata.services.GameRoleService;
+import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.models.*;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.mersiades.awccontent.services.MoveService;
+import com.mersiades.awccontent.services.PlaybookCreatorService;
+import com.mersiades.awccontent.services.StatModifierService;
+import com.mersiades.awccontent.services.StatsOptionService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -404,8 +410,12 @@ public class GameRoleServiceImpl implements GameRoleService {
         PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(character.getPlaybook()).block();
         assert playbookCreator != null;
 
-        List<CharacterMove> characterMoves = playbookCreator.getPlaybookMoves()
+        List<Move> playbookMoves = playbookCreator.getPlaybookMoves()
                 .stream().filter(characterMove -> moveIds.contains(characterMove.getId())).collect(Collectors.toList());
+
+        List<CharacterMove> characterMoves = playbookMoves.stream()
+                .map(move -> CharacterMove.createFromMove(move, false))
+                .collect(Collectors.toList());
 
         // Preemptively remove moved-based stat modifications
         character.getStatsBlock().getStats().forEach(characterStat -> {

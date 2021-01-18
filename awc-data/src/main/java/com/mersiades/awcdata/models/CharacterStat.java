@@ -1,6 +1,6 @@
 package com.mersiades.awcdata.models;
 
-import com.mersiades.awcdata.enums.Stats;
+import com.mersiades.awccontent.enums.Stats;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

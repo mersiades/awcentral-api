@@ -137,7 +137,7 @@ type PlaybookCreator {
     looks: [Look]
     statsOptions: [StatsOption]
     playbookUniqueCreator: PlaybookUniqueCreator
-    playbookMoves: [CharacterMove]
+    playbookMoves: [Move]
     defaultMoveCount: Int
     moveChoiceCount: Int
 }

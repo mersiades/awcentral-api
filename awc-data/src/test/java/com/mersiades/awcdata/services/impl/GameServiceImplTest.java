@@ -1,6 +1,5 @@
 package com.mersiades.awcdata.services.impl;
 
-import com.mersiades.awcdata.enums.Roles;
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
@@ -10,6 +9,7 @@ import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
+import com.mersiades.awccontent.enums.Roles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

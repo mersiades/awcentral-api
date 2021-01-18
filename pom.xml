@@ -18,6 +18,7 @@
     <modules>
         <module>awc-web</module>
         <module>awc-data</module>
+        <module>awc-content</module>
     </modules>
 
     <dependencies>

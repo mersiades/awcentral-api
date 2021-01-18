@@ -1,8 +1,8 @@
 package com.mersiades.awcdata.repositories;
 
-import com.mersiades.awcdata.enums.Roles;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
+import com.mersiades.awccontent.enums.Roles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

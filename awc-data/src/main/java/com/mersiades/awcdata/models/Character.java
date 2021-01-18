@@ -1,11 +1,12 @@
 package com.mersiades.awcdata.models;
 
-import com.mersiades.awcdata.enums.LookCategories;
-import com.mersiades.awcdata.enums.Playbooks;
+import com.mersiades.awccontent.enums.LookCategories;
+import com.mersiades.awccontent.enums.Playbooks;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.mersiades.awccontent.models.Look;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

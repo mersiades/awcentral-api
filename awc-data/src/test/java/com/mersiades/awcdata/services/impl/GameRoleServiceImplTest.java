@@ -1,11 +1,13 @@
 package com.mersiades.awcdata.services.impl;
 
-import com.mersiades.awcdata.enums.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
-import com.mersiades.awcdata.models.uniquecreators.AngelKitCreator;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
-import com.mersiades.awcdata.services.*;
+import com.mersiades.awcdata.services.CharacterService;
+import com.mersiades.awcdata.services.GameRoleService;
+import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.models.*;
+import com.mersiades.awccontent.models.uniquecreators.AngelKitCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,10 @@ import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.mersiades.awccontent.services.MoveService;
+import com.mersiades.awccontent.services.PlaybookCreatorService;
+import com.mersiades.awccontent.services.StatModifierService;
+import com.mersiades.awccontent.services.StatsOptionService;
 
 import java.util.Collections;
 import java.util.List;
@@ -549,18 +555,32 @@ class GameRoleServiceImplTest {
         String moveId3 = "infirmary-id";
 
         RollModifier sixthSenseMod = RollModifier.builder().id(UUID.randomUUID().toString()).statToRollWith(Collections.singletonList(Stats.SHARP)).build();
-        Move move1 = new Move("ANGEL SPECIAL", "If you and", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move move2 = Move.builder().name("SIXTH SENSE").description("_**Sixth sense**_: ").rollModifier(sixthSenseMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.ANGEL).build();
-        Move move3 = new Move("INFIRMARY", "_**Infirmary**_:", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
+        Move angelSpecial = Move.builder()
+                .id(moveId1)
+                .name("ANGEL SPECIAL")
+                .description("If you and")
+                .stat(null)
+                .kind(MoveKinds.CHARACTER)
+                .playbook(Playbooks.ANGEL)
+                .build();
+        Move sixthSense = Move.builder()
+                .id(moveId2)
+                .name("SIXTH SENSE")
+                .description("_**Sixth sense**_: ")
+                .rollModifier(sixthSenseMod)
+                .kind(MoveKinds.CHARACTER)
+                .playbook(Playbooks.ANGEL)
+                .build();
+        Move infirmary = Move.builder()
+                .id(moveId3)
+                .name("INFIRMARY")
+                .description("_**Infirmary**_:")
+                .stat(null)
+                .kind(MoveKinds.CHARACTER)
+                .playbook(Playbooks.ANGEL)
+                .build();
 
-        CharacterMove angelSpecial = CharacterMove.createFromMove(move1, true);
-        angelSpecial.setId(moveId1);
-        CharacterMove sixthSense = CharacterMove.createFromMove(move2, true);
-        sixthSense.setId(moveId2);
-        CharacterMove infirmary = CharacterMove.createFromMove(move3, true);
-        infirmary.setId(moveId3);
-
-        List<CharacterMove> angelMoves = List.of(angelSpecial, sixthSense, infirmary);
+        List<Move> angelMoves = List.of(angelSpecial, sixthSense, infirmary);
 
         AngelKitCreator angelKitCreator = AngelKitCreator.builder()
                 .id(UUID.randomUUID().toString())
@@ -618,9 +638,13 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(3, returnedCharacter.getCharacterMoves().size());
-        assertTrue(returnedCharacter.getCharacterMoves().contains(angelSpecial));
-        assertTrue(returnedCharacter.getCharacterMoves().contains(sixthSense));
-        assertTrue(returnedCharacter.getCharacterMoves().contains(infirmary));
+        List<CharacterMove> returnedMoves = returnedCharacter.getCharacterMoves();
+
+        returnedMoves.forEach(characterMove -> {
+            assertTrue(characterMove.getName().equals("ANGEL SPECIAL") ||
+                    characterMove.getName().equals("SIXTH SENSE") ||
+                    characterMove.getName().equals("INFIRMARY"));
+        });
         verify(playbookCreatorService, times(1)).findByPlaybookType(any(Playbooks.class));
         verify(gameRoleRepository, times(1)).findById(anyString());
         verify(characterService, times(1)).save(any(Character.class));

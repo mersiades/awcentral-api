@@ -22,6 +22,11 @@
             <artifactId>awc-data</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.mersiades</groupId>
+            <artifactId>awc-content</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->

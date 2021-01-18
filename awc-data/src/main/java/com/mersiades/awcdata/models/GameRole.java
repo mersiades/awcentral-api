@@ -1,6 +1,6 @@
 package com.mersiades.awcdata.models;
 
-import com.mersiades.awcdata.enums.Roles;
+import com.mersiades.awccontent.enums.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

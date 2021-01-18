@@ -1,10 +1,10 @@
 package com.mersiades.awcweb.bootstrap;
 
-import com.mersiades.awcdata.enums.Roles;
-import com.mersiades.awcdata.enums.Threats;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.*;
 import com.mersiades.awcdata.services.*;
+import com.mersiades.awccontent.enums.Roles;
+import com.mersiades.awccontent.enums.Threats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;

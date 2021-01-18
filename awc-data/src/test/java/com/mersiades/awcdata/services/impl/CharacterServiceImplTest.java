@@ -1,10 +1,10 @@
 package com.mersiades.awcdata.services.impl;
 
-import com.mersiades.awcdata.enums.Playbooks;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
+import com.mersiades.awccontent.enums.Playbooks;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
