@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.mersiades</groupId>
         <artifactId>awcentral</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <artifactId>awc-web</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+<!--    <version>${revision}</version>-->
     <name>awc-web</name>
     <description>Web Spring Boot module for AW Central</description>
 
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.mersiades</groupId>
             <artifactId>awc-content</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
 <!--        <dependency>-->
