@@ -8,13 +8,8 @@
         <version>${revision}</version>
     </parent>
     <artifactId>awc-web</artifactId>
-<!--    <version>${revision}</version>-->
     <name>awc-web</name>
     <description>Web Spring Boot module for AW Central</description>
-
-    <properties>
-        <java.version>11</java.version>
-    </properties>
 
     <dependencies>
         <dependency>
