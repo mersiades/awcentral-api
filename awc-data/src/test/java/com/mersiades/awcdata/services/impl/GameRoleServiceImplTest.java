@@ -605,7 +605,7 @@ class GameRoleServiceImplTest {
                 .movesInstructions("You get all the basic moves.")
                 .hxInstructions("Everyone introduces their")
                 .playbookUniqueCreator(angelUniqueCreator)
-                .playbookMoves(angelMoves)
+                .optionalMoves(angelMoves)
                 .defaultMoveCount(1)
                 .moveChoiceCount(2)
                 .build();

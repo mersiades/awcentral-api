@@ -511,7 +511,9 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         Move standOverwatch = Move.builder()
                 .name("STAND OVERWATCH")
-                .description("When you _**stand overwatch**_ for an ally, roll+cool. On a hit, if anyone attacks or interferes with your ally, you attack them and inflict harm as established, as well as warning your ally.\n" +
+                .description("When you _**stand overwatch**_ for an ally, roll+cool.\n" +
+                        "\n" +
+                        "On a hit, if anyone attacks or interferes with your ally, you attack them and inflict harm as established, as well as warning your ally.\n" +
                         "\n" +
                         "On a 10+, choose 1:\n" +
                         "\n" +
@@ -677,67 +679,162 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- ANGEL MOVES --------------------------------- */
         System.out.println("|| --- Loading Angel moves --- ||");
-        RollModifier sixthSenseMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(openBrain)).statToRollWith(Collections.singletonList(SHARP)).build();
-        RollModifier profCompassionMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(helpOrInterfere)).statToRollWith(Collections.singletonList(SHARP)).build();
-        Move angelSpecial = new Move("ANGEL SPECIAL", "If you and another character have sex, your Hx with them on your sheet goes immediately to +3, and they immediately get +1 to their Hx with you on their sheet. If that brings their Hx with you to +4, they reset it to +1 instead, as usual, and so mark experience.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move sixthSense = Move.builder().name("SIXTH SENSE").description("_**Sixth sense**_: when you open your brain to the world’s psychic maelstrom, roll+sharp instead of +weird.").rollModifier(sixthSenseMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.ANGEL).build();
-        Move infirmary = new Move("INFIRMARY", "_**Infirmary**_: you get an infirmary, a workspace with life support, a drug lab and a crew of 2 (Shigusa & Mox, maybe). Get patients into it and you can work on them like a savvyhead on tech (_cf_).", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move profCompassion = Move.builder().name("PROFESSIONAL COMPASSION").description("_**Professional compassion**_: you can roll+sharp instead of roll+Hx when you help someone who’s rolling.").rollModifier(profCompassionMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.ANGEL).build();
-        Move battlefieldGrace = new Move("BATTLEFIELD GRACE", "_**Battlefield grace**_: while you are caring for people, not fighting, you get +1armor.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move healingTouch = new Move("HEALING TOUCH", "_**Healing touch**_: when you put your hands skin-to-skin on a wounded person and open your brain to them, roll+weird.\n" +
-                "\n" +
-                "On a 10+, heal 1 segment.\n" +
-                "\n" +
-                "On a 7–9, heal 1 segment, but you’re also opening your brain, so roll that move next.\n" +
-                "\n" +
-                "On a miss: first, you don’t heal them. Second, you’ve opened both your brain and theirs to the world’s psychic maelstrom, without protection or preparation. For you, and for your patient if your patient’s a fellow player’s character, treat it as though you’ve made that move and missed the roll. For patients belonging to the MC, their experience and fate are up to the MC.\n", Stats.WEIRD, MoveKinds.CHARACTER, Playbooks.ANGEL);
-        Move touchedByDeath = new Move("TOUCHED BY DEATH", "_**Touched by death**_: when someone is unconscious in your care, you can use them for _**augury**_. When someone has died in your care, you can use their body for _**augury**_.", null, MoveKinds.CHARACTER, Playbooks.ANGEL);
+        RollModifier sixthSenseMod = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(Collections.singletonList(openBrain))
+                .statToRollWith(Collections.singletonList(SHARP)).build();
+        RollModifier profCompassionMod = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(Collections.singletonList(helpOrInterfere))
+                .statToRollWith(Collections.singletonList(SHARP)).build();
+        Move angelSpecial = Move.builder()
+                .name("ANGEL SPECIAL")
+                .description("If you and another character have sex, your Hx with them on your sheet goes immediately to +3, and they immediately get +1 to their Hx with you on their sheet.\n" +
+                        "\n" +
+                        "If that brings their Hx with you to +4, they reset it to +1 instead, as usual, and so mark experience.")
+                .kind(MoveKinds.DEFAULT_CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.ANGEL)
+                .build();
+        Move sixthSense = Move.builder()
+                .name("SIXTH SENSE")
+                .description("_**Sixth sense**_: when you open your brain to the world’s psychic maelstrom, roll+sharp instead of +weird.")
+                .rollModifier(sixthSenseMod)
+                .kind(MoveKinds.CHARACTER)
+                .playbook(Playbooks.ANGEL).build();
+        Move infirmary = Move.builder()
+                .name("INFIRMARY")
+                .description("_**Infirmary**_: you get an infirmary, a workspace with life support, a drug lab and a crew of 2 (Shigusa & Mox, maybe).\n" +
+                        "\n" +
+                        "Get patients into it and you can work on them like a savvyhead on tech (_cf_).")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.ANGEL)
+                .build();
+        Move profCompassion = Move.builder()
+                .name("PROFESSIONAL COMPASSION")
+                .description("_**Professional compassion**_: you can roll+sharp instead of roll+Hx when you help someone who’s rolling.")
+                .rollModifier(profCompassionMod)
+                .kind(MoveKinds.CHARACTER)
+                .playbook(Playbooks.ANGEL).build();
+        Move battlefieldGrace = Move.builder()
+                .name("BATTLEFIELD GRACE")
+                .description("_**Battlefield grace**_: while you are caring for people, not fighting, you get +1armor.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.ANGEL)
+                .build();
+        Move healingTouch = Move.builder()
+                .name("HEALING TOUCH")
+                .description("_**Healing touch**_: when you put your hands skin-to-skin on a wounded person and open your brain to them, roll+weird.\n" +
+                        "\n" +
+                        "On a 10+, heal 1 segment.\n" +
+                        "\n" +
+                        "On a 7–9, heal 1 segment, but you’re also opening your brain, so roll that move next.\n" +
+                        "\n" +
+                        "On a miss: first, you don’t heal them. Second, you’ve opened both your brain and theirs to the world’s psychic maelstrom, without protection or preparation.\n" +
+                        "\n" +
+                        "For you, and for your patient if your patient’s a fellow player’s character, treat it as though you’ve made that move and missed the roll.\n" +
+                        "\n" +
+                        "For patients belonging to the MC, their experience and fate are up to the MC.\n")
+                .kind(MoveKinds.CHARACTER)
+                .stat(WEIRD)
+                .playbook(Playbooks.ANGEL)
+                .build();
+        Move touchedByDeath = Move.builder()
+                .name("TOUCHED BY DEATH")
+                .description("_**Touched by death**_: when someone is unconscious in your care, you can use them for _**augury**_. When someone has died in your care, you can use their body for _**augury**_.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.ANGEL)
+                .build();
 
         moveService.saveAll(Flux.just(angelSpecial, sixthSense, infirmary, profCompassion,
                 battlefieldGrace, healingTouch, touchedByDeath)).blockLast();
 
         /* ----------------------------- ANGEL KIT MOVES --------------------------------- */
 
-        Move stabilizeAndHeal = Move.builder().name("STABILIZE AND HEAL SOMEONE").description("_**stabilize and heal someone at 9:00 or past**_: roll+stock spent.\n" +
-                "\n" +
-                "On a hit, they stabilize and heal to 6:00, and choose 2 (on a 10+) or 1 (on a 7–9):\n" +
-                "\n" +
-                "- *They fight you and you have to narcostab them. How long will they be out?*\n" +
-                "- *The pain and drugs make them babble the truth to you. Ask them what secret they spill.*\n" +
-                "- *They respond very well to treatment. Recover 1 of the stock you spent, if you spent any.*\n" +
-                "- *They’re at your complete mercy. What do you do to them?*\n" +
-                "- *Their course of recovery teaches you something about your craft. Mark experience.*\n" +
-                "- *They owe you for your time, attention, and supplies, and you’re going to hold them to it.*\n" +
-                "\n" +
-                "On a miss, they take 1-harm instead.").playbook(Playbooks.ANGEL).kind(MoveKinds.UNIQUE).build();
-        Move speedTheRecoveryOfSomeone = Move.builder().name("SPEED THE RECOVERY OF SOMEONE")
+        Move stabilizeAndHeal = Move.builder()
+                .name("STABILIZE AND HEAL SOMEONE").description("_**stabilize and heal someone at 9:00 or past**_: roll+stock spent.\n" +
+                        "\n" +
+                        "On a hit, they stabilize and heal to 6:00, and choose 2 (on a 10+) or 1 (on a 7–9):\n" +
+                        "\n" +
+                        "- *They fight you and you have to narcostab them. How long will they be out?*\n" +
+                        "- *The pain and drugs make them babble the truth to you. Ask them what secret they spill.*\n" +
+                        "- *They respond very well to treatment. Recover 1 of the stock you spent, if you spent any.*\n" +
+                        "- *They’re at your complete mercy. What do you do to them?*\n" +
+                        "- *Their course of recovery teaches you something about your craft. Mark experience.*\n" +
+                        "- *They owe you for your time, attention, and supplies, and you’re going to hold them to it.*\n" +
+                        "\n" +
+                        "On a miss, they take 1-harm instead.")
+                .kind(MoveKinds.UNIQUE)
+                .stat(null)
+                .playbook(Playbooks.ANGEL).build();
+        Move speedTheRecoveryOfSomeone = Move.builder()
+                .name("SPEED THE RECOVERY OF SOMEONE")
                 .description("_**speed the recovery of someone at 3:00 or 6:00**_: don’t roll. They choose: you spend 1-stock and they spend 4 days (3:00) or 1 week (6:00) blissed out on chillstabs, immobile but happy, or else they do their time in agony like everyone else.")
-                .playbook(Playbooks.ANGEL).kind(MoveKinds.UNIQUE).build();
-        Move reviveSomeone = Move.builder().name("REVIVE SOMEONE").description("_**revive someone whose life has become untenable**_, spend 2-stock. They come back, but you get to choose how they come back. Choose from the regular “when life is untenable” list, or else choose 1:\n" +
-                "\n" +
-                "- *They come back in your deep, deep debt.*\n" +
-                "- *They come back with a prosthetic (you detail).*\n" +
-                "- *You and they both come back with +1weird (max weird+3).*")
-                .playbook(Playbooks.ANGEL).kind(MoveKinds.UNIQUE).build();
-        Move treatAnNpc = Move.builder().name("TREAT AN NPC").description("_**treat an NPC**_: spend 1-stock. They’re stable now and they’ll recover in time. ")
-                .playbook(Playbooks.ANGEL).kind(MoveKinds.UNIQUE).build();
+                .kind(MoveKinds.UNIQUE)
+                .stat(null)
+                .playbook(Playbooks.ANGEL).build();
+        Move reviveSomeone = Move.builder()
+                .name("REVIVE SOMEONE").description("_**revive someone whose life has become untenable**_, spend 2-stock.\n" +
+                        "\n" +
+                        "They come back, but you get to choose how they come back. Choose from the regular “when life is untenable” list, or else choose 1:\n" +
+                        "\n" +
+                        "- *They come back in your deep, deep debt.*\n" +
+                        "- *They come back with a prosthetic (you detail).*\n" +
+                        "- *You and they both come back with +1weird (max weird+3).*")
+                .kind(MoveKinds.UNIQUE)
+                .stat(null)
+                .playbook(Playbooks.ANGEL).build();
+        Move treatAnNpc = Move.builder()
+                .name("TREAT AN NPC")
+                .description("_**treat an NPC**_: spend 1-stock. They’re stable now and they’ll recover in time. ")
+                .kind(MoveKinds.UNIQUE)
+                .stat(null)
+                .playbook(Playbooks.ANGEL).build();
 
         moveService.saveAll(Flux.just(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc)).blockLast();
 
         /* ----------------------------- BATTLEBABE MOVES --------------------------------- */
         System.out.println("|| --- Loading Battlebabe moves --- ||");
-        RollModifier iceColdMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(goAggro)).statToRollWith(Arrays.asList(HARD, Stats.HX)).build();
-        Move battlebabeSpecial = Move.builder().name("BATTLEBABE SPECIAL").description("If you and another character have sex, nullify the other character’s sex move. Whatever it is, it just doesn’t happen.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
-        Move dangerousAndSexy = Move.builder().name("DANGEROUS & SEXY").description("_**Dangerous & sexy**_: when you enter into a charged situation, roll+hot.\n" +
+        RollModifier iceColdMod = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(Collections.singletonList(goAggro))
+                .statToRollWith(Arrays.asList(HARD, Stats.HX)).build();
+        Move battlebabeSpecial = Move.builder()
+                .name("BATTLEBABE SPECIAL")
+                .description("If you and another character have sex, nullify the other character’s sex move. Whatever it is, it just doesn’t happen.")
+                .kind(MoveKinds.DEFAULT_CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.BATTLEBABE).build();
+        Move dangerousAndSexy = Move.builder()
+                .name("DANGEROUS & SEXY")
+                .description("_**Dangerous & sexy**_: when you enter into a charged situation, roll+hot.\n" +
                 "\n" +
                 "On a 10+, hold 2. On a 7–9, hold 1.\n" +
                 "\n" +
                 "Spend your hold 1 for 1 to make eye contact with an NPC present, who freezes or flinches and can’t take action until you break it off.\n" +
                 "\n" +
-                "On a miss, your enemies identify you immediately as their foremost threat.").stat(Stats.HOT).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
-        Move iceCold = Move.builder().name("ICE COLD").description("_**Ice cold**_: when you go aggro on an NPC, roll+cool instead of roll+hard. When you go aggro on another player’s character, roll+Hx instead of roll+hard.").rollModifier(iceColdMod).stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
-        Move merciless = Move.builder().name("MERCILESS").description("_**Merciless**_: when you inflict harm, inflict +1harm.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
-        Move visionsOfDeath = Move.builder().name("VISIONS OF DEATH").description("_**Visions of death**_: when you go into battle, roll+weird.\n" +
+                "On a miss, your enemies identify you immediately as their foremost threat.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(Stats.HOT)
+                .playbook(Playbooks.BATTLEBABE)
+                .build();
+        Move iceCold = Move.builder()
+                .name("ICE COLD")
+                .description("_**Ice cold**_: when you go aggro on an NPC, roll+cool instead of roll+hard. When you go aggro on another player’s character, roll+Hx instead of roll+hard.")
+                .rollModifier(iceColdMod)
+                .stat(null).kind(MoveKinds.CHARACTER)
+                .playbook(Playbooks.BATTLEBABE).build();
+        Move merciless = Move.builder()
+                .name("MERCILESS")
+                .description("_**Merciless**_: when you inflict harm, inflict +1harm.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.BATTLEBABE).build();
+        Move visionsOfDeath = Move.builder()
+                .name("VISIONS OF DEATH").description("_**Visions of death**_: when you go into battle, roll+weird.\n" +
                 "\n" +
                 "On a 10+, name one person who’ll die and one who’ll live.\n" +
                 "\n" +
@@ -745,22 +842,68 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "The MC will make your vision come true, if it’s even remotely possible.\n" +
                 "\n" +
-                "On a miss, you foresee your own death, and accordingly take -1 throughout the battle.").stat(Stats.WEIRD).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
-        Move perfectInstincts = Move.builder().name("PERFECT INSTINCTS").description("_**Perfect instincts**_: when you’ve read a charged situation and you’re acting on the MC’s answers, take +2 instead of +1.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
-        Move impossibleReflexes = Move.builder().name("IMPOSSIBLE REFLEXES").description("_**Impossible reflexes**_: the way you move unencumbered counts as armor. If you’re naked or nearly naked, 2-armor; if you’re wearing non-armor fashion, 1-armor. If you’re wearing armor, use it instead.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BATTLEBABE).build();
+                "On a miss, you foresee your own death, and accordingly take -1 throughout the battle.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(Stats.WEIRD)
+                .playbook(Playbooks.BATTLEBABE).build();
+        Move perfectInstincts = Move.builder()
+                .name("PERFECT INSTINCTS")
+                .description("_**Perfect instincts**_: when you’ve read a charged situation and you’re acting on the MC’s answers, take +2 instead of +1.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.BATTLEBABE).build();
+        Move impossibleReflexes = Move.builder()
+                .name("IMPOSSIBLE REFLEXES")
+                .description("_**Impossible reflexes**_: the way you move unencumbered counts as armor. If you’re naked or nearly naked, 2-armor; if you’re wearing non-armor fashion, 1-armor. If you’re wearing armor, use it instead.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.BATTLEBABE).build();
 
         moveService.saveAll(Flux.just(battlebabeSpecial, dangerousAndSexy, iceCold, merciless, visionsOfDeath, perfectInstincts, impossibleReflexes)).blockLast();
 
         /* ----------------------------- BRAINER MOVES --------------------------------- */
         System.out.println("|| --- Loading Brainer moves --- ||");
-        RollModifier lustMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(seduceOrManip)).statToRollWith(Collections.singletonList(Stats.WEIRD)).build();
-        StatModifier attunementMod = StatModifier.builder().id(UUID.randomUUID().toString()).statToModify(Stats.WEIRD).modification(1).build();
+        RollModifier lustMod = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(Collections.singletonList(seduceOrManip))
+                .statToRollWith(Collections.singletonList(Stats.WEIRD)).build();
+        StatModifier attunementMod = StatModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .statToModify(Stats.WEIRD)
+                .modification(1).build();
         StatModifier savedAttunementMod = statModifierService.save(attunementMod).block();
-        Move brainerSpecial = Move.builder().name("BRAINER SPECIAL").description("If you and another character have sex, you automatically do a _**deep brain scan**_ on them, whether you have the move or not. Roll+weird as normal. However, the MC chooses which questions the other character’s player answers.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move unnaturalLust = Move.builder().name("UNNATURAL LUST TRANSFIXION").description("_**Unnatural lust transfixion**_: when you try to seduce someone, roll+weird instead of roll+hot.").stat(null).rollModifier(lustMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move brainReceptivity = Move.builder().name("CASUAL BRAIN RECEPTIVITY").description("_**Casual brain receptivity**_: when you read someone, roll+weird instead of roll+sharp. Your victim has to be able to see you, but you don’t have to interact.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move brainAttunement = Move.builder().name("PRETERNATURAL BRAIN ATTUNEMENT").description("_**Preternatural at-will brain attunement**_: you get +1weird (weird+3).\n").statModifier(savedAttunementMod).stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move brainScan = Move.builder().name("DEEP BRAIN SCAN").description("_**Deep brain scan**_: when you have time and physical intimacy with someone — mutual intimacy like holding them in your arms, or 1-sided intimacy like they’re restrained to a table — you can read them more deeply than normal. Roll+weird.\n" +
+
+        Move brainerSpecial = Move.builder()
+                .name("BRAINER SPECIAL")
+                .description("If you and another character have sex, you automatically do a _**deep brain scan**_ on them, whether you have the move or not. Roll+weird as normal.\n" +
+                        "\n" +
+                        "However, the MC chooses which questions the other character’s player answers.")
+                .kind(MoveKinds.DEFAULT_CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.BRAINER).build();
+        Move unnaturalLust = Move.builder()
+                .name("UNNATURAL LUST TRANSFIXION")
+                .description("_**Unnatural lust transfixion**_: when you try to seduce someone, roll+weird instead of roll+hot.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .rollModifier(lustMod)
+                .playbook(Playbooks.BRAINER).build();
+        Move brainReceptivity = Move.builder()
+                .name("CASUAL BRAIN RECEPTIVITY")
+                .description("_**Casual brain receptivity**_: when you read someone, roll+weird instead of roll+sharp. Your victim has to be able to see you, but you don’t have to interact.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.BRAINER).build();
+        Move brainAttunement = Move.builder()
+                .name("PRETERNATURAL BRAIN ATTUNEMENT")
+                .description("_**Preternatural at-will brain attunement**_: you get +1weird (weird+3).\n")
+                .statModifier(savedAttunementMod)
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.BRAINER).build();
+        Move brainScan = Move.builder()
+                .name("DEEP BRAIN SCAN")
+                .description("_**Deep brain scan**_: when you have time and physical intimacy with someone — mutual intimacy like holding them in your arms, or 1-sided intimacy like they’re restrained to a table — you can read them more deeply than normal. Roll+weird.\n" +
                 "\n" +
                 "On a 10+, hold 3. On a 7–9, hold 1. While you’re reading them, spend your hold to ask their player questions, 1 for 1:\n" +
                 "\n" +
@@ -769,9 +912,21 @@ public class GameDataLoader implements CommandLineRunner {
                 "- *What are your character’s secret pains?*\n" +
                 "- *In what ways are your character’s mind and soul vulnerable?*\n" +
                 "\n" +
-                "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit").stat(Stats.WEIRD).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move whisperProjection = Move.builder().name("DIRECT BRAIN WHISPER PROJECTION").description("_**Direct-brain whisper projection**_: you can roll+weird to get the effects of going aggro, without going aggro. Your victim has to be able to see you, but you don’t have to interact. If your victim forces your hand, your mind counts as a weapon (1-harm ap close loud-optional).").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
-        Move puppetStrings = Move.builder().name("IN BRAIN PUPPET STRINGS").description("_**In-brain puppet strings**_: when you have time and physical intimacy with someone — again, mutual or 1-sided — you can plant a command inside their mind. Roll+weird.\n" +
+                "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit")
+                .kind(MoveKinds.CHARACTER)
+                .stat(Stats.WEIRD)
+                .playbook(Playbooks.BRAINER).build();
+        Move whisperProjection = Move.builder()
+                .name("DIRECT BRAIN WHISPER PROJECTION")
+                .description("_**Direct-brain whisper projection**_: you can roll+weird to get the effects of going aggro, without going aggro. Your victim has to be able to see you, but you don’t have to interact.\n" +
+                        "\n" +
+                        "If your victim forces your hand, your mind counts as a weapon (1-harm ap close loud-optional).")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.BRAINER).build();
+        Move puppetStrings = Move.builder()
+                .name("IN BRAIN PUPPET STRINGS")
+                .description("_**In-brain puppet strings**_: when you have time and physical intimacy with someone — again, mutual or 1-sided — you can plant a command inside their mind. Roll+weird.\n" +
                 "\n" +
                 "On a 10+, hold 3. On a 7–9, hold 1.\n" +
                 "\n" +
@@ -782,14 +937,26 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "If they fulfill your command, that counts for all your remaining hold.\n" +
                 "\n" +
-                "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit.").stat(Stats.WEIRD).kind(MoveKinds.CHARACTER).playbook(Playbooks.BRAINER).build();
+                "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(Stats.WEIRD)
+                .playbook(Playbooks.BRAINER).build();
 
         moveService.saveAll(Flux.just(brainerSpecial, unnaturalLust, brainReceptivity, brainAttunement, brainScan, whisperProjection, puppetStrings)).blockLast();
 
         /* ----------------------------- CHOPPER MOVES --------------------------------- */
         System.out.println("|| --- Loading Chopper moves --- ||");
-        Move chopperSpecial = Move.builder().name("CHOPPER_SPECIAL").description("If you and another character have sex, they immediately change their sheet to say Hx+3 with you. They also choose whether to give you -1 or +1 to your Hx with them, on your sheet.").stat(null).kind(MoveKinds.CHARACTER).playbook(Playbooks.CHOPPER).build();
-        Move packAlpha = Move.builder().name("PACK ALPHA").description("_**Pack alpha**_: when you try to impose your will on your gang, roll+hard.\n" +
+        Move chopperSpecial = Move.builder()
+                .name("CHOPPER_SPECIAL")
+                .description("If you and another character have sex, they immediately change their sheet to say Hx+3 with you.\n" +
+                        "\n" +
+                        "They also choose whether to give you -1 or +1 to your Hx with them, on your sheet.")
+                .kind(MoveKinds.DEFAULT_CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.CHOPPER).build();
+        Move packAlpha = Move.builder()
+                .name("PACK ALPHA")
+                .description("_**Pack alpha**_: when you try to impose your will on your gang, roll+hard.\n" +
                 "\n" +
                 "On a 10+, all 3. On a 7–9, choose 1:\n" +
                 "\n" +
@@ -797,67 +964,169 @@ public class GameDataLoader implements CommandLineRunner {
                 "- *They don’t fight back over it (otherwise, they do fight back)*\n" +
                 "- *You don’t have to make an example of one of them (otherwise, you must)*\n" +
                 "\n" +
-                "On a miss, someone in your gang makes a bid, idle or serious, to replace you for alpha.").stat(HARD).kind(MoveKinds.CHARACTER).playbook(Playbooks.CHOPPER).build();
-        Move fuckingThieves = Move.builder().name("FUCKING THIEVES").description("_**Fucking thieves**_: when you have your gang search their pockets and saddlebags for something, roll+hard. It has to be something small enough to fit.\n" +
+                "On a miss, someone in your gang makes a bid, idle or serious, to replace you for alpha.")
+                .kind(MoveKinds.DEFAULT_CHARACTER)
+                .stat(HARD)
+                .playbook(Playbooks.CHOPPER).build();
+        Move fuckingThieves = Move.builder()
+                .name("FUCKING THIEVES")
+                .description("_**Fucking thieves**_: when you have your gang search their pockets and saddlebags for something, roll+hard. It has to be something small enough to fit.\n" +
                 "\n" +
                 "On a 10+, one of you happens to have just the thing, or close enough.\n" +
                 "\n" +
                 "On a 7–9, one of you happens to have something pretty close, unless what you’re looking for is hi-tech, in which case no dice.\n" +
                 "\n" +
-                "On a miss, one of you used to have just the thing, but it turns out that some asswipe stole it from you.").stat(HARD).kind(MoveKinds.CHARACTER).playbook(Playbooks.CHOPPER).build();
+                "On a miss, one of you used to have just the thing, but it turns out that some asswipe stole it from you.")
+                .kind(MoveKinds.DEFAULT_CHARACTER)
+                .stat(HARD)
+                .playbook(Playbooks.CHOPPER).build();
 
         moveService.saveAll(Flux.just(chopperSpecial, packAlpha, fuckingThieves)).blockLast();
 
         /* ----------------------------- DRIVER MOVES --------------------------------- */
         System.out.println("|| --- Loading Driver moves --- ||");
-        RollModifier weatherEyeMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(openBrain)).statToRollWith(Collections.singletonList(COOL)).build();
-        Move driverSpecial = Move.builder().name("DRIVER SPECIAL").description("If you and another character have sex, roll+cool.\n" +
+        RollModifier weatherEyeMod = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(Collections.singletonList(openBrain))
+                .statToRollWith(Collections.singletonList(COOL)).build();
+        Move driverSpecial = Move.builder()
+                .name("DRIVER SPECIAL")
+                .description("If you and another character have sex, roll+cool.\n" +
                 "\n" +
                 "On a 10+, it’s cool, no big deal.\n" +
                 "\n" +
                 "On a 7–9, give them +1 to their Hx with you on their sheet, but give yourself -1 to your Hx with them on yours.\n" +
                 "\n" +
-                "On a miss, you gotta go: take -1 ongoing, until you prove that it’s not like they own you or nothing.").stat(COOL).kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
-        Move combatDriver = Move.builder().name("COMBAT DRIVER").description("_**Combat driver**_: when you use your vehicle as a weapon, inflict +1harm. When you inflict v-harm, add +1 to your target’s roll. When you suffer v-harm, take -1 to your roll.").kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
-        Move eyeOnTheDoor = Move.builder().name("EYE ON THE DOOR").description("_**Eye on the door**_: name your escape route and roll+cool.\n" +
+                "On a miss, you gotta go: take -1 ongoing, until you prove that it’s not like they own you or nothing.")
+                .kind(MoveKinds.DEFAULT_CHARACTER)
+                .stat(COOL)
+                .playbook(Playbooks.DRIVER).build();
+        Move combatDriver = Move.builder()
+                .name("COMBAT DRIVER")
+                .description("_**Combat driver**_: when you use your vehicle as a weapon, inflict +1harm. When you inflict v-harm, add +1 to your target’s roll. When you suffer v-harm, take -1 to your roll.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.DRIVER).build();
+        Move eyeOnTheDoor = Move.builder()
+                .name("EYE ON THE DOOR")
+                .description("_**Eye on the door**_: name your escape route and roll+cool.\n" +
                 "\n" +
                 "On a 10+, you’re gone.\n" +
                 "On a 7–9, you can go or stay, but if you go it costs you: leave something behind or take something with you, the MC will tell you what.\n" +
                 "\n" +
-                "On a miss, you’re caught vulnerable, half in and half out.").stat(COOL).kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
-        Move weatherEye = Move.builder().name("WEATHER EYE").description("_**Weather eye**_: when you open your brain to the world’s psychic maelstrom, roll+cool instead of roll+weird.").rollModifier(weatherEyeMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
-        Move reputation = Move.builder().name("REPUTATION").description("_**Reputation**_: when you meet someone important (your call), roll+cool.\n" +
+                "On a miss, you’re caught vulnerable, half in and half out.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(COOL)
+                .playbook(Playbooks.DRIVER).build();
+        Move weatherEye = Move.builder()
+                .name("WEATHER EYE")
+                .description("_**Weather eye**_: when you open your brain to the world’s psychic maelstrom, roll+cool instead of roll+weird.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .rollModifier(weatherEyeMod)
+                .playbook(Playbooks.DRIVER).build();
+        Move reputation = Move.builder()
+                .name("REPUTATION")
+                .description("_**Reputation**_: when you meet someone important (your call), roll+cool.\n" +
                 "\n" +
                 "On a hit, they’ve heard of you, and you say what they’ve heard; the MC has them respond accordingly.\n" +
                 "\n" +
                 "On a 10+, you take +1forward for dealing with them as well.\n" +
                 "\n" +
-                "On a miss, they’ve heard of you, but the MC decides what they’ve heard.").stat(COOL).kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
-        Move daredevil = Move.builder().name("DAREDEVIL").description("_**Daredevil**_: if you go straight into danger without hedging your bets, you get +1armor. If you happen to be leading a gang or convoy, it gets +1armor too.").kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
-        Move collector = Move.builder().name("COLLECTOR").description("_**Collector**_: you get 2 additional cars (you detail).").kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
-        Move myOtherCarIsATank = Move.builder().name("MY OTHER CAR IS A TANK").description("_**My other car is a tank**_: you get a specialized battle vehicle (detail with the MC).").kind(MoveKinds.CHARACTER).playbook(Playbooks.DRIVER).build();
+                "On a miss, they’ve heard of you, but the MC decides what they’ve heard.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(COOL)
+                .playbook(Playbooks.DRIVER).build();
+        Move daredevil = Move.builder()
+                .name("DAREDEVIL")
+                .description("_**Daredevil**_: if you go straight into danger without hedging your bets, you get +1armor. If you happen to be leading a gang or convoy, it gets +1armor too.")
+                .kind(MoveKinds.CHARACTER)
+                .playbook(Playbooks.DRIVER).build();
+        Move collector = Move.builder()
+                .name("COLLECTOR")
+                .description("_**Collector**_: you get 2 additional cars (you detail).")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.DRIVER).build();
+        Move myOtherCarIsATank = Move.builder()
+                .name("MY OTHER CAR IS A TANK")
+                .description("_**My other car is a tank**_: you get a specialized battle vehicle (detail with the MC).")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.DRIVER).build();
 
         moveService.saveAll(Flux.just(driverSpecial, combatDriver, eyeOnTheDoor, weatherEye, reputation, daredevil, collector, myOtherCarIsATank)).blockLast();
 
         /* ----------------------------- GUNLUGGER MOVES --------------------------------- */
         System.out.println("|| --- Loading Gunlugger moves --- ||");
-        RollModifier battleHardenedMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Arrays.asList(doSomethingUnderFire, standOverwatch)).statToRollWith(Collections.singletonList(HARD)).build();
-        RollModifier battlefieldInstinctsMod = RollModifier.builder().id(UUID.randomUUID().toString()).movesToModify(Collections.singletonList(openBrain)).statToRollWith(Collections.singletonList(HARD)).build();
-        StatModifier insanoMod = StatModifier.builder().id(UUID.randomUUID().toString()).statToModify(HARD).modification(1).build();
-        Move gunluggerSpecial = Move.builder().name("GUNLUGGER SPECIAL").description("If you and another character have sex, you take +1 forward. At your option, they take +1 forward too.").kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
-        Move battleHardened = Move.builder().name("BATTLE-HARDENED").description("_**Battle-hardened**_: when you act under fire, or when you stand overwatch, roll+hard instead of roll+cool.").rollModifier(battleHardenedMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
-        Move fuckThisShit = Move.builder().name("FUCK THIS SHIT").description("_**Fuck this shit**_: name your escape route and roll+hard.\n" +
+        RollModifier battleHardenedMod = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(Arrays.asList(doSomethingUnderFire, standOverwatch))
+                .statToRollWith(Collections.singletonList(HARD)).build();
+        RollModifier battlefieldInstinctsMod = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(Collections.singletonList(openBrain))
+                .statToRollWith(Collections.singletonList(HARD)).build();
+        StatModifier insanoMod = StatModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .statToModify(HARD)
+                .modification(1).build();
+        Move gunluggerSpecial = Move.builder()
+                .name("GUNLUGGER SPECIAL")
+                .description("If you and another character have sex, you take +1 forward. At your option, they take +1 forward too.")
+                .kind(MoveKinds.DEFAULT_CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.GUNLUGGER).build();
+        Move battleHardened = Move.builder()
+                .name("BATTLE-HARDENED")
+                .description("_**Battle-hardened**_: when you act under fire, or when you stand overwatch, roll+hard instead of roll+cool.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .rollModifier(battleHardenedMod)
+                .playbook(Playbooks.GUNLUGGER).build();
+        Move fuckThisShit = Move.builder()
+                .name("FUCK THIS SHIT")
+                .description("_**Fuck this shit**_: name your escape route and roll+hard.\n" +
                 "\n" +
                 "On a 10+, sweet, you’re gone.\n" +
                 "\n" +
                 "On a 7–9, you can go or stay, but if you go it costs you: leave something behind, or take something with you, the MC will tell you what.\n" +
                 "\n" +
-                "On a miss, you’re caught vulnerable, half in and half out.").stat(HARD).kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
-        Move battlefieldInstincts = Move.builder().name("BATTLEFIELD INSTINCTS").description("_**Battlefield instincts**_: when you open your brain to the world’s psychic maelstrom, roll+hard instead of roll+weird, but only in battle.").rollModifier(battlefieldInstinctsMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
-        Move insanoLikeDrano = Move.builder().name("INSANO LIKE DRANO").description("_**Insano like Drano**_: you get +1hard (hard+3).").statModifier(insanoMod).kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
-        Move preparedForTheInevitable = Move.builder().name("PREPARED FOR THE INEVITABLE").description("_**Prepared for the inevitable**_: you have a well-stocked and high-quality first aid kit. It counts as an angel kit (cf ) with a capacity of 2-stock.").kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
-        Move bloodcrazed = Move.builder().name("BLOODCRAZED").description("_**Bloodcrazed**_: whenever you inflict harm, inflict +1harm.").kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
-        Move notToBeFuckedWith = Move.builder().name("NOT TO BE FUCKED WITH").description("_**NOT TO BE FUCKED WITH**_: in battle, you count as a small gang, with harm and armor according to your gear.").kind(MoveKinds.CHARACTER).playbook(Playbooks.GUNLUGGER).build();
+                "On a miss, you’re caught vulnerable, half in and half out.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(HARD)
+                .playbook(Playbooks.GUNLUGGER).build();
+        Move battlefieldInstincts = Move.builder()
+                .name("BATTLEFIELD INSTINCTS").description("_**Battlefield instincts**_: when you open your brain to the world’s psychic maelstrom, roll+hard instead of roll+weird, but only in battle.")
+                .rollModifier(battlefieldInstinctsMod)
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.GUNLUGGER).build();
+        Move insanoLikeDrano = Move.builder()
+                .name("INSANO LIKE DRANO")
+                .description("_**Insano like Drano**_: you get +1hard (hard+3).")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .statModifier(insanoMod)
+                .playbook(Playbooks.GUNLUGGER).build();
+        Move preparedForTheInevitable = Move.builder()
+                .name("PREPARED FOR THE INEVITABLE")
+                .description("_**Prepared for the inevitable**_: you have a well-stocked and high-quality first aid kit. It counts as an angel kit (cf ) with a capacity of 2-stock.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.GUNLUGGER).build();
+        Move bloodcrazed = Move.builder()
+                .name("BLOODCRAZED")
+                .description("_**Bloodcrazed**_: whenever you inflict harm, inflict +1harm.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.GUNLUGGER).build();
+        Move notToBeFuckedWith = Move.builder()
+                .name("NOT TO BE FUCKED WITH")
+                .description("_**NOT TO BE FUCKED WITH**_: in battle, you count as a small gang, with harm and armor according to your gear.")
+                .kind(MoveKinds.CHARACTER)
+                .stat(null)
+                .playbook(Playbooks.GUNLUGGER).build();
 
         moveService.saveAll(Flux.just(gunluggerSpecial, battleHardened, fuckThisShit, battlefieldInstincts, insanoLikeDrano, preparedForTheInevitable, bloodcrazed, notToBeFuckedWith)).blockLast();
     }
@@ -1083,8 +1352,12 @@ public class GameDataLoader implements CommandLineRunner {
     public void loadPlaybookCreators() {
         System.out.println("|| --- Loading playbook creators --- ||");
         /* ----------------------------- ANGEL PLAYBOOK CREATOR --------------------------------- */
-        List<Move> angelMoves = moveRepository
+        List<Move> angelOptionalMoves = moveRepository
                 .findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.CHARACTER)
+                .collectList().block();
+
+        List<Move> angelDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.DEFAULT_CHARACTER)
                 .collectList().block();
 
         AngelKitCreator angelKitCreator = AngelKitCreator.builder()
@@ -1142,15 +1415,20 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
                 .playbookUniqueCreator(angelUniqueCreator)
-                .playbookMoves(angelMoves)
+                .optionalMoves(angelOptionalMoves)
+                .defaultMoves(angelDefaultMoves)
                 .defaultMoveCount(1)
                 .moveChoiceCount(2)
                 .build();
 
 
         /* ----------------------------- BATTLEBABE PLAYBOOK CREATOR --------------------------------- */
-        List<Move> battlebabeMoves = moveRepository
+        List<Move> battlebabeOptionalMoves = moveRepository
                 .findAllByPlaybookAndKind(Playbooks.BATTLEBABE, MoveKinds.CHARACTER)
+                .collectList().block();
+
+        List<Move> battlebabeDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(Playbooks.BATTLEBABE, MoveKinds.DEFAULT_CHARACTER)
                 .collectList().block();
 
         TaggedItem firearmBase1 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("handgun").tags(List.of("2-harm", "close", "reload", "loud")).build();
@@ -1236,14 +1514,19 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
                 .playbookUniqueCreator(battlebabeUniqueCreator)
-                .playbookMoves(battlebabeMoves)
+                .optionalMoves(battlebabeOptionalMoves)
+                .defaultMoves(battlebabeDefaultMoves)
                 .defaultMoveCount(1)
                 .moveChoiceCount(2)
                 .build();
 
         /* ----------------------------- BRAINER PLAYBOOK CREATOR --------------------------------- */
-        List<Move> brainerMoves = moveRepository
+        List<Move> brainerOptionalMoves = moveRepository
                 .findAllByPlaybookAndKind(Playbooks.BRAINER, MoveKinds.CHARACTER)
+                .collectList().block();
+
+        List<Move> brainerDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(Playbooks.BRAINER, MoveKinds.DEFAULT_CHARACTER)
                 .collectList().block();
 
         BrainerGearCreator brainerGearCreator = BrainerGearCreator.builder()
@@ -1301,7 +1584,8 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
                 .playbookUniqueCreator(brainerUniqueCreator)
-                .playbookMoves(brainerMoves)
+                .optionalMoves(brainerOptionalMoves)
+                .defaultMoves(brainerDefaultMoves)
                 .defaultMoveCount(1)
                 .moveChoiceCount(2)
                 .build();

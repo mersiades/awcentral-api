@@ -2,6 +2,7 @@ package com.mersiades.awccontent.enums;
 
 public enum MoveKinds {
     CHARACTER("CHARACTER"),
+    DEFAULT_CHARACTER("DEFAULT_CHARACTER"),
     BASIC("BASIC"),
     PERIPHERAL("PERIPHERAL"),
     BATTLE("BATTLE"),

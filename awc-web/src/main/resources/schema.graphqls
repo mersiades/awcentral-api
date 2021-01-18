@@ -16,6 +16,7 @@ enum Stats {
 
 enum MoveKinds {
     CHARACTER
+    DEFAULT_CHARACTER
     BASIC
     PERIPHERAL
     BATTLE
@@ -137,7 +138,8 @@ type PlaybookCreator {
     looks: [Look]
     statsOptions: [StatsOption]
     playbookUniqueCreator: PlaybookUniqueCreator
-    playbookMoves: [Move]
+    optionalMoves: [Move]
+    defaultMoves: [Move]
     defaultMoveCount: Int
     moveChoiceCount: Int
 }

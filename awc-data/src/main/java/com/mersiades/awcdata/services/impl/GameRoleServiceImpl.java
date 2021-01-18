@@ -410,7 +410,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(character.getPlaybook()).block();
         assert playbookCreator != null;
 
-        List<Move> playbookMoves = playbookCreator.getPlaybookMoves()
+        List<Move> playbookMoves = playbookCreator.getOptionalMoves()
                 .stream().filter(characterMove -> moveIds.contains(characterMove.getId())).collect(Collectors.toList());
 
         List<CharacterMove> characterMoves = playbookMoves.stream()

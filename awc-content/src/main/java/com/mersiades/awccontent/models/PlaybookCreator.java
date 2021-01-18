@@ -29,12 +29,13 @@ public class PlaybookCreator {
 
     private String hxInstructions;
 
-//    private Playbook playbook;
-
     private PlaybookUniqueCreator playbookUniqueCreator;
 
     @Builder.Default
-    private List<Move> playbookMoves = new ArrayList<>();
+    private List<Move> optionalMoves = new ArrayList<>();
+
+    @Builder.Default
+    private List<Move> defaultMoves = new ArrayList<>();
 
     private int defaultMoveCount;
 
