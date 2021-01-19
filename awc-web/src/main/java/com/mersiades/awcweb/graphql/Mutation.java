@@ -6,9 +6,9 @@ import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.HxStat;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
-import com.mersiades.awccontent.enums.LookCategories;
-import com.mersiades.awccontent.enums.Playbooks;
-import com.mersiades.awccontent.enums.Stats;
+import com.mersiades.awccontent.enums.LookType;
+import com.mersiades.awccontent.enums.PlaybookType;
+import com.mersiades.awccontent.enums.StatType;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.stereotype.Component;
 
@@ -75,7 +75,7 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.addNewCharacter(gameRoleId);
     }
 
-    public Character setCharacterPlaybook(String gameRoleId, String characterId, Playbooks playbookType) {
+    public Character setCharacterPlaybook(String gameRoleId, String characterId, PlaybookType playbookType) {
         System.out.println("Setting Playbook for for Character: " + characterId);
         return gameRoleService.setCharacterPlaybook(gameRoleId, characterId, playbookType);
     }
@@ -85,7 +85,7 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCharacterName(gameRoleId, characterId, name);
     }
 
-    public Character setCharacterLook(String gameRoleId, String characterId, String look, LookCategories category) {
+    public Character setCharacterLook(String gameRoleId, String characterId, String look, LookType category) {
         System.out.println("Setting a Look for for Character: " + characterId);
         return gameRoleService.setCharacterLook(gameRoleId, characterId, look, category);
     }
@@ -140,7 +140,7 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCharacterHarm(gameRoleId, characterId, harm);
     }
 
-    public Character toggleStatHighlight(String gameRoleId, String characterId, Stats stat) {
+    public Character toggleStatHighlight(String gameRoleId, String characterId, StatType stat) {
         System.out.println("Setting harm for Character: " + characterId);
         return gameRoleService.toggleStatHighlight(gameRoleId, characterId, stat);
     }

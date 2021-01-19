@@ -5,7 +5,7 @@ import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import com.mersiades.awccontent.models.Move;
 import com.mersiades.awccontent.models.Playbook;
@@ -81,11 +81,11 @@ public class Query implements GraphQLQueryResolver {
         return playbookService.findAll().collectList().block();
     }
 
-    public Playbook playbook(Playbooks playbookType) {
+    public Playbook playbook(PlaybookType playbookType) {
         return playbookService.findByPlaybookType(playbookType).block();
     }
 
-    public PlaybookCreator playbookCreator(Playbooks playbookType) {
+    public PlaybookCreator playbookCreator(PlaybookType playbookType) {
         return playbookCreatorService.findByPlaybookType(playbookType).block();
     }
 }

@@ -1,11 +1,11 @@
 # ------------------------------------------------ ENUMS ---------------------------------------------- #
 
-enum Roles {
+enum RoleType {
     MC
     PLAYER
 }
 
-enum Stats {
+enum StatType {
     COOL
     HARD
     HOT
@@ -14,7 +14,7 @@ enum Stats {
     HX
 }
 
-enum MoveKinds {
+enum MoveType {
     CHARACTER
     DEFAULT_CHARACTER
     BASIC
@@ -24,7 +24,7 @@ enum MoveKinds {
     UNIQUE
 }
 
-enum PlayBooks {
+enum PlayBookType {
     ANGEL
     BATTLEBABE
     BRAINER
@@ -38,7 +38,7 @@ enum PlayBooks {
     SKINNER
 }
 
-enum Threats {
+enum ThreatType {
     WARLORD,
     GROTESQUE,
     BRUTE,
@@ -48,7 +48,7 @@ enum Threats {
     VEHICLE,
 }
 
-enum LookCategories {
+enum LookType {
     GENDER,
     CLOTHES,
     FACE,
@@ -75,17 +75,17 @@ enum UniqueType {
 type Move {
     id: ID!
     name: String!
-    kind: MoveKinds!
+    kind: MoveType!
     description: String!
-    playbook: PlayBooks
-    stat: Stats
+    playbook: PlayBookType
+    stat: StatType
     statModifier: StatModifier
     rollModifier: RollModifier
 }
 
 type Playbook {
     id: ID!
-    playbookType: PlayBooks!
+    playbookType: PlayBookType!
     barterInstructions: String!
     intro: String!
     introComment: String!
@@ -94,20 +94,20 @@ type Playbook {
 
 type Name {
     id: ID!
-    playbookType: PlayBooks
+    playbookType: PlayBookType
     name: String
 }
 
 type Look {
     id: ID!
-    playbookType: PlayBooks
-    category: LookCategories
+    playbookType: PlayBookType
+    category: LookType
     look: String
 }
 
 type StatsOption {
     id: ID!
-    playbookType: PlayBooks
+    playbookType: PlayBookType
     COOL: Int
     HARD: Int
     HOT: Int
@@ -129,7 +129,7 @@ type GearInstructions {
 
 type PlaybookCreator {
     id: ID!
-    playbookType: PlayBooks
+    playbookType: PlayBookType
     gearInstructions: GearInstructions
     improvementInstructions: String
     movesInstructions: String
@@ -207,7 +207,7 @@ type Npc {
 type Threat {
     id: ID
     name: String
-    threatKind: Threats
+    threatKind: ThreatType
     impulse: String
     description: String
     stakes: String
@@ -215,7 +215,7 @@ type Threat {
 
 type CharacterStat {
     id: ID!
-    stat: Stats
+    stat: StatType
     value: Int
     isHighlighted: Boolean
 }
@@ -247,7 +247,7 @@ type Character {
     id: ID!
     name: String
     gear: [String]
-    playbook: PlayBooks
+    playbook: PlayBookType
     hasCompletedCharacterCreation: Boolean
     looks: [Look]
     statsBlock: StatsBlock
@@ -260,7 +260,7 @@ type Character {
 
 type GameRole {
     id: ID!
-    role: Roles
+    role: RoleType
     userId: String!
     game: Game
     npcs: [Npc]
@@ -272,10 +272,10 @@ type CharacterMove {
     id: ID!
     isSelected: Boolean!
     name: String!
-    kind: MoveKinds!
+    kind: MoveType!
     description: String!
-    playbook: PlayBooks!
-    stat: Stats
+    playbook: PlayBookType!
+    stat: StatType
     statModifier: StatModifier
     rollModifier: RollModifier
 }
@@ -324,12 +324,12 @@ type ItemCharacteristic {
 type RollModifier {
     id: ID!
     movesToModify: [Move]!
-    statToRollWith: [Stats]!
+    statToRollWith: [StatType]!
 }
 
 type StatModifier {
     id: ID!
-    statToModify: Stats!
+    statToModify: StatType!
     modification: Int!
 }
 
@@ -359,8 +359,8 @@ type Query {
     gamesForInvitee(email: String!): [Game]
     allMoves: [Move]
     playbooks: [Playbook]
-    playbook(playbookType: PlayBooks!): Playbook
-    playbookCreator(playbookType: PlayBooks!): PlaybookCreator
+    playbook(playbookType: PlayBookType!): Playbook
+    playbookCreator(playbookType: PlayBookType!): PlaybookCreator
 }
 
 # --------------------------------------------- MUTATIONS -------------------------------------------- #
@@ -383,14 +383,14 @@ type Mutation {
     createCharacter(gameRoleId: String!): Character
     setCharacterPlaybook(gameRoleId: String!,
         characterId: String!,
-        playbookType: PlayBooks!): Character
+        playbookType: PlayBookType!): Character
     setCharacterName(gameRoleId: String!,
         characterId: String!,
         name: String!): Character
     setCharacterLook(gameRoleId: String!,
         characterId: String!,
         look: String!,
-        category: LookCategories! ): Character
+        category: LookType! ): Character
     setCharacterStats(gameRoleId: String!,
         characterId: String!,
         statsOptionId: String! ): Character
@@ -421,7 +421,7 @@ type Mutation {
     setCharacterHarm(gameRoleId: String!,
         characterId: String!, harm: HarmInput!): Character
     toggleStatHighlight(gameRoleId: String!,
-        characterId: String!, stat: Stats): Character
+        characterId: String!, stat: StatType): Character
     finishCharacterCreation(gameRoleId: String!,
         characterId: String!): Character
     finishPreGame(gameId: String!): Game

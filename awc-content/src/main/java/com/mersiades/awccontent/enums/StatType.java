@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.enums;
 
-public enum Stats {
+public enum StatType {
     COOL("COOL"),
     HARD("HARD"),
     HOT("HOT"),
@@ -10,7 +10,7 @@ public enum Stats {
 
     private final String code;
 
-    Stats(String code) {
+    StatType(String code) {
         this.code = code;
     }
 

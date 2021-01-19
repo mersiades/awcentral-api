@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.services;
 
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.StatsOption;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,12 +36,12 @@ class StatsOptionServiceImplTest {
 
         mockSo1 = StatsOption.builder()
                 .id(MOCK_STATS_OPTION_ID_1)
-                .playbookType(Playbooks.ANGEL)
+                .playbookType(PlaybookType.ANGEL)
                 .build();
 
         mockSo2 = StatsOption.builder()
                 .id("mock-stats-option-id-2")
-                .playbookType(Playbooks.ANGEL)
+                .playbookType(PlaybookType.ANGEL)
                 .build();
 
         soService = new StatsOptionServiceImpl(soRepository);
@@ -125,16 +125,16 @@ class StatsOptionServiceImplTest {
     @Test
     void shouldFindAllStatsOptionsByPlaybookType() {
         // Given
-        when(soRepository.findAllByPlaybookType(any(Playbooks.class))).thenReturn(Flux.just(mockSo1, mockSo2));
+        when(soRepository.findAllByPlaybookType(any(PlaybookType.class))).thenReturn(Flux.just(mockSo1, mockSo2));
 
         // When
-        List<StatsOption> returnedStatsOptions = soService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
+        List<StatsOption> returnedStatsOptions = soService.findAllByPlaybookType(PlaybookType.ANGEL).collectList().block();
 
         // Then
         assert returnedStatsOptions != null;
         for (StatsOption statsOption : returnedStatsOptions) {
-            assertEquals(Playbooks.ANGEL, statsOption.getPlaybookType());
+            assertEquals(PlaybookType.ANGEL, statsOption.getPlaybookType());
         }
-        verify(soRepository, times(1)).findAllByPlaybookType(any(Playbooks.class));
+        verify(soRepository, times(1)).findAllByPlaybookType(any(PlaybookType.class));
     }
 }

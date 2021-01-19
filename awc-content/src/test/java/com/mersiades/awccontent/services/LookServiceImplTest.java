@@ -1,7 +1,7 @@
 package com.mersiades.awccontent.services;
 
-import com.mersiades.awccontent.enums.LookCategories;
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.LookType;
+import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Look;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ class LookServiceImplTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        mockLook1 = new Look(MOCK_LOOK_ID_1, Playbooks.BATTLEBABE, LookCategories.CLOTHES, "Sexy leatherwear");
+        mockLook1 = new Look(MOCK_LOOK_ID_1, PlaybookType.BATTLEBABE, LookType.CLOTHES, "Sexy leatherwear");
 
         lookService = new LookServiceImpl(lookRepository);
     }
@@ -41,7 +41,7 @@ class LookServiceImplTest {
     @Test
     void shouldFindAllLooks() {
         // Given
-        Look mockLook2 = new Look(Playbooks.SKINNER, LookCategories.EYES, "askance");
+        Look mockLook2 = new Look(PlaybookType.SKINNER, LookType.EYES, "askance");
         when(lookRepository.findAll()).thenReturn(Flux.just(mockLook1, mockLook2));
 
         // When
@@ -117,15 +117,15 @@ class LookServiceImplTest {
     @Test
     void findAllByPlaybookType() {
         // Given
-        Look mockLook3 = new Look(Playbooks.BATTLEBABE, LookCategories.EYES, "almond");
+        Look mockLook3 = new Look(PlaybookType.BATTLEBABE, LookType.EYES, "almond");
         when(lookService.findAllByPlaybookType(any())).thenReturn(Flux.just(mockLook1, mockLook3));
 
         // When
-        List<Look> returnedLooks = lookService.findAllByPlaybookType(Playbooks.BATTLEBABE).collectList().block();
+        List<Look> returnedLooks = lookService.findAllByPlaybookType(PlaybookType.BATTLEBABE).collectList().block();
 
         // Then
         assert returnedLooks != null;
         assertEquals(2, returnedLooks.size());
-        verify(lookRepository, times(1)).findAllByPlaybookType(any(Playbooks.class));
+        verify(lookRepository, times(1)).findAllByPlaybookType(any(PlaybookType.class));
     }
 }

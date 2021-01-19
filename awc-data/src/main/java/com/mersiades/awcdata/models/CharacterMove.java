@@ -1,6 +1,6 @@
 package com.mersiades.awcdata.models;
 
-import com.mersiades.awccontent.enums.MoveKinds;
+import com.mersiades.awccontent.enums.MoveType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -56,7 +56,7 @@ public class CharacterMove extends Move {
         characterMove.setKind(move.getKind());
         characterMove.setPlaybook(move.getPlaybook());
 
-        if (move.getKind().equals(MoveKinds.DEFAULT_CHARACTER)) {
+        if (move.getKind().equals(MoveType.DEFAULT_CHARACTER)) {
             characterMove.setIsSelected(true);
         } else {
             characterMove.setIsSelected(false);

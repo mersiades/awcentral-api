@@ -1,8 +1,8 @@
 package com.mersiades.awccontent.models;
 
-import com.mersiades.awccontent.enums.MoveKinds;
-import com.mersiades.awccontent.enums.Playbooks;
-import com.mersiades.awccontent.enums.Stats;
+import com.mersiades.awccontent.enums.MoveType;
+import com.mersiades.awccontent.enums.PlaybookType;
+import com.mersiades.awccontent.enums.StatType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,17 +22,17 @@ public class Move  {
 
     private String description;
 
-    private Stats stat;
+    private StatType stat;
 
     private StatModifier statModifier;
 
     private RollModifier rollModifier;
 
-    private MoveKinds kind;
+    private MoveType kind;
 
-    private Playbooks playbook;
+    private PlaybookType playbook;
 
-    public Move(String name, String description, Stats stat, MoveKinds kind, Playbooks playbook) {
+    public Move(String name, String description, StatType stat, MoveType kind, PlaybookType playbook) {
         this.name = name;
         this.description = description;
         this.stat = stat;

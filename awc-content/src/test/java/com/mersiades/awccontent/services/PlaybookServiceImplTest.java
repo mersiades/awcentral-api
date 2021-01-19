@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.services;
 
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Playbook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class PlaybookServiceImplTest {
 
         mockPlaybook1 = Playbook.builder()
                 .id(MOCK_PLAYBOOK_ID_1)
-                .playbookType(Playbooks.ANGEL)
+                .playbookType(PlaybookType.ANGEL)
                 .build();
 
         playbookService = new PlaybookServiceImpl(playbookRepository);
@@ -119,14 +119,14 @@ class PlaybookServiceImplTest {
     @Test
     void shouldFindPlaybookByPlaybookType() {
         // Given
-        when(playbookRepository.findByPlaybookType(any(Playbooks.class))).thenReturn(Mono.just(mockPlaybook1));
+        when(playbookRepository.findByPlaybookType(any(PlaybookType.class))).thenReturn(Mono.just(mockPlaybook1));
 
         // When
-        Playbook returnedPlaybook = playbookService.findByPlaybookType(Playbooks.ANGEL).block();
+        Playbook returnedPlaybook = playbookService.findByPlaybookType(PlaybookType.ANGEL).block();
 
         // Then
         assert returnedPlaybook != null;
-        assertEquals(returnedPlaybook.getPlaybookType(), Playbooks.ANGEL);
-        verify(playbookRepository, times(1)).findByPlaybookType(any(Playbooks.class));
+        assertEquals(returnedPlaybook.getPlaybookType(), PlaybookType.ANGEL);
+        verify(playbookRepository, times(1)).findByPlaybookType(any(PlaybookType.class));
     }
 }

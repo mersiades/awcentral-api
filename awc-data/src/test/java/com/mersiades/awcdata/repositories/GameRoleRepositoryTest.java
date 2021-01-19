@@ -1,8 +1,8 @@
 package com.mersiades.awcdata.repositories;
 
+import com.mersiades.awccontent.enums.RoleType;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
-import com.mersiades.awccontent.enums.Roles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,10 +28,10 @@ public class GameRoleRepositoryTest {
         mockUser1 = User.builder().id("mock-user-id-1").displayName("Mock User 1").email("user1@email.com").build();
         User mockUser2 = User.builder().id("mock-user-id-2").displayName("Mock User 2").email("user1@email.com").build();
 
-        GameRole mockGameRole1 = GameRole.builder().id("mock-gamerole-id-1").role(Roles.MC).user(mockUser1).build();
-        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id-2").role(Roles.PLAYER).user(mockUser1).build();
-        GameRole mockGameRole3 = GameRole.builder().id("mock-gamerole-id-3").role(Roles.MC).user(mockUser2).build();
-        GameRole mockGameRole4 = GameRole.builder().id("mock-gamerole-id-4").role(Roles.PLAYER).user(mockUser2).build();
+        GameRole mockGameRole1 = GameRole.builder().id("mock-gamerole-id-1").role(RoleType.MC).user(mockUser1).build();
+        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id-2").role(RoleType.PLAYER).user(mockUser1).build();
+        GameRole mockGameRole3 = GameRole.builder().id("mock-gamerole-id-3").role(RoleType.MC).user(mockUser2).build();
+        GameRole mockGameRole4 = GameRole.builder().id("mock-gamerole-id-4").role(RoleType.PLAYER).user(mockUser2).build();
 
         gameRoleRepository.deleteAll()
                 .thenMany(Flux.just(mockGameRole1, mockGameRole2, mockGameRole3, mockGameRole4))

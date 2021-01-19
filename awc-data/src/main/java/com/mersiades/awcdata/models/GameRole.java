@@ -1,6 +1,6 @@
 package com.mersiades.awcdata.models;
 
-import com.mersiades.awccontent.enums.Roles;
+import com.mersiades.awccontent.enums.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class GameRole {
     @Id
     private String id;
 
-    private Roles role;
+    private RoleType role;
 
     @DBRef
     private Game game;

@@ -1,7 +1,7 @@
 package com.mersiades.awccontent.models;
 
-import com.mersiades.awccontent.enums.LookCategories;
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.LookType;
+import com.mersiades.awccontent.enums.PlaybookType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,21 +17,21 @@ public class Look {
     @Id
     private String id;
 
-    private Playbooks playbookType;
+    private PlaybookType playbookType;
 
-    private LookCategories category;
+    private LookType category;
 
     private String look;
 
     private PlaybookCreator playbookCreator;
 
-    public Look(Playbooks playbookType, LookCategories category, String look) {
+    public Look(PlaybookType playbookType, LookType category, String look) {
         this.playbookType = playbookType;
         this.category = category;
         this.look = look;
     }
 
-    public Look(String id, Playbooks playbookType, LookCategories category, String look) {
+    public Look(String id, PlaybookType playbookType, LookType category, String look) {
         this.id = id;
         this.playbookType = playbookType;
         this.category = category;

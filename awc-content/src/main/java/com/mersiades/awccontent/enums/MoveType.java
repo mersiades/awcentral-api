@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.enums;
 
-public enum MoveKinds {
+public enum MoveType {
     CHARACTER("CHARACTER"),
     DEFAULT_CHARACTER("DEFAULT_CHARACTER"),
     BASIC("BASIC"),
@@ -11,7 +11,7 @@ public enum MoveKinds {
 
     private String code;
 
-    private MoveKinds(String code) {
+    private MoveType(String code) {
         this.code = code;
     }
 

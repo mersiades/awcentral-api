@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.models;
 
-import com.mersiades.awccontent.enums.Stats;
+import com.mersiades.awccontent.enums.StatType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +16,7 @@ public class StatModifier {
     @Id
     private String id;
 
-    private Stats statToModify;
+    private StatType statToModify;
 
     private int modification;
 }

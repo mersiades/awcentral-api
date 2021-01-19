@@ -1,5 +1,7 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awccontent.enums.PlaybookType;
+import com.mersiades.awccontent.enums.RoleType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.GameRepository;
@@ -7,10 +9,8 @@ import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
-import com.mersiades.awccontent.enums.LookCategories;
-import com.mersiades.awccontent.enums.Playbooks;
-import com.mersiades.awccontent.enums.Roles;
-import com.mersiades.awccontent.enums.Stats;
+import com.mersiades.awccontent.enums.LookType;
+import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awccontent.models.Look;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -82,7 +82,7 @@ public class GameServiceImpl implements GameService {
         User creator = userService.findOrCreateUser(userId, displayName, email);
 
         // Create an MC GameRole for the Game creator and add it to the Game
-        GameRole mcGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.MC).build();
+        GameRole mcGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.MC).build();
         newGame.getGameRoles().add(mcGameRole);
         newGame.setMc(creator);
         Game savedGame = gameRepository.save(newGame).block();
@@ -103,7 +103,7 @@ public class GameServiceImpl implements GameService {
 
         // Create Player Gamerole for user
         GameRole gameRole = GameRole.builder().id(UUID.randomUUID().toString())
-                .role(Roles.PLAYER)
+                .role(RoleType.PLAYER)
                 .build();
 
         Game game = gameRepository.findById(gameId).block();
@@ -184,9 +184,9 @@ public class GameServiceImpl implements GameService {
     public Flux<Game> findAllByInvitee(String email) {
         // Add a demo game if running demo profile
         if (activeProfiles != null && activeProfiles.equals("demo")) {
-            GameRole nateGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.MC).build();
-            GameRole claireGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
-            GameRole ruthGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
+            GameRole nateGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.MC).build();
+            GameRole claireGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
+            GameRole ruthGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
 
             User nate = User.builder().id(UUID.randomUUID().toString())
                     .email("nate@email.com").displayName("Nate").gameRoles(List.of(nateGameRole)).build();
@@ -195,22 +195,22 @@ public class GameServiceImpl implements GameService {
             User ruth = User.builder().id(UUID.randomUUID().toString())
                     .email("ruth@email.com").displayName("Ruth").gameRoles(List.of(ruthGameRole)).build();
 
-            Look angel2 = new Look(Playbooks.ANGEL, LookCategories.GENDER, "woman");
-            Look angel6 = new Look(Playbooks.ANGEL, LookCategories.CLOTHES, "utility wear");
-            Look angel10 = new Look(Playbooks.ANGEL, LookCategories.FACE, "strong face");
-            Look angel15 = new Look(Playbooks.ANGEL, LookCategories.EYES, "quick eyes");
-            Look angel21 = new Look(Playbooks.ANGEL, LookCategories.BODY, "compact body");
+            Look angel2 = new Look(PlaybookType.ANGEL, LookType.GENDER, "woman");
+            Look angel6 = new Look(PlaybookType.ANGEL, LookType.CLOTHES, "utility wear");
+            Look angel10 = new Look(PlaybookType.ANGEL, LookType.FACE, "strong face");
+            Look angel15 = new Look(PlaybookType.ANGEL, LookType.EYES, "quick eyes");
+            Look angel21 = new Look(PlaybookType.ANGEL, LookType.BODY, "compact body");
 
             CharacterStat angelCool = CharacterStat.builder().id(UUID.randomUUID().toString())
-                    .stat(Stats.COOL).value(1).isHighlighted(false).build();
+                    .stat(StatType.COOL).value(1).isHighlighted(false).build();
             CharacterStat angelHard = CharacterStat.builder().id(UUID.randomUUID().toString())
-                    .stat(Stats.HARD).value(0).isHighlighted(true).build();
+                    .stat(StatType.HARD).value(0).isHighlighted(true).build();
             CharacterStat angelHot = CharacterStat.builder().id(UUID.randomUUID().toString())
-                    .stat(Stats.HOT).value(1).isHighlighted(true).build();
+                    .stat(StatType.HOT).value(1).isHighlighted(true).build();
             CharacterStat angelSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
-                    .stat(Stats.SHARP).value(2).isHighlighted(false).build();
+                    .stat(StatType.SHARP).value(2).isHighlighted(false).build();
             CharacterStat angelWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
-                    .stat(Stats.WEIRD).value(-1).isHighlighted(false).build();
+                    .stat(StatType.WEIRD).value(-1).isHighlighted(false).build();
 
             StatsBlock angelStatsBlock1 = StatsBlock.builder().id(UUID.randomUUID().toString())
                     .statsOptionId("demo-stats-option-id-1")
@@ -219,32 +219,32 @@ public class GameServiceImpl implements GameService {
 
             Character claireChar = Character.builder()
                     .id(UUID.randomUUID().toString())
-                    .playbook(Playbooks.ANGEL)
+                    .playbook(PlaybookType.ANGEL)
                     .looks(List.of(angel2, angel6, angel10, angel15, angel21))
                     .statsBlock(angelStatsBlock1)
                     .name("Nee")
                     .build();
 
-            Look brainer3 = new Look(Playbooks.BRAINER, LookCategories.GENDER, "ambiguous");
-            Look brainer6 = Look.builder().playbookType(Playbooks.BRAINER)
-                    .category(LookCategories.CLOTHES).look("high formal wear").build();
-            Look brainer12 = Look.builder().playbookType(Playbooks.BRAINER)
-                    .category(LookCategories.FACE).look("pale face").build();
-            Look brainer17 = Look.builder().playbookType(Playbooks.BRAINER)
-                    .category(LookCategories.EYES).look("dead eyes").build();
-            Look brainer23 = Look.builder().playbookType(Playbooks.BRAINER)
-                    .category(LookCategories.BODY).look("awkward angular body").build();
+            Look brainer3 = new Look(PlaybookType.BRAINER, LookType.GENDER, "ambiguous");
+            Look brainer6 = Look.builder().playbookType(PlaybookType.BRAINER)
+                    .category(LookType.CLOTHES).look("high formal wear").build();
+            Look brainer12 = Look.builder().playbookType(PlaybookType.BRAINER)
+                    .category(LookType.FACE).look("pale face").build();
+            Look brainer17 = Look.builder().playbookType(PlaybookType.BRAINER)
+                    .category(LookType.EYES).look("dead eyes").build();
+            Look brainer23 = Look.builder().playbookType(PlaybookType.BRAINER)
+                    .category(LookType.BODY).look("awkward angular body").build();
 
             CharacterStat brainerCool = CharacterStat.builder().id(UUID.randomUUID().toString())
-                    .stat(Stats.COOL).value(1).isHighlighted(false).build();
+                    .stat(StatType.COOL).value(1).isHighlighted(false).build();
             CharacterStat brainerHard = CharacterStat.builder().id(UUID.randomUUID().toString())
-                    .stat(Stats.HARD).value(1).isHighlighted(true).build();
+                    .stat(StatType.HARD).value(1).isHighlighted(true).build();
             CharacterStat brainerHot = CharacterStat.builder().id(UUID.randomUUID().toString())
-                    .stat(Stats.HOT).value(-2).isHighlighted(true).build();
+                    .stat(StatType.HOT).value(-2).isHighlighted(true).build();
             CharacterStat brainerSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
-                    .stat(Stats.SHARP).value(1).isHighlighted(false).build();
+                    .stat(StatType.SHARP).value(1).isHighlighted(false).build();
             CharacterStat brainerWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
-                    .stat(Stats.WEIRD).value(2).isHighlighted(false).build();
+                    .stat(StatType.WEIRD).value(2).isHighlighted(false).build();
 
             StatsBlock brainerStatsBlock = StatsBlock.builder().id(UUID.randomUUID().toString())
                     .statsOptionId("demo-stats-option-id-2")
@@ -253,7 +253,7 @@ public class GameServiceImpl implements GameService {
 
             Character ruthChar = Character.builder()
                     .id(UUID.randomUUID().toString())
-                    .playbook(Playbooks.BRAINER)
+                    .playbook(PlaybookType.BRAINER)
                     .looks(List.of(brainer3, brainer6, brainer12, brainer17, brainer23))
                     .name("Jackson")
                     .statsBlock(brainerStatsBlock)

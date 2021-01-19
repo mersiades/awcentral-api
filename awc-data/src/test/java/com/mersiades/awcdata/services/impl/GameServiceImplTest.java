@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awccontent.enums.RoleType;
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
@@ -9,7 +10,6 @@ import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
-import com.mersiades.awccontent.enums.Roles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -58,7 +58,7 @@ class GameServiceImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         mockMc = User.builder().id("mock-user-id").email("mock-email").displayName("mock-displayname").build();
-        mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(Roles.MC).game(mockGame1).user(mockMc).build();
+        mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(RoleType.MC).game(mockGame1).user(mockMc).build();
         List<GameRole> gameRoles = new ArrayList<>();
         gameRoles.add(mockGameRole);
         mockGame1 = Game.builder().id(MOCK_GAME_ID_1).name("Michael's Mock Game").mc(mockMc).gameRoles(gameRoles).build();
@@ -217,7 +217,7 @@ class GameServiceImplTest {
         User mockPlayer = User.builder().id("mock-player-user-id").displayName("player-displayname").email("player-email").build();
         GameRole mockPlayerGameRole = GameRole.builder()
                 .id("mock-gamerole-id-2")
-                .role(Roles.PLAYER)
+                .role(RoleType.PLAYER)
                 .user(mockPlayer)
                 .game(mockGame1).build();
         mockGame1.getPlayers().add(mockPlayer);

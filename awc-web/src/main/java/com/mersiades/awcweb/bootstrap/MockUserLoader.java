@@ -1,10 +1,10 @@
 package com.mersiades.awcweb.bootstrap;
 
+import com.mersiades.awccontent.enums.RoleType;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.*;
 import com.mersiades.awcdata.services.*;
-import com.mersiades.awccontent.enums.Roles;
-import com.mersiades.awccontent.enums.Threats;
+import com.mersiades.awccontent.enums.ThreatType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -123,7 +123,7 @@ public class MockUserLoader implements CommandLineRunner {
                     .displayName(KEYCLOAK_DISPLAY_NAME_5)
                     .email(KEYCLOAK_EMAIL_5).build();
 
-            // ------------------------------ Set up mock Game 1 with Game Roles ----------------------------- //
+            // ------------------------------ Set up mock Game 1 with Game RoleType ----------------------------- //
             Game mockGame1 = Game.builder()
                     .id(MOCK_GAME_1_ID)
                     .name("Mock Game 1")
@@ -132,17 +132,17 @@ public class MockUserLoader implements CommandLineRunner {
                     .hasFinishedPreGame(false)
                     .build();
 
-            GameRole daveAsMC = GameRole.builder().id(DAVE_AS_PLAYER_ID).role(Roles.MC).build();
-            GameRole sarahAsPlayer = GameRole.builder().id(SARA_AS_PLAYER_ID).role(Roles.PLAYER).build();
-            GameRole johnAsPlayer = GameRole.builder().id(JOHN_AS_PLAYER_ID).role(Roles.PLAYER).build();
-            GameRole mayaAsPlayer = GameRole.builder().id(MAYA_AS_PLAYER_ID).role(Roles.PLAYER).build();
-            GameRole ahmadAsPlayer = GameRole.builder().id(AHMAD_AS_PLAYER_ID).role(Roles.PLAYER).build();
+            GameRole daveAsMC = GameRole.builder().id(DAVE_AS_PLAYER_ID).role(RoleType.MC).build();
+            GameRole sarahAsPlayer = GameRole.builder().id(SARA_AS_PLAYER_ID).role(RoleType.PLAYER).build();
+            GameRole johnAsPlayer = GameRole.builder().id(JOHN_AS_PLAYER_ID).role(RoleType.PLAYER).build();
+            GameRole mayaAsPlayer = GameRole.builder().id(MAYA_AS_PLAYER_ID).role(RoleType.PLAYER).build();
+            GameRole ahmadAsPlayer = GameRole.builder().id(AHMAD_AS_PLAYER_ID).role(RoleType.PLAYER).build();
 
             Npc mockNpc1 = Npc.builder().name("Vision").description("Badass truck; driver").build();
             Npc mockNpc2 = Npc.builder().name("Nbeke").build();
 
-            Threat mockThreat1 = Threat.builder().name("Tum Tum").threatKind(Threats.WARLORD).impulse("Slaver: to own and sell people").build();
-            Threat mockThreat2 = Threat.builder().name("Gnarly").threatKind(Threats.GROTESQUE).impulse("Cannibal: craves satiety and plenty").build();
+            Threat mockThreat1 = Threat.builder().name("Tum Tum").threatKind(ThreatType.WARLORD).impulse("Slaver: to own and sell people").build();
+            Threat mockThreat2 = Threat.builder().name("Gnarly").threatKind(ThreatType.GROTESQUE).impulse("Cannibal: craves satiety and plenty").build();
 
             daveAsMC.getNpcs().add(mockNpc1);
             daveAsMC.getNpcs().add(mockNpc2);
@@ -183,7 +183,7 @@ public class MockUserLoader implements CommandLineRunner {
             threatService.saveAll(Flux.just(mockThreat1, mockThreat2)).blockLast();
             npcService.saveAll(Flux.just(mockNpc1, mockNpc2)).blockLast();
 
-            // ------------------------------ Set up mock Game 2 with Game Roles ----------------------------- //
+            // ------------------------------ Set up mock Game 2 with Game RoleType ----------------------------- //
             Game mockGame2 = Game.builder()
                     .id(MOCK_GAME_2_ID)
                     .name("Mock Game 2")
@@ -192,14 +192,14 @@ public class MockUserLoader implements CommandLineRunner {
                     .hasFinishedPreGame(false)
                     .build();
 
-            GameRole daveAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.PLAYER).build();
-            GameRole sarahAsMC = GameRole.builder().id(UUID.randomUUID().toString()).role(Roles.MC).build();
+            GameRole daveAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
+            GameRole sarahAsMC = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.MC).build();
 
             Npc mockNpc3 = Npc.builder().name("Batty").description("Overly polite gun for hire").build();
             Npc mockNpc4 = Npc.builder().name("Farley").build();
 
-            Threat mockThreat3 = Threat.builder().name("Fleece").threatKind(Threats.BRUTE).impulse("Hunting pack: to victimize anyone vulnerable").build();
-            Threat mockThreat4 = Threat.builder().name("Wet Rot").threatKind(Threats.AFFLICTION).impulse("Condition: to expose people to danger").build();
+            Threat mockThreat3 = Threat.builder().name("Fleece").threatKind(ThreatType.BRUTE).impulse("Hunting pack: to victimize anyone vulnerable").build();
+            Threat mockThreat4 = Threat.builder().name("Wet Rot").threatKind(ThreatType.AFFLICTION).impulse("Condition: to expose people to danger").build();
 
             sarahAsMC.getNpcs().add(mockNpc3);
             sarahAsMC.getNpcs().add(mockNpc4);

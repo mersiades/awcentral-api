@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.repositories;
 
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Playbook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -23,12 +23,12 @@ public class PlaybookRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        Playbook angel = new Playbook(Playbooks.ANGEL, "At the beginning ....",
+        Playbook angel = new Playbook(PlaybookType.ANGEL, "At the beginning ....",
                 "When you’re lying ...",
                 "Angels are medics. ...",
                 "https://awc-images...");
 
-        Playbook battlebabe = new Playbook(Playbooks.BATTLEBABE, "At the beginning ...",
+        Playbook battlebabe = new Playbook(PlaybookType.BATTLEBABE, "At the beginning ...",
                 "Even in a place ...",
                 "Dangerous...",
                 "https://awc-i...");
@@ -41,9 +41,9 @@ public class PlaybookRepositoryTest {
 
     @Test
     public void shouldFindPlaybookByPlaybookType() {
-        StepVerifier.create(playbookRepository.findByPlaybookType(Playbooks.BATTLEBABE))
+        StepVerifier.create(playbookRepository.findByPlaybookType(PlaybookType.BATTLEBABE))
                 .expectSubscription()
-                .expectNextMatches(playbook -> playbook.getPlaybookType().equals(Playbooks.BATTLEBABE))
+                .expectNextMatches(playbook -> playbook.getPlaybookType().equals(PlaybookType.BATTLEBABE))
                 .verifyComplete();
     }
 }

@@ -87,33 +87,33 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         // -------------------------------- Set up Sara's Angel ----------------------------------- //
-        List<Look> angelLooks = lookService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
+        List<Look> angelLooks = lookService.findAllByPlaybookType(PlaybookType.ANGEL).collectList().block();
         assert angelLooks != null;
 
         Look genderLook = angelLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.GENDER)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.GENDER)).findFirst().orElseThrow();
         Look clothesLook = angelLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.CLOTHES)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.CLOTHES)).findFirst().orElseThrow();
         Look bodyLook = angelLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.BODY)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.BODY)).findFirst().orElseThrow();
         Look faceLook = angelLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.FACE)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.FACE)).findFirst().orElseThrow();
         Look eyesLook = angelLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.EYES)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.EYES)).findFirst().orElseThrow();
 
-        StatsOption angelStatsOption = statsOptionService.findAllByPlaybookType(Playbooks.ANGEL).blockFirst();
+        StatsOption angelStatsOption = statsOptionService.findAllByPlaybookType(PlaybookType.ANGEL).blockFirst();
         assert angelStatsOption != null;
 
         CharacterStat angelCool = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.COOL).value(angelStatsOption.getCOOL()).isHighlighted(false).build();
+                .stat(StatType.COOL).value(angelStatsOption.getCOOL()).isHighlighted(false).build();
         CharacterStat angelHard = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.HARD).value(angelStatsOption.getHARD()).isHighlighted(true).build();
+                .stat(StatType.HARD).value(angelStatsOption.getHARD()).isHighlighted(true).build();
         CharacterStat angelHot = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.HOT).value(angelStatsOption.getHOT()).isHighlighted(true).build();
+                .stat(StatType.HOT).value(angelStatsOption.getHOT()).isHighlighted(true).build();
         CharacterStat angelSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.SHARP).value(angelStatsOption.getSHARP()).isHighlighted(false).build();
+                .stat(StatType.SHARP).value(angelStatsOption.getSHARP()).isHighlighted(false).build();
         CharacterStat angelWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.WEIRD).value(angelStatsOption.getWEIRD()).isHighlighted(false).build();
+                .stat(StatType.WEIRD).value(angelStatsOption.getWEIRD()).isHighlighted(false).build();
 
         StatsBlock angelStatsBlock1 = StatsBlock.builder().id(UUID.randomUUID().toString())
                 .statsOptionId(angelStatsOption.getId())
@@ -130,14 +130,14 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .angelKit(angelKit)
                 .build();
 
-        List<Move> angelMoves = moveService.findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.CHARACTER)
+        List<Move> angelMoves = moveService.findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.CHARACTER)
                 .filter(move -> move.getName().equals("SIXTH SENSE") ||
                         move.getName().equals("HEALING TOUCH"))
                 .collectList().block();
         assert angelMoves != null;
 
         List<Move> angelDefaultMoves = moveService.
-                findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.DEFAULT_CHARACTER).collectList().block();
+                findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.DEFAULT_CHARACTER).collectList().block();
         assert angelDefaultMoves != null;
 
 
@@ -150,33 +150,33 @@ public class MockCharacterLoader implements CommandLineRunner {
         characterMoves.addAll(characterDefaultMoves);
 
         // -------------------------------- Set up John's Battlebabe ----------------------------------- //
-        List<Look> battlebabeLooks = lookService.findAllByPlaybookType(Playbooks.BATTLEBABE).collectList().block();
+        List<Look> battlebabeLooks = lookService.findAllByPlaybookType(PlaybookType.BATTLEBABE).collectList().block();
         assert battlebabeLooks != null;
 
         Look genderLookBattlebabe = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.GENDER)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.GENDER)).findFirst().orElseThrow();
         Look clothesLookBattlebabe = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.CLOTHES)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.CLOTHES)).findFirst().orElseThrow();
         Look bodyLookBattlebabe = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.BODY)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.BODY)).findFirst().orElseThrow();
         Look faceLookBattlebabe = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.FACE)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.FACE)).findFirst().orElseThrow();
         Look eyesLookBattlebabe = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.EYES)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.EYES)).findFirst().orElseThrow();
 
-        StatsOption battlebabeStatsOption = statsOptionService.findAllByPlaybookType(Playbooks.BATTLEBABE).blockFirst();
+        StatsOption battlebabeStatsOption = statsOptionService.findAllByPlaybookType(PlaybookType.BATTLEBABE).blockFirst();
         assert battlebabeStatsOption != null;
 
         CharacterStat battlebabeCool = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.COOL).value(battlebabeStatsOption.getCOOL()).isHighlighted(false).build();
+                .stat(StatType.COOL).value(battlebabeStatsOption.getCOOL()).isHighlighted(false).build();
         CharacterStat battlebabeHard = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.HARD).value(battlebabeStatsOption.getHARD()).isHighlighted(true).build();
+                .stat(StatType.HARD).value(battlebabeStatsOption.getHARD()).isHighlighted(true).build();
         CharacterStat battlebabeHot = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.HOT).value(battlebabeStatsOption.getHOT()).isHighlighted(true).build();
+                .stat(StatType.HOT).value(battlebabeStatsOption.getHOT()).isHighlighted(true).build();
         CharacterStat battlebabeSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.SHARP).value(battlebabeStatsOption.getSHARP()).isHighlighted(false).build();
+                .stat(StatType.SHARP).value(battlebabeStatsOption.getSHARP()).isHighlighted(false).build();
         CharacterStat battlebabeWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.WEIRD).value(battlebabeStatsOption.getWEIRD()).isHighlighted(false).build();
+                .stat(StatType.WEIRD).value(battlebabeStatsOption.getWEIRD()).isHighlighted(false).build();
 
         StatsBlock battlebabeStatsBlock = StatsBlock.builder().id(UUID.randomUUID().toString())
                 .statsOptionId(battlebabeStatsOption.getId())
@@ -194,14 +194,14 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .customWeapons(customWeapons)
                 .build();
 
-        List<Move> battlebabeMoves = moveService.findAllByPlaybookAndKind(Playbooks.BATTLEBABE, MoveKinds.CHARACTER)
+        List<Move> battlebabeMoves = moveService.findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.CHARACTER)
                 .filter(move -> move.getName().equals("DANGEROUS & SEXY") ||
                         move.getName().equals("PERFECT INSTINCTS"))
                 .collectList().block();
         assert battlebabeMoves != null;
 
         List<Move> battlebabeDefaultMoves = moveService
-                .findAllByPlaybookAndKind(Playbooks.BATTLEBABE, MoveKinds.DEFAULT_CHARACTER).collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.DEFAULT_CHARACTER).collectList().block();
         assert battlebabeDefaultMoves != null;
 
         List<CharacterMove> characterMoves2 = battlebabeMoves
@@ -213,33 +213,33 @@ public class MockCharacterLoader implements CommandLineRunner {
         characterMoves2.addAll(characterDefaultMoves2);
 
         // -------------------------------- Set up Maya's Brainer ----------------------------------- //
-        List<Look> brainerLooks = lookService.findAllByPlaybookType(Playbooks.BRAINER).collectList().block();
+        List<Look> brainerLooks = lookService.findAllByPlaybookType(PlaybookType.BRAINER).collectList().block();
         assert brainerLooks != null;
 
         Look genderLookBrainer = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.GENDER)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.GENDER)).findFirst().orElseThrow();
         Look clothesLookBrainer = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.CLOTHES)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.CLOTHES)).findFirst().orElseThrow();
         Look bodyLookBrainer = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.BODY)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.BODY)).findFirst().orElseThrow();
         Look faceLookBrainer = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.FACE)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.FACE)).findFirst().orElseThrow();
         Look eyesLookBrainer = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookCategories.EYES)).findFirst().orElseThrow();
+                .filter(look -> look.getCategory().equals(LookType.EYES)).findFirst().orElseThrow();
 
-        StatsOption brainerStatsOption = statsOptionService.findAllByPlaybookType(Playbooks.BRAINER).blockFirst();
+        StatsOption brainerStatsOption = statsOptionService.findAllByPlaybookType(PlaybookType.BRAINER).blockFirst();
         assert brainerStatsOption != null;
 
         CharacterStat brainerCool = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.COOL).value(brainerStatsOption.getCOOL()).isHighlighted(false).build();
+                .stat(StatType.COOL).value(brainerStatsOption.getCOOL()).isHighlighted(false).build();
         CharacterStat brainerHard = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.HARD).value(brainerStatsOption.getHARD()).isHighlighted(true).build();
+                .stat(StatType.HARD).value(brainerStatsOption.getHARD()).isHighlighted(true).build();
         CharacterStat brainerHot = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.HOT).value(brainerStatsOption.getHOT()).isHighlighted(true).build();
+                .stat(StatType.HOT).value(brainerStatsOption.getHOT()).isHighlighted(true).build();
         CharacterStat brainerSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.SHARP).value(brainerStatsOption.getSHARP()).isHighlighted(false).build();
+                .stat(StatType.SHARP).value(brainerStatsOption.getSHARP()).isHighlighted(false).build();
         CharacterStat brainerWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(Stats.WEIRD).value(brainerStatsOption.getWEIRD()).isHighlighted(false).build();
+                .stat(StatType.WEIRD).value(brainerStatsOption.getWEIRD()).isHighlighted(false).build();
 
         StatsBlock brainerStatsBlock = StatsBlock.builder().id(UUID.randomUUID().toString())
                 .statsOptionId(brainerStatsOption.getId())
@@ -257,14 +257,14 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .brainerGear(brainerGear)
                 .build();
 
-        List<Move> brainerMoves = moveService.findAllByPlaybookAndKind(Playbooks.BRAINER, MoveKinds.CHARACTER)
+        List<Move> brainerMoves = moveService.findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.CHARACTER)
                 .filter(move -> move.getName().equals("DEEP BRAIN SCAN") ||
                         move.getName().equals("PRETERNATURAL BRAIN ATTUNEMENT"))
                 .collectList().block();
         assert brainerMoves != null;
 
         List<Move> brainerDefaultMoves = moveService
-                .findAllByPlaybookAndKind(Playbooks.BRAINER, MoveKinds.DEFAULT_CHARACTER).collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.DEFAULT_CHARACTER).collectList().block();
         assert brainerDefaultMoves != null;
 
         List<CharacterMove> characterMoves3 = brainerMoves
@@ -276,14 +276,14 @@ public class MockCharacterLoader implements CommandLineRunner {
         characterMoves3.addAll(characterDefaultMoves3);
 
         // -------------------------------- Set up Ahmad's Angel ----------------------------------- //
-        List<Move> angelMoves2 = moveService.findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.CHARACTER)
+        List<Move> angelMoves2 = moveService.findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.CHARACTER)
                 .filter(move -> move.getName().equals("PROFESSIONAL COMPASSION") ||
                         move.getName().equals("TOUCHED BY DEATH"))
                 .collectList().block();
         assert angelMoves2 != null;
 
         List<Move> angelDefaultMoves2 = moveService
-                .findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.DEFAULT_CHARACTER).collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.DEFAULT_CHARACTER).collectList().block();
         assert angelDefaultMoves2 != null;
 
         List<CharacterMove> characterMoves4 = angelMoves2
@@ -297,7 +297,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         // -------------------------------- Create Sara's Angel ----------------------------------- //
         Character mockCharacter1 = Character.builder()
                 .name("Doc")
-                .playbook(Playbooks.ANGEL)
+                .playbook(PlaybookType.ANGEL)
                 .looks(List.of(genderLook, clothesLook, bodyLook, faceLook, eyesLook))
                 .gear(List.of("Shotgun", "Rusty screwdriver"))
                 .statsBlock(angelStatsBlock1)
@@ -310,7 +310,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         // -------------------------------- Create John's Battlebabe ----------------------------------- //
         Character mockCharacter2 = Character.builder()
                 .name("Scarlet")
-                .playbook(Playbooks.BATTLEBABE)
+                .playbook(PlaybookType.BATTLEBABE)
                 .looks(List.of(genderLookBattlebabe, clothesLookBattlebabe, bodyLookBattlebabe, faceLookBattlebabe, eyesLookBattlebabe))
                 .gear(List.of("Black leather boots", "Broken motorcycle helmet"))
                 .statsBlock(battlebabeStatsBlock)
@@ -323,7 +323,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         // -------------------------------- Create Maya's Brainer ----------------------------------- //
         Character mockCharacter3 = Character.builder()
                 .name("Smith")
-                .playbook(Playbooks.BRAINER)
+                .playbook(PlaybookType.BRAINER)
                 .looks(List.of(genderLookBrainer, bodyLookBrainer, clothesLookBrainer, faceLookBrainer, eyesLookBrainer))
                 .gear(List.of("Sharp kitchen knife", "Wireless radio"))
                 .statsBlock(brainerStatsBlock)
@@ -336,7 +336,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         // -------------------------------- Create Ahmad's Angel ----------------------------------- //
         Character mockCharacter4 = Character.builder()
                 .name("Nee")
-                .playbook(Playbooks.ANGEL)
+                .playbook(PlaybookType.ANGEL)
                 .looks(List.of(genderLook, clothesLook, bodyLook, faceLook, eyesLook))
                 .gear(List.of("Shiny scalpel", "Beatles LP collection"))
                 .statsBlock(angelStatsBlock1)

@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.models;
 
-import com.mersiades.awccontent.enums.Stats;
+import com.mersiades.awccontent.enums.StatType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,5 +23,5 @@ public class RollModifier {
     private List<Move> movesToModify = new ArrayList<>();
 
     @Builder.Default
-    private List<Stats> statToRollWith = new ArrayList<>();
+    private List<StatType> statToRollWith = new ArrayList<>();
 }
