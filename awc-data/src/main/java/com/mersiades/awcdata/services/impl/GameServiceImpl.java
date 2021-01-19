@@ -1,7 +1,13 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awccontent.enums.LookType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.RoleType;
+import com.mersiades.awccontent.enums.StatType;
+import com.mersiades.awccontent.models.Look;
+import com.mersiades.awccontent.models.Move;
+import com.mersiades.awccontent.services.MoveService;
+import com.mersiades.awcdata.enums.MessageType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.GameRepository;
@@ -9,9 +15,6 @@ import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
-import com.mersiades.awccontent.enums.LookType;
-import com.mersiades.awccontent.enums.StatType;
-import com.mersiades.awccontent.models.Look;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -31,12 +34,18 @@ public class GameServiceImpl implements GameService {
     private final UserService userService;
     private final GameRoleService gameRoleService;
     private final CharacterService characterService;
+    private final MoveService moveService;
 
-    public GameServiceImpl(GameRepository gameRepository, UserService userService, GameRoleService gameRoleService, CharacterService characterService) {
+    public GameServiceImpl(GameRepository gameRepository,
+                           UserService userService,
+                           GameRoleService gameRoleService,
+                           CharacterService characterService,
+                           MoveService moveService) {
         this.gameRepository = gameRepository;
         this.userService = userService;
         this.gameRoleService = gameRoleService;
         this.characterService = characterService;
+        this.moveService = moveService;
     }
 
     @Override
@@ -287,6 +296,24 @@ public class GameServiceImpl implements GameService {
     public Mono<Game> finishPreGame(String gameId) {
         return findById(gameId).map(game -> {
             game.setHasFinishedPreGame(true);
+            return game;
+        }).flatMap(gameRepository::save);
+    }
+
+    @Override
+    public Mono<Game> performPrintMove(String gameId, String characterId, String moveId) {
+        Character character = characterService.findById(characterId).block();
+        assert character != null;
+        Move move = moveService.findById(moveId).block();
+        assert move != null;
+        GameMessage gameMessage = GameMessage.builder()
+                .id(UUID.randomUUID().toString())
+                .messageType(MessageType.PRINT_MOVE)
+                .senderName(character.getName())
+                .content(move.getDescription())
+                .build();
+        return gameRepository.findById(gameId).map(game -> {
+            game.getGameMessages().add(gameMessage);
             return game;
         }).flatMap(gameRepository::save);
     }

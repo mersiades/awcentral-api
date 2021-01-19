@@ -150,4 +150,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.finishCharacterCreation(gameRoleId, characterId);
     }
 
+    public Game performPrintMove(String gameId, String characterId, String moveId) {
+        System.out.println("Performing print move for Character: " + characterId);
+        return gameService.performPrintMove(gameId, characterId, moveId).block();
+    }
+
 }

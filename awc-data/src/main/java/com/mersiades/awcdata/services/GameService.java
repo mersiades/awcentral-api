@@ -28,4 +28,5 @@ public interface GameService extends ReactiveCrudService<Game, String> {
 
     Mono<Game> finishPreGame(String gameId);
 
+    Mono<Game> performPrintMove(String gameId, String characterId, String moveId);
 }

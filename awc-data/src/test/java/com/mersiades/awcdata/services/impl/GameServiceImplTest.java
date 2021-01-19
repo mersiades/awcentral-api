@@ -1,6 +1,7 @@
 package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awccontent.enums.RoleType;
+import com.mersiades.awccontent.services.MoveService;
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
@@ -46,6 +47,9 @@ class GameServiceImplTest {
     @Mock
     CharacterService characterService;
 
+    @Mock
+    MoveService moveService;
+
     GameService gameService;
 
     Game mockGame1;
@@ -62,7 +66,7 @@ class GameServiceImplTest {
         List<GameRole> gameRoles = new ArrayList<>();
         gameRoles.add(mockGameRole);
         mockGame1 = Game.builder().id(MOCK_GAME_ID_1).name("Michael's Mock Game").mc(mockMc).gameRoles(gameRoles).build();
-        gameService = new GameServiceImpl(gameRepository, userService, gameRoleService, characterService);
+        gameService = new GameServiceImpl(gameRepository, userService, gameRoleService, characterService, moveService);
     }
 
     @Test

@@ -1,5 +1,7 @@
 # ------------------------------------------------ ENUMS ---------------------------------------------- #
-
+enum MessageType {
+    PRINT_MOVE
+}
 enum RoleType {
     MC
     PLAYER
@@ -239,6 +241,15 @@ type Game {
     players: [User]
     gameRoles: [GameRole]
     invitees: [String]
+    gameMessages: [GameMessage]
+
+}
+
+type GameMessage {
+    id: ID!
+    messageType: MessageType
+    senderName: String
+    content: String
 }
 
 type Npc {
@@ -468,6 +479,7 @@ type Mutation {
     finishCharacterCreation(gameRoleId: String!,
         characterId: String!): Character
     finishPreGame(gameId: String!): Game
+    performPrintMove(gameId: String!, characterId: String!, moveId: String!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #
