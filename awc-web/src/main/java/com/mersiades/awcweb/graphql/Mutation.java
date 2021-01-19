@@ -1,14 +1,14 @@
 package com.mersiades.awcweb.graphql;
 
-import com.mersiades.awcdata.enums.LookCategories;
-import com.mersiades.awcdata.enums.Playbooks;
-import com.mersiades.awcdata.enums.Stats;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.CharacterHarm;
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.HxStat;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
+import com.mersiades.awccontent.enums.LookCategories;
+import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.Stats;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.stereotype.Component;
 

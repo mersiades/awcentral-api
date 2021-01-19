@@ -1,19 +1,26 @@
 package com.mersiades.awcweb.bootstrap;
 
-import com.mersiades.awcdata.enums.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.AngelKit;
 import com.mersiades.awcdata.models.uniques.BrainerGear;
 import com.mersiades.awcdata.models.uniques.CustomWeapons;
 import com.mersiades.awcdata.repositories.CharacterRepository;
-import com.mersiades.awcdata.services.*;
+import com.mersiades.awcdata.services.CharacterService;
+import com.mersiades.awcdata.services.GameRoleService;
+import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.models.Look;
+import com.mersiades.awccontent.models.Move;
+import com.mersiades.awccontent.models.StatsOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import com.mersiades.awccontent.services.LookService;
+import com.mersiades.awccontent.services.MoveService;
+import com.mersiades.awccontent.services.StatsOptionService;
 
 import java.util.List;
 import java.util.Objects;
@@ -124,14 +131,23 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         List<Move> angelMoves = moveService.findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.CHARACTER)
-                .filter(move -> move.getName().equals("ANGEL SPECIAL") ||
-                        move.getName().equals("SIXTH SENSE") ||
+                .filter(move -> move.getName().equals("SIXTH SENSE") ||
                         move.getName().equals("HEALING TOUCH"))
                 .collectList().block();
-
         assert angelMoves != null;
+
+        List<Move> angelDefaultMoves = moveService.
+                findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.DEFAULT_CHARACTER).collectList().block();
+        assert angelDefaultMoves != null;
+
+
         List<CharacterMove> characterMoves = angelMoves
                 .stream().map(move -> CharacterMove.createFromMove(move, true)).collect(Collectors.toList());
+
+        List<CharacterMove> characterDefaultMoves = angelDefaultMoves
+                .stream().map(CharacterMove::createFromMove).collect(Collectors.toList());
+
+        characterMoves.addAll(characterDefaultMoves);
 
         // -------------------------------- Set up John's Battlebabe ----------------------------------- //
         List<Look> battlebabeLooks = lookService.findAllByPlaybookType(Playbooks.BATTLEBABE).collectList().block();
@@ -179,14 +195,22 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         List<Move> battlebabeMoves = moveService.findAllByPlaybookAndKind(Playbooks.BATTLEBABE, MoveKinds.CHARACTER)
-                .filter(move -> move.getName().equals("BATTLEBABE SPECIAL") ||
-                        move.getName().equals("DANGEROUS & SEXY") ||
+                .filter(move -> move.getName().equals("DANGEROUS & SEXY") ||
                         move.getName().equals("PERFECT INSTINCTS"))
                 .collectList().block();
         assert battlebabeMoves != null;
 
+        List<Move> battlebabeDefaultMoves = moveService
+                .findAllByPlaybookAndKind(Playbooks.BATTLEBABE, MoveKinds.DEFAULT_CHARACTER).collectList().block();
+        assert battlebabeDefaultMoves != null;
+
         List<CharacterMove> characterMoves2 = battlebabeMoves
                 .stream().map(move -> CharacterMove.createFromMove(move, true)).collect(Collectors.toList());
+
+        List<CharacterMove> characterDefaultMoves2 = battlebabeDefaultMoves
+                .stream().map(CharacterMove::createFromMove).collect(Collectors.toList());
+
+        characterMoves2.addAll(characterDefaultMoves2);
 
         // -------------------------------- Set up Maya's Brainer ----------------------------------- //
         List<Look> brainerLooks = lookService.findAllByPlaybookType(Playbooks.BRAINER).collectList().block();
@@ -234,27 +258,41 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         List<Move> brainerMoves = moveService.findAllByPlaybookAndKind(Playbooks.BRAINER, MoveKinds.CHARACTER)
-                .filter(move -> move.getName().equals("BRAINER SPECIAL") ||
-                        move.getName().equals("DEEP BRAIN SCAN") ||
+                .filter(move -> move.getName().equals("DEEP BRAIN SCAN") ||
                         move.getName().equals("PRETERNATURAL BRAIN ATTUNEMENT"))
                 .collectList().block();
         assert brainerMoves != null;
 
+        List<Move> brainerDefaultMoves = moveService
+                .findAllByPlaybookAndKind(Playbooks.BRAINER, MoveKinds.DEFAULT_CHARACTER).collectList().block();
+        assert brainerDefaultMoves != null;
+
         List<CharacterMove> characterMoves3 = brainerMoves
                 .stream().map(move -> CharacterMove.createFromMove(move, true)).collect(Collectors.toList());
 
+        List<CharacterMove> characterDefaultMoves3 = brainerMoves
+                .stream().map(CharacterMove::createFromMove).collect(Collectors.toList());
+
+        characterMoves3.addAll(characterDefaultMoves3);
+
         // -------------------------------- Set up Ahmad's Angel ----------------------------------- //
-
-
         List<Move> angelMoves2 = moveService.findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.CHARACTER)
-                .filter(move -> move.getName().equals("INFIRMARY") ||
-                        move.getName().equals("PROFESSIONAL COMPASSION") ||
+                .filter(move -> move.getName().equals("PROFESSIONAL COMPASSION") ||
                         move.getName().equals("TOUCHED BY DEATH"))
                 .collectList().block();
         assert angelMoves2 != null;
 
+        List<Move> angelDefaultMoves2 = moveService
+                .findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.DEFAULT_CHARACTER).collectList().block();
+        assert angelDefaultMoves2 != null;
+
         List<CharacterMove> characterMoves4 = angelMoves2
                 .stream().map(move -> CharacterMove.createFromMove(move, true)).collect(Collectors.toList());
+
+        List<CharacterMove> characterDefaultMoves4 = angelMoves2
+                .stream().map(CharacterMove::createFromMove).collect(Collectors.toList());
+
+        characterMoves4.addAll(characterDefaultMoves4);
 
         // -------------------------------- Create Sara's Angel ----------------------------------- //
         Character mockCharacter1 = Character.builder()

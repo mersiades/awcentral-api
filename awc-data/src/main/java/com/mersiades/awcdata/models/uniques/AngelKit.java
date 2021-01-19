@@ -1,10 +1,10 @@
 package com.mersiades.awcdata.models.uniques;
 
-import com.mersiades.awcdata.models.Move;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.mersiades.awccontent.models.Move;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;

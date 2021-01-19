@@ -7,7 +7,7 @@ A web interface to play Apocalypse World online
 
 #### Local
 
-- start the db with `brew services start mongodb/brew/mongodb-community`
+- start the db with `brew com.mersiades.awccontent.services start mongodb/brew/mongodb-community`
 - run `AWCWebApplication` in IDE
 
 ### Deploying the app 

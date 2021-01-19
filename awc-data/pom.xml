@@ -5,19 +5,22 @@
 	<parent>
 		<groupId>com.mersiades</groupId>
 		<artifactId>awcentral</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 	<artifactId>awc-data</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>awc-data</name>
 	<description>Data Spring Boot module for AW Central</description>
 
 	<properties>
 		<spring-boot.repackage.skip>true</spring-boot.repackage.skip>
-		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.mersiades</groupId>
+			<artifactId>awc-content</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
