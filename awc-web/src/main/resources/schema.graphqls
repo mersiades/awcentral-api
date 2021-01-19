@@ -24,7 +24,25 @@ enum MoveType {
     UNIQUE
 }
 
-enum PlayBookType {
+enum MoveActionType {
+    ROLL,
+    PRINT,
+    BARTER,
+    ADJUST_HX,
+    STOCK,
+}
+
+enum RollType {
+    STAT,
+    HX,
+    HARM,
+    BARTER,
+    SPEED,
+    HANDLING,
+    STOCK,
+}
+
+enum PlaybookType {
     ANGEL
     BATTLEBABE
     BRAINER
@@ -72,20 +90,45 @@ enum UniqueType {
 
 # ---------------------------------------- STATIC GAME DATA TYPES -------------------------------------- #
 
+type HoldConditions {
+    id: ID!
+    onTenPlus: Int
+    onSevenToNine: Int
+    onMiss: Int
+}
+
+type PlusOneForwardConditions {
+    id: ID!
+    isManualGrant: Boolean
+    onTenPlus: Boolean
+    onSevenToNine: Boolean
+    onMiss: Boolean
+}
+
+type MoveAction {
+    id: ID!
+    actionType: MoveActionType
+    rollType: RollType
+    statToRollWith: StatType
+    holdConditions: HoldConditions
+    plusOneForwardConditions: PlusOneForwardConditions
+}
+
 type Move {
     id: ID!
     name: String!
     kind: MoveType!
     description: String!
-    playbook: PlayBookType
+    playbook: PlaybookType
     stat: StatType
     statModifier: StatModifier
     rollModifier: RollModifier
+    moveAction: MoveAction
 }
 
 type Playbook {
     id: ID!
-    playbookType: PlayBookType!
+    playbookType: PlaybookType!
     barterInstructions: String!
     intro: String!
     introComment: String!
@@ -94,20 +137,20 @@ type Playbook {
 
 type Name {
     id: ID!
-    playbookType: PlayBookType
+    playbookType: PlaybookType
     name: String
 }
 
 type Look {
     id: ID!
-    playbookType: PlayBookType
+    playbookType: PlaybookType
     category: LookType
     look: String
 }
 
 type StatsOption {
     id: ID!
-    playbookType: PlayBookType
+    playbookType: PlaybookType
     COOL: Int
     HARD: Int
     HOT: Int
@@ -129,7 +172,7 @@ type GearInstructions {
 
 type PlaybookCreator {
     id: ID!
-    playbookType: PlayBookType
+    playbookType: PlaybookType
     gearInstructions: GearInstructions
     improvementInstructions: String
     movesInstructions: String
@@ -247,7 +290,7 @@ type Character {
     id: ID!
     name: String
     gear: [String]
-    playbook: PlayBookType
+    playbook: PlaybookType
     hasCompletedCharacterCreation: Boolean
     looks: [Look]
     statsBlock: StatsBlock
@@ -274,7 +317,7 @@ type CharacterMove {
     name: String!
     kind: MoveType!
     description: String!
-    playbook: PlayBookType!
+    playbook: PlaybookType!
     stat: StatType
     statModifier: StatModifier
     rollModifier: RollModifier
@@ -359,8 +402,8 @@ type Query {
     gamesForInvitee(email: String!): [Game]
     allMoves: [Move]
     playbooks: [Playbook]
-    playbook(playbookType: PlayBookType!): Playbook
-    playbookCreator(playbookType: PlayBookType!): PlaybookCreator
+    playbook(playbookType: PlaybookType!): Playbook
+    playbookCreator(playbookType: PlaybookType!): PlaybookCreator
 }
 
 # --------------------------------------------- MUTATIONS -------------------------------------------- #
@@ -383,7 +426,7 @@ type Mutation {
     createCharacter(gameRoleId: String!): Character
     setCharacterPlaybook(gameRoleId: String!,
         characterId: String!,
-        playbookType: PlayBookType!): Character
+        playbookType: PlaybookType!): Character
     setCharacterName(gameRoleId: String!,
         characterId: String!,
         name: String!): Character

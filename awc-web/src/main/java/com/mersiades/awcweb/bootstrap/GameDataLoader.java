@@ -118,6 +118,12 @@ public class GameDataLoader implements CommandLineRunner {
     private void loadMoves() {
         System.out.println("|| --- Loading basic moves --- ||");
         /* ----------------------------- BASIC MOVES --------------------------------- */
+        MoveAction doSomethingUnderFireAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(COOL)
+                .build();
         Move doSomethingUnderFire = Move.builder()
                 .name("DO SOMETHING UNDER FIRE")
                 .description("When you _**do something under fire**_, or dig in to endure fire, roll+cool.\n" +
@@ -128,8 +134,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, be prepared for the worst.")
                 .kind(MoveType.BASIC)
-                .stat(COOL)
+                .moveAction(doSomethingUnderFireAction)
                 .playbook(null)
+                .build();
+        MoveAction goAggroAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
                 .build();
         Move goAggro = Move.builder()
                 .name("GO AGGRO ON SOMEONE")
@@ -149,14 +161,20 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, be prepared for the worst.")
                 .kind(MoveType.BASIC)
-                .stat(HARD)
+                .moveAction(goAggroAction)
                 .playbook(null)
+                .build();
+        MoveAction suckerAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
                 .build();
         Move sucker = Move.builder()
                 .name("SUCKER SOMEONE")
                 .description("When you _**attack someone unsuspecting or helpless**_, ask the MC if you could miss. If you could, treat it as going aggro, but your victim has no choice to cave and do what you want. If you couldn’t, you simply inflict harm as established.")
                 .kind(MoveType.BASIC)
-                .stat(null)
+                .moveAction(suckerAction)
                 .playbook(null)
                 .build();
         Move doBattle = Move.builder()

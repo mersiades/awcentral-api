@@ -32,6 +32,8 @@ public class Move  {
 
     private PlaybookType playbook;
 
+    private MoveAction moveAction;
+
     public Move(String name, String description, StatType stat, MoveType kind, PlaybookType playbook) {
         this.name = name;
         this.description = description;
