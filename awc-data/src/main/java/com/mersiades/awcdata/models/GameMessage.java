@@ -18,9 +18,13 @@ public class GameMessage {
     @Id
     private String id;
 
-    private MessageType messageType;
+    private String gameId;
+
+    private String gameroleId;
 
     private String senderName;
+
+    private MessageType messageType;
 
     private String content;
 }

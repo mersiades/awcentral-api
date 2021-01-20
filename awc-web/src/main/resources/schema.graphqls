@@ -247,6 +247,8 @@ type Game {
 
 type GameMessage {
     id: ID!
+    gameId: String
+    gameroleId: String
     messageType: MessageType
     senderName: String
     content: String
@@ -480,7 +482,7 @@ type Mutation {
     finishCharacterCreation(gameRoleId: String!,
         characterId: String!): Character
     finishPreGame(gameId: String!): Game
-    performPrintMove(gameId: String!, characterId: String!, moveId: String!): Game
+    performPrintMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

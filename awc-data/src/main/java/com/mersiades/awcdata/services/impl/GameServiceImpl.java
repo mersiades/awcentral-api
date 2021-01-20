@@ -301,13 +301,15 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Mono<Game> performPrintMove(String gameId, String characterId, String moveId) {
+    public Mono<Game> performPrintMove(String gameId, String gameroleId, String characterId, String moveId) {
         Character character = characterService.findById(characterId).block();
         assert character != null;
         Move move = moveService.findById(moveId).block();
         assert move != null;
         GameMessage gameMessage = GameMessage.builder()
                 .id(UUID.randomUUID().toString())
+                .gameId(gameId)
+                .gameroleId(gameroleId)
                 .messageType(MessageType.PRINT_MOVE)
                 .senderName(character.getName())
                 .content(move.getDescription())

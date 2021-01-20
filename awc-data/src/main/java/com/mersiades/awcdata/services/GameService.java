@@ -28,7 +28,7 @@ public interface GameService extends ReactiveCrudService<Game, String> {
 
     Mono<Game> finishPreGame(String gameId);
 
-    Mono<Game> performPrintMove(String gameId, String characterId, String moveId);
+    Mono<Game> performPrintMove(String gameId, String gameroleId, String characterId, String moveId);
 
     Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit);
 }
