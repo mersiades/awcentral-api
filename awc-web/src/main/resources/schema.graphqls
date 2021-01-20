@@ -252,6 +252,7 @@ type GameMessage {
     messageType: MessageType
     senderName: String
     content: String
+    sentOn: String
 }
 
 type Npc {
