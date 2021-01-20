@@ -318,4 +318,9 @@ public class GameServiceImpl implements GameService {
         }).flatMap(gameRepository::save);
     }
 
+    @Override
+    public Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit) {
+        return gameRepository.findById(gameId, skip, limit);
+    }
+
 }

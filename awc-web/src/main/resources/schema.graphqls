@@ -409,6 +409,7 @@ input HarmInput {
 type Query {
     gameRolesByUserId(id: String!): [GameRole]
     game(gameId:String!): Game
+    gameWithLimit(gameId:String!, skip: Int!, limit: Int!): Game
     gameForPlayer(gameId:String!, userId:String!): Game
     gamesForInvitee(email: String!): [Game]
     allMoves: [Move]
