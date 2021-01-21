@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.Instant;
-
 @Data
 @Document
 @Builder
@@ -24,11 +22,11 @@ public class GameMessage {
 
     private String gameroleId;
 
-    private String senderName;
+    private String title;
 
     private MessageType messageType;
 
     private String content;
 
-    private String sentOn = Instant.now().toString();
+    private String sentOn;
 }

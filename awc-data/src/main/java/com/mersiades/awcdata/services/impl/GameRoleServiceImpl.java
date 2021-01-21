@@ -413,8 +413,12 @@ public class GameRoleServiceImpl implements GameRoleService {
         List<Move> playbookMoves = playbookCreator.getOptionalMoves()
                 .stream().filter(characterMove -> moveIds.contains(characterMove.getId())).collect(Collectors.toList());
 
+        List<Move> playbookDefaultMoves = playbookCreator.getDefaultMoves();
+
+        playbookMoves.addAll(playbookDefaultMoves);
+
         List<CharacterMove> characterMoves = playbookMoves.stream()
-                .map(move -> CharacterMove.createFromMove(move, false))
+                .map(move -> CharacterMove.createFromMove(move, true))
                 .collect(Collectors.toList());
 
         // Preemptively remove moved-based stat modifications
@@ -430,7 +434,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         // Flesh out each CharacterMove
         characterMoves.forEach(characterMove -> {
             // Mark the CharacterMoves as selected
-            characterMove.setIsSelected(true);
+//            characterMove.setIsSelected(true);
             // Adjust CharacterStat if CharacterMove has a StatModifier
             if (characterMove.getStatModifier() != null) {
                 CharacterStat statToBeModified = character.getStatsBlock().getStats()

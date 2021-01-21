@@ -705,13 +705,19 @@ public class GameDataLoader implements CommandLineRunner {
                 .id(UUID.randomUUID().toString())
                 .movesToModify(Collections.singletonList(helpOrInterfere))
                 .statToRollWith(Collections.singletonList(SHARP)).build();
+        MoveAction angelSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ADJUST_HX)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move angelSpecial = Move.builder()
                 .name("ANGEL SPECIAL")
                 .description("If you and another character have sex, your Hx with them on your sheet goes immediately to +3, and they immediately get +1 to their Hx with you on their sheet.\n" +
                         "\n" +
                         "If that brings their Hx with you to +4, they reset it to +1 instead, as usual, and so mark experience.")
                 .kind(MoveType.DEFAULT_CHARACTER)
-                .stat(null)
+                .moveAction(angelSpecialAction)
                 .playbook(PlaybookType.ANGEL)
                 .build();
         Move sixthSense = Move.builder()
@@ -735,11 +741,17 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollModifier(profCompassionMod)
                 .kind(MoveType.CHARACTER)
                 .playbook(PlaybookType.ANGEL).build();
+        MoveAction battlefieldGraceAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move battlefieldGrace = Move.builder()
                 .name("BATTLEFIELD GRACE")
                 .description("_**Battlefield grace**_: while you are caring for people, not fighting, you get +1armor.")
                 .kind(MoveType.CHARACTER)
-                .stat(null)
+                .moveAction(battlefieldGraceAction)
                 .playbook(PlaybookType.ANGEL)
                 .build();
         Move healingTouch = Move.builder()

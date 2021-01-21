@@ -20,8 +20,10 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -304,16 +306,30 @@ public class GameServiceImpl implements GameService {
     public Mono<Game> performPrintMove(String gameId, String gameroleId, String characterId, String moveId) {
         Character character = characterService.findById(characterId).block();
         assert character != null;
-        Move move = moveService.findById(moveId).block();
-        assert move != null;
+
         GameMessage gameMessage = GameMessage.builder()
                 .id(UUID.randomUUID().toString())
                 .gameId(gameId)
                 .gameroleId(gameroleId)
                 .messageType(MessageType.PRINT_MOVE)
-                .senderName(character.getName())
-                .content(move.getDescription())
+                .sentOn(Instant.now().toString())
                 .build();
+
+        // This method handles both Moves and CharacterMoves.
+        // First it tries to find the move in the List of CharacterMoves
+        // If it doesn't find the move there, it searches the Moves collection in the db
+        Optional<CharacterMove> moveOptional = character.getCharacterMoves().stream().filter(characterMove -> characterMove.getId().equals(moveId)).findFirst();
+
+        if (moveOptional.isPresent()) {
+            gameMessage.setContent(moveOptional.get().getDescription());
+            gameMessage.setTitle(String.format("%s: %s", character.getName(), moveOptional.get().getName()).toUpperCase());
+        } else {
+            Move move = moveService.findById(moveId).block();
+            assert move != null;
+            gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
+            gameMessage.setContent(move.getDescription());
+        }
+
         return gameRepository.findById(gameId).map(game -> {
             game.getGameMessages().add(gameMessage);
             return game;

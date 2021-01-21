@@ -250,7 +250,7 @@ type GameMessage {
     gameId: String
     gameroleId: String
     messageType: MessageType
-    senderName: String
+    title: String
     content: String
     sentOn: String
 }
@@ -335,6 +335,7 @@ type CharacterMove {
     stat: StatType
     statModifier: StatModifier
     rollModifier: RollModifier
+    moveAction: MoveAction
 }
 
 type PlaybookUnique {
