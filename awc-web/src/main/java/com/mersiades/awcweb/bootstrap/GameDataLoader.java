@@ -232,7 +232,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, ask 1 anyway, but be prepared for the worst.")
                 .kind(MoveType.BASIC)
-                .stat(SHARP)
+                .stat(StatType.SHARP)
                 .playbook(null)
                 .build();
         Move readAPerson = Move.builder()
@@ -249,7 +249,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, ask 1 anyway, but be prepared for the worst.")
                 .kind(MoveType.BASIC)
-                .stat(SHARP)
+                .stat(StatType.SHARP)
                 .playbook(null)
                 .build();
         Move openBrain = Move.builder()
@@ -351,7 +351,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, the MC chooses 1, plus it costs 1-barter more.")
                 .kind(MoveType.PERIPHERAL)
-                .stat(SHARP)
+                .stat(StatType.SHARP)
                 .playbook(null)
                 .build();
         Move makeWantKnown = Move.builder()
@@ -554,7 +554,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *Direct any ally’s attention to an enemy. If they attack that enemy, they inflict +1harm.*\n" +
                         "- *Direct any ally’s attention to a danger. They take -1harm from that danger.*")
                 .kind(MoveType.BATTLE)
-                .stat(SHARP)
+                .stat(StatType.SHARP)
                 .playbook(null)
                 .build();
         Move beTheBait = Move.builder()
@@ -606,7 +606,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, you’re the mouse.")
                 .kind(MoveType.BATTLE)
-                .stat(SHARP)
+                .stat(StatType.SHARP)
                 .playbook(null)
                 .build();
 
@@ -699,12 +699,12 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Angel moves --- ||");
         RollModifier sixthSenseMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .movesToModify(Collections.singletonList(openBrain))
-                .statToRollWith(Collections.singletonList(SHARP)).build();
+                .moveToModify(openBrain)
+                .statToRollWith(StatType.SHARP).build();
         RollModifier profCompassionMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .movesToModify(Collections.singletonList(helpOrInterfere))
-                .statToRollWith(Collections.singletonList(SHARP)).build();
+                .moveToModify(helpOrInterfere)
+                .statToRollWith(StatType.SHARP).build();
         MoveAction angelSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
                 .actionType(MoveActionType.ADJUST_HX)
@@ -830,8 +830,8 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Battlebabe moves --- ||");
         RollModifier iceColdMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .movesToModify(Collections.singletonList(goAggro))
-                .statToRollWith(Arrays.asList(HARD, StatType.HX)).build();
+                .moveToModify(goAggro)
+                .statToRollWith(HARD).build();
         Move battlebabeSpecial = Move.builder()
                 .name("BATTLEBABE SPECIAL")
                 .description("If you and another character have sex, nullify the other character’s sex move. Whatever it is, it just doesn’t happen.")
@@ -895,8 +895,8 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Brainer moves --- ||");
         RollModifier lustMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .movesToModify(Collections.singletonList(seduceOrManip))
-                .statToRollWith(Collections.singletonList(StatType.WEIRD)).build();
+                .moveToModify(seduceOrManip)
+                .statToRollWith(StatType.WEIRD).build();
         StatModifier attunementMod = StatModifier.builder()
                 .id(UUID.randomUUID().toString())
                 .statToModify(StatType.WEIRD)
@@ -1017,8 +1017,8 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Driver moves --- ||");
         RollModifier weatherEyeMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .movesToModify(Collections.singletonList(openBrain))
-                .statToRollWith(Collections.singletonList(COOL)).build();
+                .moveToModify(openBrain)
+                .statToRollWith(COOL).build();
         Move driverSpecial = Move.builder()
                 .name("DRIVER SPECIAL")
                 .description("If you and another character have sex, roll+cool.\n" +
@@ -1091,12 +1091,13 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Gunlugger moves --- ||");
         RollModifier battleHardenedMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .movesToModify(Arrays.asList(doSomethingUnderFire, standOverwatch))
-                .statToRollWith(Collections.singletonList(HARD)).build();
+                // TODO: Add standoverwatch
+                .moveToModify(doSomethingUnderFire)
+                .statToRollWith(HARD).build();
         RollModifier battlefieldInstinctsMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .movesToModify(Collections.singletonList(openBrain))
-                .statToRollWith(Collections.singletonList(HARD)).build();
+                .moveToModify(openBrain)
+                .statToRollWith(HARD).build();
         StatModifier insanoMod = StatModifier.builder()
                 .id(UUID.randomUUID().toString())
                 .statToModify(HARD)

@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.enums;
 
 public enum MessageType {
-    PRINT_MOVE
+    PRINT_MOVE,
+    ROLL_MOVE
 }

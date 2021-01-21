@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.models;
 
+import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awcdata.enums.MessageType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,11 +23,22 @@ public class GameMessage {
 
     private String gameroleId;
 
+    private MessageType messageType;
+
     private String title;
 
-    private MessageType messageType;
+    private String sentOn;
 
     private String content;
 
-    private String sentOn;
+    private int roll1;
+
+    private int roll2;
+
+    private int rollModifier;
+
+    private int rollResult;
+
+    private StatType modifierStatName;
+
 }

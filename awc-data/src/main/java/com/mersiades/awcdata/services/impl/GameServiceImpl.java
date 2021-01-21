@@ -6,6 +6,7 @@ import com.mersiades.awccontent.enums.RoleType;
 import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awccontent.models.Look;
 import com.mersiades.awccontent.models.Move;
+import com.mersiades.awccontent.models.RollModifier;
 import com.mersiades.awccontent.services.MoveService;
 import com.mersiades.awcdata.enums.MessageType;
 import com.mersiades.awcdata.models.Character;
@@ -21,10 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -337,8 +335,74 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Mono<Game> performStatRollMove(String gameId, String gameroleId, String characterId, String moveId) {
+        Character character = characterService.findById(characterId).block();
+        assert character != null;
+
+        Random random = new Random();
+        int roll1 = random.nextInt(6) + 1;
+        int roll2 = random.nextInt(6) + 1;
+        System.out.println("roll1 = " + roll1);
+        System.out.println("roll2 = " + roll2);
+
+        GameMessage gameMessage = GameMessage.builder()
+                .id(UUID.randomUUID().toString())
+                .gameId(gameId)
+                .gameroleId(gameroleId)
+                .messageType(MessageType.ROLL_MOVE)
+                .sentOn(Instant.now().toString())
+                .roll1(roll1)
+                .roll2(roll2)
+                .build();
+
+        // This method handles both Moves and CharacterMoves.
+        // First it tries to find the move in the List of CharacterMoves
+        // If it doesn't find the move there, it searches the Moves collection in the db
+        Optional<CharacterMove> moveOptional = character.getCharacterMoves().stream().filter(characterMove -> characterMove.getId().equals(moveId)).findFirst();
+        CharacterStat modifier;
+        if (moveOptional.isPresent()) {
+            modifier = getRollModifier(character, moveOptional.get().getName(), moveOptional.get().getMoveAction().getStatToRollWith());
+            gameMessage.setContent(moveOptional.get().getDescription());
+            gameMessage.setTitle(String.format("%s: %s", character.getName(), moveOptional.get().getName()).toUpperCase());
+        } else {
+            Move move = moveService.findById(moveId).block();
+            assert move != null;
+            modifier = getRollModifier(character, move.getName(), move.getMoveAction().getStatToRollWith());
+            gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
+            gameMessage.setContent(move.getDescription());
+        }
+        gameMessage.setRollModifier(modifier.getValue());
+        gameMessage.setModifierStatName(modifier.getStat());
+        gameMessage.setRollResult(roll1 + roll2 + modifier.getValue());
+        return gameRepository.findById(gameId).map(game -> {
+            game.getGameMessages().add(gameMessage);
+            return game;
+        }).flatMap(gameRepository::save);
+    }
+
+    @Override
     public Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit) {
         return gameRepository.findById(gameId, skip, limit);
+    }
+
+    public CharacterStat getRollModifier(Character character, String moveName, StatType statToRollWith ) {
+        // Only some characters will have a RollModifier for the Move they are rolling
+        Optional<RollModifier> rollModifierOptional = character.getCharacterMoves()
+                .stream().filter(characterMove -> characterMove.getRollModifier() != null && characterMove.getRollModifier().getMoveToModify().getName().equals(moveName))
+                .map(Move::getRollModifier).findFirst();
+
+        StatType statToFind;
+
+        if (rollModifierOptional.isPresent()) {
+            statToFind = rollModifierOptional.get().getStatToRollWith();
+        } else {
+            statToFind = statToRollWith;
+        }
+
+        CharacterStat stat = character.getStatsBlock().getStats()
+                .stream().filter(characterStat -> characterStat.getStat().equals(statToFind)).findFirst().orElseThrow();
+
+        return stat;
     }
 
 }

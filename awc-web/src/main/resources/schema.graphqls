@@ -1,6 +1,7 @@
 # ------------------------------------------------ ENUMS ---------------------------------------------- #
 enum MessageType {
     PRINT_MOVE
+    ROLL_MOVE
 }
 enum RoleType {
     MC
@@ -251,8 +252,13 @@ type GameMessage {
     gameroleId: String
     messageType: MessageType
     title: String
-    content: String
     sentOn: String
+    content: String
+    roll1: Int
+    roll2: Int
+    rollModifier: Int
+    rollResult: Int
+    modifierStatName: StatType
 }
 
 type Npc {
@@ -381,8 +387,8 @@ type ItemCharacteristic {
 
 type RollModifier {
     id: ID!
-    movesToModify: [Move]!
-    statToRollWith: [StatType]!
+    moveToModify: Move!
+    statToRollWith: StatType!
 }
 
 type StatModifier {
@@ -485,6 +491,7 @@ type Mutation {
         characterId: String!): Character
     finishPreGame(gameId: String!): Game
     performPrintMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
+    performStatRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

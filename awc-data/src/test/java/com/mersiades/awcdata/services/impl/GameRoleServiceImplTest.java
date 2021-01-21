@@ -1,13 +1,17 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.models.*;
+import com.mersiades.awccontent.models.uniquecreators.AngelKitCreator;
+import com.mersiades.awccontent.services.MoveService;
+import com.mersiades.awccontent.services.PlaybookCreatorService;
+import com.mersiades.awccontent.services.StatModifierService;
+import com.mersiades.awccontent.services.StatsOptionService;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
-import com.mersiades.awccontent.enums.*;
-import com.mersiades.awccontent.models.*;
-import com.mersiades.awccontent.models.uniquecreators.AngelKitCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -16,12 +20,7 @@ import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.mersiades.awccontent.services.MoveService;
-import com.mersiades.awccontent.services.PlaybookCreatorService;
-import com.mersiades.awccontent.services.StatModifierService;
-import com.mersiades.awccontent.services.StatsOptionService;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -554,7 +553,7 @@ class GameRoleServiceImplTest {
         String moveId2 = "sixth-sense-id";
         String moveId3 = "infirmary-id";
 
-        RollModifier sixthSenseMod = RollModifier.builder().id(UUID.randomUUID().toString()).statToRollWith(Collections.singletonList(StatType.SHARP)).build();
+        RollModifier sixthSenseMod = RollModifier.builder().id(UUID.randomUUID().toString()).statToRollWith(StatType.SHARP).build();
         Move angelSpecial = Move.builder()
                 .id(moveId1)
                 .name("ANGEL SPECIAL")
