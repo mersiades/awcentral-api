@@ -301,11 +301,17 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(openBrainAction)
                 .playbook(null)
                 .build();
+        MoveAction lifestyleAndGigsAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.BARTER)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move lifestyleAndGigs = Move.builder()
                 .name("LIFESTYLE AND GIGS")
                 .description("_**At the beginning of the session**_, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions. If you need jingle during a session, tell the MC you’d like to work a gig.")
                 .kind(MoveType.BASIC)
-                .stat(null)
+                .moveAction(lifestyleAndGigsAction)
                 .playbook(null)
                 .build();
         MoveAction sessionEndAction = MoveAction.builder()
@@ -371,11 +377,17 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .playbook(null)
                 .build();
+        MoveAction giveBarterAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.BARTER)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move giveBarter = Move.builder()
                 .name("GIVE BARTER")
                 .description("When you _**give 1-barter to someone, but with strings attached**_, it counts as manipulating them and hitting the roll with a 10+, no leverage or roll required.")
                 .kind(MoveType.PERIPHERAL)
-                .stat(null)
+                .moveAction(giveBarterAction)
                 .playbook(null)
                 .build();
         MoveAction goToMarketAction = MoveAction.builder()

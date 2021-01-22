@@ -3,6 +3,7 @@ enum MessageType {
     PRINT_MOVE
     ROLL_STAT_MOVE
     ROLL_HX_MOVE
+    BARTER_MOVE
 }
 enum RoleType {
     MC
@@ -260,6 +261,8 @@ type GameMessage {
     rollModifier: Int
     rollResult: Int
     modifierStatName: StatType
+    barterSpent: Int
+    currentBarter: Int
 }
 
 type Npc {
@@ -494,6 +497,7 @@ type Mutation {
     performPrintMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
     performStatRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
     performHxRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
+    performBarterMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

@@ -430,6 +430,35 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Mono<Game> performBarterMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
+        Character character = characterService.findById(characterId).block();
+        assert character != null;
+        character.setBarter(character.getBarter() - barter);
+        characterService.save(character).block();
+
+        // Find move
+        Move move = moveService.findById(moveId).block();
+        assert move != null;
+
+        GameMessage gameMessage = GameMessage.builder()
+                .id(UUID.randomUUID().toString())
+                .gameId(gameId)
+                .gameroleId(gameroleId)
+                .messageType(MessageType.BARTER_MOVE)
+                .sentOn(Instant.now().toString())
+                .barterSpent(barter)
+                .currentBarter(character.getBarter())
+                .content(move.getDescription())
+                .title(String.format("%s: %s", character.getName(), move.getName()).toUpperCase())
+                .build();
+
+        return gameRepository.findById(gameId).map(game -> {
+            game.getGameMessages().add(gameMessage);
+            return game;
+        }).flatMap(gameRepository::save);
+    }
+
+    @Override
     public Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit) {
         return gameRepository.findById(gameId, skip, limit);
     }
@@ -451,7 +480,7 @@ public class GameServiceImpl implements GameService {
     }
 
 
-    private CharacterStat getStatToRoll(Character character, String moveName, StatType statToRollWith ) {
+    private CharacterStat getStatToRoll(Character character, String moveName, StatType statToRollWith) {
         // Only some characters will have a RollModifier for the Move they are rolling
         Optional<RollModifier> rollModifierOptional = character.getCharacterMoves()
                 .stream().filter(characterMove -> characterMove.getRollModifier() != null && characterMove.getRollModifier().getMoveToModify().getName().equals(moveName))

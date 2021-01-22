@@ -41,4 +41,8 @@ public class GameMessage {
 
     private StatType modifierStatName;
 
+    private int barterSpent;
+
+    private int currentBarter;
+
 }
