@@ -414,6 +414,11 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(goToMarketAction)
                 .playbook(null)
                 .build();
+        MoveAction makeWantKnownAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.BARTER)
+                .build();
         Move makeWantKnown = Move.builder()
                 .name("MAKE WANT KNOWN")
                 .description("When you _**make known that you want a thing and drop jingle to speed it on its way**_, roll+barter spent (max roll+3). It has to be a thing you could legitimately get this way.\n" +
@@ -424,7 +429,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, it comes to you, but with strings very much attached.")
                 .kind(MoveType.PERIPHERAL)
-                .stat(null)
+                .moveAction(makeWantKnownAction)
                 .playbook(null)
                 .build();
         MoveAction insightAction = MoveAction.builder()

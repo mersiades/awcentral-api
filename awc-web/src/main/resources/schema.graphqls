@@ -4,6 +4,7 @@ enum MessageType {
     ROLL_STAT_MOVE
     ROLL_HX_MOVE
     BARTER_MOVE
+    ROLL_BARTER_MOVE
 }
 enum RoleType {
     MC
@@ -498,6 +499,8 @@ type Mutation {
     performStatRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
     performHxRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
     performBarterMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
+    performBarterRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #
+

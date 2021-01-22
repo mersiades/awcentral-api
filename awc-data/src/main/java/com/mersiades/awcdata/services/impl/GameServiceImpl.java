@@ -431,15 +431,25 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Mono<Game> performBarterMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
+        // Get Character
         Character character = characterService.findById(characterId).block();
         assert character != null;
+
+        // Adjust barter
         character.setBarter(character.getBarter() - barter);
-        characterService.save(character).block();
+        Character savedCharacter = characterService.save(character).block();
+        assert savedCharacter != null;
+        // Save Character on GameRole
+        gameRoleService.findById(gameroleId).map(gameRole1 -> {
+            gameRole1.setCharacters(List.of(savedCharacter));
+            return gameRole1;
+        }).flatMap(gameRoleService::save).block();
 
         // Find move
         Move move = moveService.findById(moveId).block();
         assert move != null;
 
+        // Create message
         GameMessage gameMessage = GameMessage.builder()
                 .id(UUID.randomUUID().toString())
                 .gameId(gameId)
@@ -451,6 +461,39 @@ public class GameServiceImpl implements GameService {
                 .content(move.getDescription())
                 .title(String.format("%s: %s", character.getName(), move.getName()).toUpperCase())
                 .build();
+
+        // Save message to Game and return game
+        return gameRepository.findById(gameId).map(game -> {
+            game.getGameMessages().add(gameMessage);
+            return game;
+        }).flatMap(gameRepository::save);
+    }
+
+    @Override
+    public Mono<Game> performBarterRollMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
+        Character character = characterService.findById(characterId).block();
+        assert character != null;
+        character.setBarter(character.getBarter() - barter);
+        Character savedCharacter = characterService.save(character).block();
+            assert savedCharacter != null;
+
+        // Save Character on GameRole
+        gameRoleService.findById(gameroleId).map(gameRole1 -> {
+            gameRole1.setCharacters(List.of(savedCharacter));
+            return gameRole1;
+        }).flatMap(gameRoleService::save).block();
+
+        // Find move
+        Move move = moveService.findById(moveId).block();
+        assert move != null;
+
+        GameMessage gameMessage = getGameMessageWithDiceRolls(gameId, gameroleId, MessageType.ROLL_BARTER_MOVE);
+
+        gameMessage.setContent(move.getDescription());
+        gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
+        gameMessage.setBarterSpent(barter);
+        gameMessage.setCurrentBarter(character.getBarter());
+        gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + barter);
 
         return gameRepository.findById(gameId).map(game -> {
             game.getGameMessages().add(gameMessage);
@@ -475,10 +518,7 @@ public class GameServiceImpl implements GameService {
         } else {
             return null;
         }
-
-
     }
-
 
     private CharacterStat getStatToRoll(Character character, String moveName, StatType statToRollWith) {
         // Only some characters will have a RollModifier for the Move they are rolling

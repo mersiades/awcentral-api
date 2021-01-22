@@ -170,4 +170,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.performBarterMove(gameId, gameroleId, characterId, moveId, barter).block();
     }
 
+    public Game performBarterRollMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
+        System.out.println("Performing barter roll move for Character: " + characterId);
+        return gameService.performBarterRollMove(gameId, gameroleId, characterId, moveId, barter).block();
+    }
+
 }
