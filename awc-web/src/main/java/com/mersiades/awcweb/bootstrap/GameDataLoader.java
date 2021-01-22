@@ -216,6 +216,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(seduceOrManipAction)
                 .playbook(null)
                 .build();
+        MoveAction helpOrInterfereAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.HX)
+                .statToRollWith(null)
+                .build();
         Move helpOrInterfere = Move.builder()
                 .name("HELP OR INTERFERE WITH SOMEONE")
                 .description("When you _**help**_ or _**interfere**_ with someone who’s making a roll, roll+Hx.\n" +
@@ -226,7 +232,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, be prepared for the worst.")
                 .kind(MoveType.BASIC)
-                .stat(StatType.HX)
+                .moveAction(helpOrInterfereAction)
                 .playbook(null)
                 .build();
         MoveAction readASitchAction = MoveAction.builder()

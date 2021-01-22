@@ -1,7 +1,8 @@
 # ------------------------------------------------ ENUMS ---------------------------------------------- #
 enum MessageType {
     PRINT_MOVE
-    ROLL_MOVE
+    ROLL_STAT_MOVE
+    ROLL_HX_MOVE
 }
 enum RoleType {
     MC
@@ -492,6 +493,7 @@ type Mutation {
     finishPreGame(gameId: String!): Game
     performPrintMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
     performStatRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
+    performHxRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

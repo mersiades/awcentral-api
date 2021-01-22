@@ -33,4 +33,6 @@ public interface GameService extends ReactiveCrudService<Game, String> {
     Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit);
 
     Mono<Game> performStatRollMove(String gameId, String gameroleId, String characterId, String moveId);
+
+    Mono<Game> performHxRollMove(String gameId, String gameroleId, String characterId, String moveId, String targetId);
 }

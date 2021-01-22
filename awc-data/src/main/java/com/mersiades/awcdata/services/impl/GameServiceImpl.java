@@ -339,41 +339,90 @@ public class GameServiceImpl implements GameService {
         Character character = characterService.findById(characterId).block();
         assert character != null;
 
-        Random random = new Random();
-        int roll1 = random.nextInt(6) + 1;
-        int roll2 = random.nextInt(6) + 1;
-        System.out.println("roll1 = " + roll1);
-        System.out.println("roll2 = " + roll2);
-
-        GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
-                .gameId(gameId)
-                .gameroleId(gameroleId)
-                .messageType(MessageType.ROLL_MOVE)
-                .sentOn(Instant.now().toString())
-                .roll1(roll1)
-                .roll2(roll2)
-                .build();
+        GameMessage gameMessage = getGameMessageWithDiceRolls(gameId, gameroleId, MessageType.ROLL_STAT_MOVE);
 
         // This method handles both Moves and CharacterMoves.
         // First it tries to find the move in the List of CharacterMoves
         // If it doesn't find the move there, it searches the Moves collection in the db
-        Optional<CharacterMove> moveOptional = character.getCharacterMoves().stream().filter(characterMove -> characterMove.getId().equals(moveId)).findFirst();
+        Optional<CharacterMove> moveOptional = character.getCharacterMoves()
+                .stream().filter(characterMove -> characterMove.getId().equals(moveId)).findFirst();
         CharacterStat modifier;
         if (moveOptional.isPresent()) {
-            modifier = getRollModifier(character, moveOptional.get().getName(), moveOptional.get().getMoveAction().getStatToRollWith());
+            modifier = getStatToRoll(character, moveOptional.get().getName(), moveOptional.get().getMoveAction().getStatToRollWith());
             gameMessage.setContent(moveOptional.get().getDescription());
             gameMessage.setTitle(String.format("%s: %s", character.getName(), moveOptional.get().getName()).toUpperCase());
         } else {
             Move move = moveService.findById(moveId).block();
             assert move != null;
-            modifier = getRollModifier(character, move.getName(), move.getMoveAction().getStatToRollWith());
+            modifier = getStatToRoll(character, move.getName(), move.getMoveAction().getStatToRollWith());
             gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
             gameMessage.setContent(move.getDescription());
         }
         gameMessage.setRollModifier(modifier.getValue());
         gameMessage.setModifierStatName(modifier.getStat());
-        gameMessage.setRollResult(roll1 + roll2 + modifier.getValue());
+        gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifier.getValue());
+        return gameRepository.findById(gameId).map(game -> {
+            game.getGameMessages().add(gameMessage);
+            return game;
+        }).flatMap(gameRepository::save);
+    }
+
+    @Override
+    public Mono<Game> performHxRollMove(String gameId, String gameroleId, String characterId, String moveId, String targetId) {
+        Character character = characterService.findById(characterId).block();
+        assert character != null;
+
+        GameMessage gameMessage = getGameMessageWithDiceRolls(gameId, gameroleId, MessageType.ROLL_HX_MOVE);
+
+        // Is the move a CharacterMove?
+        Optional<CharacterMove> moveOptional = character.getCharacterMoves()
+                .stream().filter(characterMove -> characterMove.getId().equals(moveId)).findFirst();
+
+        if (moveOptional.isPresent()) {
+            // Check if Character has Move to roll with a different stat
+            CharacterStat alternateStat = checkForHxAlternative(character, moveOptional.get().getName());
+
+            // Set stat value and name
+            if (alternateStat != null) {
+                gameMessage.setRollModifier(alternateStat.getValue());
+                gameMessage.setModifierStatName(alternateStat.getStat());
+            } else {
+                int hxValue = character.getHxBlock().stream().filter(hxStat -> hxStat.getCharacterId().equals(targetId))
+                        .map(HxStat::getHxValue)
+                        .findFirst().orElseThrow();
+                gameMessage.setRollModifier(hxValue);
+                gameMessage.setModifierStatName(StatType.HX);
+            }
+
+            // Set content and title
+            gameMessage.setContent(moveOptional.get().getDescription());
+            gameMessage.setTitle(String.format("%s: %s", character.getName(), moveOptional.get().getName()).toUpperCase());
+
+
+        } else {
+            // Find move
+            Move move = moveService.findById(moveId).block();
+            assert move != null;
+            // Check if Character has Move to roll with a different stat
+            CharacterStat alternateStat = checkForHxAlternative(character, move.getName());
+
+            // Set stat value and name
+            if (alternateStat != null) {
+                gameMessage.setRollModifier(alternateStat.getValue());
+                gameMessage.setModifierStatName(alternateStat.getStat());
+            } else {
+                int hxValue = character.getHxBlock().stream().filter(hxStat -> hxStat.getCharacterId().equals(targetId))
+                        .map(HxStat::getHxValue)
+                        .findFirst().orElseThrow();
+                gameMessage.setRollModifier(hxValue);
+                gameMessage.setModifierStatName(StatType.HX);
+            }
+            // Set content and title
+            gameMessage.setContent(move.getDescription());
+            gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
+        }
+
+        gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + gameMessage.getRollModifier());
         return gameRepository.findById(gameId).map(game -> {
             game.getGameMessages().add(gameMessage);
             return game;
@@ -385,7 +434,24 @@ public class GameServiceImpl implements GameService {
         return gameRepository.findById(gameId, skip, limit);
     }
 
-    public CharacterStat getRollModifier(Character character, String moveName, StatType statToRollWith ) {
+    private CharacterStat checkForHxAlternative(Character character, String moveName) {
+        Optional<RollModifier> optionalRollModifier = character.getCharacterMoves()
+                .stream().filter(characterMove -> characterMove.getRollModifier() != null && characterMove.getRollModifier().getMoveToModify().getName().equals(moveName))
+                .map(Move::getRollModifier).findFirst();
+
+        if (optionalRollModifier.isPresent()) {
+            StatType statToFind = optionalRollModifier.get().getStatToRollWith();
+            return character.getStatsBlock().getStats()
+                    .stream().filter(characterStat -> characterStat.getStat().equals(statToFind)).findFirst().orElseThrow();
+        } else {
+            return null;
+        }
+
+
+    }
+
+
+    private CharacterStat getStatToRoll(Character character, String moveName, StatType statToRollWith ) {
         // Only some characters will have a RollModifier for the Move they are rolling
         Optional<RollModifier> rollModifierOptional = character.getCharacterMoves()
                 .stream().filter(characterMove -> characterMove.getRollModifier() != null && characterMove.getRollModifier().getMoveToModify().getName().equals(moveName))
@@ -399,10 +465,24 @@ public class GameServiceImpl implements GameService {
             statToFind = statToRollWith;
         }
 
-        CharacterStat stat = character.getStatsBlock().getStats()
+        return character.getStatsBlock().getStats()
                 .stream().filter(characterStat -> characterStat.getStat().equals(statToFind)).findFirst().orElseThrow();
+    }
 
-        return stat;
+    private GameMessage getGameMessageWithDiceRolls(String gameId, String gameroleId, MessageType messageType) {
+        Random random = new Random();
+        int roll1 = random.nextInt(6) + 1;
+        int roll2 = random.nextInt(6) + 1;
+
+        return GameMessage.builder()
+                .id(UUID.randomUUID().toString())
+                .gameId(gameId)
+                .gameroleId(gameroleId)
+                .messageType(messageType)
+                .sentOn(Instant.now().toString())
+                .roll1(roll1)
+                .roll2(roll2)
+                .build();
     }
 
 }

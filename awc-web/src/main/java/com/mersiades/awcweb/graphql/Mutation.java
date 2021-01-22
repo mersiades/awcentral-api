@@ -156,8 +156,13 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public Game performStatRollMove(String gameId, String gameroleId, String characterId, String moveId) {
-        System.out.println("Performing roll move for Character: " + characterId);
+        System.out.println("Performing stat roll move for Character: " + characterId);
         return gameService.performStatRollMove(gameId, gameroleId, characterId, moveId).block();
+    }
+
+    public Game performHxRollMove(String gameId, String gameroleId, String characterId, String moveId, String targetId) {
+        System.out.println("Performing hx roll move for Character: " + characterId);
+        return gameService.performHxRollMove(gameId, gameroleId, characterId, moveId, targetId).block();
     }
 
 }
