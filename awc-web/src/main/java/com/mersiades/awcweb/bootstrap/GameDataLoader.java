@@ -177,12 +177,24 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(suckerAction)
                 .playbook(null)
                 .build();
+        MoveAction doBattleAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move doBattle = Move.builder()
                 .name("DO BATTLE")
                 .description("When you’re _**in battle**_, you can bring the battle moves into play.")
                 .kind(MoveType.BASIC)
-                .stat(null)
+                .moveAction(doBattleAction)
                 .playbook(null)
+                .build();
+        MoveAction seduceOrManipAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HOT)
                 .build();
         Move seduceOrManip = Move.builder()
                 .name("SEDUCE OR MANIPULATE SOMEONE")
@@ -201,7 +213,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, for either NPCs or PCs, be prepared for the worst.")
                 .kind(MoveType.BASIC)
-                .stat(StatType.HOT)
+                .moveAction(seduceOrManipAction)
                 .playbook(null)
                 .build();
         Move helpOrInterfere = Move.builder()
@@ -216,6 +228,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .kind(MoveType.BASIC)
                 .stat(StatType.HX)
                 .playbook(null)
+                .build();
+        MoveAction readASitchAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(SHARP)
                 .build();
         Move readASitch = Move.builder()
                 .name("READ A SITCH")
@@ -232,8 +250,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, ask 1 anyway, but be prepared for the worst.")
                 .kind(MoveType.BASIC)
-                .stat(StatType.SHARP)
+                .moveAction(readASitchAction)
                 .playbook(null)
+                .build();
+        MoveAction readAPersonAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(SHARP)
                 .build();
         Move readAPerson = Move.builder()
                 .name("READ A PERSON")
@@ -249,8 +273,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, ask 1 anyway, but be prepared for the worst.")
                 .kind(MoveType.BASIC)
-                .stat(StatType.SHARP)
+                .moveAction(readAPersonAction)
                 .playbook(null)
+                .build();
+        MoveAction openBrainAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(WEIRD)
                 .build();
         Move openBrain = Move.builder()
                 .name("OPEN YOUR BRAIN")
@@ -262,7 +292,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, be prepared for the worst.")
                 .kind(MoveType.BASIC)
-                .stat(StatType.WEIRD)
+                .moveAction(openBrainAction)
                 .playbook(null)
                 .build();
         Move lifestyleAndGigs = Move.builder()
@@ -272,6 +302,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .playbook(null)
                 .build();
+        MoveAction sessionEndAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move sessionEnd = Move.builder()
                 .name("SESSION END")
                 .description("_**At the end of every session**_, choose a character who knows you better than they used to. If there’s more than one, choose one at your whim.\n" +
@@ -280,7 +316,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "If no one knows you better, choose a character who doesn’t know you as well as they thought, or choose any character at your whim. Tell that player to take -1 to their Hx with you on their sheet. If this brings them to Hx -3, they reset to Hx=0 (and therefore mark experience).")
                 .kind(MoveType.BASIC)
-                .stat(null)
+                .moveAction(sessionEndAction)
                 .playbook(null)
                 .build();
 
@@ -336,6 +372,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .playbook(null)
                 .build();
+        MoveAction goToMarketAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(SHARP)
+                .build();
         Move goToMarket = Move.builder()
                 .name("GO TO THE MARKET")
                 .description("When you _**go into a holding’s bustling market**_, looking for some particular thing to buy, and it’s not obvious whether you should be able to just go buy one like that, roll+sharp.\n" +
@@ -351,7 +393,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, the MC chooses 1, plus it costs 1-barter more.")
                 .kind(MoveType.PERIPHERAL)
-                .stat(StatType.SHARP)
+                .moveAction(goToMarketAction)
                 .playbook(null)
                 .build();
         Move makeWantKnown = Move.builder()
@@ -367,14 +409,26 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .playbook(null)
                 .build();
+        MoveAction insightAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move insight = Move.builder()
                 .name("INSIGHT")
                 .description("When you are able to go to someone for _**insight**_, ask them what they think your best course is, and the MC will tell you.\n" +
                         "\n" +
                         "If you pursue that course, take +1 to any rolls you make in the pursuit. If you pursue that course but don’t accomplish your ends, you mark experience.")
                 .kind(MoveType.PERIPHERAL)
-                .stat(null)
+                .moveAction(insightAction)
                 .playbook(null)
+                .build();
+        MoveAction auguryAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(WEIRD)
                 .build();
         Move augury = Move.builder()
                 .name("AUGURY")
@@ -399,8 +453,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, whatever bad happens, your antenna takes the brunt of it.")
                 .kind(MoveType.PERIPHERAL)
-                .stat(StatType.WEIRD)
+                .moveAction(auguryAction)
                 .playbook(null)
+                .build();
+        MoveAction changeHighlightedStatsAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
                 .build();
         Move changeHighlightedStats = Move.builder()
                 .name("CHANGE HIGHLIGHTED STATS")
@@ -408,7 +468,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "Go around the circle again, following the same procedure you used to highlight them in the first place: the high-Hx player highlights one stat, and the MC highlight another.")
                 .kind(MoveType.PERIPHERAL)
-                .stat(null)
+                .moveAction(changeHighlightedStatsAction)
                 .playbook(null)
                 .build();
 
@@ -417,6 +477,12 @@ public class GameDataLoader implements CommandLineRunner {
 
         System.out.println("|| --- Loading battle moves --- ||");
         /* ----------------------------- BATTLE MOVES --------------------------------- */
+        MoveAction exchangeHarmAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move exchangeHarm = Move.builder()
                 .name("EXCHANGE HARM")
                 .description("When you _**exchange harm**_, both sides simultaneously inflict and suffer harm as established:\n" +
@@ -424,8 +490,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *You inflict harm equal to the harm rating of your weapon, minus the armor rating of your enemy’s armor.*\n" +
                         "- *You suffer harm equal to the harm rating of your enemy’s weapon, minus the armor rating of your own armor.*")
                 .kind(MoveType.BATTLE)
-                .stat(null)
+                .moveAction(exchangeHarmAction)
                 .playbook(null)
+                .build();
+        MoveAction seizeByForceAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
                 .build();
         Move seizeByForce = Move.builder()
                 .name("SEIZE BY FORCE")
@@ -438,8 +510,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *You take definite and undeniable control of it.*\n" +
                         "- *You impress, dismay, or frighten your enemy.*")
                 .kind(MoveType.BATTLE)
-                .stat(HARD)
+                .moveAction(seizeByForceAction)
                 .playbook(null)
+                .build();
+        MoveAction assaultAPositionAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
                 .build();
         Move assaultAPosition = Move.builder()
                 .name("ASSAULT A POSITION")
@@ -452,8 +530,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *You force your way into your enemy’s position.*\n" +
                         "- *You impress, dismay, or frighten your enemy.*")
                 .kind(MoveType.BATTLE)
-                .stat(HARD)
+                .moveAction(assaultAPositionAction)
                 .playbook(null)
+                .build();
+        MoveAction keepHoldOfSomethingAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
                 .build();
         Move keepHoldOfSomething = Move.builder()
                 .name("KEEP HOLD OF SOMETHING")
@@ -466,8 +550,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *You keep definite control of it.*\n" +
                         "- *You impress, dismay, or frighten your enemy.*")
                 .kind(MoveType.BATTLE)
-                .stat(HARD)
+                .moveAction(keepHoldOfSomethingAction)
                 .playbook(null)
+                .build();
+        MoveAction fightFreeAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
                 .build();
         Move fightFree = Move.builder()
                 .name("FIGHT FREE")
@@ -480,8 +570,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *You win free and get away.*\n" +
                         "- *You impress, dismay, or frighten your enemy.*")
                 .kind(MoveType.BATTLE)
-                .stat(HARD)
+                .moveAction(fightFreeAction)
                 .playbook(null)
+                .build();
+        MoveAction defendSomeoneAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
                 .build();
         Move defendSomeone = Move.builder()
                 .name("DEFEND SOMEONE")
@@ -494,8 +590,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *You protect them from harm.*\n" +
                         "- *You impress, dismay, or frighten your enemy.*")
                 .kind(MoveType.BATTLE)
-                .stat(HARD)
+                .moveAction(defendSomeoneAction)
                 .playbook(null)
+                .build();
+        MoveAction doSingleCombatAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
                 .build();
         Move doSingleCombat = Move.builder()
                 .name("DO SINGLE COMBAT")
@@ -510,8 +612,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "If one of you prefers to end the fight, though, and the other prefers to fight on, then the former must choose: flee, submit to the latter‘s mercy, or fight on after all.")
                 .kind(MoveType.BATTLE)
-                .stat(HARD)
+                .moveAction(doSingleCombatAction)
                 .playbook(null)
+                .build();
+        MoveAction layDownFireAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
                 .build();
         Move layDownFire = Move.builder()
                 .name("LAY DOWN FIRE")
@@ -524,8 +632,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *You provide suppressing fire, denying another character to move or act freely. (If a PC, they may still act under fire.)*\n" +
                         "- *You take an opportune shot, inflicting harm (but -1harm) on an enemy within your reach.*")
                 .kind(MoveType.BATTLE)
-                .stat(HARD)
+                .moveAction(layDownFireAction)
                 .playbook(null)
+                .build();
+        MoveAction standOverwatchAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(COOL)
                 .build();
         Move standOverwatch = Move.builder()
                 .name("STAND OVERWATCH")
@@ -540,8 +654,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, you are able to warn your ally but not attack your enemy.")
                 .kind(MoveType.BATTLE)
-                .stat(COOL)
+                .moveAction(standOverwatchAction)
                 .playbook(null)
+                .build();
+        MoveAction keepAnEyeOutAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(SHARP)
                 .build();
         Move keepAnEyeOut = Move.builder()
                 .name("KEEP AN EYE OUT")
@@ -554,8 +674,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *Direct any ally’s attention to an enemy. If they attack that enemy, they inflict +1harm.*\n" +
                         "- *Direct any ally’s attention to a danger. They take -1harm from that danger.*")
                 .kind(MoveType.BATTLE)
-                .stat(StatType.SHARP)
+                .moveAction(keepAnEyeOutAction)
                 .playbook(null)
+                .build();
+        MoveAction beTheBaitAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(COOL)
                 .build();
         Move beTheBait = Move.builder()
                 .name("BE THE BAIT")
@@ -569,8 +695,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, the MC chooses 1 for you.")
                 .kind(MoveType.BATTLE)
-                .stat(COOL)
+                .moveAction(beTheBaitAction)
                 .playbook(null)
+                .build();
+        MoveAction beTheCatAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(COOL)
                 .build();
         Move beTheCat = Move.builder()
                 .name("BE THE CAT")
@@ -582,8 +714,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, your prey escapes you.")
                 .kind(MoveType.BATTLE)
-                .stat(COOL)
+                .moveAction(beTheCatAction)
                 .playbook(null)
+                .build();
+        MoveAction beTheMouseAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(COOL)
                 .build();
         Move beTheMouse = Move.builder()
                 .name("BE THE MOUSE")
@@ -595,8 +733,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, your hunter catches you out and the MC says where.")
                 .kind(MoveType.BATTLE)
-                .stat(COOL)
+                .moveAction(beTheMouseAction)
                 .playbook(null)
+                .build();
+        MoveAction catOrMouseAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(SHARP)
                 .build();
         Move catOrMouse = Move.builder()
                 .name("CAT OR MOUSE")
@@ -606,7 +750,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, you’re the mouse.")
                 .kind(MoveType.BATTLE)
-                .stat(StatType.SHARP)
+                .moveAction(catOrMouseAction)
                 .playbook(null)
                 .build();
 
@@ -680,6 +824,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(COOL)
                 .playbook(null)
                 .build();
+        MoveAction shoulderAnotherVehicleAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(COOL)
+                .build();
         Move shoulderAnotherVehicle = Move.builder()
                 .name("SHOULDER ANOTHER VEHICLE")
                 .description("To _**shoulder another vehicle**_, roll+cool. On a hit, you shoulder it aside, inflicting v-harm as established.\n" +
@@ -688,7 +838,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, it shoulders you instead, inflicting v-harm as established.")
                 .kind(MoveType.ROAD_WAR)
-                .stat(COOL)
+                .moveAction(shoulderAnotherVehicleAction)
                 .playbook(null)
                 .build();
 
@@ -754,6 +904,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(battlefieldGraceAction)
                 .playbook(PlaybookType.ANGEL)
                 .build();
+        MoveAction healingTouchAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(WEIRD)
+                .build();
         Move healingTouch = Move.builder()
                 .name("HEALING TOUCH")
                 .description("_**Healing touch**_: when you put your hands skin-to-skin on a wounded person and open your brain to them, roll+weird.\n" +
@@ -768,14 +924,20 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "For patients belonging to the MC, their experience and fate are up to the MC.\n")
                 .kind(MoveType.CHARACTER)
-                .stat(WEIRD)
+                .moveAction(healingTouchAction)
                 .playbook(PlaybookType.ANGEL)
+                .build();
+        MoveAction touchedByDeathAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
                 .build();
         Move touchedByDeath = Move.builder()
                 .name("TOUCHED BY DEATH")
                 .description("_**Touched by death**_: when someone is unconscious in your care, you can use them for _**augury**_. When someone has died in your care, you can use their body for _**augury**_.")
                 .kind(MoveType.CHARACTER)
-                .stat(null)
+                .moveAction(touchedByDeathAction)
                 .playbook(PlaybookType.ANGEL)
                 .build();
 
@@ -832,12 +994,24 @@ public class GameDataLoader implements CommandLineRunner {
                 .id(UUID.randomUUID().toString())
                 .moveToModify(goAggro)
                 .statToRollWith(HARD).build();
+        MoveAction battlebabeSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move battlebabeSpecial = Move.builder()
                 .name("BATTLEBABE SPECIAL")
                 .description("If you and another character have sex, nullify the other character’s sex move. Whatever it is, it just doesn’t happen.")
                 .kind(MoveType.DEFAULT_CHARACTER)
-                .stat(null)
+                .moveAction(battlebabeSpecialAction)
                 .playbook(PlaybookType.BATTLEBABE).build();
+        MoveAction dangerousAndSexyAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HOT)
+                .build();
         Move dangerousAndSexy = Move.builder()
                 .name("DANGEROUS & SEXY")
                 .description("_**Dangerous & sexy**_: when you enter into a charged situation, roll+hot.\n" +
@@ -848,7 +1022,7 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, your enemies identify you immediately as their foremost threat.")
                 .kind(MoveType.CHARACTER)
-                .stat(StatType.HOT)
+                .moveAction(dangerousAndSexyAction)
                 .playbook(PlaybookType.BATTLEBABE)
                 .build();
         Move iceCold = Move.builder()
@@ -857,12 +1031,24 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollModifier(iceColdMod)
                 .stat(null).kind(MoveType.CHARACTER)
                 .playbook(PlaybookType.BATTLEBABE).build();
+        MoveAction mercilessAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move merciless = Move.builder()
                 .name("MERCILESS")
                 .description("_**Merciless**_: when you inflict harm, inflict +1harm.")
                 .kind(MoveType.CHARACTER)
-                .stat(null)
+                .moveAction(mercilessAction)
                 .playbook(PlaybookType.BATTLEBABE).build();
+        MoveAction visionsOfDeathAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(WEIRD)
+                .build();
         Move visionsOfDeath = Move.builder()
                 .name("VISIONS OF DEATH").description("_**Visions of death**_: when you go into battle, roll+weird.\n" +
                 "\n" +
@@ -874,19 +1060,31 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, you foresee your own death, and accordingly take -1 throughout the battle.")
                 .kind(MoveType.CHARACTER)
-                .stat(StatType.WEIRD)
+                .moveAction(visionsOfDeathAction)
                 .playbook(PlaybookType.BATTLEBABE).build();
+        MoveAction perfectInstinctsAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move perfectInstincts = Move.builder()
                 .name("PERFECT INSTINCTS")
                 .description("_**Perfect instincts**_: when you’ve read a charged situation and you’re acting on the MC’s answers, take +2 instead of +1.")
                 .kind(MoveType.CHARACTER)
-                .stat(null)
+                .moveAction(perfectInstinctsAction)
                 .playbook(PlaybookType.BATTLEBABE).build();
+        MoveAction impossibleReflexesAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move impossibleReflexes = Move.builder()
                 .name("IMPOSSIBLE REFLEXES")
                 .description("_**Impossible reflexes**_: the way you move unencumbered counts as armor. If you’re naked or nearly naked, 2-armor; if you’re wearing non-armor fashion, 1-armor. If you’re wearing armor, use it instead.")
                 .kind(MoveType.CHARACTER)
-                .stat(null)
+                .moveAction(impossibleReflexesAction)
                 .playbook(PlaybookType.BATTLEBABE).build();
 
         moveService.saveAll(Flux.just(battlebabeSpecial, dangerousAndSexy, iceCold, merciless, visionsOfDeath, perfectInstincts, impossibleReflexes)).blockLast();
@@ -903,13 +1101,19 @@ public class GameDataLoader implements CommandLineRunner {
                 .modification(1).build();
         StatModifier savedAttunementMod = statModifierService.save(attunementMod).block();
 
+        MoveAction brainerSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move brainerSpecial = Move.builder()
                 .name("BRAINER SPECIAL")
                 .description("If you and another character have sex, you automatically do a _**deep brain scan**_ on them, whether you have the move or not. Roll+weird as normal.\n" +
                         "\n" +
                         "However, the MC chooses which questions the other character’s player answers.")
                 .kind(MoveType.DEFAULT_CHARACTER)
-                .stat(null)
+                .moveAction(brainerSpecialAction)
                 .playbook(PlaybookType.BRAINER).build();
         Move unnaturalLust = Move.builder()
                 .name("UNNATURAL LUST TRANSFIXION")
@@ -931,6 +1135,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .kind(MoveType.CHARACTER)
                 .stat(null)
                 .playbook(PlaybookType.BRAINER).build();
+        MoveAction brainScanAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(WEIRD)
+                .build();
         Move brainScan = Move.builder()
                 .name("DEEP BRAIN SCAN")
                 .description("_**Deep brain scan**_: when you have time and physical intimacy with someone — mutual intimacy like holding them in your arms, or 1-sided intimacy like they’re restrained to a table — you can read them more deeply than normal. Roll+weird.\n" +
@@ -944,16 +1154,28 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit")
                 .kind(MoveType.CHARACTER)
-                .stat(StatType.WEIRD)
+                .moveAction(brainScanAction)
                 .playbook(PlaybookType.BRAINER).build();
+        MoveAction whisperProjectionAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(WEIRD)
+                .build();
         Move whisperProjection = Move.builder()
                 .name("DIRECT BRAIN WHISPER PROJECTION")
                 .description("_**Direct-brain whisper projection**_: you can roll+weird to get the effects of going aggro, without going aggro. Your victim has to be able to see you, but you don’t have to interact.\n" +
                         "\n" +
                         "If your victim forces your hand, your mind counts as a weapon (1-harm ap close loud-optional).")
                 .kind(MoveType.CHARACTER)
-                .stat(null)
+                .moveAction(whisperProjectionAction)
                 .playbook(PlaybookType.BRAINER).build();
+        MoveAction puppetStringsAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(WEIRD)
+                .build();
         Move puppetStrings = Move.builder()
                 .name("IN BRAIN PUPPET STRINGS")
                 .description("_**In-brain puppet strings**_: when you have time and physical intimacy with someone — again, mutual or 1-sided — you can plant a command inside their mind. Roll+weird.\n" +
@@ -969,7 +1191,7 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit.")
                 .kind(MoveType.CHARACTER)
-                .stat(StatType.WEIRD)
+                .moveAction(puppetStringsAction)
                 .playbook(PlaybookType.BRAINER).build();
 
         moveService.saveAll(Flux.just(brainerSpecial, unnaturalLust, brainReceptivity, brainAttunement, brainScan, whisperProjection, puppetStrings)).blockLast();
@@ -984,6 +1206,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .kind(MoveType.DEFAULT_CHARACTER)
                 .stat(null)
                 .playbook(PlaybookType.CHOPPER).build();
+        MoveAction packAlphaAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
+                .build();
         Move packAlpha = Move.builder()
                 .name("PACK ALPHA")
                 .description("_**Pack alpha**_: when you try to impose your will on your gang, roll+hard.\n" +
@@ -996,8 +1224,14 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, someone in your gang makes a bid, idle or serious, to replace you for alpha.")
                 .kind(MoveType.DEFAULT_CHARACTER)
-                .stat(HARD)
+                .moveAction(packAlphaAction)
                 .playbook(PlaybookType.CHOPPER).build();
+        MoveAction fuckingThievesAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
+                .build();
         Move fuckingThieves = Move.builder()
                 .name("FUCKING THIEVES")
                 .description("_**Fucking thieves**_: when you have your gang search their pockets and saddlebags for something, roll+hard. It has to be something small enough to fit.\n" +
@@ -1008,7 +1242,7 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, one of you used to have just the thing, but it turns out that some asswipe stole it from you.")
                 .kind(MoveType.DEFAULT_CHARACTER)
-                .stat(HARD)
+                .moveAction(fuckingThievesAction)
                 .playbook(PlaybookType.CHOPPER).build();
 
         moveService.saveAll(Flux.just(chopperSpecial, packAlpha, fuckingThieves)).blockLast();
@@ -1019,6 +1253,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .id(UUID.randomUUID().toString())
                 .moveToModify(openBrain)
                 .statToRollWith(COOL).build();
+        MoveAction driverSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(COOL)
+                .build();
         Move driverSpecial = Move.builder()
                 .name("DRIVER SPECIAL")
                 .description("If you and another character have sex, roll+cool.\n" +
@@ -1029,14 +1269,26 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, you gotta go: take -1 ongoing, until you prove that it’s not like they own you or nothing.")
                 .kind(MoveType.DEFAULT_CHARACTER)
-                .stat(COOL)
+                .moveAction(driverSpecialAction)
                 .playbook(PlaybookType.DRIVER).build();
+        MoveAction combatDriverAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move combatDriver = Move.builder()
                 .name("COMBAT DRIVER")
                 .description("_**Combat driver**_: when you use your vehicle as a weapon, inflict +1harm. When you inflict v-harm, add +1 to your target’s roll. When you suffer v-harm, take -1 to your roll.")
                 .kind(MoveType.CHARACTER)
-                .stat(null)
+                .moveAction(combatDriverAction)
                 .playbook(PlaybookType.DRIVER).build();
+        MoveAction eyeOnTheDoorAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(COOL)
+                .build();
         Move eyeOnTheDoor = Move.builder()
                 .name("EYE ON THE DOOR")
                 .description("_**Eye on the door**_: name your escape route and roll+cool.\n" +
@@ -1046,7 +1298,7 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, you’re caught vulnerable, half in and half out.")
                 .kind(MoveType.CHARACTER)
-                .stat(COOL)
+                .moveAction(eyeOnTheDoorAction)
                 .playbook(PlaybookType.DRIVER).build();
         Move weatherEye = Move.builder()
                 .name("WEATHER EYE")
@@ -1055,6 +1307,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .rollModifier(weatherEyeMod)
                 .playbook(PlaybookType.DRIVER).build();
+        MoveAction reputationAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(COOL)
+                .build();
         Move reputation = Move.builder()
                 .name("REPUTATION")
                 .description("_**Reputation**_: when you meet someone important (your call), roll+cool.\n" +
@@ -1065,12 +1323,19 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, they’ve heard of you, but the MC decides what they’ve heard.")
                 .kind(MoveType.CHARACTER)
-                .stat(COOL)
+                .moveAction(reputationAction)
                 .playbook(PlaybookType.DRIVER).build();
+        MoveAction daredevilAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move daredevil = Move.builder()
                 .name("DAREDEVIL")
                 .description("_**Daredevil**_: if you go straight into danger without hedging your bets, you get +1armor. If you happen to be leading a gang or convoy, it gets +1armor too.")
                 .kind(MoveType.CHARACTER)
+                .moveAction(daredevilAction)
                 .playbook(PlaybookType.DRIVER).build();
         Move collector = Move.builder()
                 .name("COLLECTOR")
@@ -1115,6 +1380,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .rollModifier(battleHardenedMod)
                 .playbook(PlaybookType.GUNLUGGER).build();
+        MoveAction fuckThisShitAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
+                .build();
         Move fuckThisShit = Move.builder()
                 .name("FUCK THIS SHIT")
                 .description("_**Fuck this shit**_: name your escape route and roll+hard.\n" +
@@ -1125,7 +1396,7 @@ public class GameDataLoader implements CommandLineRunner {
                 "\n" +
                 "On a miss, you’re caught vulnerable, half in and half out.")
                 .kind(MoveType.CHARACTER)
-                .stat(HARD)
+                .moveAction(fuckThisShitAction)
                 .playbook(PlaybookType.GUNLUGGER).build();
         Move battlefieldInstincts = Move.builder()
                 .name("BATTLEFIELD INSTINCTS").description("_**Battlefield instincts**_: when you open your brain to the world’s psychic maelstrom, roll+hard instead of roll+weird, but only in battle.")
@@ -1146,17 +1417,29 @@ public class GameDataLoader implements CommandLineRunner {
                 .kind(MoveType.CHARACTER)
                 .stat(null)
                 .playbook(PlaybookType.GUNLUGGER).build();
+        MoveAction bloodcrazedAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move bloodcrazed = Move.builder()
                 .name("BLOODCRAZED")
                 .description("_**Bloodcrazed**_: whenever you inflict harm, inflict +1harm.")
                 .kind(MoveType.CHARACTER)
-                .stat(null)
+                .moveAction(bloodcrazedAction)
                 .playbook(PlaybookType.GUNLUGGER).build();
+        MoveAction notToBeFuckedWithAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move notToBeFuckedWith = Move.builder()
                 .name("NOT TO BE FUCKED WITH")
                 .description("_**NOT TO BE FUCKED WITH**_: in battle, you count as a small gang, with harm and armor according to your gear.")
                 .kind(MoveType.CHARACTER)
-                .stat(null)
+                .moveAction(notToBeFuckedWithAction)
                 .playbook(PlaybookType.GUNLUGGER).build();
 
         moveService.saveAll(Flux.just(gunluggerSpecial, battleHardened, fuckThisShit, battlefieldInstincts, insanoLikeDrano, preparedForTheInevitable, bloodcrazed, notToBeFuckedWith)).blockLast();
