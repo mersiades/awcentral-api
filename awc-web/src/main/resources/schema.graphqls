@@ -517,6 +517,12 @@ type Mutation {
         characterId: String!,
         otherCharacterId: String!,
         harm: Int!): Game
+    performHealHarmMove(gameId: String!,
+        gameroleId: String!,
+        otherGameroleId: String!,
+        characterId: String!,
+        otherCharacterId: String!,
+        harm: Int!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

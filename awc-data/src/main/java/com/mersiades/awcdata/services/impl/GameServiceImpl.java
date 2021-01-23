@@ -543,57 +543,132 @@ public class GameServiceImpl implements GameService {
                                              String characterId,
                                              String otherCharacterId,
                                              int harm) {
-        // Find User's Character
-        Character userCharacter = characterService.findById(characterId).block();
-        assert userCharacter != null;
 
-        // Find other Character
-        Character otherCharacter = characterService.findById(otherCharacterId).block();
-        assert otherCharacter != null;
+        return gameRepository.findById(gameId)
+                .flatMap(game -> {
+                    // Find User's Character
+                    Character userCharacter = characterService.findById(characterId).block();
+                    assert userCharacter != null;
 
-        Move inflictHarmMove = moveService.findByName("INFLICT HARM ON PC").block();
-        assert inflictHarmMove != null;
+                    // Find other Character
+                    Character otherCharacter = characterService.findById(otherCharacterId).block();
+                    assert otherCharacter != null;
 
-        GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
-                .gameId(gameId)
-                .gameroleId(gameroleId)
-                .messageType(MessageType.ADJUST_HX_MOVE)
-                .sentOn(Instant.now().toString()).build();
+                    Move inflictHarmMove = moveService.findByName("INFLICT HARM ON PC").block();
+                    assert inflictHarmMove != null;
 
-        gameRoleService.findById(otherGameroleId).map(gameRole1 -> {
-            Character character = gameRole1.getCharacters()
-                    .stream().filter(character1 -> character1.getId().equals(otherCharacterId)).findFirst().orElseThrow();
+                    GameMessage gameMessage = GameMessage.builder()
+                            .id(UUID.randomUUID().toString())
+                            .gameId(gameId)
+                            .gameroleId(gameroleId)
+                            .messageType(MessageType.ADJUST_HX_MOVE)
+                            .sentOn(Instant.now().toString()).build();
 
-            character.setHxBlock(character.getHxBlock()
-                    .stream().map(hxStat -> {
-                        if (hxStat.getCharacterId().equals(characterId)) {
-                            hxStat.setHxValue(hxStat.getHxValue() + harm);
-                        }
-                        return hxStat;
-                    }).collect(Collectors.toList()));
+                    gameRoleService.findById(otherGameroleId).map(gameRole1 -> {
+                        Character character = gameRole1.getCharacters()
+                                .stream().filter(character1 -> character1.getId().equals(otherCharacterId))
+                                .findFirst().orElseThrow();
 
-            character.getHarm().setValue(character.getHarm().getValue() + harm);
+                        character.setHxBlock(character.getHxBlock()
+                                .stream().map(hxStat -> {
+                                    if (hxStat.getCharacterId().equals(characterId)) {
+                                        hxStat.setHxValue(hxStat.getHxValue() + harm);
+                                    }
+                                    return hxStat;
+                                }).collect(Collectors.toList()));
 
-            characterService.save(character).block();
+                        character.getHarm().setValue(character.getHarm().getValue() + harm);
 
-            return gameRole1;
-        }).flatMap(gameRoleService::save).block();
+                        characterService.save(character).block();
 
-        gameMessage.setContent(String.format("%s suffered %s-harm at the hand of %s.%n%n%s's Hx with %s has been increased by **%s**",
-                otherCharacter.getName(),
-                harm,
-                userCharacter.getName(),
-                otherCharacter.getName(),
-                userCharacter.getName(),
-                harm
-                ));
-        gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), inflictHarmMove.getName()).toUpperCase());
+                        return gameRole1;
+                    }).flatMap(gameRoleService::save).block();
 
-        return gameRepository.findById(gameId).map(game -> {
-            game.getGameMessages().add(gameMessage);
-            return game;
-        }).flatMap(gameRepository::save);
+                    gameMessage.setContent(String.format("%s suffered %s-harm at the hand of %s.%n%n%s's Hx with %s has been increased by **%s**",
+                            otherCharacter.getName(),
+                            harm,
+                            userCharacter.getName(),
+                            otherCharacter.getName(),
+                            userCharacter.getName(),
+                            harm
+                    ));
+                    gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), inflictHarmMove.getName()).toUpperCase());
+                    game.getGameMessages().add(gameMessage);
+                    return Mono.just(game);
+                })
+                .flatMap(gameRepository::save);
+    }
+
+    @Override
+    public Mono<Game> performHealHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm) {
+        return gameRepository.findById(gameId)
+                .flatMap(game -> {
+                    // Find User's Character
+                    Character userCharacter = characterService.findById(characterId).block();
+                    assert userCharacter != null;
+
+                    // Find other Character
+                    Character otherCharacter = characterService.findById(otherCharacterId).block();
+                    assert otherCharacter != null;
+
+                    Move healHarmMove = moveService.findByName("HEAL PC HARM").block();
+                    assert healHarmMove != null;
+
+                    GameMessage gameMessage = GameMessage.builder()
+                            .id(UUID.randomUUID().toString())
+                            .gameId(gameId)
+                            .gameroleId(gameroleId)
+                            .messageType(MessageType.ADJUST_HX_MOVE)
+                            .sentOn(Instant.now().toString()).build();
+
+
+                    // Adjust Hx on user's Character
+                    gameRoleService.findById(gameroleId).map(gameRole1 -> {
+                        Character character = gameRole1.getCharacters()
+                                .stream().filter(character1 -> character1.getId().equals(characterId))
+                                .findFirst().orElseThrow();
+
+                        character.setHxBlock(character.getHxBlock()
+                                .stream().map(hxStat -> {
+                                    if (hxStat.getCharacterId().equals(otherCharacterId)) {
+                                        hxStat.setHxValue(hxStat.getHxValue() + harm);
+                                    }
+                                    return hxStat;
+                                }).collect(Collectors.toList()));
+
+                        characterService.save(character).block();
+
+                        return gameRole1;
+                    }).flatMap(gameRoleService::save).block();
+
+                    // Adjust harm on other Character
+                    gameRoleService.findById(otherGameroleId).map(gameRole1 -> {
+                        Character character = gameRole1.getCharacters()
+                                .stream().filter(character1 -> character1.getId().equals(otherCharacterId))
+                                .findFirst().orElseThrow();
+
+                        character.getHarm().setValue(character.getHarm().getValue() - harm);
+
+                        characterService.save(character).block();
+
+                        return gameRole1;
+                    }).flatMap(gameRoleService::save).block();
+
+                    gameMessage.setContent(String.format("%s healed %s of %s-harm.%n%n%s's Hx with %s has been increased by **%s**, and %s's harm has been decreased by **%s**.",
+                            userCharacter.getName(),
+                            otherCharacter.getName(),
+                            harm,
+                            userCharacter.getName(),
+                            otherCharacter.getName(),
+                            harm,
+                            otherCharacter.getName(),
+                            harm
+                    ));
+                    gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), healHarmMove.getName()).toUpperCase());
+                    game.getGameMessages().add(gameMessage);
+                    return Mono.just(game);
+                })
+                .flatMap(gameRepository::save);
     }
 
     @Override
