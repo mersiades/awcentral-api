@@ -48,6 +48,7 @@ public class CharacterMove extends Move {
         CharacterMove characterMove = new CharacterMove();
 
         characterMove.setId(UUID.randomUUID().toString());
+        characterMove.setMoveAction(move.getMoveAction());
         characterMove.setName(move.getName());
         characterMove.setDescription(move.getDescription());
         characterMove.setStat(move.getStat());
