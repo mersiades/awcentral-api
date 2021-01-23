@@ -5,6 +5,7 @@ enum MessageType {
     ROLL_HX_MOVE
     BARTER_MOVE
     ROLL_BARTER_MOVE
+    SUFFER_HARM_MOVE
 }
 enum RoleType {
     MC
@@ -264,6 +265,8 @@ type GameMessage {
     modifierStatName: StatType
     barterSpent: Int
     currentBarter: Int
+    harmSuffered: Int
+    currentHarm: Int
 }
 
 type Npc {
@@ -500,6 +503,7 @@ type Mutation {
     performHxRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
     performBarterMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
     performBarterRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
+    performSufferHarmMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, harm: Int!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

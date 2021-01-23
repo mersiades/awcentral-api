@@ -5,5 +5,6 @@ public enum MessageType {
     ROLL_STAT_MOVE,
     ROLL_HX_MOVE,
     BARTER_MOVE,
-    ROLL_BARTER_MOVE
+    ROLL_BARTER_MOVE,
+    SUFFER_HARM_MOVE
 }

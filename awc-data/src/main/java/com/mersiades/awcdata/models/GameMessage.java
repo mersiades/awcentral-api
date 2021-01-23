@@ -45,4 +45,8 @@ public class GameMessage {
 
     private int currentBarter;
 
+    private int harmSuffered;
+
+    private int currentHarm;
+
 }

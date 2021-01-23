@@ -337,6 +337,11 @@ public class GameDataLoader implements CommandLineRunner {
 
         System.out.println("|| --- Loading peripheral moves --- ||");
         /* ----------------------------- PERIPHERAL MOVES --------------------------------- */
+        MoveAction sufferHarmAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.HARM)
+                .build();
         Move sufferHarm = Move.builder()
                 .name("SUFFER HARM")
                 .description("When you _**suffer harm**_, roll+harm suffered (after armor, if you’re wearing any).\n" +
@@ -356,7 +361,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, the MC can nevertheless choose something from the 7–9 list above. If she does, though, it’s instead of some of the harm you’re suffering, so you take -1harm.")
                 .kind(MoveType.PERIPHERAL)
-                .stat(null)
+                .moveAction(sufferHarmAction)
                 .playbook(null)
                 .build();
         Move inflictHarm = Move.builder()

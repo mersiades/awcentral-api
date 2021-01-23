@@ -502,6 +502,40 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Mono<Game> performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm) {
+        // Find Character
+        Character character = characterService.findById(characterId).block();
+        assert character != null;
+
+        // Find move (SUFFER HARM)
+        Move move = moveService.findById(moveId).block();
+        assert move != null;
+
+        character.getHarm().setValue(character.getHarm().getValue() + harm);
+        Character savedCharacter = characterService.save(character).block();
+        assert savedCharacter != null;
+
+        // Save Character on GameRole
+        gameRoleService.findById(gameroleId).map(gameRole1 -> {
+            gameRole1.setCharacters(List.of(savedCharacter));
+            return gameRole1;
+        }).flatMap(gameRoleService::save).block();
+
+        // Create GameMessage
+        GameMessage gameMessage = getGameMessageWithDiceRolls(gameId, gameroleId, MessageType.SUFFER_HARM_MOVE);
+        gameMessage.setContent(move.getDescription());
+        gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
+        gameMessage.setHarmSuffered(harm);
+        gameMessage.setCurrentHarm(savedCharacter.getHarm().getValue());
+        gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + gameMessage.getHarmSuffered());
+
+        return gameRepository.findById(gameId).map(game -> {
+            game.getGameMessages().add(gameMessage);
+            return game;
+        }).flatMap(gameRepository::save);
+    }
+
+    @Override
     public Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit) {
         return gameRepository.findById(gameId, skip, limit);
     }
