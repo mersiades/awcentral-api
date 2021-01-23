@@ -41,4 +41,6 @@ public interface GameService extends ReactiveCrudService<Game, String> {
     Mono<Game> performBarterRollMove(String gameId, String gameroleId, String characterId, String moveId, int barter);
 
     Mono<Game> performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm);
+
+    Mono<Game> performInflictHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm);
 }

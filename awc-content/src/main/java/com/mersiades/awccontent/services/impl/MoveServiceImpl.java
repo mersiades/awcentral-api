@@ -52,4 +52,9 @@ public class MoveServiceImpl implements MoveService {
     public Flux<Move> findAllByPlaybookAndKind(PlaybookType playbookType, MoveType kind) {
         return moveRepository.findAllByPlaybookAndKind(playbookType, kind);
     }
+
+    @Override
+    public Mono<Move> findByName(String moveName) {
+        return moveRepository.findByName(moveName);
+    }
 }

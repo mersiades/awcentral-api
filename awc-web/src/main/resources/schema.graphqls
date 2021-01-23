@@ -6,6 +6,7 @@ enum MessageType {
     BARTER_MOVE
     ROLL_BARTER_MOVE
     SUFFER_HARM_MOVE
+    ADJUST_HX_MOVE
 }
 enum RoleType {
     MC
@@ -498,12 +499,24 @@ type Mutation {
     finishCharacterCreation(gameRoleId: String!,
         characterId: String!): Character
     finishPreGame(gameId: String!): Game
+#    Move categories
     performPrintMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
-    performStatRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
-    performHxRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
     performBarterMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
+
+#    Roll move categories
+    performHxRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
+    performStatRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
+
+#    Specific moves
+    # TODO: Rename to performMakeWantKnownMove, adjust enums too
     performBarterRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
     performSufferHarmMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, harm: Int!): Game
+    performInflictHarmMove(gameId: String!,
+        gameroleId: String!,
+        otherGameroleId: String!,
+        characterId: String!,
+        otherCharacterId: String!,
+        harm: Int!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

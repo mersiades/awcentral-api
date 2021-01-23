@@ -364,14 +364,22 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(sufferHarmAction)
                 .playbook(null)
                 .build();
+        MoveAction inflictHarmAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ADJUST_HX)
+                .build();
         Move inflictHarm = Move.builder()
                 .name("INFLICT HARM ON PC")
                 .description("When you _**inflict harm on another player’s character**_, the other character gets +1Hx with you (on their sheet) for every segment of harm you inflict.\n" +
                         "\n" +
                         "If this brings them to Hx+4, they reset to Hx+1 as usual, and therefore mark experience.")
                 .kind(MoveType.PERIPHERAL)
-                .stat(null)
+                .moveAction(inflictHarmAction)
                 .playbook(null)
+                .build();
+        MoveAction healPcHarmAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ADJUST_HX)
                 .build();
         Move healPcHarm = Move.builder()
                 .name("HEAL PC HARM")
@@ -379,7 +387,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "If this brings you to Hx+4, you reset to Hx+1 as usual, and therefore mark experience.")
                 .kind(MoveType.PERIPHERAL)
-                .stat(null)
+                .moveAction(healPcHarmAction)
                 .playbook(null)
                 .build();
         MoveAction giveBarterAction = MoveAction.builder()
@@ -1226,13 +1234,17 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- CHOPPER MOVES --------------------------------- */
         System.out.println("|| --- Loading Chopper moves --- ||");
+        MoveAction chopperSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ADJUST_HX)
+                .build();
         Move chopperSpecial = Move.builder()
-                .name("CHOPPER_SPECIAL")
+                .name("CHOPPER SPECIAL")
                 .description("If you and another character have sex, they immediately change their sheet to say Hx+3 with you.\n" +
                         "\n" +
                         "They also choose whether to give you -1 or +1 to your Hx with them, on your sheet.")
                 .kind(MoveType.DEFAULT_CHARACTER)
-                .stat(null)
+                .moveAction(chopperSpecialAction)
                 .playbook(PlaybookType.CHOPPER).build();
         MoveAction packAlphaAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
