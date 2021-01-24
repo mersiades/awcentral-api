@@ -336,6 +336,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
             AngelKit angelKit = AngelKit.builder().id(UUID.randomUUID().toString())
                     .hasSupplier(hasSupplier)
+                    .angelKitMoves(angelKitMoves)
                     .stock(stock).build();
 
             assert angelKitMoves != null;

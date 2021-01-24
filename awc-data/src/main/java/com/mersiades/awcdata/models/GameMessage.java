@@ -49,4 +49,8 @@ public class GameMessage {
 
     private int currentHarm;
 
+    private int stockSpent;
+
+    private int currentStock;
+
 }

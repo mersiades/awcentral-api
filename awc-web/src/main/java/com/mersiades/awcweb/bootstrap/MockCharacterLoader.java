@@ -120,8 +120,13 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .stats(List.of(angelCool, angelHard, angelHot, angelSharp, angelWeird))
                 .build();
 
+        List<Move> angelKitMoves = moveService
+                .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.UNIQUE)
+                .collectList().block();
+
         AngelKit angelKit = AngelKit.builder().id(UUID.randomUUID().toString())
                 .hasSupplier(false)
+                .angelKitMoves(angelKitMoves)
                 .stock(2).build();
 
         PlaybookUnique angelUnique = PlaybookUnique.builder()

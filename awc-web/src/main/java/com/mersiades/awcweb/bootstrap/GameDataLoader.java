@@ -983,8 +983,14 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- ANGEL KIT MOVES --------------------------------- */
 
+        MoveAction stabilizeAndHealAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STOCK)
+                .statToRollWith(null)
+                .build();
         Move stabilizeAndHeal = Move.builder()
-                .name("STABILIZE AND HEAL SOMEONE").description("_**stabilize and heal someone at 9:00 or past**_: roll+stock spent.\n" +
+                .name(stabilizeAndHealName).description("_**stabilize and heal someone at 9:00 or past**_: roll+stock spent.\n" +
                         "\n" +
                         "On a hit, they stabilize and heal to 6:00, and choose 2 (on a 10+) or 1 (on a 7–9):\n" +
                         "\n" +
@@ -997,16 +1003,28 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, they take 1-harm instead.")
                 .kind(MoveType.UNIQUE)
-                .stat(null)
+                .moveAction(stabilizeAndHealAction)
                 .playbook(PlaybookType.ANGEL).build();
+        MoveAction speedTheRecoveryOfSomeoneAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.STOCK)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move speedTheRecoveryOfSomeone = Move.builder()
-                .name("SPEED THE RECOVERY OF SOMEONE")
+                .name(speedRecoveryName)
                 .description("_**speed the recovery of someone at 3:00 or 6:00**_: don’t roll. They choose: you spend 1-stock and they spend 4 days (3:00) or 1 week (6:00) blissed out on chillstabs, immobile but happy, or else they do their time in agony like everyone else.")
                 .kind(MoveType.UNIQUE)
-                .stat(null)
+                .moveAction(speedTheRecoveryOfSomeoneAction)
                 .playbook(PlaybookType.ANGEL).build();
+        MoveAction reviveSomeoneAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.STOCK)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move reviveSomeone = Move.builder()
-                .name("REVIVE SOMEONE").description("_**revive someone whose life has become untenable**_, spend 2-stock.\n" +
+                .name(reviveSomeoneName).description("_**revive someone whose life has become untenable**_, spend 2-stock.\n" +
                         "\n" +
                         "They come back, but you get to choose how they come back. Choose from the regular “when life is untenable” list, or else choose 1:\n" +
                         "\n" +
@@ -1014,13 +1032,19 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *They come back with a prosthetic (you detail).*\n" +
                         "- *You and they both come back with +1weird (max weird+3).*")
                 .kind(MoveType.UNIQUE)
-                .stat(null)
+                .moveAction(reviveSomeoneAction)
                 .playbook(PlaybookType.ANGEL).build();
+        MoveAction treatAnNpcAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.STOCK)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move treatAnNpc = Move.builder()
-                .name("TREAT AN NPC")
+                .name(treatNpcName)
                 .description("_**treat an NPC**_: spend 1-stock. They’re stable now and they’ll recover in time. ")
                 .kind(MoveType.UNIQUE)
-                .stat(null)
+                .moveAction(treatAnNpcAction)
                 .playbook(PlaybookType.ANGEL).build();
 
         moveService.saveAll(Flux.just(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc)).blockLast();

@@ -12,4 +12,8 @@ public class MoveNames {
     public static String chopperSpecialName = "CHOPPER SPECIAL";
     public static String makeWantKnownName = "MAKE WANT KNOWN";
     public static String helpOrInterfereName = "HELP OR INTERFERE WITH SOMEONE";
+    public static String stabilizeAndHealName = "STABILIZE AND HEAL SOMEONE";
+    public static String speedRecoveryName = "SPEED THE RECOVERY OF SOMEONE";
+    public static String reviveSomeoneName = "REVIVE SOMEONE";
+    public static String treatNpcName = "TREAT AN NPC";
 }
