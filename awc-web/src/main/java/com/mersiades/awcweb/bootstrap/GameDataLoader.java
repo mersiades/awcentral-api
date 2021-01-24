@@ -16,6 +16,7 @@ import com.mersiades.awccontent.services.*;
 
 import java.util.*;
 
+import static com.mersiades.awccontent.constants.MoveNames.*;
 import static com.mersiades.awccontent.enums.StatType.*;
 
 @Component
@@ -125,7 +126,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(COOL)
                 .build();
         Move doSomethingUnderFire = Move.builder()
-                .name("DO SOMETHING UNDER FIRE")
+                .name(underFireName)
                 .description("When you _**do something under fire**_, or dig in to endure fire, roll+cool.\n" +
                         "\n" +
                         "On a 10+, you do it.\n" +
@@ -368,8 +369,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .id(UUID.randomUUID().toString())
                 .actionType(MoveActionType.ADJUST_HX)
                 .build();
-        Move inflictHarm = Move.builder()
-                .name("INFLICT HARM ON PC")
+        Move inflictHarmMove = Move.builder()
+                .name(inflictHarmName)
                 .description("When you _**inflict harm on another player’s character**_, the other character gets +1Hx with you (on their sheet) for every segment of harm you inflict.\n" +
                         "\n" +
                         "If this brings them to Hx+4, they reset to Hx+1 as usual, and therefore mark experience.")
@@ -382,7 +383,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .actionType(MoveActionType.ADJUST_HX)
                 .build();
         Move healPcHarm = Move.builder()
-                .name("HEAL PC HARM")
+                .name(healHarmName)
                 .description("When you _**heal another player’s character’s harm**_, you get +1Hx with them (on your sheet) for every segment of harm you heal.\n" +
                         "\n" +
                         "If this brings you to Hx+4, you reset to Hx+1 as usual, and therefore mark experience.")
@@ -508,7 +509,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
 
-        moveService.saveAll(Flux.just(sufferHarm, inflictHarm, healPcHarm, giveBarter, goToMarket, makeWantKnown,
+        moveService.saveAll(Flux.just(sufferHarm, inflictHarmMove, healPcHarm, giveBarter, goToMarket, makeWantKnown,
                 insight, augury, changeHighlightedStats)).blockLast();
 
         System.out.println("|| --- Loading battle moves --- ||");
@@ -898,7 +899,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(null)
                 .build();
         Move angelSpecial = Move.builder()
-                .name("ANGEL SPECIAL")
+                .name(angelSpecialName)
                 .description("If you and another character have sex, your Hx with them on your sheet goes immediately to +3, and they immediately get +1 to their Hx with you on their sheet.\n" +
                         "\n" +
                         "If that brings their Hx with you to +4, they reset it to +1 instead, as usual, and so mark experience.")
@@ -1239,7 +1240,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .actionType(MoveActionType.ADJUST_HX)
                 .build();
         Move chopperSpecial = Move.builder()
-                .name("CHOPPER SPECIAL")
+                .name(chapperSpecialName)
                 .description("If you and another character have sex, they immediately change their sheet to say Hx+3 with you.\n" +
                         "\n" +
                         "They also choose whether to give you -1 or +1 to your Hx with them, on your sheet.")

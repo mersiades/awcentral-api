@@ -25,6 +25,8 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.mersiades.awccontent.constants.MoveNames.*;
+
 @Service
 public class GameServiceImpl implements GameService {
 
@@ -554,7 +556,7 @@ public class GameServiceImpl implements GameService {
                     Character otherCharacter = characterService.findById(otherCharacterId).block();
                     assert otherCharacter != null;
 
-                    Move inflictHarmMove = moveService.findByName("INFLICT HARM ON PC").block();
+                    Move inflictHarmMove = moveService.findByName(inflictHarmName).block();
                     assert inflictHarmMove != null;
 
                     GameMessage gameMessage = GameMessage.builder()
@@ -616,7 +618,7 @@ public class GameServiceImpl implements GameService {
                     Character otherCharacter = characterService.findById(otherCharacterId).block();
                     assert otherCharacter != null;
 
-                    Move healHarmMove = moveService.findByName("HEAL PC HARM").block();
+                    Move healHarmMove = moveService.findByName(healHarmName).block();
                     assert healHarmMove != null;
 
                     GameMessage gameMessage = GameMessage.builder()
@@ -693,7 +695,7 @@ public class GameServiceImpl implements GameService {
                     assert otherCharacter != null;
 
                     CharacterMove angelSpecialMove = userCharacter.getCharacterMoves()
-                            .stream().filter(characterMove -> characterMove.getName().equals("ANGEL SPECIAL"))
+                            .stream().filter(characterMove -> characterMove.getName().equals(angelSpecialName))
                             .findFirst().orElseThrow();
                     assert angelSpecialMove != null;
 

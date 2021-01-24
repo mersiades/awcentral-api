@@ -504,6 +504,7 @@ type Mutation {
     performBarterMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
 
 #    Roll move categories
+#    TODO: rename to performHelpOrInterfereMove
     performHxRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
     performStatRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
 
