@@ -34,11 +34,11 @@ public interface GameService extends ReactiveCrudService<Game, String> {
 
     Mono<Game> performStatRollMove(String gameId, String gameroleId, String characterId, String moveId);
 
-    Mono<Game> performHxRollMove(String gameId, String gameroleId, String characterId, String moveId, String targetId);
+    Mono<Game> performHelpOrInterfereMove(String gameId, String gameroleId, String characterId, String moveId, String targetId);
 
     Mono<Game> performBarterMove(String gameId, String gameroleId, String characterId, String moveId, int barter);
 
-    Mono<Game> performBarterRollMove(String gameId, String gameroleId, String characterId, String moveId, int barter);
+    Mono<Game> performMakeWantKnownMove(String gameId, String gameroleId, String characterId, String moveId, int barter);
 
     Mono<Game> performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm);
 

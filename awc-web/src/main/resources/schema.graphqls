@@ -504,13 +504,11 @@ type Mutation {
     performBarterMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
 
 #    Roll move categories
-#    TODO: rename to performHelpOrInterfereMove
-    performHxRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
     performStatRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
 
 #    Specific moves
-    # TODO: Rename to performMakeWantKnownMove, adjust enums too
-    performBarterRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
+    performHelpOrInterfereMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
+    performMakeWantKnownMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
     performSufferHarmMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, harm: Int!): Game
     performInflictHarmMove(gameId: String!,
         gameroleId: String!,

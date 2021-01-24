@@ -371,7 +371,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Mono<Game> performHxRollMove(String gameId, String gameroleId, String characterId, String moveId, String targetId) {
+    public Mono<Game> performHelpOrInterfereMove(String gameId, String gameroleId, String characterId, String moveId, String targetId) {
         Character character = characterService.findById(characterId).block();
         assert character != null;
 
@@ -473,7 +473,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Mono<Game> performBarterRollMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
+    public Mono<Game> performMakeWantKnownMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
         Character character = characterService.findById(characterId).block();
         assert character != null;
         character.setBarter(character.getBarter() - barter);

@@ -160,9 +160,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.performStatRollMove(gameId, gameroleId, characterId, moveId).block();
     }
 
-    public Game performHxRollMove(String gameId, String gameroleId, String characterId, String moveId, String targetId) {
+    public Game performHelpOrInterfereMove(String gameId, String gameroleId, String characterId, String moveId, String targetId) {
         System.out.println("Performing hx roll move for Character: " + characterId);
-        return gameService.performHxRollMove(gameId, gameroleId, characterId, moveId, targetId).block();
+        return gameService.performHelpOrInterfereMove(gameId, gameroleId, characterId, moveId, targetId).block();
     }
 
     public Game performBarterMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
@@ -170,10 +170,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.performBarterMove(gameId, gameroleId, characterId, moveId, barter).block();
     }
 
-    public Game performBarterRollMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
+    public Game performMakeWantKnownMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
         System.out.println("Performing barter roll move for Character: " + characterId);
-        return gameService.performBarterRollMove(gameId, gameroleId, characterId, moveId, barter).block();
+        return gameService.performMakeWantKnownMove(gameId, gameroleId, characterId, moveId, barter).block();
     }
+
 
     public Game performInflictHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm) {
         System.out.println("Performing INFLICT HARM ON PC move for Character: " + characterId);

@@ -224,7 +224,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(null)
                 .build();
         Move helpOrInterfere = Move.builder()
-                .name("HELP OR INTERFERE WITH SOMEONE")
+                .name(helpOrInterfereName)
                 .description("When you _**help**_ or _**interfere**_ with someone who’s making a roll, roll+Hx.\n" +
                         "\n" +
                         "On a 10+, they take +2 (help) or -2 (interfere) to their roll.\n" +
@@ -434,7 +434,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollType(RollType.BARTER)
                 .build();
         Move makeWantKnown = Move.builder()
-                .name("MAKE WANT KNOWN")
+                .name(makeWantKnownName)
                 .description("When you _**make known that you want a thing and drop jingle to speed it on its way**_, roll+barter spent (max roll+3). It has to be a thing you could legitimately get this way.\n" +
                         "\n" +
                         "On a 10+ it comes to you, no strings attached.\n" +
@@ -1240,7 +1240,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .actionType(MoveActionType.ADJUST_HX)
                 .build();
         Move chopperSpecial = Move.builder()
-                .name(chapperSpecialName)
+                .name(chopperSpecialName)
                 .description("If you and another character have sex, they immediately change their sheet to say Hx+3 with you.\n" +
                         "\n" +
                         "They also choose whether to give you -1 or +1 to your Hx with them, on your sheet.")
