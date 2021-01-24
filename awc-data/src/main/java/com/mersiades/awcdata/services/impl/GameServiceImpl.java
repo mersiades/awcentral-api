@@ -761,6 +761,89 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Mono<Game> performChopperSpecialMove(String gameId,
+                                                String gameroleId,
+                                                String otherGameroleId,
+                                                String characterId,
+                                                String otherCharacterId,
+                                                int hxChange) {
+        return gameRepository.findById(gameId)
+                .flatMap(game -> {
+                    // Find User's Character
+                    Character userCharacter = characterService.findById(characterId).block();
+                    assert userCharacter != null;
+
+                    // Find other Character
+                    Character otherCharacter = characterService.findById(otherCharacterId).block();
+                    assert otherCharacter != null;
+
+                    CharacterMove chopperSpecialMove = userCharacter.getCharacterMoves()
+                            .stream().filter(characterMove -> characterMove.getName().equals(chopperSpecialName))
+                            .findFirst().orElseThrow();
+                    assert chopperSpecialMove != null;
+
+                    GameMessage gameMessage = GameMessage.builder()
+                            .id(UUID.randomUUID().toString())
+                            .gameId(gameId)
+                            .gameroleId(gameroleId)
+                            .messageType(MessageType.ADJUST_HX_MOVE)
+                            .sentOn(Instant.now().toString()).build();
+
+
+                    // Adjust Hx on user's Character
+                    gameRoleService.findById(gameroleId).map(gameRole1 -> {
+                        Character character = gameRole1.getCharacters()
+                                .stream().filter(character1 -> character1.getId().equals(characterId))
+                                .findFirst().orElseThrow();
+
+                        character.setHxBlock(character.getHxBlock()
+                                .stream().map(hxStat -> {
+                                    if (hxStat.getCharacterId().equals(otherCharacterId)) {
+                                        hxStat.setHxValue(hxStat.getHxValue() + hxChange);
+                                    }
+                                    return hxStat;
+                                }).collect(Collectors.toList()));
+
+                        characterService.save(character).block();
+
+                        return gameRole1;
+                    }).flatMap(gameRoleService::save).block();
+
+                    // Adjust Hx on other Character
+                    gameRoleService.findById(otherGameroleId).map(gameRole1 -> {
+                        Character character = gameRole1.getCharacters()
+                                .stream().filter(character1 -> character1.getId().equals(otherCharacterId))
+                                .findFirst().orElseThrow();
+
+                        character.setHxBlock(character.getHxBlock()
+                                .stream().map(hxStat -> {
+                                    if (hxStat.getCharacterId().equals(characterId)) {
+                                        hxStat.setHxValue(3);
+                                    }
+                                    return hxStat;
+                                }).collect(Collectors.toList()));
+
+                        characterService.save(character).block();
+
+                        return gameRole1;
+                    }).flatMap(gameRoleService::save).block();
+
+                    gameMessage.setContent(String.format("%s and %s shagged, and now %s's Hx with %s is **3**, and %s's Hx with %s has increased by **1**.",
+                            userCharacter.getName(),
+                            otherCharacter.getName(),
+                            otherCharacter.getName(),
+                            userCharacter.getName(),
+                            userCharacter.getName(),
+                            otherCharacter.getName()
+                    ));
+                    gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), chopperSpecialMove.getName()).toUpperCase());
+                    game.getGameMessages().add(gameMessage);
+                    return Mono.just(game);
+                })
+                .flatMap(gameRepository::save);
+    }
+
+    @Override
     public Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit) {
         return gameRepository.findById(gameId, skip, limit);
     }

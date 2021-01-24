@@ -47,4 +47,6 @@ public interface GameService extends ReactiveCrudService<Game, String> {
     Mono<Game> performHealHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm);
 
     Mono<Game> performAngelSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId);
+
+    Mono<Game> performChopperSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int hxChange);
 }

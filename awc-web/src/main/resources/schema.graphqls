@@ -527,6 +527,11 @@ type Mutation {
         otherGameroleId: String!,
         characterId: String!,
         otherCharacterId: String!): Game
+    performChopperSpecialMove(gameId: String!,
+        gameroleId: String!,
+        otherGameroleId: String!,
+        characterId: String!,
+        otherCharacterId: String!, hxChange: Int!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

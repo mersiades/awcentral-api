@@ -187,12 +187,17 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public Game performAngelSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId) {
-        System.out.println("Performing HEAL PC HARM move for Character: " + characterId);
+        System.out.println("Performing ANGEL SPECIAL move for Character: " + characterId);
         return gameService.performAngelSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId).block();
     }
 
+    public Game performChopperSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int hxChange) {
+        System.out.println("Performing CHOPPER SPECIAL move for Character: " + characterId);
+        return gameService.performChopperSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, hxChange).block();
+    }
+
     public Game performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm) {
-        System.out.println("Performing suffer harm move for Character: " + characterId);
+        System.out.println("Performing SUFFER HARM move for Character: " + characterId);
         return gameService.performSufferHarmMove(gameId, gameroleId, characterId, moveId, harm).block();
     }
 
