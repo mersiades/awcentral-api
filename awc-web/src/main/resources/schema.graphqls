@@ -505,6 +505,7 @@ type Mutation {
 #    Move categories
     performPrintMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
     performBarterMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
+    performStockMove(gameId: String!, gameroleId: String!, characterId: String!, moveName: String!, stockSpent: Int!): Game
 
 #    Roll move categories
     performStatRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
@@ -536,7 +537,6 @@ type Mutation {
         characterId: String!,
         otherCharacterId: String!, hxChange: Int!): Game
     performStabilizeAndHealMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
-    performSpeedRecoveryMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

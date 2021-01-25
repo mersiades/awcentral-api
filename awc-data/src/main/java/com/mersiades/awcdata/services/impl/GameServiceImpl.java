@@ -883,15 +883,15 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Mono<Game> performSpeedRecoveryMove(String gameId, String gameroleId, String characterId, int stockSpent) {
+    public Mono<Game> performStockMove(String gameId, String gameroleId, String characterId, String moveName, int stockSpent) {
         return gameRepository.findById(gameId)
                 .flatMap(game -> {
                     // Find User's Character
                     Character userCharacter = characterService.findById(characterId).block();
                     assert userCharacter != null;
 
-                    Move speedRecoveryMove = moveService.findByName(speedRecoveryName).block();
-                    assert speedRecoveryMove != null;
+                    Move move = moveService.findByName(moveName).block();
+                    assert move != null;
 
                     GameMessage gameMessage = GameMessage.builder()
                             .id(UUID.randomUUID().toString())
@@ -914,9 +914,8 @@ public class GameServiceImpl implements GameService {
                         return gameRole1;
                     }).flatMap(gameRoleService::save).block();
 
-                    gameMessage.setContent(speedRecoveryMove.getDescription());
-                    gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), speedRecoveryMove.getName()).toUpperCase());
-                    gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + stockSpent);
+                    gameMessage.setContent(move.getDescription());
+                    gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), move.getName()).toUpperCase());
                     gameMessage.setStockSpent(stockSpent);
                     gameMessage.setCurrentStock(userCharacter.getPlaybookUnique().getAngelKit().getStock() - stockSpent);
                     game.getGameMessages().add(gameMessage);
