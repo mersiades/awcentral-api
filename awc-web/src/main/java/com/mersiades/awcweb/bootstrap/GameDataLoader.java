@@ -1598,6 +1598,38 @@ public class GameDataLoader implements CommandLineRunner {
 
         nameService.saveAll(Flux.just(smith2, jones, jackson, marsh, lively, burroughs, gritch, joyette, iris, marie,
                 amiette, suselle, cybelle, pallor, sin, charmer, pity, brace, sundown)).blockLast();
+
+        Name lauren = Name.builder().playbookType(PlaybookType.DRIVER).name("Lauren").build();
+        Name audrey = Name.builder().playbookType(PlaybookType.DRIVER).name("Audrey").build();
+        Name farley = Name.builder().playbookType(PlaybookType.DRIVER).name("Farley").build();
+        Name sammy = Name.builder().playbookType(PlaybookType.DRIVER).name("Sammy").build();
+        Name katherine = Name.builder().playbookType(PlaybookType.DRIVER).name("Katherine").build();
+        Name marilyn = Name.builder().playbookType(PlaybookType.DRIVER).name("Marilyn").build();
+        Name james = Name.builder().playbookType(PlaybookType.DRIVER).name("James").build();
+        Name bridget = Name.builder().playbookType(PlaybookType.DRIVER).name("Bridget").build();
+        Name paul = Name.builder().playbookType(PlaybookType.DRIVER).name("Paul").build();
+        Name annette = Name.builder().playbookType(PlaybookType.DRIVER).name("Annette").build();
+        Name marlene = Name.builder().playbookType(PlaybookType.DRIVER).name("Marlene").build();
+        Name frankie = Name.builder().playbookType(PlaybookType.DRIVER).name("Frankie").build();
+        Name marlon = Name.builder().playbookType(PlaybookType.DRIVER).name("Marlon").build();
+        Name kim1 = Name.builder().playbookType(PlaybookType.DRIVER).name("Kim").build();
+        Name errol = Name.builder().playbookType(PlaybookType.DRIVER).name("Errol").build();
+        Name humphrey = Name.builder().playbookType(PlaybookType.DRIVER).name("Humphrey").build();
+        Name phoenix = Name.builder().playbookType(PlaybookType.DRIVER).name("Phoenix").build();
+        Name mustang = Name.builder().playbookType(PlaybookType.DRIVER).name("Mustang").build();
+        Name impala = Name.builder().playbookType(PlaybookType.DRIVER).name("Impala").build();
+        Name suv = Name.builder().playbookType(PlaybookType.DRIVER).name("Suv").build();
+        Name cougar = Name.builder().playbookType(PlaybookType.DRIVER).name("Cougar").build();
+        Name cobra = Name.builder().playbookType(PlaybookType.DRIVER).name("Cobra").build();
+        Name dart = Name.builder().playbookType(PlaybookType.DRIVER).name("Dart").build();
+        Name gremlin = Name.builder().playbookType(PlaybookType.DRIVER).name("Gremlin").build();
+        Name grandCherokee = Name.builder().playbookType(PlaybookType.DRIVER).name("Grand Cherokee").build();
+        Name jag = Name.builder().playbookType(PlaybookType.DRIVER).name("Jag").build();
+        Name beemer = Name.builder().playbookType(PlaybookType.DRIVER).name("Beemer").build();
+
+        nameService.saveAll(Flux.just(lauren, audrey, farley, sammy, katherine, marilyn, james, bridget, paul,
+                annette, marlene, frankie, marlon, kim1, errol, humphrey, phoenix, mustang, impala, suv, cougar,
+                cobra, dart, gremlin, grandCherokee, jag, beemer));
     }
 
     private void loadLooks() {
@@ -1700,6 +1732,39 @@ public class GameDataLoader implements CommandLineRunner {
                 brainer9, brainer10, brainer11, brainer12, brainer13, brainer14, brainer15, brainer16, brainer17,
                 brainer18, brainer19, brainer20, brainer21, brainer22, brainer23, brainer24, brainer25, brainer26,
                 brainer27)).blockLast();
+
+        /* ----------------------------- DRIVER LOOKS --------------------------------- */
+        Look driver1 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("man").build();
+        Look driver2 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("woman").build();
+        Look driver3 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("ambiguous").build();
+        Look driver4 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("transgressing").build();
+        Look driver5 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("vintage wear").build();
+        Look driver6 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("casual wear").build();
+        Look driver7 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("utility wear").build();
+        Look driver8 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("leather wear").build();
+        Look driver9 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("showy scrounge wear").build();
+        Look driver10 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("handsome face").build();
+        Look driver11 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("gorgeous face").build();
+        Look driver12 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("stern face").build();
+        Look driver13 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("fine-boned face").build();
+        Look driver14 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("worn face").build();
+        Look driver15 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("crooked face").build();
+        Look driver16 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("cool eyes").build();
+        Look driver17 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("hooded eyes").build();
+        Look driver18 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("hard eyes").build();
+        Look driver19 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("sad eyes").build();
+        Look driver20 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("cold eyes").build();
+        Look driver21 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("pale eyes").build();
+        Look driver22 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("slim body").build();
+        Look driver23 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("pudgy body").build();
+        Look driver24 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("stocky body").build();
+        Look driver25 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("solid body").build();
+        Look driver26 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("tall body").build();
+        Look driver27 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("strong body").build();
+
+        lookService.saveAll(Flux.just(driver1, driver2, driver3, driver4, driver5, driver6, driver7, driver8, driver9,
+                driver10, driver11, driver12, driver13, driver14, driver15, driver16, driver17, driver18, driver19,
+                driver20, driver21, driver22, driver23, driver24, driver25, driver26, driver26));
     }
 
     public void loadStatsOptions() {
@@ -1724,6 +1789,13 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption brainer3 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(1).HARD(-2).HOT(-1).SHARP(2).WEIRD(2).build();
         StatsOption brainer4 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(2).HARD(-1).HOT(-1).SHARP(0).WEIRD(2).build();
         statsOptionService.saveAll(Flux.just(brainer1, brainer2, brainer3, brainer4)).blockLast();
+
+        /* ----------------------------- DRIVER STATS OPTIONS --------------------------------- */
+        StatsOption driver1 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build();
+        StatsOption driver2 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(0).HOT(1).SHARP(1).WEIRD(-1).build();
+        StatsOption driver3 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(1).HOT(-1).SHARP(0).WEIRD(1).build();
+        StatsOption driver4 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-2).HOT(0).SHARP(2).WEIRD(1).build();
+        statsOptionService.saveAll(Flux.just(driver1, driver2, driver3, driver4)).blockLast();
     }
 
     public void loadPlaybookCreators() {
@@ -2019,8 +2091,14 @@ public class GameDataLoader implements CommandLineRunner {
                 .battleOptions(List.of(battleOption1, battleOption2))
                 .build();
 
-        /* ----------------------------- DRIVER PLAYBOOK CREATOR --------------------------------- */
+        PlaybookUniqueCreator chopperUniqueCreator = PlaybookUniqueCreator.builder()
+                .type(UniqueType.VEHICLE)
+                .id(UUID.randomUUID().toString())
+                .bikeCreator(bikeCreator)
+                // TODO: add gang creator, and probably change UniqueType to GANG
+                .build();
 
+        /* ----------------------------- DRIVER PLAYBOOK CREATOR --------------------------------- */
 
         VehicleFrame smallFrame = VehicleFrame.builder()
                 .id(UUID.randomUUID().toString())
@@ -2099,7 +2177,72 @@ public class GameDataLoader implements CommandLineRunner {
                 .battleOptions(List.of(battleOption1, battleOption2, battleOption3, battleOption4))
                 .build();
 
-        playbookCreatorService.saveAll(Flux.just(angelCreator, battlebabePlaybookCreator, playbookCreatorBrainer)).blockLast();
+        PlaybookUniqueCreator driverUniqueCreator = PlaybookUniqueCreator.builder()
+                .type(UniqueType.VEHICLE)
+                .id(UUID.randomUUID().toString())
+                .carCreator(carCreator)
+                .bikeCreator(bikeCreator)
+                .build();
+
+        List<Move> driverOptionalMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.CHARACTER)
+                .collectList().block();
+
+        List<Move> driverDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
+
+        GearInstructions driverGearInstructions = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .inAddition("In addition to your car, you get:")
+                .youGetItems(List.of("fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
+                .introduceChoice("Handy weapons")
+                .numberCanChoose(1)
+                .chooseableGear(List.of(
+                        ".38 revolver (2-harm close reload loud)",
+                        "9mm (2-harm close loud)",
+                        "big knife (2-harm hand)",
+                        "sawed-off (3-harm close reload messy)",
+                        "machete (3-harm hand messy)",
+                        "magnum (3-harm close reload loud"
+                        ))
+                .startingBarter(4)
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .build();
+
+        PlaybookCreator playbookCreatorDriver = PlaybookCreator.builder()
+                .playbookType(PlaybookType.DRIVER)
+                .gearInstructions(driverGearInstructions)
+                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
+                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .movesInstructions("You get all the basic moves. Choose 2 driver moves.\n" +
+                        "You can use all the battle moves, but when you get the chance, look up _**standing overwatch**_, the _**road war**_ moves, and the rules for how vehicles suffer harm")
+                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
+                        "\n" +
+                        "List the other characters’ names.\n" +
+                        "\n" +
+                        "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                        "\n" +
+                        "- *Which one of you got me out of some serious shit?* For that character, write Hx+1.\n" +
+                        "- *Which one of you has been with me for days on the road?* For that character, write Hx+2.\n" +
+                        "- *Which one of you have I caught sometimes staring out at the horizon?* For that character, write Hx+3.\n" +
+                        "\n" +
+                        "For everyone else, write Hx+1. You aren't naturally inclined to get too close to too many people.\n" +
+                        "\n" +
+                        "On the others’ turns, answer their questions as you like.\n" +
+                        "\n" +
+                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                .playbookUniqueCreator(driverUniqueCreator)
+                .optionalMoves(driverOptionalMoves)
+                .defaultMoves(driverDefaultMoves)
+                .defaultMoveCount(1)
+                .moveChoiceCount(7)
+                .build();
+
+        playbookCreatorService.saveAll(Flux.just(angelCreator,
+                battlebabePlaybookCreator,
+                playbookCreatorBrainer,
+                playbookCreatorDriver)).blockLast();
     }
 
     public void loadPlaybooks() {
@@ -2400,6 +2543,32 @@ public class GameDataLoader implements CommandLineRunner {
             playbookCreatorService.save(playbookCreatorBrainer).block();
             playbookBrainer.setCreator(playbookCreatorBrainer);
             playbookService.save(playbookBrainer).block();
+        }
+
+        // -------------------------------------- DRIVER -------------------------------------- //
+        Playbook playbookDriver = playbookService.findByPlaybookType(PlaybookType.DRIVER).block();
+        assert playbookDriver != null;
+
+        if (playbookDriver.getCreator() == null) {
+            PlaybookCreator playbookCreatorDriver = playbookCreatorService.findByPlaybookType(PlaybookType.DRIVER).block();
+            assert playbookCreatorDriver != null;
+
+            List<Name> namesDriver = nameService.findAllByPlaybookType(PlaybookType.DRIVER).collectList().block();
+            assert namesDriver != null;
+
+
+            List<Look> looksDriver = lookService.findAllByPlaybookType(PlaybookType.DRIVER).collectList().block();
+            assert looksDriver != null;
+
+            List<StatsOption> statsOptionsDriver = statsOptionService.findAllByPlaybookType(PlaybookType.DRIVER).collectList().block();
+            assert statsOptionsDriver != null;
+
+            statsOptionsDriver.forEach(statsOption -> playbookCreatorDriver.getStatsOptions().add(statsOption));
+            namesDriver.forEach(name -> playbookCreatorDriver.getNames().add(name));
+            looksDriver.forEach(look -> playbookCreatorDriver.getLooks().add(look));
+            playbookCreatorService.save(playbookCreatorDriver).block();
+            playbookDriver.setCreator(playbookCreatorDriver);
+            playbookService.save(playbookDriver).block();
         }
     }
 }
