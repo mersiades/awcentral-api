@@ -1,6 +1,5 @@
 package com.mersiades.awccontent.models;
 
-import com.mersiades.awccontent.enums.StatType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,12 +10,16 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StatModifier {
+public class PlusOneForwardConditions {
 
     @Id
     private String id;
 
-    private StatType statToModify;
+    private Boolean isManualGrant;
 
-    private int modification;
+    private Boolean onTenPlus;
+
+    private Boolean onSevenToNine;
+
+    private Boolean onMiss;
 }

@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.enums;
 
-public enum LookCategories {
+public enum LookType {
     GENDER,
     CLOTHES,
     FACE,

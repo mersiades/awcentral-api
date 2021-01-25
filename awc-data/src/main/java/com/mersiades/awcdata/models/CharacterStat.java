@@ -1,6 +1,6 @@
 package com.mersiades.awcdata.models;
 
-import com.mersiades.awccontent.enums.Stats;
+import com.mersiades.awccontent.enums.StatType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +13,7 @@ public class CharacterStat {
     @Id
     private String id;
 
-    private Stats stat;
+    private StatType stat;
 
     private int value;
 

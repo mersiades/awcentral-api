@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.enums;
 
-public enum Playbooks {
+public enum PlaybookType {
     ANGEL("ANGEL"),
     BATTLEBABE("BATTLEBABE"),
     BRAINER("BRAINER"),
@@ -15,7 +15,7 @@ public enum Playbooks {
 
     private final String code;
 
-    Playbooks(String code) {
+    PlaybookType(String code) {
         this.code = code;
     }
 

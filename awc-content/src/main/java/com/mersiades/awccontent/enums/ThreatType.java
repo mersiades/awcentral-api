@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.enums;
 
-public enum Threats {
+public enum ThreatType {
     WARLORD,
     GROTESQUE,
     BRUTE,

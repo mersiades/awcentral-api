@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.services.impl;
 
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.PlaybookCreator;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -48,7 +48,7 @@ public class PlaybookCreatorServiceImpl implements PlaybookCreatorService {
     }
 
     @Override
-    public Mono<PlaybookCreator> findByPlaybookType(Playbooks playbookType) {
+    public Mono<PlaybookCreator> findByPlaybookType(PlaybookType playbookType) {
         return playbookCreatorRepository.findByPlaybookType(playbookType);
     }
 }

@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.services.impl;
 
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Name;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -48,7 +48,7 @@ public class NameServiceImpl implements NameService {
     }
 
     @Override
-    public Flux<Name> findAllByPlaybookType(Playbooks playbookType) {
+    public Flux<Name> findAllByPlaybookType(PlaybookType playbookType) {
         return nameRepository.findAllByPlaybookType(playbookType);
     }
 }

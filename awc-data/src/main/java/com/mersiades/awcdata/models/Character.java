@@ -1,7 +1,7 @@
 package com.mersiades.awcdata.models;
 
-import com.mersiades.awccontent.enums.LookCategories;
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.LookType;
+import com.mersiades.awccontent.enums.PlaybookType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class Character {
 
     private String name;
 
-    private Playbooks playbook;
+    private PlaybookType playbook;
 
     private PlaybookUnique playbookUnique;
 
@@ -52,7 +52,7 @@ public class Character {
     @Builder.Default
     private List<CharacterMove> characterMoves = new ArrayList<>();
 
-    public Optional<Look> getLookByCategory(LookCategories category) {
+    public Optional<Look> getLookByCategory(LookType category) {
         return this.looks.stream()
                 .filter(look -> look.getCategory().equals(category))
                 .findFirst();

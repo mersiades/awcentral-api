@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.enums;
 
-public enum Roles {
+public enum RoleType {
         MC,
         PLAYER
 }

@@ -1,6 +1,6 @@
 package com.mersiades.awcdata.models;
 
-import com.mersiades.awccontent.enums.Threats;
+import com.mersiades.awccontent.enums.ThreatType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,7 @@ public class Threat {
 
     private String name;
 
-    private Threats threatKind;
+    private ThreatType threatKind;
 
     private String impulse;
 

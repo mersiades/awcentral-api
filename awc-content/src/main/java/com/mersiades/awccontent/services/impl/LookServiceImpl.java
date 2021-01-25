@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.services.impl;
 
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Look;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -48,7 +48,7 @@ public class LookServiceImpl implements LookService {
     }
 
     @Override
-    public Flux<Look> findAllByPlaybookType(Playbooks playbookType) {
+    public Flux<Look> findAllByPlaybookType(PlaybookType playbookType) {
         return lookRepository.findAllByPlaybookType(playbookType);
     }
 }

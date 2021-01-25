@@ -28,4 +28,29 @@ public interface GameService extends ReactiveCrudService<Game, String> {
 
     Mono<Game> finishPreGame(String gameId);
 
+    Mono<Game> performPrintMove(String gameId, String gameroleId, String characterId, String moveId);
+
+    Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit);
+
+    Mono<Game> performStatRollMove(String gameId, String gameroleId, String characterId, String moveId);
+
+    Mono<Game> performHelpOrInterfereMove(String gameId, String gameroleId, String characterId, String moveId, String targetId);
+
+    Mono<Game> performBarterMove(String gameId, String gameroleId, String characterId, String moveId, int barter);
+
+    Mono<Game> performMakeWantKnownMove(String gameId, String gameroleId, String characterId, String moveId, int barter);
+
+    Mono<Game> performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm);
+
+    Mono<Game> performInflictHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm);
+
+    Mono<Game> performHealHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm);
+
+    Mono<Game> performAngelSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId);
+
+    Mono<Game> performChopperSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int hxChange);
+
+    Mono<Game> performStabilizeAndHealMove(String gameId, String gameroleId, String characterId, int stockSpent);
+
+    Mono<Game> performStockMove(String gameId, String gameroleId, String characterId, String moveName, int stockSpent);
 }

@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.repositories;
 
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.PlaybookCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -24,7 +24,7 @@ class PlaybookCreatorRepositoryTest {
     @BeforeEach
     public void setup() {
         PlaybookCreator angelCreator = PlaybookCreator.builder()
-                .playbookType(Playbooks.ANGEL)
+                .playbookType(PlaybookType.ANGEL)
                 .improvementInstructions("Whenever you roll ...")
                 .movesInstructions("You get all ...")
                 .hxInstructions("Everyone introduces ...")
@@ -33,7 +33,7 @@ class PlaybookCreatorRepositoryTest {
                 .build();
 
         PlaybookCreator battlebabePlaybookCreator = PlaybookCreator.builder()
-                .playbookType(Playbooks.BATTLEBABE)
+                .playbookType(PlaybookType.BATTLEBABE)
                 .improvementInstructions("Whenever you roll ...")
                 .movesInstructions("You get all...")
                 .hxInstructions("Everyone introduces ...")
@@ -50,9 +50,9 @@ class PlaybookCreatorRepositoryTest {
 
     @Test
     public void shouldFindPlaybookCreatorForAPlaybook() {
-        StepVerifier.create(playbookCreatorRepository.findByPlaybookType(Playbooks.ANGEL))
+        StepVerifier.create(playbookCreatorRepository.findByPlaybookType(PlaybookType.ANGEL))
                 .expectSubscription()
-                .expectNextMatches(playbookCreator -> playbookCreator.getPlaybookType().equals(Playbooks.ANGEL))
+                .expectNextMatches(playbookCreator -> playbookCreator.getPlaybookType().equals(PlaybookType.ANGEL))
                 .verifyComplete();
     }
 }

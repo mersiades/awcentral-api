@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.models;
 
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +19,7 @@ public class PlaybookCreator {
     @Id
     private String id;
 
-    private Playbooks playbookType;
+    private PlaybookType playbookType;
 
     private GearInstructions gearInstructions;
 
@@ -50,7 +50,7 @@ public class PlaybookCreator {
     @Builder.Default
     private List<StatsOption> statsOptions = new ArrayList<>();
 
-    public PlaybookCreator(Playbooks playbookType, GearInstructions gearInstructions, String improvementInstructions, String movesInstructions, String hxInstructions) {
+    public PlaybookCreator(PlaybookType playbookType, GearInstructions gearInstructions, String improvementInstructions, String movesInstructions, String hxInstructions) {
         this.playbookType = playbookType;
         this.gearInstructions = gearInstructions;
         this.improvementInstructions = improvementInstructions;

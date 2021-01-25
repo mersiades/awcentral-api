@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.models;
 
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +16,7 @@ public class StatsOption {
     @Id
     private String id;
 
-    private Playbooks playbookType;
+    private PlaybookType playbookType;
 
     private int COOL;
 
@@ -31,7 +31,7 @@ public class StatsOption {
     // many to one
     private PlaybookCreator playbookCreator;
 
-    public StatsOption(Playbooks playbookType, int COOL, int HARD, int HOT, int SHARP, int WEIRD) {
+    public StatsOption(PlaybookType playbookType, int COOL, int HARD, int HOT, int SHARP, int WEIRD) {
         this.playbookType = playbookType;
         this.COOL = COOL;
         this.HARD = HARD;

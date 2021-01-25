@@ -6,9 +6,9 @@ import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.HxStat;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
-import com.mersiades.awccontent.enums.LookCategories;
-import com.mersiades.awccontent.enums.Playbooks;
-import com.mersiades.awccontent.enums.Stats;
+import com.mersiades.awccontent.enums.LookType;
+import com.mersiades.awccontent.enums.PlaybookType;
+import com.mersiades.awccontent.enums.StatType;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.stereotype.Component;
 
@@ -75,7 +75,7 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.addNewCharacter(gameRoleId);
     }
 
-    public Character setCharacterPlaybook(String gameRoleId, String characterId, Playbooks playbookType) {
+    public Character setCharacterPlaybook(String gameRoleId, String characterId, PlaybookType playbookType) {
         System.out.println("Setting Playbook for for Character: " + characterId);
         return gameRoleService.setCharacterPlaybook(gameRoleId, characterId, playbookType);
     }
@@ -85,7 +85,7 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCharacterName(gameRoleId, characterId, name);
     }
 
-    public Character setCharacterLook(String gameRoleId, String characterId, String look, LookCategories category) {
+    public Character setCharacterLook(String gameRoleId, String characterId, String look, LookType category) {
         System.out.println("Setting a Look for for Character: " + characterId);
         return gameRoleService.setCharacterLook(gameRoleId, characterId, look, category);
     }
@@ -140,7 +140,7 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCharacterHarm(gameRoleId, characterId, harm);
     }
 
-    public Character toggleStatHighlight(String gameRoleId, String characterId, Stats stat) {
+    public Character toggleStatHighlight(String gameRoleId, String characterId, StatType stat) {
         System.out.println("Setting harm for Character: " + characterId);
         return gameRoleService.toggleStatHighlight(gameRoleId, characterId, stat);
     }
@@ -148,6 +148,67 @@ public class Mutation implements GraphQLMutationResolver {
     public Character finishCharacterCreation(String gameRoleId, String characterId) {
         System.out.println("Finishing character creation for Character: " + characterId);
         return gameRoleService.finishCharacterCreation(gameRoleId, characterId);
+    }
+
+    public Game performPrintMove(String gameId, String gameroleId, String characterId, String moveId) {
+        System.out.println("Performing print move for Character: " + characterId);
+        return gameService.performPrintMove(gameId, gameroleId, characterId, moveId).block();
+    }
+
+    public Game performStatRollMove(String gameId, String gameroleId, String characterId, String moveId) {
+        System.out.println("Performing stat roll move for Character: " + characterId);
+        return gameService.performStatRollMove(gameId, gameroleId, characterId, moveId).block();
+    }
+
+    public Game performHelpOrInterfereMove(String gameId, String gameroleId, String characterId, String moveId, String targetId) {
+        System.out.println("Performing hx roll move for Character: " + characterId);
+        return gameService.performHelpOrInterfereMove(gameId, gameroleId, characterId, moveId, targetId).block();
+    }
+
+    public Game performBarterMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
+        System.out.println("Performing barter move for Character: " + characterId);
+        return gameService.performBarterMove(gameId, gameroleId, characterId, moveId, barter).block();
+    }
+
+    public Game performMakeWantKnownMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
+        System.out.println("Performing barter roll move for Character: " + characterId);
+        return gameService.performMakeWantKnownMove(gameId, gameroleId, characterId, moveId, barter).block();
+    }
+
+
+    public Game performInflictHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm) {
+        System.out.println("Performing INFLICT HARM ON PC move for Character: " + characterId);
+        return gameService.performInflictHarmMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, harm).block();
+    }
+
+    public Game performHealHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm) {
+        System.out.println("Performing HEAL PC HARM move for Character: " + characterId);
+        return gameService.performHealHarmMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, harm).block();
+    }
+
+    public Game performAngelSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId) {
+        System.out.println("Performing ANGEL SPECIAL move for Character: " + characterId);
+        return gameService.performAngelSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId).block();
+    }
+
+    public Game performChopperSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int hxChange) {
+        System.out.println("Performing CHOPPER SPECIAL move for Character: " + characterId);
+        return gameService.performChopperSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, hxChange).block();
+    }
+
+    public Game performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm) {
+        System.out.println("Performing SUFFER HARM move for Character: " + characterId);
+        return gameService.performSufferHarmMove(gameId, gameroleId, characterId, moveId, harm).block();
+    }
+
+    public Game performStabilizeAndHealMove(String gameId, String gameroleId, String characterId, int stockSpent) {
+        System.out.println("Performing SUFFER HARM move for Character: " + characterId);
+        return gameService.performStabilizeAndHealMove(gameId, gameroleId, characterId, stockSpent).block();
+    }
+
+    public Game performStockMove(String gameId, String gameroleId, String characterId, String moveName, int stockSpent) {
+        System.out.println("Performing SPEED RECOVERY OF SOMEONE move for Character: " + characterId);
+        return gameService.performStockMove(gameId, gameroleId, characterId, moveName, stockSpent).block();
     }
 
 }

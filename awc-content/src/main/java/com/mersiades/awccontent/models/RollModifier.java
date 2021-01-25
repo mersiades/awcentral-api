@@ -1,14 +1,11 @@
 package com.mersiades.awccontent.models;
 
-import com.mersiades.awccontent.enums.Stats;
+import com.mersiades.awccontent.enums.StatType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,9 +16,7 @@ public class RollModifier {
     @Id
     private String id;
 
-    @Builder.Default
-    private List<Move> movesToModify = new ArrayList<>();
+    private Move moveToModify;
 
-    @Builder.Default
-    private List<Stats> statToRollWith = new ArrayList<>();
+    private StatType statToRollWith;
 }

@@ -4,7 +4,7 @@ import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ class CharacterServiceImplTest {
         mockCharacter1 = Character.builder()
                 .id(MOCK_CHARACTER_ID_1)
                 .name("Mr Mock Character Name")
-                .playbook(Playbooks.ANGEL)
+                .playbook(PlaybookType.ANGEL)
                 .gear(List.of("gun", "knife"))
                 .gameRole(mockGameRole1)
                 .build();

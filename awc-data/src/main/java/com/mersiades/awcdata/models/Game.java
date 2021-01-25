@@ -29,6 +29,9 @@ public class Game {
     private Boolean hasFinishedPreGame;
 
     @Builder.Default
+    private List<GameMessage> gameMessages = new ArrayList<>();
+
+    @Builder.Default
     private List<String> invitees = new ArrayList<>();
 
     @DBRef

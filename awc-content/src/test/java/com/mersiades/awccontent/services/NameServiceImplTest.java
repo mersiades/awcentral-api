@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.services;
 
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Name;
 import com.mersiades.awccontent.models.PlaybookCreator;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +40,7 @@ class NameServiceImplTest {
                 .id(MOCK_NAME_ID_1)
                 .name("Mr Mock Name")
                 .playbookCreator(mockPlaybookCreator)
-                .playbookType(Playbooks.ANGEL)
+                .playbookType(PlaybookType.ANGEL)
                 .build();
 
         nameService = new NameServiceImpl(nameRepository);
@@ -129,16 +129,16 @@ class NameServiceImplTest {
                 .id("mock-name-id-3")
                 .name("another name")
                 .playbookCreator(mockPlaybookCreator)
-                .playbookType(Playbooks.ANGEL)
+                .playbookType(PlaybookType.ANGEL)
                 .build();
-        when(nameRepository.findAllByPlaybookType(any(Playbooks.class))).thenReturn(Flux.just(mockName1, mockName3));
+        when(nameRepository.findAllByPlaybookType(any(PlaybookType.class))).thenReturn(Flux.just(mockName1, mockName3));
 
         // When
-        List<Name> angelNames = nameService.findAllByPlaybookType(Playbooks.ANGEL).collectList().block();
+        List<Name> angelNames = nameService.findAllByPlaybookType(PlaybookType.ANGEL).collectList().block();
 
         // Then
         assert angelNames != null;
         assertEquals(2, angelNames.size());
-        verify(nameRepository, times(1)).findAllByPlaybookType(any(Playbooks.class));
+        verify(nameRepository, times(1)).findAllByPlaybookType(any(PlaybookType.class));
     }
 }

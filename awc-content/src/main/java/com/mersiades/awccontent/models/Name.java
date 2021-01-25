@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.models;
 
-import com.mersiades.awccontent.enums.Playbooks;
+import com.mersiades.awccontent.enums.PlaybookType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,14 +17,14 @@ public class Name {
     private String id;
 
     // enum type string
-    private Playbooks playbookType;
+    private PlaybookType playbookType;
 
     private String name;
 
     // Many to one
     private PlaybookCreator playbookCreator;
 
-    public Name(Playbooks playbookType, String name) {
+    public Name(PlaybookType playbookType, String name) {
         this.playbookType = playbookType;
         this.name = name;
     }

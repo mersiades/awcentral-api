@@ -1,6 +1,6 @@
 package com.mersiades.awccontent.services;
 
-import com.mersiades.awccontent.enums.MoveKinds;
+import com.mersiades.awccontent.enums.MoveType;
 import com.mersiades.awccontent.models.Move;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ class MoveServiceImplTest {
                 .name("Mock move name")
                 .description("Description of a mock move")
                 .stat(null)
-                .kind(MoveKinds.BASIC)
+                .kind(MoveType.BASIC)
                 .playbook(null).build();
     }
 

@@ -109,7 +109,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
-    public Character setCharacterPlaybook(String gameRoleId, String characterId, Playbooks playbookType) {
+    public Character setCharacterPlaybook(String gameRoleId, String characterId, PlaybookType playbookType) {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
         assert gameRole != null;
         Character character = gameRole.getCharacters().stream()
@@ -143,7 +143,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
-    public Character setCharacterLook(String gameRoleId, String characterId, String look, LookCategories category) {
+    public Character setCharacterLook(String gameRoleId, String characterId, String look, LookType category) {
 
         // Get the GameRole
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
@@ -193,8 +193,8 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setStatsBlock(statsBlock);
 
         // Create or update each CharacterStat in the StatsBlock
-        Arrays.asList(Stats.values().clone()).forEach(stat -> {
-            if (!stat.equals(Stats.HX)) {
+        Arrays.asList(StatType.values().clone()).forEach(stat -> {
+            if (!stat.equals(StatType.HX)) {
                 createOrUpdateCharacterStat(character, statsOption, stat);
             }
         });
@@ -331,15 +331,14 @@ public class GameRoleServiceImpl implements GameRoleService {
         if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.ANGEL_KIT) {
             // Make new AngelKit & set
             List<Move> angelKitMoves = moveService
-                    .findAllByPlaybookAndKind(Playbooks.ANGEL, MoveKinds.UNIQUE)
+                    .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.UNIQUE)
                     .collectList().block();
+            assert angelKitMoves != null;
 
             AngelKit angelKit = AngelKit.builder().id(UUID.randomUUID().toString())
                     .hasSupplier(hasSupplier)
+                    .angelKitMoves(angelKitMoves)
                     .stock(stock).build();
-
-            assert angelKitMoves != null;
-            angelKitMoves.forEach(move -> angelKit.getAngelKitMoves().add(move));
 
             PlaybookUnique angelUnique = PlaybookUnique.builder()
                     .id(UUID.randomUUID().toString())
@@ -413,8 +412,12 @@ public class GameRoleServiceImpl implements GameRoleService {
         List<Move> playbookMoves = playbookCreator.getOptionalMoves()
                 .stream().filter(characterMove -> moveIds.contains(characterMove.getId())).collect(Collectors.toList());
 
+        List<Move> playbookDefaultMoves = playbookCreator.getDefaultMoves();
+
+        playbookMoves.addAll(playbookDefaultMoves);
+
         List<CharacterMove> characterMoves = playbookMoves.stream()
-                .map(move -> CharacterMove.createFromMove(move, false))
+                .map(move -> CharacterMove.createFromMove(move, true))
                 .collect(Collectors.toList());
 
         // Preemptively remove moved-based stat modifications
@@ -430,7 +433,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         // Flesh out each CharacterMove
         characterMoves.forEach(characterMove -> {
             // Mark the CharacterMoves as selected
-            characterMove.setIsSelected(true);
+//            characterMove.setIsSelected(true);
             // Adjust CharacterStat if CharacterMove has a StatModifier
             if (characterMove.getStatModifier() != null) {
                 CharacterStat statToBeModified = character.getStatsBlock().getStats()
@@ -515,7 +518,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
-    public Character toggleStatHighlight(String gameRoleId, String characterId, Stats stat) {
+    public Character toggleStatHighlight(String gameRoleId, String characterId, StatType stat) {
         // Get the GameRole
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
         assert gameRole != null;
@@ -537,7 +540,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         return character;
     }
 
-    private void createOrUpdateCharacterStat(Character character, StatsOption statsOption, Stats stat) {
+    private void createOrUpdateCharacterStat(Character character, StatsOption statsOption, StatType stat) {
         int value;
         switch (stat) {
             case COOL:

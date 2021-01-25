@@ -1,13 +1,17 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.models.*;
+import com.mersiades.awccontent.models.uniquecreators.AngelKitCreator;
+import com.mersiades.awccontent.services.MoveService;
+import com.mersiades.awccontent.services.PlaybookCreatorService;
+import com.mersiades.awccontent.services.StatModifierService;
+import com.mersiades.awccontent.services.StatsOptionService;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
-import com.mersiades.awccontent.enums.*;
-import com.mersiades.awccontent.models.*;
-import com.mersiades.awccontent.models.uniquecreators.AngelKitCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -16,16 +20,12 @@ import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.mersiades.awccontent.services.MoveService;
-import com.mersiades.awccontent.services.PlaybookCreatorService;
-import com.mersiades.awccontent.services.StatModifierService;
-import com.mersiades.awccontent.services.StatsOptionService;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.mersiades.awccontent.constants.MoveNames.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -72,7 +72,7 @@ class GameRoleServiceImplTest {
         Game mockGame1 = Game.builder().id(MOCK_GAME_ID).build();
         mockUser = User.builder().id(MOCK_USER_ID).build();
         mockCharacter = Character.builder().id(UUID.randomUUID().toString()).build();
-        mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(Roles.MC).game(mockGame1).user(mockUser).build();
+        mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(RoleType.MC).game(mockGame1).user(mockUser).build();
         mockGame1.getGameRoles().add(mockGameRole);
         mockUser.getGameRoles().add(mockGameRole);
         gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, statsOptionService, moveService, playbookCreatorService, statModifierService);
@@ -84,7 +84,7 @@ class GameRoleServiceImplTest {
                 .HOT(2)
                 .SHARP(2)
                 .WEIRD(2)
-                .playbookType(Playbooks.ANGEL)
+                .playbookType(PlaybookType.ANGEL)
                 .build();
     }
 
@@ -172,7 +172,7 @@ class GameRoleServiceImplTest {
     void shouldFindAllGameRolesByUser() {
         // Given
         Game mockGame2 = new Game();
-        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id2").role(Roles.MC).game(mockGame2).user(mockUser).build();
+        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id2").role(RoleType.MC).game(mockGame2).user(mockUser).build();
         when(gameRoleRepository.findAllByUser(any())).thenReturn(Flux.just(mockGameRole, mockGameRole2));
 
         // When
@@ -188,7 +188,7 @@ class GameRoleServiceImplTest {
     void shouldFindAllGameRolesByUserId() {
         // Given
         Game mockGame2 = new Game();
-        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id2").role(Roles.MC).game(mockGame2).user(mockUser).build();
+        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id2").role(RoleType.MC).game(mockGame2).user(mockUser).build();
         when(gameRoleRepository.findAllByUserId(anyString())).thenReturn(Flux.just(mockGameRole, mockGameRole2));
 
         // When
@@ -226,10 +226,10 @@ class GameRoleServiceImplTest {
         when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
 
         // When
-        Character returnedCharacter = gameRoleService.setCharacterPlaybook(MOCK_GAMEROLE_ID, mockCharacter.getId(), Playbooks.BATTLEBABE);
+        Character returnedCharacter = gameRoleService.setCharacterPlaybook(MOCK_GAMEROLE_ID, mockCharacter.getId(), PlaybookType.BATTLEBABE);
 
         // Then
-        assertEquals(Playbooks.BATTLEBABE, returnedCharacter.getPlaybook());
+        assertEquals(PlaybookType.BATTLEBABE, returnedCharacter.getPlaybook());
         verify(gameRoleRepository, times(1)).findById(anyString());
         verify(characterService, times(1)).save(any(Character.class));
         verify(gameRoleRepository, times(1)).save(any(GameRole.class));
@@ -264,8 +264,8 @@ class GameRoleServiceImplTest {
         when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
 
         // When
-        Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook, LookCategories.FACE);
-        Optional<Look> lookOptional = returnedCharacter.getLookByCategory(LookCategories.FACE);
+        Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook, LookType.FACE);
+        Optional<Look> lookOptional = returnedCharacter.getLookByCategory(LookType.FACE);
 
         // Then
         assertTrue(lookOptional.isPresent());
@@ -280,7 +280,7 @@ class GameRoleServiceImplTest {
     void shouldUpdateCharacterLook() {
         // Given
         String mockLook = "Ugly";
-        Look existingLook = Look.builder().id("mock-look-id").category(LookCategories.FACE).look("Handsome").build();
+        Look existingLook = Look.builder().id("mock-look-id").category(LookType.FACE).look("Handsome").build();
         mockCharacter.getLooks().add(existingLook);
         mockGameRole.getCharacters().add(mockCharacter);
         when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
@@ -288,10 +288,10 @@ class GameRoleServiceImplTest {
         when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
 
         // When
-        Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook, LookCategories.FACE);
+        Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook, LookType.FACE);
 
         System.out.println("returnedCharacter = " + returnedCharacter);
-        Optional<Look> lookOptional = returnedCharacter.getLookByCategory(LookCategories.FACE);
+        Optional<Look> lookOptional = returnedCharacter.getLookByCategory(LookType.FACE);
 
         // Then
         assertTrue(lookOptional.isPresent());
@@ -316,15 +316,15 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(mockStatsOption.getCOOL(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(Stats.COOL)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(StatType.COOL)).findFirst().orElseThrow().getValue());
         assertEquals(mockStatsOption.getHARD(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(Stats.HARD)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(StatType.HARD)).findFirst().orElseThrow().getValue());
         assertEquals(mockStatsOption.getHOT(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(Stats.HOT)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(StatType.HOT)).findFirst().orElseThrow().getValue());
         assertEquals(mockStatsOption.getSHARP(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(Stats.SHARP)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue());
         assertEquals(mockStatsOption.getWEIRD(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(Stats.WEIRD)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(StatType.WEIRD)).findFirst().orElseThrow().getValue());
 
         verify(statsOptionService, times(1)).findById(anyString());
         verify(gameRoleRepository, times(1)).findById(anyString());
@@ -335,11 +335,11 @@ class GameRoleServiceImplTest {
     @Test
     void shouldUpdateCharacterStat() {
         // Given
-        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(Stats.COOL).value(1).build();
-        CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(Stats.HARD).value(1).build();
-        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(Stats.HOT).value(1).build();
-        CharacterStat mockCharacterStatSharp = CharacterStat.builder().stat(Stats.SHARP).value(1).build();
-        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(Stats.WEIRD).value(1).build();
+        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(StatType.COOL).value(1).build();
+        CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(1).build();
+        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(StatType.HOT).value(1).build();
+        CharacterStat mockCharacterStatSharp = CharacterStat.builder().stat(StatType.SHARP).value(1).build();
+        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(StatType.WEIRD).value(1).build();
         StatsBlock statsBlock = StatsBlock.builder()
                 .id("mock-stats-block-id")
                 .statsOptionId("mock-stats-option-id")
@@ -362,15 +362,15 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(mockStatsOption.getCOOL(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(Stats.COOL)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(StatType.COOL)).findFirst().orElseThrow().getValue());
         assertEquals(mockStatsOption.getHARD(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(Stats.HARD)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(StatType.HARD)).findFirst().orElseThrow().getValue());
         assertEquals(mockStatsOption.getHOT(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(Stats.HOT)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(StatType.HOT)).findFirst().orElseThrow().getValue());
         assertEquals(mockStatsOption.getSHARP(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(Stats.SHARP)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue());
         assertEquals(mockStatsOption.getWEIRD(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(Stats.WEIRD)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(StatType.WEIRD)).findFirst().orElseThrow().getValue());
 
         verify(statsOptionService, times(1)).findById(anyString());
         verify(gameRoleRepository, times(1)).findById(anyString());
@@ -385,13 +385,13 @@ class GameRoleServiceImplTest {
         Character mockCharacter2 = Character.builder()
                 .id("mock-character-2-id")
                 .name("Mock Character 2")
-                .playbook(Playbooks.DRIVER)
+                .playbook(PlaybookType.DRIVER)
                 .build();
 
         Character mockCharacter3 = Character.builder()
                 .id("mock-character-3-id")
                 .name("Mock Character 3")
-                .playbook(Playbooks.HARDHOLDER)
+                .playbook(PlaybookType.HARDHOLDER)
                 .build();
 
         HxStat hxStat1 = HxStat.builder()
@@ -478,28 +478,56 @@ class GameRoleServiceImplTest {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
 
-        Move stabilizeAndHeal = Move.builder().name("STABILIZE AND HEAL SOMEONE")
+        MoveAction stabilizeAndHealAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STOCK)
+                .statToRollWith(null)
+                .build();
+        Move stabilizeAndHeal = Move.builder().name(stabilizeAndHealName)
                 .description("_**stabilize and heal someone at 9:00")
-                .playbook(Playbooks.ANGEL)
-                .kind(MoveKinds.UNIQUE).build();
-        Move speedTheRecoveryOfSomeone = Move.builder().name("SPEED THE RECOVERY OF SOMEONE")
+                .moveAction(stabilizeAndHealAction)
+                .playbook(PlaybookType.ANGEL)
+                .kind(MoveType.UNIQUE).build();
+        MoveAction speedTheRecoveryOfSomeoneAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.STOCK)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
+        Move speedTheRecoveryOfSomeone = Move.builder().name(speedRecoveryName)
                 .description("_**speed the recovery of someone at 3:00 or 6:0")
-                .playbook(Playbooks.ANGEL)
-                .kind(MoveKinds.UNIQUE).build();
-        Move reviveSomeone = Move.builder().name("REVIVE SOMEONE")
+                .playbook(PlaybookType.ANGEL)
+                .moveAction(speedTheRecoveryOfSomeoneAction)
+                .kind(MoveType.UNIQUE).build();
+        MoveAction reviveSomeoneAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.STOCK)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
+        Move reviveSomeone = Move.builder().name(reviveSomeoneName)
                 .description("_**revive someone whose life")
-                .playbook(Playbooks.ANGEL).
-                        kind(MoveKinds.UNIQUE).build();
-        Move treatAnNpc = Move.builder().name("TREAT AN NPC")
+                .playbook(PlaybookType.ANGEL)
+                .moveAction(reviveSomeoneAction)
+                .kind(MoveType.UNIQUE).build();
+        MoveAction treatAnNpcAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.STOCK)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
+        Move treatAnNpc = Move.builder().name(treatNpcName)
                 .description("_**treat an NPC ")
-                .playbook(Playbooks.ANGEL)
-                .kind(MoveKinds.UNIQUE).build();
+                .playbook(PlaybookType.ANGEL)
+                .moveAction(treatAnNpcAction)
+                .kind(MoveType.UNIQUE).build();
 
         int stock = 6;
 
         Boolean hasSupplier = false;
 
-        when(moveService.findAllByPlaybookAndKind(any(Playbooks.class), any(MoveKinds.class)))
+        when(moveService.findAllByPlaybookAndKind(any(PlaybookType.class), any(MoveType.class)))
                 .thenReturn(Flux.just(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc));
         when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
         when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
@@ -513,7 +541,7 @@ class GameRoleServiceImplTest {
         assertEquals(List.of(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc),
                 returnedCharacter.getPlaybookUnique().getAngelKit().getAngelKitMoves());
 
-        verify(moveService, times(1)).findAllByPlaybookAndKind(any(Playbooks.class), any(MoveKinds.class));
+        verify(moveService, times(1)).findAllByPlaybookAndKind(any(PlaybookType.class), any(MoveType.class));
         verify(gameRoleRepository, times(1)).findById(anyString());
         verify(characterService, times(1)).save(any(Character.class));
         verify(gameRoleRepository, times(1)).save(any(GameRole.class));
@@ -547,37 +575,37 @@ class GameRoleServiceImplTest {
     @Test
     public void shouldSetCharacterMoves() {
         // Given
-        mockCharacter.setPlaybook(Playbooks.ANGEL);
+        mockCharacter.setPlaybook(PlaybookType.ANGEL);
         mockGameRole.getCharacters().add(mockCharacter);
 
         String moveId1 = "angel-special-id";
         String moveId2 = "sixth-sense-id";
         String moveId3 = "infirmary-id";
 
-        RollModifier sixthSenseMod = RollModifier.builder().id(UUID.randomUUID().toString()).statToRollWith(Collections.singletonList(Stats.SHARP)).build();
+        RollModifier sixthSenseMod = RollModifier.builder().id(UUID.randomUUID().toString()).statToRollWith(StatType.SHARP).build();
         Move angelSpecial = Move.builder()
                 .id(moveId1)
                 .name("ANGEL SPECIAL")
                 .description("If you and")
                 .stat(null)
-                .kind(MoveKinds.CHARACTER)
-                .playbook(Playbooks.ANGEL)
+                .kind(MoveType.CHARACTER)
+                .playbook(PlaybookType.ANGEL)
                 .build();
         Move sixthSense = Move.builder()
                 .id(moveId2)
                 .name("SIXTH SENSE")
                 .description("_**Sixth sense**_: ")
                 .rollModifier(sixthSenseMod)
-                .kind(MoveKinds.CHARACTER)
-                .playbook(Playbooks.ANGEL)
+                .kind(MoveType.CHARACTER)
+                .playbook(PlaybookType.ANGEL)
                 .build();
         Move infirmary = Move.builder()
                 .id(moveId3)
                 .name("INFIRMARY")
                 .description("_**Infirmary**_:")
                 .stat(null)
-                .kind(MoveKinds.CHARACTER)
-                .playbook(Playbooks.ANGEL)
+                .kind(MoveType.CHARACTER)
+                .playbook(PlaybookType.ANGEL)
                 .build();
 
         List<Move> angelMoves = List.of(angelSpecial, sixthSense, infirmary);
@@ -599,7 +627,7 @@ class GameRoleServiceImplTest {
                 .build();
 
         PlaybookCreator angelCreator = PlaybookCreator.builder()
-                .playbookType(Playbooks.ANGEL)
+                .playbookType(PlaybookType.ANGEL)
                 .gearInstructions(angelGearInstructions)
                 .improvementInstructions("Whenever you roll ")
                 .movesInstructions("You get all the basic moves.")
@@ -610,11 +638,11 @@ class GameRoleServiceImplTest {
                 .moveChoiceCount(2)
                 .build();
 
-        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(Stats.COOL).value(1).build();
-        CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(Stats.HARD).value(1).build();
-        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(Stats.HOT).value(1).build();
-        CharacterStat mockCharacterStatSharp = CharacterStat.builder().stat(Stats.SHARP).value(1).build();
-        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(Stats.WEIRD).value(1).build();
+        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(StatType.COOL).value(1).build();
+        CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(1).build();
+        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(StatType.HOT).value(1).build();
+        CharacterStat mockCharacterStatSharp = CharacterStat.builder().stat(StatType.SHARP).value(1).build();
+        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(StatType.WEIRD).value(1).build();
         StatsBlock statsBlock = StatsBlock.builder()
                 .id("mock-stats-block-id")
                 .statsOptionId("mock-stats-option-id")
@@ -626,7 +654,7 @@ class GameRoleServiceImplTest {
                 .build();
         mockCharacter.setStatsBlock(statsBlock);
 
-        when(playbookCreatorService.findByPlaybookType(any(Playbooks.class))).thenReturn(Mono.just(angelCreator));
+        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(Mono.just(angelCreator));
         when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
         when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
         when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
@@ -645,7 +673,7 @@ class GameRoleServiceImplTest {
                     characterMove.getName().equals("SIXTH SENSE") ||
                     characterMove.getName().equals("INFIRMARY"));
         });
-        verify(playbookCreatorService, times(1)).findByPlaybookType(any(Playbooks.class));
+        verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
         verify(gameRoleRepository, times(1)).findById(anyString());
         verify(characterService, times(1)).save(any(Character.class));
         verify(gameRoleRepository, times(1)).save(any(GameRole.class));
