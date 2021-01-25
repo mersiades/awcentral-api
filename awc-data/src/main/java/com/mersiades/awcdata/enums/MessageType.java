@@ -8,5 +8,6 @@ public enum MessageType {
     ROLL_BARTER_MOVE,
     SUFFER_HARM_MOVE,
     ADJUST_HX_MOVE,
-    ROLL_STOCK_MOVE
+    ROLL_STOCK_MOVE,
+    STOCK_MOVE
 }

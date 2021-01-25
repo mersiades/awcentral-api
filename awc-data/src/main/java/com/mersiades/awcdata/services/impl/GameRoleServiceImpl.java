@@ -333,14 +333,12 @@ public class GameRoleServiceImpl implements GameRoleService {
             List<Move> angelKitMoves = moveService
                     .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.UNIQUE)
                     .collectList().block();
+            assert angelKitMoves != null;
 
             AngelKit angelKit = AngelKit.builder().id(UUID.randomUUID().toString())
                     .hasSupplier(hasSupplier)
                     .angelKitMoves(angelKitMoves)
                     .stock(stock).build();
-
-            assert angelKitMoves != null;
-            angelKitMoves.forEach(move -> angelKit.getAngelKitMoves().add(move));
 
             PlaybookUnique angelUnique = PlaybookUnique.builder()
                     .id(UUID.randomUUID().toString())

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.mersiades.awccontent.constants.MoveNames.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -477,21 +478,49 @@ class GameRoleServiceImplTest {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
 
-        Move stabilizeAndHeal = Move.builder().name("STABILIZE AND HEAL SOMEONE")
+        MoveAction stabilizeAndHealAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STOCK)
+                .statToRollWith(null)
+                .build();
+        Move stabilizeAndHeal = Move.builder().name(stabilizeAndHealName)
                 .description("_**stabilize and heal someone at 9:00")
+                .moveAction(stabilizeAndHealAction)
                 .playbook(PlaybookType.ANGEL)
                 .kind(MoveType.UNIQUE).build();
-        Move speedTheRecoveryOfSomeone = Move.builder().name("SPEED THE RECOVERY OF SOMEONE")
+        MoveAction speedTheRecoveryOfSomeoneAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.STOCK)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
+        Move speedTheRecoveryOfSomeone = Move.builder().name(speedRecoveryName)
                 .description("_**speed the recovery of someone at 3:00 or 6:0")
                 .playbook(PlaybookType.ANGEL)
+                .moveAction(speedTheRecoveryOfSomeoneAction)
                 .kind(MoveType.UNIQUE).build();
-        Move reviveSomeone = Move.builder().name("REVIVE SOMEONE")
+        MoveAction reviveSomeoneAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.STOCK)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
+        Move reviveSomeone = Move.builder().name(reviveSomeoneName)
                 .description("_**revive someone whose life")
-                .playbook(PlaybookType.ANGEL).
-                        kind(MoveType.UNIQUE).build();
-        Move treatAnNpc = Move.builder().name("TREAT AN NPC")
+                .playbook(PlaybookType.ANGEL)
+                .moveAction(reviveSomeoneAction)
+                .kind(MoveType.UNIQUE).build();
+        MoveAction treatAnNpcAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.STOCK)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
+        Move treatAnNpc = Move.builder().name(treatNpcName)
                 .description("_**treat an NPC ")
                 .playbook(PlaybookType.ANGEL)
+                .moveAction(treatAnNpcAction)
                 .kind(MoveType.UNIQUE).build();
 
         int stock = 6;

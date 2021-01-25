@@ -883,6 +883,49 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Mono<Game> performSpeedRecoveryMove(String gameId, String gameroleId, String characterId, int stockSpent) {
+        return gameRepository.findById(gameId)
+                .flatMap(game -> {
+                    // Find User's Character
+                    Character userCharacter = characterService.findById(characterId).block();
+                    assert userCharacter != null;
+
+                    Move speedRecoveryMove = moveService.findByName(speedRecoveryName).block();
+                    assert speedRecoveryMove != null;
+
+                    GameMessage gameMessage = GameMessage.builder()
+                            .id(UUID.randomUUID().toString())
+                            .gameId(gameId)
+                            .gameroleId(gameroleId)
+                            .messageType(MessageType.STOCK_MOVE)
+                            .sentOn(Instant.now().toString()).build();
+
+                    // Adjust stock on user's Character
+                    gameRoleService.findById(gameroleId).map(gameRole1 -> {
+                        Character character = gameRole1.getCharacters()
+                                .stream().filter(character1 -> character1.getId().equals(characterId))
+                                .findFirst().orElseThrow();
+
+                        character.getPlaybookUnique().getAngelKit()
+                                .setStock(character.getPlaybookUnique().getAngelKit().getStock() - stockSpent);
+
+                        characterService.save(character).block();
+
+                        return gameRole1;
+                    }).flatMap(gameRoleService::save).block();
+
+                    gameMessage.setContent(speedRecoveryMove.getDescription());
+                    gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), speedRecoveryMove.getName()).toUpperCase());
+                    gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + stockSpent);
+                    gameMessage.setStockSpent(stockSpent);
+                    gameMessage.setCurrentStock(userCharacter.getPlaybookUnique().getAngelKit().getStock() - stockSpent);
+                    game.getGameMessages().add(gameMessage);
+                    return Mono.just(game);
+                })
+                .flatMap(gameRepository::save);
+    }
+
+    @Override
     public Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit) {
         return gameRepository.findById(gameId, skip, limit);
     }

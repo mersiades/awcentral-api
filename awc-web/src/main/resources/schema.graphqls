@@ -8,6 +8,7 @@ enum MessageType {
     SUFFER_HARM_MOVE
     ADJUST_HX_MOVE
     ROLL_STOCK_MOVE
+    STOCK_MOVE
 }
 enum RoleType {
     MC
@@ -249,7 +250,6 @@ type Game {
     gameRoles: [GameRole]
     invitees: [String]
     gameMessages: [GameMessage]
-
 }
 
 type GameMessage {
@@ -259,6 +259,8 @@ type GameMessage {
     messageType: MessageType
     title: String
     sentOn: String
+    stockSpent: Int
+    currentStock: Int
     content: String
     roll1: Int
     roll2: Int
@@ -269,8 +271,6 @@ type GameMessage {
     currentBarter: Int
     harmSuffered: Int
     currentHarm: Int
-    stockSpent: Int
-    currentStock: Int
 }
 
 type Npc {
@@ -536,6 +536,7 @@ type Mutation {
         characterId: String!,
         otherCharacterId: String!, hxChange: Int!): Game
     performStabilizeAndHealMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
+    performSpeedRecoveryMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #
