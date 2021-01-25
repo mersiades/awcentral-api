@@ -2,9 +2,7 @@ package com.mersiades.awcweb.bootstrap;
 
 import com.mersiades.awccontent.enums.*;
 import com.mersiades.awccontent.models.*;
-import com.mersiades.awccontent.models.uniquecreators.AngelKitCreator;
-import com.mersiades.awccontent.models.uniquecreators.BrainerGearCreator;
-import com.mersiades.awccontent.models.uniquecreators.CustomWeaponsCreator;
+import com.mersiades.awccontent.models.uniquecreators.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -1076,12 +1074,12 @@ public class GameDataLoader implements CommandLineRunner {
         Move dangerousAndSexy = Move.builder()
                 .name("DANGEROUS & SEXY")
                 .description("_**Dangerous & sexy**_: when you enter into a charged situation, roll+hot.\n" +
-                "\n" +
-                "On a 10+, hold 2. On a 7–9, hold 1.\n" +
-                "\n" +
-                "Spend your hold 1 for 1 to make eye contact with an NPC present, who freezes or flinches and can’t take action until you break it off.\n" +
-                "\n" +
-                "On a miss, your enemies identify you immediately as their foremost threat.")
+                        "\n" +
+                        "On a 10+, hold 2. On a 7–9, hold 1.\n" +
+                        "\n" +
+                        "Spend your hold 1 for 1 to make eye contact with an NPC present, who freezes or flinches and can’t take action until you break it off.\n" +
+                        "\n" +
+                        "On a miss, your enemies identify you immediately as their foremost threat.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(dangerousAndSexyAction)
                 .playbook(PlaybookType.BATTLEBABE)
@@ -1112,14 +1110,14 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         Move visionsOfDeath = Move.builder()
                 .name("VISIONS OF DEATH").description("_**Visions of death**_: when you go into battle, roll+weird.\n" +
-                "\n" +
-                "On a 10+, name one person who’ll die and one who’ll live.\n" +
-                "\n" +
-                "On a 7–9, name one person who’ll die OR one person who’ll live. Don’t name a player’s character; name NPCs only.\n" +
-                "\n" +
-                "The MC will make your vision come true, if it’s even remotely possible.\n" +
-                "\n" +
-                "On a miss, you foresee your own death, and accordingly take -1 throughout the battle.")
+                        "\n" +
+                        "On a 10+, name one person who’ll die and one who’ll live.\n" +
+                        "\n" +
+                        "On a 7–9, name one person who’ll die OR one person who’ll live. Don’t name a player’s character; name NPCs only.\n" +
+                        "\n" +
+                        "The MC will make your vision come true, if it’s even remotely possible.\n" +
+                        "\n" +
+                        "On a miss, you foresee your own death, and accordingly take -1 throughout the battle.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(visionsOfDeathAction)
                 .playbook(PlaybookType.BATTLEBABE).build();
@@ -1205,15 +1203,15 @@ public class GameDataLoader implements CommandLineRunner {
         Move brainScan = Move.builder()
                 .name("DEEP BRAIN SCAN")
                 .description("_**Deep brain scan**_: when you have time and physical intimacy with someone — mutual intimacy like holding them in your arms, or 1-sided intimacy like they’re restrained to a table — you can read them more deeply than normal. Roll+weird.\n" +
-                "\n" +
-                "On a 10+, hold 3. On a 7–9, hold 1. While you’re reading them, spend your hold to ask their player questions, 1 for 1:\n" +
-                "\n" +
-                "- *What was your character’s lowest moment?*\n" +
-                "- *For what does your character crave forgiveness, and of whom?*\n" +
-                "- *What are your character’s secret pains?*\n" +
-                "- *In what ways are your character’s mind and soul vulnerable?*\n" +
-                "\n" +
-                "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit")
+                        "\n" +
+                        "On a 10+, hold 3. On a 7–9, hold 1. While you’re reading them, spend your hold to ask their player questions, 1 for 1:\n" +
+                        "\n" +
+                        "- *What was your character’s lowest moment?*\n" +
+                        "- *For what does your character crave forgiveness, and of whom?*\n" +
+                        "- *What are your character’s secret pains?*\n" +
+                        "- *In what ways are your character’s mind and soul vulnerable?*\n" +
+                        "\n" +
+                        "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit")
                 .kind(MoveType.CHARACTER)
                 .moveAction(brainScanAction)
                 .playbook(PlaybookType.BRAINER).build();
@@ -1240,17 +1238,17 @@ public class GameDataLoader implements CommandLineRunner {
         Move puppetStrings = Move.builder()
                 .name("IN BRAIN PUPPET STRINGS")
                 .description("_**In-brain puppet strings**_: when you have time and physical intimacy with someone — again, mutual or 1-sided — you can plant a command inside their mind. Roll+weird.\n" +
-                "\n" +
-                "On a 10+, hold 3. On a 7–9, hold 1.\n" +
-                "\n" +
-                "At your will, no matter the circumstances, you can spend your hold 1 for 1:\n" +
-                "\n" +
-                "- *Inflict 1-harm (ap).*\n" +
-                "- *They take -1 right now.*\n" +
-                "\n" +
-                "If they fulfill your command, that counts for all your remaining hold.\n" +
-                "\n" +
-                "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit.")
+                        "\n" +
+                        "On a 10+, hold 3. On a 7–9, hold 1.\n" +
+                        "\n" +
+                        "At your will, no matter the circumstances, you can spend your hold 1 for 1:\n" +
+                        "\n" +
+                        "- *Inflict 1-harm (ap).*\n" +
+                        "- *They take -1 right now.*\n" +
+                        "\n" +
+                        "If they fulfill your command, that counts for all your remaining hold.\n" +
+                        "\n" +
+                        "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(puppetStringsAction)
                 .playbook(PlaybookType.BRAINER).build();
@@ -1280,14 +1278,14 @@ public class GameDataLoader implements CommandLineRunner {
         Move packAlpha = Move.builder()
                 .name("PACK ALPHA")
                 .description("_**Pack alpha**_: when you try to impose your will on your gang, roll+hard.\n" +
-                "\n" +
-                "On a 10+, all 3. On a 7–9, choose 1:\n" +
-                "\n" +
-                "- *They do what you want (otherwise, they refuse)*\n" +
-                "- *They don’t fight back over it (otherwise, they do fight back)*\n" +
-                "- *You don’t have to make an example of one of them (otherwise, you must)*\n" +
-                "\n" +
-                "On a miss, someone in your gang makes a bid, idle or serious, to replace you for alpha.")
+                        "\n" +
+                        "On a 10+, all 3. On a 7–9, choose 1:\n" +
+                        "\n" +
+                        "- *They do what you want (otherwise, they refuse)*\n" +
+                        "- *They don’t fight back over it (otherwise, they do fight back)*\n" +
+                        "- *You don’t have to make an example of one of them (otherwise, you must)*\n" +
+                        "\n" +
+                        "On a miss, someone in your gang makes a bid, idle or serious, to replace you for alpha.")
                 .kind(MoveType.DEFAULT_CHARACTER)
                 .moveAction(packAlphaAction)
                 .playbook(PlaybookType.CHOPPER).build();
@@ -1300,12 +1298,12 @@ public class GameDataLoader implements CommandLineRunner {
         Move fuckingThieves = Move.builder()
                 .name("FUCKING THIEVES")
                 .description("_**Fucking thieves**_: when you have your gang search their pockets and saddlebags for something, roll+hard. It has to be something small enough to fit.\n" +
-                "\n" +
-                "On a 10+, one of you happens to have just the thing, or close enough.\n" +
-                "\n" +
-                "On a 7–9, one of you happens to have something pretty close, unless what you’re looking for is hi-tech, in which case no dice.\n" +
-                "\n" +
-                "On a miss, one of you used to have just the thing, but it turns out that some asswipe stole it from you.")
+                        "\n" +
+                        "On a 10+, one of you happens to have just the thing, or close enough.\n" +
+                        "\n" +
+                        "On a 7–9, one of you happens to have something pretty close, unless what you’re looking for is hi-tech, in which case no dice.\n" +
+                        "\n" +
+                        "On a miss, one of you used to have just the thing, but it turns out that some asswipe stole it from you.")
                 .kind(MoveType.DEFAULT_CHARACTER)
                 .moveAction(fuckingThievesAction)
                 .playbook(PlaybookType.CHOPPER).build();
@@ -1327,12 +1325,12 @@ public class GameDataLoader implements CommandLineRunner {
         Move driverSpecial = Move.builder()
                 .name("DRIVER SPECIAL")
                 .description("If you and another character have sex, roll+cool.\n" +
-                "\n" +
-                "On a 10+, it’s cool, no big deal.\n" +
-                "\n" +
-                "On a 7–9, give them +1 to their Hx with you on their sheet, but give yourself -1 to your Hx with them on yours.\n" +
-                "\n" +
-                "On a miss, you gotta go: take -1 ongoing, until you prove that it’s not like they own you or nothing.")
+                        "\n" +
+                        "On a 10+, it’s cool, no big deal.\n" +
+                        "\n" +
+                        "On a 7–9, give them +1 to their Hx with you on their sheet, but give yourself -1 to your Hx with them on yours.\n" +
+                        "\n" +
+                        "On a miss, you gotta go: take -1 ongoing, until you prove that it’s not like they own you or nothing.")
                 .kind(MoveType.DEFAULT_CHARACTER)
                 .moveAction(driverSpecialAction)
                 .playbook(PlaybookType.DRIVER).build();
@@ -1357,11 +1355,11 @@ public class GameDataLoader implements CommandLineRunner {
         Move eyeOnTheDoor = Move.builder()
                 .name("EYE ON THE DOOR")
                 .description("_**Eye on the door**_: name your escape route and roll+cool.\n" +
-                "\n" +
-                "On a 10+, you’re gone.\n" +
-                "On a 7–9, you can go or stay, but if you go it costs you: leave something behind or take something with you, the MC will tell you what.\n" +
-                "\n" +
-                "On a miss, you’re caught vulnerable, half in and half out.")
+                        "\n" +
+                        "On a 10+, you’re gone.\n" +
+                        "On a 7–9, you can go or stay, but if you go it costs you: leave something behind or take something with you, the MC will tell you what.\n" +
+                        "\n" +
+                        "On a miss, you’re caught vulnerable, half in and half out.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(eyeOnTheDoorAction)
                 .playbook(PlaybookType.DRIVER).build();
@@ -1381,12 +1379,12 @@ public class GameDataLoader implements CommandLineRunner {
         Move reputation = Move.builder()
                 .name("REPUTATION")
                 .description("_**Reputation**_: when you meet someone important (your call), roll+cool.\n" +
-                "\n" +
-                "On a hit, they’ve heard of you, and you say what they’ve heard; the MC has them respond accordingly.\n" +
-                "\n" +
-                "On a 10+, you take +1forward for dealing with them as well.\n" +
-                "\n" +
-                "On a miss, they’ve heard of you, but the MC decides what they’ve heard.")
+                        "\n" +
+                        "On a hit, they’ve heard of you, and you say what they’ve heard; the MC has them respond accordingly.\n" +
+                        "\n" +
+                        "On a 10+, you take +1forward for dealing with them as well.\n" +
+                        "\n" +
+                        "On a miss, they’ve heard of you, but the MC decides what they’ve heard.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(reputationAction)
                 .playbook(PlaybookType.DRIVER).build();
@@ -1454,12 +1452,12 @@ public class GameDataLoader implements CommandLineRunner {
         Move fuckThisShit = Move.builder()
                 .name("FUCK THIS SHIT")
                 .description("_**Fuck this shit**_: name your escape route and roll+hard.\n" +
-                "\n" +
-                "On a 10+, sweet, you’re gone.\n" +
-                "\n" +
-                "On a 7–9, you can go or stay, but if you go it costs you: leave something behind, or take something with you, the MC will tell you what.\n" +
-                "\n" +
-                "On a miss, you’re caught vulnerable, half in and half out.")
+                        "\n" +
+                        "On a 10+, sweet, you’re gone.\n" +
+                        "\n" +
+                        "On a 7–9, you can go or stay, but if you go it costs you: leave something behind, or take something with you, the MC will tell you what.\n" +
+                        "\n" +
+                        "On a miss, you’re caught vulnerable, half in and half out.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(fuckThisShitAction)
                 .playbook(PlaybookType.GUNLUGGER).build();
@@ -1967,6 +1965,138 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultMoves(brainerDefaultMoves)
                 .defaultMoveCount(1)
                 .moveChoiceCount(2)
+                .build();
+
+        /* ----------------------------- CHOPPER PLAYBOOK CREATOR --------------------------------- */
+        VehicleFrame bikeFrame = VehicleFrame.builder()
+                .id(UUID.randomUUID().toString())
+                .frameType(VehicleFrameType.BIKE)
+                .massive(0)
+                .examples("Road bike, trail bike, low-rider")
+                .battleOptionCount(1)
+                .build();
+
+        VehicleBattleOption battleOption1 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.SPEED)
+                .name("+1speed")
+                .build();
+
+        VehicleBattleOption battleOption2 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.HANDLING)
+                .name("+1handling")
+                .build();
+
+        BikeCreator bikeCreator = BikeCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .introInstructions("By default, your bike has speed=0, handling=0, 0-armor and the massive rating of its frame.")
+                .frame(bikeFrame)
+                .strengths(List.of("fast",
+                        "rugged",
+                        "aggressive",
+                        "tight",
+                        "huge",
+                        "responsive"))
+                .looks(List.of(
+                        "sleek",
+                        "vintage",
+                        "massively-chopped",
+                        "muscular",
+                        "flashy",
+                        "luxe",
+                        "roaring",
+                        "fat-ass"))
+                .weaknesses(List.of("slow",
+                        "sloppy",
+                        "guzzler",
+                        "lazy",
+                        "unreliable",
+                        "cramped",
+                        "loud",
+                        "picky",
+                        "rabbity"))
+                .battleOptions(List.of(battleOption1, battleOption2))
+                .build();
+
+        /* ----------------------------- DRIVER PLAYBOOK CREATOR --------------------------------- */
+
+
+        VehicleFrame smallFrame = VehicleFrame.builder()
+                .id(UUID.randomUUID().toString())
+                .frameType(VehicleFrameType.SMALL)
+                .massive(1)
+                .examples("Compact, buggy")
+                .battleOptionCount(2)
+                .build();
+
+        VehicleFrame mediumFrame = VehicleFrame.builder()
+                .id(UUID.randomUUID().toString())
+                .frameType(VehicleFrameType.MEDIUM)
+                .massive(2)
+                .examples("Coupe, sedan, jeep, pickup, van, limo, 4x4, tractor")
+                .battleOptionCount(2)
+                .build();
+
+        VehicleFrame largeFrame = VehicleFrame.builder()
+                .id(UUID.randomUUID().toString())
+                .frameType(VehicleFrameType.LARGE)
+                .massive(3)
+                .examples("Road bike, trail bike, low-rider")
+                .battleOptionCount(2)
+                .build();
+
+        VehicleBattleOption battleOption3 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.MASSIVE)
+                .name("+1massive")
+                .build();
+
+        VehicleBattleOption battleOption4 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.ARMOR)
+                .name("+1armor")
+                .build();
+
+        CarCreator carCreator = CarCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .introInstructions("By default, your vehicle has speed=0, handling=0, 0-armor and the massive rating of its frame.")
+                .frames(List.of(bikeFrame, smallFrame, mediumFrame, largeFrame))
+                .strengths(List.of("fast",
+                        "rugged",
+                        "aggressive",
+                        "tight",
+                        "huge",
+                        "responsive",
+                        "off-road",
+                        "responsive",
+                        "uncomplaining",
+                        "capacious",
+                        "workhorse",
+                        "easily repaired"))
+                .looks(List.of(
+                        "sleek",
+                        "vintage",
+                        "muscular",
+                        "flashy",
+                        "luxe",
+                        "pristine",
+                        "powerful",
+                        "quirky",
+                        "pretty",
+                        "handcrafted",
+                        "spikes & plates",
+                        "garish"))
+                .weaknesses(List.of("slow",
+                        "sloppy",
+                        "guzzler",
+                        "lazy",
+                        "unreliable",
+                        "cramped",
+                        "loud",
+                        "picky",
+                        "rabbity"))
+                .battleOptions(List.of(battleOption1, battleOption2, battleOption3, battleOption4))
                 .build();
 
         playbookCreatorService.saveAll(Flux.just(angelCreator, battlebabePlaybookCreator, playbookCreatorBrainer)).blockLast();
