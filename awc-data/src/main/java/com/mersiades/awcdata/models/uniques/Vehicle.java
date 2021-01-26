@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.models.uniques;
 
+import com.mersiades.awccontent.models.VehicleBattleOption;
 import com.mersiades.awccontent.models.VehicleFrame;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,18 +32,10 @@ public class Vehicle {
 
     @Builder.Default
     private List<String> tags = new ArrayList<>();
-    // For CarCreator and BikeCreator
-//    @Builder.Default
-//    private List<String> strengths = new ArrayList<>();
-//
-//    @Builder.Default
-//    private List<String> looks = new ArrayList<>();
-//
-//    @Builder.Default
-//    private List<String> weaknesses = new ArrayList<>();
-//
-//    @Builder.Default
-//    private List<VehicleBattleOption> battleOptions = new ArrayList<>();
+
+    @Builder.Default
+    private List<VehicleBattleOption> battleOptions = new ArrayList<>();
+
 
 
 }

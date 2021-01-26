@@ -1599,6 +1599,7 @@ public class GameDataLoader implements CommandLineRunner {
         nameService.saveAll(Flux.just(smith2, jones, jackson, marsh, lively, burroughs, gritch, joyette, iris, marie,
                 amiette, suselle, cybelle, pallor, sin, charmer, pity, brace, sundown)).blockLast();
 
+        /* ----------------------------- BRAINER NAMES --------------------------------- */
         Name lauren = Name.builder().playbookType(PlaybookType.DRIVER).name("Lauren").build();
         Name audrey = Name.builder().playbookType(PlaybookType.DRIVER).name("Audrey").build();
         Name farley = Name.builder().playbookType(PlaybookType.DRIVER).name("Farley").build();
@@ -1629,7 +1630,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         nameService.saveAll(Flux.just(lauren, audrey, farley, sammy, katherine, marilyn, james, bridget, paul,
                 annette, marlene, frankie, marlon, kim1, errol, humphrey, phoenix, mustang, impala, suv, cougar,
-                cobra, dart, gremlin, grandCherokee, jag, beemer));
+                cobra, dart, gremlin, grandCherokee, jag, beemer)).blockLast();
     }
 
     private void loadLooks() {
@@ -1764,7 +1765,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         lookService.saveAll(Flux.just(driver1, driver2, driver3, driver4, driver5, driver6, driver7, driver8, driver9,
                 driver10, driver11, driver12, driver13, driver14, driver15, driver16, driver17, driver18, driver19,
-                driver20, driver21, driver22, driver23, driver24, driver25, driver26, driver26));
+                driver20, driver21, driver22, driver23, driver24, driver25, driver26, driver26, driver27)).blockLast();
     }
 
     public void loadStatsOptions() {
