@@ -182,6 +182,20 @@ type StatsOption {
     WEIRD: Int
 }
 
+type VehicleFrame {
+    id: ID!
+    frameType: VehicleFrameType
+    massive: Int
+    examples: String
+    battleOptionCount: Int
+}
+
+type VehicleBattleOption {
+    id: ID!
+    battleOptionType: BattleOptionType
+    name: String
+}
+
 type GearInstructions {
     id: ID!
     youGet: String
@@ -242,6 +256,26 @@ type CustomWeaponsCreator {
 type BrainerGearCreator {
     id: ID!
     gear: [String]!
+}
+
+type CarCreator {
+    id: ID!
+    introInstructions: String
+    frames: [VehicleFrame]
+    strengths: [String]
+    looks: [String]
+    weaknesses: [String]
+    battleOptions: [VehicleBattleOption]
+}
+
+type BikeCreator {
+    id: ID!
+    introInstructions: String
+    frames: VehicleFrame
+    strengths: [String]
+    looks: [String]
+    weaknesses: [String]
+    battleOptions: [VehicleBattleOption]
 }
 
 # ---------------------------------------- GAME & CHARACTER TYPES --------------------------------------- #
@@ -376,6 +410,7 @@ type PlaybookUnique {
     brainerGear: BrainerGear
     angelKit: AngelKit
     customWeapons: CustomWeapons
+    vehicles: [Vehicle]
 }
 
 type BrainerGear {
@@ -395,6 +430,17 @@ type AngelKit {
 type CustomWeapons {
     id: ID!
     weapons: [String]!
+}
+
+type Vehicle {
+    id: ID!
+    vehicleFrame: VehicleFrame
+    speed: Int
+    handling: Int
+    armor: Int
+    massive: Int
+    tags: [String]
+    battleOptions: [VehicleBattleOption]
 }
 
 # ----------------------------------------------- OTHER ---------------------------------------------- #
