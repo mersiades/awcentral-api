@@ -1,26 +1,28 @@
 package com.mersiades.awcweb.bootstrap;
 
+import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.models.*;
+import com.mersiades.awccontent.models.uniquecreators.BikeCreator;
+import com.mersiades.awccontent.models.uniquecreators.CarCreator;
+import com.mersiades.awccontent.services.LookService;
+import com.mersiades.awccontent.services.MoveService;
+import com.mersiades.awccontent.services.StatsOptionService;
+import com.mersiades.awccontent.services.PlaybookCreatorService;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.AngelKit;
 import com.mersiades.awcdata.models.uniques.BrainerGear;
 import com.mersiades.awcdata.models.uniques.CustomWeapons;
+import com.mersiades.awcdata.models.uniques.Vehicle;
 import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
-import com.mersiades.awccontent.enums.*;
-import com.mersiades.awccontent.models.Look;
-import com.mersiades.awccontent.models.Move;
-import com.mersiades.awccontent.models.StatsOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
-import com.mersiades.awccontent.services.LookService;
-import com.mersiades.awccontent.services.MoveService;
-import com.mersiades.awccontent.services.StatsOptionService;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +45,7 @@ public class MockCharacterLoader implements CommandLineRunner {
     private final CharacterService characterService;
     private final StatsOptionService statsOptionService;
     private final MoveService moveService;
+    private final PlaybookCreatorService playbookCreatorService;
 
     @Autowired
     CharacterRepository characterRepository;
@@ -51,12 +54,13 @@ public class MockCharacterLoader implements CommandLineRunner {
                                LookService lookService,
                                CharacterService characterService,
                                StatsOptionService statsOptionService,
-                               MoveService moveService) {
+                               MoveService moveService, PlaybookCreatorService playbookCreatorService) {
         this.gameRoleService = gameRoleService;
         this.lookService = lookService;
         this.characterService = characterService;
         this.statsOptionService = statsOptionService;
         this.moveService = moveService;
+        this.playbookCreatorService = playbookCreatorService;
     }
 
     @Override
@@ -87,38 +91,9 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         // -------------------------------- Set up Sara's Angel ----------------------------------- //
-        List<Look> angelLooks = lookService.findAllByPlaybookType(PlaybookType.ANGEL).collectList().block();
-        assert angelLooks != null;
+        List<Look> angelLooks = getLooks(PlaybookType.ANGEL);
 
-        Look genderLook = angelLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.GENDER)).findFirst().orElseThrow();
-        Look clothesLook = angelLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.CLOTHES)).findFirst().orElseThrow();
-        Look bodyLook = angelLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.BODY)).findFirst().orElseThrow();
-        Look faceLook = angelLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.FACE)).findFirst().orElseThrow();
-        Look eyesLook = angelLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.EYES)).findFirst().orElseThrow();
-
-        StatsOption angelStatsOption = statsOptionService.findAllByPlaybookType(PlaybookType.ANGEL).blockFirst();
-        assert angelStatsOption != null;
-
-        CharacterStat angelCool = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.COOL).value(angelStatsOption.getCOOL()).isHighlighted(false).build();
-        CharacterStat angelHard = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.HARD).value(angelStatsOption.getHARD()).isHighlighted(true).build();
-        CharacterStat angelHot = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.HOT).value(angelStatsOption.getHOT()).isHighlighted(true).build();
-        CharacterStat angelSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.SHARP).value(angelStatsOption.getSHARP()).isHighlighted(false).build();
-        CharacterStat angelWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.WEIRD).value(angelStatsOption.getWEIRD()).isHighlighted(false).build();
-
-        StatsBlock angelStatsBlock1 = StatsBlock.builder().id(UUID.randomUUID().toString())
-                .statsOptionId(angelStatsOption.getId())
-                .stats(List.of(angelCool, angelHard, angelHot, angelSharp, angelWeird))
-                .build();
+        StatsBlock angelStatsBlock1 = getStatsBlock(PlaybookType.ANGEL);
 
         List<Move> angelKitMoves = moveService
                 .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.UNIQUE)
@@ -145,48 +120,12 @@ public class MockCharacterLoader implements CommandLineRunner {
                 findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.DEFAULT_CHARACTER).collectList().block();
         assert angelDefaultMoves != null;
 
-
-        List<CharacterMove> characterMoves = angelMoves
-                .stream().map(move -> CharacterMove.createFromMove(move, true)).collect(Collectors.toList());
-
-        List<CharacterMove> characterDefaultMoves = angelDefaultMoves
-                .stream().map(CharacterMove::createFromMove).collect(Collectors.toList());
-
-        characterMoves.addAll(characterDefaultMoves);
+        List<CharacterMove> characterMoves = createAndMergeCharacterMoves(angelMoves, angelDefaultMoves);
 
         // -------------------------------- Set up John's Battlebabe ----------------------------------- //
-        List<Look> battlebabeLooks = lookService.findAllByPlaybookType(PlaybookType.BATTLEBABE).collectList().block();
-        assert battlebabeLooks != null;
+        List<Look> battlebabeLooks = getLooks(PlaybookType.BATTLEBABE);
 
-        Look genderLookBattlebabe = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.GENDER)).findFirst().orElseThrow();
-        Look clothesLookBattlebabe = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.CLOTHES)).findFirst().orElseThrow();
-        Look bodyLookBattlebabe = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.BODY)).findFirst().orElseThrow();
-        Look faceLookBattlebabe = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.FACE)).findFirst().orElseThrow();
-        Look eyesLookBattlebabe = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.EYES)).findFirst().orElseThrow();
-
-        StatsOption battlebabeStatsOption = statsOptionService.findAllByPlaybookType(PlaybookType.BATTLEBABE).blockFirst();
-        assert battlebabeStatsOption != null;
-
-        CharacterStat battlebabeCool = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.COOL).value(battlebabeStatsOption.getCOOL()).isHighlighted(false).build();
-        CharacterStat battlebabeHard = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.HARD).value(battlebabeStatsOption.getHARD()).isHighlighted(true).build();
-        CharacterStat battlebabeHot = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.HOT).value(battlebabeStatsOption.getHOT()).isHighlighted(true).build();
-        CharacterStat battlebabeSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.SHARP).value(battlebabeStatsOption.getSHARP()).isHighlighted(false).build();
-        CharacterStat battlebabeWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.WEIRD).value(battlebabeStatsOption.getWEIRD()).isHighlighted(false).build();
-
-        StatsBlock battlebabeStatsBlock = StatsBlock.builder().id(UUID.randomUUID().toString())
-                .statsOptionId(battlebabeStatsOption.getId())
-                .stats(List.of(battlebabeCool, battlebabeHard, battlebabeHot, battlebabeSharp, battlebabeWeird))
-                .build();
+        StatsBlock battlebabeStatsBlock = getStatsBlock(PlaybookType.BATTLEBABE);
 
         CustomWeapons customWeapons = CustomWeapons.builder()
                 .id(UUID.randomUUID().toString())
@@ -209,47 +148,12 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.DEFAULT_CHARACTER).collectList().block();
         assert battlebabeDefaultMoves != null;
 
-        List<CharacterMove> characterMoves2 = battlebabeMoves
-                .stream().map(move -> CharacterMove.createFromMove(move, true)).collect(Collectors.toList());
-
-        List<CharacterMove> characterDefaultMoves2 = battlebabeDefaultMoves
-                .stream().map(CharacterMove::createFromMove).collect(Collectors.toList());
-
-        characterMoves2.addAll(characterDefaultMoves2);
+        List<CharacterMove> characterMoves2 = createAndMergeCharacterMoves(battlebabeMoves, battlebabeDefaultMoves);
 
         // -------------------------------- Set up Maya's Brainer ----------------------------------- //
-        List<Look> brainerLooks = lookService.findAllByPlaybookType(PlaybookType.BRAINER).collectList().block();
-        assert brainerLooks != null;
+        List<Look> brainerLooks = getLooks(PlaybookType.BRAINER);
 
-        Look genderLookBrainer = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.GENDER)).findFirst().orElseThrow();
-        Look clothesLookBrainer = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.CLOTHES)).findFirst().orElseThrow();
-        Look bodyLookBrainer = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.BODY)).findFirst().orElseThrow();
-        Look faceLookBrainer = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.FACE)).findFirst().orElseThrow();
-        Look eyesLookBrainer = battlebabeLooks.stream()
-                .filter(look -> look.getCategory().equals(LookType.EYES)).findFirst().orElseThrow();
-
-        StatsOption brainerStatsOption = statsOptionService.findAllByPlaybookType(PlaybookType.BRAINER).blockFirst();
-        assert brainerStatsOption != null;
-
-        CharacterStat brainerCool = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.COOL).value(brainerStatsOption.getCOOL()).isHighlighted(false).build();
-        CharacterStat brainerHard = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.HARD).value(brainerStatsOption.getHARD()).isHighlighted(true).build();
-        CharacterStat brainerHot = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.HOT).value(brainerStatsOption.getHOT()).isHighlighted(true).build();
-        CharacterStat brainerSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.SHARP).value(brainerStatsOption.getSHARP()).isHighlighted(false).build();
-        CharacterStat brainerWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
-                .stat(StatType.WEIRD).value(brainerStatsOption.getWEIRD()).isHighlighted(false).build();
-
-        StatsBlock brainerStatsBlock = StatsBlock.builder().id(UUID.randomUUID().toString())
-                .statsOptionId(brainerStatsOption.getId())
-                .stats(List.of(brainerCool, brainerHard, brainerHot, brainerSharp, brainerWeird))
-                .build();
+        StatsBlock brainerStatsBlock = getStatsBlock(PlaybookType.BRAINER);
 
         BrainerGear brainerGear = BrainerGear.builder()
                 .id(UUID.randomUUID().toString())
@@ -272,38 +176,89 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.DEFAULT_CHARACTER).collectList().block();
         assert brainerDefaultMoves != null;
 
-        List<CharacterMove> characterMoves3 = brainerMoves
-                .stream().map(move -> CharacterMove.createFromMove(move, true)).collect(Collectors.toList());
+        List<CharacterMove> characterMoves3 = createAndMergeCharacterMoves(brainerMoves, brainerDefaultMoves);
 
-        List<CharacterMove> characterDefaultMoves3 = brainerMoves
-                .stream().map(CharacterMove::createFromMove).collect(Collectors.toList());
+        // -------------------------------- Set up Ahmad's Driver ----------------------------------- //
+        List<Look> driverLooks = getLooks(PlaybookType.DRIVER);
 
-        characterMoves3.addAll(characterDefaultMoves3);
+        StatsBlock driverStatsBlock = getStatsBlock(PlaybookType.DRIVER);
 
-        // -------------------------------- Set up Ahmad's Angel ----------------------------------- //
-        List<Move> angelMoves2 = moveService.findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.CHARACTER)
-                .filter(move -> move.getName().equals("PROFESSIONAL COMPASSION") ||
-                        move.getName().equals("TOUCHED BY DEATH"))
+        List<Move> driverMoves = moveService.findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.CHARACTER)
+                .filter(move -> move.getName().equals("EYE ON THE DOOR") ||
+                        move.getName().equals("COLLECTOR"))
                 .collectList().block();
-        assert angelMoves2 != null;
+        assert driverMoves != null;
 
-        List<Move> angelDefaultMoves2 = moveService
-                .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.DEFAULT_CHARACTER).collectList().block();
-        assert angelDefaultMoves2 != null;
+        List<Move> driverDefaultMoves = moveService
+                .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.DEFAULT_CHARACTER).collectList().block();
+        assert driverDefaultMoves != null;
 
-        List<CharacterMove> characterMoves4 = angelMoves2
-                .stream().map(move -> CharacterMove.createFromMove(move, true)).collect(Collectors.toList());
+        List<CharacterMove> characterMoves4 = createAndMergeCharacterMoves(driverMoves, driverDefaultMoves);
 
-        List<CharacterMove> characterDefaultMoves4 = angelMoves2
-                .stream().map(CharacterMove::createFromMove).collect(Collectors.toList());
+        PlaybookCreator driverCreator = playbookCreatorService.findByPlaybookType(PlaybookType.DRIVER).block();
+        assert driverCreator != null;
+        CarCreator carCreator = driverCreator.getPlaybookUniqueCreator().getCarCreator();
+        BikeCreator bikeCreator = driverCreator.getPlaybookUniqueCreator().getBikeCreator();
 
-        characterMoves4.addAll(characterDefaultMoves4);
+
+        Vehicle car1 = Vehicle.builder()
+                .id(UUID.randomUUID().toString())
+                .name("Unnamed vehicle")
+                // SMALL frame
+                .vehicleFrame(carCreator.getFrames().get(1))
+                // +1speed, +1armor
+                .battleOptions(List.of(carCreator.getBattleOptions().get(0), carCreator.getBattleOptions().get(3)))
+                .massive(1)
+                .speed(1)
+                .armor(1)
+                .handling(0)
+                .strengths(List.of("fast"))
+                .weaknesses(List.of("quirky", "vintage"))
+                .looks(List.of("loud"))
+                .build();
+
+        Vehicle car2 = Vehicle.builder()
+                .id(UUID.randomUUID().toString())
+                .name("Bess")
+                // LARGE frame
+                .vehicleFrame(carCreator.getFrames().get(3))
+                // +1massive, +1armor
+                .battleOptions(List.of(carCreator.getBattleOptions().get(2), carCreator.getBattleOptions().get(3)))
+                .massive(4)
+                .speed(0)
+                .armor(1)
+                .handling(0)
+                .strengths(List.of("rugged", "aggressive"))
+                .weaknesses(List.of("cramped", "picky"))
+                .looks(List.of("sleek", "powerful"))
+                .build();
+
+        Vehicle bike = Vehicle.builder()
+                .id(UUID.randomUUID().toString())
+                .name("Ducati Monster")
+                // BIKE frame
+                .vehicleFrame(bikeCreator.getFrame())
+                // +1speed
+                .battleOptions(List.of(bikeCreator.getBattleOptions().get(0)))
+                .massive(0)
+                .speed(1)
+                .armor(0)
+                .handling(0)
+                .strengths(List.of("tight", "huge"))
+                .weaknesses(List.of("massively-chopped", "fat-ass"))
+                .looks(List.of("bucking", "unreliable"))
+                .build();
+
+        PlaybookUnique driverPlaybookUnique = PlaybookUnique.builder()
+                .id(UUID.randomUUID().toString())
+                .vehicles(List.of(car1, car2, bike))
+                .build();
 
         // -------------------------------- Create Sara's Angel ----------------------------------- //
         Character mockCharacter1 = Character.builder()
                 .name("Doc")
                 .playbook(PlaybookType.ANGEL)
-                .looks(List.of(genderLook, clothesLook, bodyLook, faceLook, eyesLook))
+                .looks(angelLooks)
                 .gear(List.of("Shotgun", "Rusty screwdriver"))
                 .statsBlock(angelStatsBlock1)
                 .barter(2)
@@ -316,7 +271,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         Character mockCharacter2 = Character.builder()
                 .name("Scarlet")
                 .playbook(PlaybookType.BATTLEBABE)
-                .looks(List.of(genderLookBattlebabe, clothesLookBattlebabe, bodyLookBattlebabe, faceLookBattlebabe, eyesLookBattlebabe))
+                .looks(battlebabeLooks)
                 .gear(List.of("Black leather boots", "Broken motorcycle helmet"))
                 .statsBlock(battlebabeStatsBlock)
                 .barter(2)
@@ -329,7 +284,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         Character mockCharacter3 = Character.builder()
                 .name("Smith")
                 .playbook(PlaybookType.BRAINER)
-                .looks(List.of(genderLookBrainer, bodyLookBrainer, clothesLookBrainer, faceLookBrainer, eyesLookBrainer))
+                .looks(brainerLooks)
                 .gear(List.of("Sharp kitchen knife", "Wireless radio"))
                 .statsBlock(brainerStatsBlock)
                 .barter(2)
@@ -338,52 +293,26 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .hasCompletedCharacterCreation(true)
                 .build();
 
-        // -------------------------------- Create Ahmad's Angel ----------------------------------- //
+        // -------------------------------- Create Ahmad's Driver ----------------------------------- //
         Character mockCharacter4 = Character.builder()
-                .name("Nee")
-                .playbook(PlaybookType.ANGEL)
-                .looks(List.of(genderLook, clothesLook, bodyLook, faceLook, eyesLook))
-                .gear(List.of("Shiny scalpel", "Beatles LP collection"))
-                .statsBlock(angelStatsBlock1)
-                .barter(2)
-                .playbookUnique(angelUnique)
+                .name("Phoenix")
+                .playbook(PlaybookType.DRIVER)
+                .looks(driverLooks)
+                .gear(List.of("Leather jacket", ".38 revolver"))
+                .statsBlock(driverStatsBlock)
+                .barter(4)
+                .playbookUnique(driverPlaybookUnique)
                 .characterMoves(characterMoves4)
                 .hasCompletedCharacterCreation(true)
+                .vehicleCount(3)
                 .build();
 
         // ----------------------- Add Characters to players and save ----------------------------- //
 
-        if (saraAsPlayer.getCharacters().size() == 0) {
-            harm.setId(UUID.randomUUID().toString());
-            mockCharacter1.setHarm(harm);
-            saraAsPlayer.getCharacters().add(mockCharacter1);
-            characterService.save(mockCharacter1).block();
-            gameRoleService.save(saraAsPlayer).block();
-        }
-
-        if (johnAsPlayer.getCharacters().size() == 0) {
-            harm.setId(UUID.randomUUID().toString());
-            mockCharacter2.setHarm(harm);
-            johnAsPlayer.getCharacters().add(mockCharacter2);
-            characterService.save(mockCharacter2).block();
-            gameRoleService.save(johnAsPlayer).block();
-        }
-
-        if (mayaAsPlayer.getCharacters().size() == 0) {
-            harm.setId(UUID.randomUUID().toString());
-            mockCharacter3.setHarm(harm);
-            mayaAsPlayer.getCharacters().add(mockCharacter3);
-            characterService.save(mockCharacter3).block();
-            gameRoleService.save(mayaAsPlayer).block();
-        }
-
-        if (ahmadAsPlayer.getCharacters().size() == 0) {
-            harm.setId(UUID.randomUUID().toString());
-            mockCharacter4.setHarm(harm);
-            ahmadAsPlayer.getCharacters().add(mockCharacter4);
-            characterService.save(mockCharacter4).block();
-            gameRoleService.save(ahmadAsPlayer).block();
-        }
+        saveCharacter(saraAsPlayer, harm, mockCharacter1);
+        saveCharacter(johnAsPlayer, harm, mockCharacter2);
+        saveCharacter(mayaAsPlayer, harm, mockCharacter3);
+        saveCharacter(ahmadAsPlayer, harm, mockCharacter4);
     }
 
     private void loadHx() {
@@ -453,5 +382,66 @@ public class MockCharacterLoader implements CommandLineRunner {
         characterService.saveAll(Flux.just(doc, scarlet, smith, nee)).blockLast();
         gameRoleService.saveAll(Flux.just(saraAsPlayer, johnAsPlayer, mayaAsPlayer, ahmadAsPlayer)).blockLast();
 
+    }
+
+    private List<CharacterMove> createAndMergeCharacterMoves(List<Move> choiceMoves, List<Move> defaultMoves) {
+
+        List<CharacterMove> characterMoves = choiceMoves
+                .stream().map(move -> CharacterMove.createFromMove(move, true)).collect(Collectors.toList());
+
+        List<CharacterMove> characterDefaultMoves = defaultMoves
+                .stream().map(CharacterMove::createFromMove).collect(Collectors.toList());
+
+        characterMoves.addAll(characterDefaultMoves);
+        return characterMoves;
+    }
+
+    private List<Look> getLooks(PlaybookType playbookType) {
+        List<Look> looks = lookService.findAllByPlaybookType(playbookType).collectList().block();
+        assert looks != null;
+
+        Look genderLook = looks.stream()
+                .filter(look -> look.getCategory().equals(LookType.GENDER)).findFirst().orElseThrow();
+        Look clothesLook = looks.stream()
+                .filter(look -> look.getCategory().equals(LookType.CLOTHES)).findFirst().orElseThrow();
+        Look bodyLook = looks.stream()
+                .filter(look -> look.getCategory().equals(LookType.BODY)).findFirst().orElseThrow();
+        Look faceLook = looks.stream()
+                .filter(look -> look.getCategory().equals(LookType.FACE)).findFirst().orElseThrow();
+        Look eyesLook = looks.stream()
+                .filter(look -> look.getCategory().equals(LookType.EYES)).findFirst().orElseThrow();
+
+        return List.of(genderLook, bodyLook, clothesLook, faceLook, eyesLook);
+    }
+
+    private StatsBlock getStatsBlock(PlaybookType playbookType) {
+        StatsOption statsOption = statsOptionService.findAllByPlaybookType(playbookType).blockFirst();
+        assert statsOption != null;
+
+        CharacterStat cool = CharacterStat.builder().id(UUID.randomUUID().toString())
+                .stat(StatType.COOL).value(statsOption.getCOOL()).isHighlighted(false).build();
+        CharacterStat hard = CharacterStat.builder().id(UUID.randomUUID().toString())
+                .stat(StatType.HARD).value(statsOption.getHARD()).isHighlighted(true).build();
+        CharacterStat hot = CharacterStat.builder().id(UUID.randomUUID().toString())
+                .stat(StatType.HOT).value(statsOption.getHOT()).isHighlighted(true).build();
+        CharacterStat sharp = CharacterStat.builder().id(UUID.randomUUID().toString())
+                .stat(StatType.SHARP).value(statsOption.getSHARP()).isHighlighted(false).build();
+        CharacterStat weird = CharacterStat.builder().id(UUID.randomUUID().toString())
+                .stat(StatType.WEIRD).value(statsOption.getWEIRD()).isHighlighted(false).build();
+
+        return StatsBlock.builder().id(UUID.randomUUID().toString())
+                .statsOptionId(statsOption.getId())
+                .stats(List.of(cool, hard, hot, sharp, weird))
+                .build();
+    }
+
+    private void saveCharacter(GameRole gameRole, CharacterHarm harm, Character character) {
+        if (gameRole.getCharacters().size() == 0) {
+            harm.setId(UUID.randomUUID().toString());
+            character.setHarm(harm);
+            gameRole.getCharacters().add(character);
+            characterService.save(character).block();
+            gameRoleService.save(gameRole).block();
+        }
     }
 }

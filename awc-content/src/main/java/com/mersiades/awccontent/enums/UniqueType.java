@@ -5,11 +5,11 @@ public enum UniqueType {
     CUSTOM_WEAPONS,
     BRAINER_GEAR,
     GANG,
-    CAR,
+    VEHICLE,
     WEAPONS,
     HOLDING,
     FOLLOWERS,
     ESTABLISHMENT,
     WORKSPACE,
-    SKINNER_GEAR
+    SKINNER_GEAR,
 }

@@ -16,4 +16,5 @@ public class MoveNames {
     public static String speedRecoveryName = "SPEED THE RECOVERY OF SOMEONE";
     public static String reviveSomeoneName = "REVIVE SOMEONE";
     public static String treatNpcName = "TREAT AN NPC";
+    public static String collector = "COLLECTOR";
 }

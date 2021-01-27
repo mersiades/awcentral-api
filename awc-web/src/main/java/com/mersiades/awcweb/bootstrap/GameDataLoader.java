@@ -2,9 +2,7 @@ package com.mersiades.awcweb.bootstrap;
 
 import com.mersiades.awccontent.enums.*;
 import com.mersiades.awccontent.models.*;
-import com.mersiades.awccontent.models.uniquecreators.AngelKitCreator;
-import com.mersiades.awccontent.models.uniquecreators.BrainerGearCreator;
-import com.mersiades.awccontent.models.uniquecreators.CustomWeaponsCreator;
+import com.mersiades.awccontent.models.uniquecreators.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -1076,12 +1074,12 @@ public class GameDataLoader implements CommandLineRunner {
         Move dangerousAndSexy = Move.builder()
                 .name("DANGEROUS & SEXY")
                 .description("_**Dangerous & sexy**_: when you enter into a charged situation, roll+hot.\n" +
-                "\n" +
-                "On a 10+, hold 2. On a 7–9, hold 1.\n" +
-                "\n" +
-                "Spend your hold 1 for 1 to make eye contact with an NPC present, who freezes or flinches and can’t take action until you break it off.\n" +
-                "\n" +
-                "On a miss, your enemies identify you immediately as their foremost threat.")
+                        "\n" +
+                        "On a 10+, hold 2. On a 7–9, hold 1.\n" +
+                        "\n" +
+                        "Spend your hold 1 for 1 to make eye contact with an NPC present, who freezes or flinches and can’t take action until you break it off.\n" +
+                        "\n" +
+                        "On a miss, your enemies identify you immediately as their foremost threat.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(dangerousAndSexyAction)
                 .playbook(PlaybookType.BATTLEBABE)
@@ -1112,14 +1110,14 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         Move visionsOfDeath = Move.builder()
                 .name("VISIONS OF DEATH").description("_**Visions of death**_: when you go into battle, roll+weird.\n" +
-                "\n" +
-                "On a 10+, name one person who’ll die and one who’ll live.\n" +
-                "\n" +
-                "On a 7–9, name one person who’ll die OR one person who’ll live. Don’t name a player’s character; name NPCs only.\n" +
-                "\n" +
-                "The MC will make your vision come true, if it’s even remotely possible.\n" +
-                "\n" +
-                "On a miss, you foresee your own death, and accordingly take -1 throughout the battle.")
+                        "\n" +
+                        "On a 10+, name one person who’ll die and one who’ll live.\n" +
+                        "\n" +
+                        "On a 7–9, name one person who’ll die OR one person who’ll live. Don’t name a player’s character; name NPCs only.\n" +
+                        "\n" +
+                        "The MC will make your vision come true, if it’s even remotely possible.\n" +
+                        "\n" +
+                        "On a miss, you foresee your own death, and accordingly take -1 throughout the battle.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(visionsOfDeathAction)
                 .playbook(PlaybookType.BATTLEBABE).build();
@@ -1205,15 +1203,15 @@ public class GameDataLoader implements CommandLineRunner {
         Move brainScan = Move.builder()
                 .name("DEEP BRAIN SCAN")
                 .description("_**Deep brain scan**_: when you have time and physical intimacy with someone — mutual intimacy like holding them in your arms, or 1-sided intimacy like they’re restrained to a table — you can read them more deeply than normal. Roll+weird.\n" +
-                "\n" +
-                "On a 10+, hold 3. On a 7–9, hold 1. While you’re reading them, spend your hold to ask their player questions, 1 for 1:\n" +
-                "\n" +
-                "- *What was your character’s lowest moment?*\n" +
-                "- *For what does your character crave forgiveness, and of whom?*\n" +
-                "- *What are your character’s secret pains?*\n" +
-                "- *In what ways are your character’s mind and soul vulnerable?*\n" +
-                "\n" +
-                "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit")
+                        "\n" +
+                        "On a 10+, hold 3. On a 7–9, hold 1. While you’re reading them, spend your hold to ask their player questions, 1 for 1:\n" +
+                        "\n" +
+                        "- *What was your character’s lowest moment?*\n" +
+                        "- *For what does your character crave forgiveness, and of whom?*\n" +
+                        "- *What are your character’s secret pains?*\n" +
+                        "- *In what ways are your character’s mind and soul vulnerable?*\n" +
+                        "\n" +
+                        "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit")
                 .kind(MoveType.CHARACTER)
                 .moveAction(brainScanAction)
                 .playbook(PlaybookType.BRAINER).build();
@@ -1240,17 +1238,17 @@ public class GameDataLoader implements CommandLineRunner {
         Move puppetStrings = Move.builder()
                 .name("IN BRAIN PUPPET STRINGS")
                 .description("_**In-brain puppet strings**_: when you have time and physical intimacy with someone — again, mutual or 1-sided — you can plant a command inside their mind. Roll+weird.\n" +
-                "\n" +
-                "On a 10+, hold 3. On a 7–9, hold 1.\n" +
-                "\n" +
-                "At your will, no matter the circumstances, you can spend your hold 1 for 1:\n" +
-                "\n" +
-                "- *Inflict 1-harm (ap).*\n" +
-                "- *They take -1 right now.*\n" +
-                "\n" +
-                "If they fulfill your command, that counts for all your remaining hold.\n" +
-                "\n" +
-                "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit.")
+                        "\n" +
+                        "On a 10+, hold 3. On a 7–9, hold 1.\n" +
+                        "\n" +
+                        "At your will, no matter the circumstances, you can spend your hold 1 for 1:\n" +
+                        "\n" +
+                        "- *Inflict 1-harm (ap).*\n" +
+                        "- *They take -1 right now.*\n" +
+                        "\n" +
+                        "If they fulfill your command, that counts for all your remaining hold.\n" +
+                        "\n" +
+                        "On a miss, you inflict 1-harm (ap) upon your subject, to no benefit.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(puppetStringsAction)
                 .playbook(PlaybookType.BRAINER).build();
@@ -1280,14 +1278,14 @@ public class GameDataLoader implements CommandLineRunner {
         Move packAlpha = Move.builder()
                 .name("PACK ALPHA")
                 .description("_**Pack alpha**_: when you try to impose your will on your gang, roll+hard.\n" +
-                "\n" +
-                "On a 10+, all 3. On a 7–9, choose 1:\n" +
-                "\n" +
-                "- *They do what you want (otherwise, they refuse)*\n" +
-                "- *They don’t fight back over it (otherwise, they do fight back)*\n" +
-                "- *You don’t have to make an example of one of them (otherwise, you must)*\n" +
-                "\n" +
-                "On a miss, someone in your gang makes a bid, idle or serious, to replace you for alpha.")
+                        "\n" +
+                        "On a 10+, all 3. On a 7–9, choose 1:\n" +
+                        "\n" +
+                        "- *They do what you want (otherwise, they refuse)*\n" +
+                        "- *They don’t fight back over it (otherwise, they do fight back)*\n" +
+                        "- *You don’t have to make an example of one of them (otherwise, you must)*\n" +
+                        "\n" +
+                        "On a miss, someone in your gang makes a bid, idle or serious, to replace you for alpha.")
                 .kind(MoveType.DEFAULT_CHARACTER)
                 .moveAction(packAlphaAction)
                 .playbook(PlaybookType.CHOPPER).build();
@@ -1300,12 +1298,12 @@ public class GameDataLoader implements CommandLineRunner {
         Move fuckingThieves = Move.builder()
                 .name("FUCKING THIEVES")
                 .description("_**Fucking thieves**_: when you have your gang search their pockets and saddlebags for something, roll+hard. It has to be something small enough to fit.\n" +
-                "\n" +
-                "On a 10+, one of you happens to have just the thing, or close enough.\n" +
-                "\n" +
-                "On a 7–9, one of you happens to have something pretty close, unless what you’re looking for is hi-tech, in which case no dice.\n" +
-                "\n" +
-                "On a miss, one of you used to have just the thing, but it turns out that some asswipe stole it from you.")
+                        "\n" +
+                        "On a 10+, one of you happens to have just the thing, or close enough.\n" +
+                        "\n" +
+                        "On a 7–9, one of you happens to have something pretty close, unless what you’re looking for is hi-tech, in which case no dice.\n" +
+                        "\n" +
+                        "On a miss, one of you used to have just the thing, but it turns out that some asswipe stole it from you.")
                 .kind(MoveType.DEFAULT_CHARACTER)
                 .moveAction(fuckingThievesAction)
                 .playbook(PlaybookType.CHOPPER).build();
@@ -1327,12 +1325,12 @@ public class GameDataLoader implements CommandLineRunner {
         Move driverSpecial = Move.builder()
                 .name("DRIVER SPECIAL")
                 .description("If you and another character have sex, roll+cool.\n" +
-                "\n" +
-                "On a 10+, it’s cool, no big deal.\n" +
-                "\n" +
-                "On a 7–9, give them +1 to their Hx with you on their sheet, but give yourself -1 to your Hx with them on yours.\n" +
-                "\n" +
-                "On a miss, you gotta go: take -1 ongoing, until you prove that it’s not like they own you or nothing.")
+                        "\n" +
+                        "On a 10+, it’s cool, no big deal.\n" +
+                        "\n" +
+                        "On a 7–9, give them +1 to their Hx with you on their sheet, but give yourself -1 to your Hx with them on yours.\n" +
+                        "\n" +
+                        "On a miss, you gotta go: take -1 ongoing, until you prove that it’s not like they own you or nothing.")
                 .kind(MoveType.DEFAULT_CHARACTER)
                 .moveAction(driverSpecialAction)
                 .playbook(PlaybookType.DRIVER).build();
@@ -1357,11 +1355,11 @@ public class GameDataLoader implements CommandLineRunner {
         Move eyeOnTheDoor = Move.builder()
                 .name("EYE ON THE DOOR")
                 .description("_**Eye on the door**_: name your escape route and roll+cool.\n" +
-                "\n" +
-                "On a 10+, you’re gone.\n" +
-                "On a 7–9, you can go or stay, but if you go it costs you: leave something behind or take something with you, the MC will tell you what.\n" +
-                "\n" +
-                "On a miss, you’re caught vulnerable, half in and half out.")
+                        "\n" +
+                        "On a 10+, you’re gone.\n" +
+                        "On a 7–9, you can go or stay, but if you go it costs you: leave something behind or take something with you, the MC will tell you what.\n" +
+                        "\n" +
+                        "On a miss, you’re caught vulnerable, half in and half out.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(eyeOnTheDoorAction)
                 .playbook(PlaybookType.DRIVER).build();
@@ -1381,12 +1379,12 @@ public class GameDataLoader implements CommandLineRunner {
         Move reputation = Move.builder()
                 .name("REPUTATION")
                 .description("_**Reputation**_: when you meet someone important (your call), roll+cool.\n" +
-                "\n" +
-                "On a hit, they’ve heard of you, and you say what they’ve heard; the MC has them respond accordingly.\n" +
-                "\n" +
-                "On a 10+, you take +1forward for dealing with them as well.\n" +
-                "\n" +
-                "On a miss, they’ve heard of you, but the MC decides what they’ve heard.")
+                        "\n" +
+                        "On a hit, they’ve heard of you, and you say what they’ve heard; the MC has them respond accordingly.\n" +
+                        "\n" +
+                        "On a 10+, you take +1forward for dealing with them as well.\n" +
+                        "\n" +
+                        "On a miss, they’ve heard of you, but the MC decides what they’ve heard.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(reputationAction)
                 .playbook(PlaybookType.DRIVER).build();
@@ -1402,8 +1400,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .kind(MoveType.CHARACTER)
                 .moveAction(daredevilAction)
                 .playbook(PlaybookType.DRIVER).build();
-        Move collector = Move.builder()
-                .name("COLLECTOR")
+        Move collectorMove = Move.builder()
+                .name(collector)
                 .description("_**Collector**_: you get 2 additional cars (you detail).")
                 .kind(MoveType.CHARACTER)
                 .stat(null)
@@ -1415,7 +1413,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .playbook(PlaybookType.DRIVER).build();
 
-        moveService.saveAll(Flux.just(driverSpecial, combatDriver, eyeOnTheDoor, weatherEye, reputation, daredevil, collector, myOtherCarIsATank)).blockLast();
+        moveService.saveAll(Flux.just(driverSpecial, combatDriver, eyeOnTheDoor, weatherEye, reputation, daredevil, collectorMove, myOtherCarIsATank)).blockLast();
 
         /* ----------------------------- GUNLUGGER MOVES --------------------------------- */
         System.out.println("|| --- Loading Gunlugger moves --- ||");
@@ -1454,12 +1452,12 @@ public class GameDataLoader implements CommandLineRunner {
         Move fuckThisShit = Move.builder()
                 .name("FUCK THIS SHIT")
                 .description("_**Fuck this shit**_: name your escape route and roll+hard.\n" +
-                "\n" +
-                "On a 10+, sweet, you’re gone.\n" +
-                "\n" +
-                "On a 7–9, you can go or stay, but if you go it costs you: leave something behind, or take something with you, the MC will tell you what.\n" +
-                "\n" +
-                "On a miss, you’re caught vulnerable, half in and half out.")
+                        "\n" +
+                        "On a 10+, sweet, you’re gone.\n" +
+                        "\n" +
+                        "On a 7–9, you can go or stay, but if you go it costs you: leave something behind, or take something with you, the MC will tell you what.\n" +
+                        "\n" +
+                        "On a miss, you’re caught vulnerable, half in and half out.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(fuckThisShitAction)
                 .playbook(PlaybookType.GUNLUGGER).build();
@@ -1600,6 +1598,39 @@ public class GameDataLoader implements CommandLineRunner {
 
         nameService.saveAll(Flux.just(smith2, jones, jackson, marsh, lively, burroughs, gritch, joyette, iris, marie,
                 amiette, suselle, cybelle, pallor, sin, charmer, pity, brace, sundown)).blockLast();
+
+        /* ----------------------------- BRAINER NAMES --------------------------------- */
+        Name lauren = Name.builder().playbookType(PlaybookType.DRIVER).name("Lauren").build();
+        Name audrey = Name.builder().playbookType(PlaybookType.DRIVER).name("Audrey").build();
+        Name farley = Name.builder().playbookType(PlaybookType.DRIVER).name("Farley").build();
+        Name sammy = Name.builder().playbookType(PlaybookType.DRIVER).name("Sammy").build();
+        Name katherine = Name.builder().playbookType(PlaybookType.DRIVER).name("Katherine").build();
+        Name marilyn = Name.builder().playbookType(PlaybookType.DRIVER).name("Marilyn").build();
+        Name james = Name.builder().playbookType(PlaybookType.DRIVER).name("James").build();
+        Name bridget = Name.builder().playbookType(PlaybookType.DRIVER).name("Bridget").build();
+        Name paul = Name.builder().playbookType(PlaybookType.DRIVER).name("Paul").build();
+        Name annette = Name.builder().playbookType(PlaybookType.DRIVER).name("Annette").build();
+        Name marlene = Name.builder().playbookType(PlaybookType.DRIVER).name("Marlene").build();
+        Name frankie = Name.builder().playbookType(PlaybookType.DRIVER).name("Frankie").build();
+        Name marlon = Name.builder().playbookType(PlaybookType.DRIVER).name("Marlon").build();
+        Name kim1 = Name.builder().playbookType(PlaybookType.DRIVER).name("Kim").build();
+        Name errol = Name.builder().playbookType(PlaybookType.DRIVER).name("Errol").build();
+        Name humphrey = Name.builder().playbookType(PlaybookType.DRIVER).name("Humphrey").build();
+        Name phoenix = Name.builder().playbookType(PlaybookType.DRIVER).name("Phoenix").build();
+        Name mustang = Name.builder().playbookType(PlaybookType.DRIVER).name("Mustang").build();
+        Name impala = Name.builder().playbookType(PlaybookType.DRIVER).name("Impala").build();
+        Name suv = Name.builder().playbookType(PlaybookType.DRIVER).name("Suv").build();
+        Name cougar = Name.builder().playbookType(PlaybookType.DRIVER).name("Cougar").build();
+        Name cobra = Name.builder().playbookType(PlaybookType.DRIVER).name("Cobra").build();
+        Name dart = Name.builder().playbookType(PlaybookType.DRIVER).name("Dart").build();
+        Name gremlin = Name.builder().playbookType(PlaybookType.DRIVER).name("Gremlin").build();
+        Name grandCherokee = Name.builder().playbookType(PlaybookType.DRIVER).name("Grand Cherokee").build();
+        Name jag = Name.builder().playbookType(PlaybookType.DRIVER).name("Jag").build();
+        Name beemer = Name.builder().playbookType(PlaybookType.DRIVER).name("Beemer").build();
+
+        nameService.saveAll(Flux.just(lauren, audrey, farley, sammy, katherine, marilyn, james, bridget, paul,
+                annette, marlene, frankie, marlon, kim1, errol, humphrey, phoenix, mustang, impala, suv, cougar,
+                cobra, dart, gremlin, grandCherokee, jag, beemer)).blockLast();
     }
 
     private void loadLooks() {
@@ -1702,6 +1733,39 @@ public class GameDataLoader implements CommandLineRunner {
                 brainer9, brainer10, brainer11, brainer12, brainer13, brainer14, brainer15, brainer16, brainer17,
                 brainer18, brainer19, brainer20, brainer21, brainer22, brainer23, brainer24, brainer25, brainer26,
                 brainer27)).blockLast();
+
+        /* ----------------------------- DRIVER LOOKS --------------------------------- */
+        Look driver1 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("man").build();
+        Look driver2 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("woman").build();
+        Look driver3 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("ambiguous").build();
+        Look driver4 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("transgressing").build();
+        Look driver5 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("vintage wear").build();
+        Look driver6 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("casual wear").build();
+        Look driver7 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("utility wear").build();
+        Look driver8 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("leather wear").build();
+        Look driver9 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("showy scrounge wear").build();
+        Look driver10 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("handsome face").build();
+        Look driver11 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("gorgeous face").build();
+        Look driver12 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("stern face").build();
+        Look driver13 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("fine-boned face").build();
+        Look driver14 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("worn face").build();
+        Look driver15 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("crooked face").build();
+        Look driver16 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("cool eyes").build();
+        Look driver17 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("hooded eyes").build();
+        Look driver18 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("hard eyes").build();
+        Look driver19 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("sad eyes").build();
+        Look driver20 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("cold eyes").build();
+        Look driver21 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("pale eyes").build();
+        Look driver22 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("slim body").build();
+        Look driver23 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("pudgy body").build();
+        Look driver24 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("stocky body").build();
+        Look driver25 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("solid body").build();
+        Look driver26 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("tall body").build();
+        Look driver27 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("strong body").build();
+
+        lookService.saveAll(Flux.just(driver1, driver2, driver3, driver4, driver5, driver6, driver7, driver8, driver9,
+                driver10, driver11, driver12, driver13, driver14, driver15, driver16, driver17, driver18, driver19,
+                driver20, driver21, driver22, driver23, driver24, driver25, driver26, driver26, driver27)).blockLast();
     }
 
     public void loadStatsOptions() {
@@ -1726,6 +1790,13 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption brainer3 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(1).HARD(-2).HOT(-1).SHARP(2).WEIRD(2).build();
         StatsOption brainer4 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(2).HARD(-1).HOT(-1).SHARP(0).WEIRD(2).build();
         statsOptionService.saveAll(Flux.just(brainer1, brainer2, brainer3, brainer4)).blockLast();
+
+        /* ----------------------------- DRIVER STATS OPTIONS --------------------------------- */
+        StatsOption driver1 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build();
+        StatsOption driver2 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(0).HOT(1).SHARP(1).WEIRD(-1).build();
+        StatsOption driver3 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(1).HOT(-1).SHARP(0).WEIRD(1).build();
+        StatsOption driver4 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-2).HOT(0).SHARP(2).WEIRD(1).build();
+        statsOptionService.saveAll(Flux.just(driver1, driver2, driver3, driver4)).blockLast();
     }
 
     public void loadPlaybookCreators() {
@@ -1757,7 +1828,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         GearInstructions angelGearInstructions = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
-                .youGet("You get:")
+                .gearIntro("You get:")
                 .youGetItems(List.of("fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
                 .introduceChoice("Small practical weapons")
                 .numberCanChoose(1)
@@ -1865,7 +1936,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         GearInstructions battlebabeGearInstructions = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
-                .youGet("You get:")
+                .gearIntro("You get:")
                 .youGetItems(List.of("fashion suitable to your look, including at your option fashion worth 1-armor or body armor worth 2-armor (you detail)"))
                 .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
                 .startingBarter(4)
@@ -1931,7 +2002,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         GearInstructions brainerGearInstructions = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
-                .youGet("You get:")
+                .gearIntro("You get:")
                 .youGetItems(List.of("fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
                 .introduceChoice("Small fancy weapons")
                 .numberCanChoose(1)
@@ -1969,7 +2040,209 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveChoiceCount(2)
                 .build();
 
-        playbookCreatorService.saveAll(Flux.just(angelCreator, battlebabePlaybookCreator, playbookCreatorBrainer)).blockLast();
+        /* ----------------------------- CHOPPER PLAYBOOK CREATOR --------------------------------- */
+        VehicleFrame bikeFrame = VehicleFrame.builder()
+                .id(UUID.randomUUID().toString())
+                .frameType(VehicleFrameType.BIKE)
+                .massive(0)
+                .examples("Road bike, trail bike, low-rider")
+                .battleOptionCount(1)
+                .build();
+
+        VehicleBattleOption battleOption1 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.SPEED)
+                .name("+1speed")
+                .build();
+
+        VehicleBattleOption battleOption2 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.HANDLING)
+                .name("+1handling")
+                .build();
+
+        BikeCreator bikeCreator = BikeCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .introInstructions("By default, your bike has speed=0, handling=0, 0-armor and the massive rating of its frame.")
+                .frame(bikeFrame)
+                .strengths(List.of("fast",
+                        "rugged",
+                        "aggressive",
+                        "tight",
+                        "huge",
+                        "responsive"))
+                .looks(List.of(
+                        "sleek",
+                        "vintage",
+                        "massively-chopped",
+                        "muscular",
+                        "flashy",
+                        "luxe",
+                        "roaring",
+                        "fat-ass"))
+                .weaknesses(List.of("slow",
+                        "sloppy",
+                        "guzzler",
+                        "lazy",
+                        "unreliable",
+                        "cramped",
+                        "loud",
+                        "picky",
+                        "rabbity"))
+                .battleOptions(List.of(battleOption1, battleOption2))
+                .build();
+
+        PlaybookUniqueCreator chopperUniqueCreator = PlaybookUniqueCreator.builder()
+                .type(UniqueType.VEHICLE)
+                .id(UUID.randomUUID().toString())
+                .bikeCreator(bikeCreator)
+                // TODO: add gang creator, and probably change UniqueType to GANG
+                .build();
+
+        /* ----------------------------- DRIVER PLAYBOOK CREATOR --------------------------------- */
+
+        VehicleFrame smallFrame = VehicleFrame.builder()
+                .id(UUID.randomUUID().toString())
+                .frameType(VehicleFrameType.SMALL)
+                .massive(1)
+                .examples("Compact, buggy")
+                .battleOptionCount(2)
+                .build();
+
+        VehicleFrame mediumFrame = VehicleFrame.builder()
+                .id(UUID.randomUUID().toString())
+                .frameType(VehicleFrameType.MEDIUM)
+                .massive(2)
+                .examples("Coupe, sedan, jeep, pickup, van, limo, 4x4, tractor")
+                .battleOptionCount(2)
+                .build();
+
+        VehicleFrame largeFrame = VehicleFrame.builder()
+                .id(UUID.randomUUID().toString())
+                .frameType(VehicleFrameType.LARGE)
+                .massive(3)
+                .examples("Semi, bus, ambulance, construction/utility")
+                .battleOptionCount(2)
+                .build();
+
+        VehicleBattleOption battleOption3 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.MASSIVE)
+                .name("+1massive")
+                .build();
+
+        VehicleBattleOption battleOption4 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.ARMOR)
+                .name("+1armor")
+                .build();
+
+        CarCreator carCreator = CarCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .introInstructions("By default, your vehicle has speed=0, handling=0, 0-armor and the massive rating of its frame.")
+                .frames(List.of(bikeFrame, smallFrame, mediumFrame, largeFrame))
+                .strengths(List.of("fast",
+                        "rugged",
+                        "aggressive",
+                        "tight",
+                        "huge",
+                        "responsive",
+                        "off-road",
+                        "uncomplaining",
+                        "capacious",
+                        "workhorse",
+                        "easily repaired"))
+                .looks(List.of(
+                        "sleek",
+                        "vintage",
+                        "muscular",
+                        "flashy",
+                        "luxe",
+                        "pristine",
+                        "powerful",
+                        "quirky",
+                        "pretty",
+                        "handcrafted",
+                        "spikes & plates",
+                        "garish"))
+                .weaknesses(List.of("slow",
+                        "sloppy",
+                        "guzzler",
+                        "lazy",
+                        "unreliable",
+                        "cramped",
+                        "loud",
+                        "picky",
+                        "rabbity"))
+                .battleOptions(List.of(battleOption1, battleOption2, battleOption3, battleOption4))
+                .build();
+
+        PlaybookUniqueCreator driverUniqueCreator = PlaybookUniqueCreator.builder()
+                .type(UniqueType.VEHICLE)
+                .id(UUID.randomUUID().toString())
+                .carCreator(carCreator)
+                .bikeCreator(bikeCreator)
+                .build();
+
+        List<Move> driverOptionalMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.CHARACTER)
+                .collectList().block();
+
+        List<Move> driverDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
+
+        GearInstructions driverGearInstructions = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .gearIntro("In addition to your car, you get:")
+                .youGetItems(List.of("fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
+                .introduceChoice("Handy weapons")
+                .numberCanChoose(1)
+                .chooseableGear(List.of(
+                        ".38 revolver (2-harm close reload loud)",
+                        "9mm (2-harm close loud)",
+                        "big knife (2-harm hand)",
+                        "sawed-off (3-harm close reload messy)",
+                        "machete (3-harm hand messy)",
+                        "magnum (3-harm close reload loud"
+                        ))
+                .startingBarter(4)
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .build();
+
+        PlaybookCreator playbookCreatorDriver = PlaybookCreator.builder()
+                .playbookType(PlaybookType.DRIVER)
+                .gearInstructions(driverGearInstructions)
+                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
+                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .movesInstructions("You get all the basic moves. Choose 2 driver moves.\n" +
+                        "You can use all the battle moves, but when you get the chance, look up _**standing overwatch**_, the _**road war**_ moves, and the rules for how vehicles suffer harm")
+                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
+                        "\n" +
+                        "List the other characters’ names.\n" +
+                        "\n" +
+                        "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                        "\n" +
+                        "- *Which one of you got me out of some serious shit?* For that character, write Hx+1.\n" +
+                        "- *Which one of you has been with me for days on the road?* For that character, write Hx+2.\n" +
+                        "- *Which one of you have I caught sometimes staring out at the horizon?* For that character, write Hx+3.\n" +
+                        "\n" +
+                        "For everyone else, write Hx+1. You aren't naturally inclined to get too close to too many people.\n" +
+                        "\n" +
+                        "On the others’ turns, answer their questions as you like.\n" +
+                        "\n" +
+                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                .playbookUniqueCreator(driverUniqueCreator)
+                .optionalMoves(driverOptionalMoves)
+                .defaultMoves(driverDefaultMoves)
+                .defaultMoveCount(1)
+                .moveChoiceCount(2)
+                .build();
+
+        playbookCreatorService.saveAll(Flux.just(angelCreator,
+                battlebabePlaybookCreator,
+                playbookCreatorBrainer,
+                playbookCreatorDriver)).blockLast();
     }
 
     public void loadPlaybooks() {
@@ -2270,6 +2543,32 @@ public class GameDataLoader implements CommandLineRunner {
             playbookCreatorService.save(playbookCreatorBrainer).block();
             playbookBrainer.setCreator(playbookCreatorBrainer);
             playbookService.save(playbookBrainer).block();
+        }
+
+        // -------------------------------------- DRIVER -------------------------------------- //
+        Playbook playbookDriver = playbookService.findByPlaybookType(PlaybookType.DRIVER).block();
+        assert playbookDriver != null;
+
+        if (playbookDriver.getCreator() == null) {
+            PlaybookCreator playbookCreatorDriver = playbookCreatorService.findByPlaybookType(PlaybookType.DRIVER).block();
+            assert playbookCreatorDriver != null;
+
+            List<Name> namesDriver = nameService.findAllByPlaybookType(PlaybookType.DRIVER).collectList().block();
+            assert namesDriver != null;
+
+
+            List<Look> looksDriver = lookService.findAllByPlaybookType(PlaybookType.DRIVER).collectList().block();
+            assert looksDriver != null;
+
+            List<StatsOption> statsOptionsDriver = statsOptionService.findAllByPlaybookType(PlaybookType.DRIVER).collectList().block();
+            assert statsOptionsDriver != null;
+
+            statsOptionsDriver.forEach(statsOption -> playbookCreatorDriver.getStatsOptions().add(statsOption));
+            namesDriver.forEach(name -> playbookCreatorDriver.getNames().add(name));
+            looksDriver.forEach(look -> playbookCreatorDriver.getLooks().add(look));
+            playbookCreatorService.save(playbookCreatorDriver).block();
+            playbookDriver.setCreator(playbookCreatorDriver);
+            playbookService.save(playbookDriver).block();
         }
     }
 }

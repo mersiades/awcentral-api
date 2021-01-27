@@ -89,13 +89,27 @@ enum UniqueType {
     CUSTOM_WEAPONS,
     BRAINER_GEAR,
     GANG,
-    CAR,
+    VEHICLE,
     WEAPONS,
     HOLDING,
     FOLLOWERS,
     ESTABLISHMENT,
     WORKSPACE,
     SKINNER_GEAR
+}
+
+enum VehicleFrameType {
+    BIKE,
+    SMALL,
+    MEDIUM,
+    LARGE
+}
+
+enum BattleOptionType {
+    SPEED,
+    HANDLING,
+    MASSIVE,
+    ARMOR
 }
 
 # ---------------------------------------- STATIC GAME DATA TYPES -------------------------------------- #
@@ -168,11 +182,24 @@ type StatsOption {
     WEIRD: Int
 }
 
+type VehicleFrame {
+    id: ID!
+    frameType: VehicleFrameType
+    massive: Int
+    examples: String
+    battleOptionCount: Int
+}
+
+type VehicleBattleOption {
+    id: ID!
+    battleOptionType: BattleOptionType
+    name: String
+}
+
 type GearInstructions {
     id: ID!
-    youGet: String
+    gearIntro: String
     youGetItems: [String]
-    inAddition: String
     introduceChoice: String
     numberCanChoose: Int
     chooseableGear: [String]
@@ -203,6 +230,8 @@ type PlaybookUniqueCreator {
     angelKitCreator: AngelKitCreator
     customWeaponsCreator: CustomWeaponsCreator
     brainerGearCreator: BrainerGearCreator
+    carCreator: CarCreator
+    bikeCreator: BikeCreator
 }
 
 type AngelKitCreator {
@@ -228,6 +257,26 @@ type CustomWeaponsCreator {
 type BrainerGearCreator {
     id: ID!
     gear: [String]!
+}
+
+type CarCreator {
+    id: ID!
+    introInstructions: String
+    frames: [VehicleFrame]
+    strengths: [String]
+    looks: [String]
+    weaknesses: [String]
+    battleOptions: [VehicleBattleOption]
+}
+
+type BikeCreator {
+    id: ID!
+    introInstructions: String
+    frame: VehicleFrame
+    strengths: [String]
+    looks: [String]
+    weaknesses: [String]
+    battleOptions: [VehicleBattleOption]
 }
 
 # ---------------------------------------- GAME & CHARACTER TYPES --------------------------------------- #
@@ -331,6 +380,7 @@ type Character {
     characterMoves: [CharacterMove]
     barter: Int
     harm: CharacterHarm
+    vehicleCount: Int
 }
 
 type GameRole {
@@ -362,6 +412,7 @@ type PlaybookUnique {
     brainerGear: BrainerGear
     angelKit: AngelKit
     customWeapons: CustomWeapons
+    vehicles: [Vehicle]
 }
 
 type BrainerGear {
@@ -381,6 +432,20 @@ type AngelKit {
 type CustomWeapons {
     id: ID!
     weapons: [String]!
+}
+
+type Vehicle {
+    id: ID!
+    name: String
+    vehicleFrame: VehicleFrame
+    speed: Int
+    handling: Int
+    armor: Int
+    massive: Int
+    strengths: [String]
+    weaknesses: [String]
+    looks: [String]
+    battleOptions: [VehicleBattleOption]
 }
 
 # ----------------------------------------------- OTHER ---------------------------------------------- #
@@ -425,6 +490,33 @@ input HarmInput {
     hasComeBackWeird: Boolean!
     hasChangedPlaybook: Boolean!
     hasDied: Boolean!
+}
+
+input VehicleFrameInput {
+    id: ID!
+    frameType: VehicleFrameType
+    massive: Int
+    examples: String
+    battleOptionCount: Int
+}
+
+input VehicleBattleOptionInput {
+    id: ID!
+    battleOptionType: BattleOptionType
+    name: String
+}
+input VehicleInput {
+    id: ID
+    name: String
+    vehicleFrame: VehicleFrameInput
+    speed: Int
+    handling: Int
+    armor: Int
+    massive: Int
+    strengths: [String]
+    weaknesses: [String]
+    looks: [String]
+    battleOptions: [VehicleBattleOptionInput]
 }
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
@@ -487,6 +579,9 @@ type Mutation {
     setCustomWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
+    setVehicle(gameRoleId: String!,
+        characterId: String!,
+        vehicleInput: VehicleInput! ): Character
     setCharacterMoves(gameRoleId: String!,
         characterId: String!,
         moveIds: [String]!): Character

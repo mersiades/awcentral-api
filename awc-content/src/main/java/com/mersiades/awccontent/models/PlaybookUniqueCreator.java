@@ -1,13 +1,11 @@
 package com.mersiades.awccontent.models;
 
 import com.mersiades.awccontent.enums.UniqueType;
+import com.mersiades.awccontent.models.uniquecreators.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.mersiades.awccontent.models.uniquecreators.AngelKitCreator;
-import com.mersiades.awccontent.models.uniquecreators.BrainerGearCreator;
-import com.mersiades.awccontent.models.uniquecreators.CustomWeaponsCreator;
 import org.springframework.data.annotation.Id;
 
 @Data
@@ -26,5 +24,9 @@ public class PlaybookUniqueCreator {
     private CustomWeaponsCreator customWeaponsCreator;
 
     private BrainerGearCreator brainerGearCreator;
+
+    private CarCreator carCreator;
+
+    private BikeCreator bikeCreator;
 
 }
