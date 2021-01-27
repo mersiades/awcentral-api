@@ -1400,8 +1400,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .kind(MoveType.CHARACTER)
                 .moveAction(daredevilAction)
                 .playbook(PlaybookType.DRIVER).build();
-        Move collector = Move.builder()
-                .name("COLLECTOR")
+        Move collectorMove = Move.builder()
+                .name(collector)
                 .description("_**Collector**_: you get 2 additional cars (you detail).")
                 .kind(MoveType.CHARACTER)
                 .stat(null)
@@ -1413,7 +1413,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .playbook(PlaybookType.DRIVER).build();
 
-        moveService.saveAll(Flux.just(driverSpecial, combatDriver, eyeOnTheDoor, weatherEye, reputation, daredevil, collector, myOtherCarIsATank)).blockLast();
+        moveService.saveAll(Flux.just(driverSpecial, combatDriver, eyeOnTheDoor, weatherEye, reputation, daredevil, collectorMove, myOtherCarIsATank)).blockLast();
 
         /* ----------------------------- GUNLUGGER MOVES --------------------------------- */
         System.out.println("|| --- Loading Gunlugger moves --- ||");
@@ -1828,7 +1828,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         GearInstructions angelGearInstructions = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
-                .youGet("You get:")
+                .gearIntro("You get:")
                 .youGetItems(List.of("fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
                 .introduceChoice("Small practical weapons")
                 .numberCanChoose(1)
@@ -1936,7 +1936,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         GearInstructions battlebabeGearInstructions = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
-                .youGet("You get:")
+                .gearIntro("You get:")
                 .youGetItems(List.of("fashion suitable to your look, including at your option fashion worth 1-armor or body armor worth 2-armor (you detail)"))
                 .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
                 .startingBarter(4)
@@ -2002,7 +2002,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         GearInstructions brainerGearInstructions = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
-                .youGet("You get:")
+                .gearIntro("You get:")
                 .youGetItems(List.of("fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
                 .introduceChoice("Small fancy weapons")
                 .numberCanChoose(1)
@@ -2121,7 +2121,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .id(UUID.randomUUID().toString())
                 .frameType(VehicleFrameType.LARGE)
                 .massive(3)
-                .examples("Road bike, trail bike, low-rider")
+                .examples("Semi, bus, ambulance, construction/utility")
                 .battleOptionCount(2)
                 .build();
 
@@ -2148,7 +2148,6 @@ public class GameDataLoader implements CommandLineRunner {
                         "huge",
                         "responsive",
                         "off-road",
-                        "responsive",
                         "uncomplaining",
                         "capacious",
                         "workhorse",
@@ -2195,7 +2194,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         GearInstructions driverGearInstructions = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
-                .inAddition("In addition to your car, you get:")
+                .gearIntro("In addition to your car, you get:")
                 .youGetItems(List.of("fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
                 .introduceChoice("Handy weapons")
                 .numberCanChoose(1)
@@ -2237,7 +2236,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .optionalMoves(driverOptionalMoves)
                 .defaultMoves(driverDefaultMoves)
                 .defaultMoveCount(1)
-                .moveChoiceCount(7)
+                .moveChoiceCount(2)
                 .build();
 
         playbookCreatorService.saveAll(Flux.just(angelCreator,

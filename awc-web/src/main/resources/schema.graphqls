@@ -198,9 +198,8 @@ type VehicleBattleOption {
 
 type GearInstructions {
     id: ID!
-    youGet: String
+    gearIntro: String
     youGetItems: [String]
-    inAddition: String
     introduceChoice: String
     numberCanChoose: Int
     chooseableGear: [String]
@@ -231,6 +230,8 @@ type PlaybookUniqueCreator {
     angelKitCreator: AngelKitCreator
     customWeaponsCreator: CustomWeaponsCreator
     brainerGearCreator: BrainerGearCreator
+    carCreator: CarCreator
+    bikeCreator: BikeCreator
 }
 
 type AngelKitCreator {
@@ -271,7 +272,7 @@ type CarCreator {
 type BikeCreator {
     id: ID!
     introInstructions: String
-    frames: VehicleFrame
+    frame: VehicleFrame
     strengths: [String]
     looks: [String]
     weaknesses: [String]
@@ -379,6 +380,7 @@ type Character {
     characterMoves: [CharacterMove]
     barter: Int
     harm: CharacterHarm
+    vehicleCount: Int
 }
 
 type GameRole {
@@ -434,12 +436,15 @@ type CustomWeapons {
 
 type Vehicle {
     id: ID!
+    name: String
     vehicleFrame: VehicleFrame
     speed: Int
     handling: Int
     armor: Int
     massive: Int
-    tags: [String]
+    strengths: [String]
+    weaknesses: [String]
+    looks: [String]
     battleOptions: [VehicleBattleOption]
 }
 
@@ -485,6 +490,33 @@ input HarmInput {
     hasComeBackWeird: Boolean!
     hasChangedPlaybook: Boolean!
     hasDied: Boolean!
+}
+
+input VehicleFrameInput {
+    id: ID!
+    frameType: VehicleFrameType
+    massive: Int
+    examples: String
+    battleOptionCount: Int
+}
+
+input VehicleBattleOptionInput {
+    id: ID!
+    battleOptionType: BattleOptionType
+    name: String
+}
+input VehicleInput {
+    id: ID
+    name: String
+    vehicleFrame: VehicleFrameInput
+    speed: Int
+    handling: Int
+    armor: Int
+    massive: Int
+    strengths: [String]
+    weaknesses: [String]
+    looks: [String]
+    battleOptions: [VehicleBattleOptionInput]
 }
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
@@ -547,6 +579,9 @@ type Mutation {
     setCustomWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
+    setVehicle(gameRoleId: String!,
+        characterId: String!,
+        vehicleInput: VehicleInput! ): Character
     setCharacterMoves(gameRoleId: String!,
         characterId: String!,
         moveIds: [String]!): Character

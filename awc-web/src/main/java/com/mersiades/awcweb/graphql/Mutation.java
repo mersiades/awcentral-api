@@ -4,6 +4,7 @@ import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.CharacterHarm;
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.HxStat;
+import com.mersiades.awcdata.models.uniques.Vehicle;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awccontent.enums.LookType;
@@ -113,6 +114,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Character setAngelKit(String gameRoleId, String characterId, int stock, Boolean hasSupplier) {
         System.out.println("Setting AngelKit for Character: " + characterId);
         return gameRoleService.setAngelKit(gameRoleId, characterId, stock, hasSupplier);
+    }
+
+    public Character setVehicle(String gameRoleId, String characterId, Vehicle vehicle) {
+        System.out.println("Setting Vehicle for Character: " + characterId);
+        return gameRoleService.setVehicle(gameRoleId, characterId, vehicle);
     }
 
     public Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons) {

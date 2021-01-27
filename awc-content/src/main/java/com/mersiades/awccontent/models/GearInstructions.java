@@ -18,13 +18,10 @@ public class GearInstructions {
     private String id;
 
     // A sentence introducing default gear options for the playbook
-    private String youGet;
+    private String gearIntro;
 
     // Each string is a default gear item
     private List<String> youGetItems;
-
-    // A sentence explaining the default gear, but with no list of items
-    private String inAddition;
 
     // A sentence introducing a list of options from which the player must choose some from
     private String introduceChoice;

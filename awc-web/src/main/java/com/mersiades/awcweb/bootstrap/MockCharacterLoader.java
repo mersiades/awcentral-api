@@ -203,6 +203,7 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         Vehicle car1 = Vehicle.builder()
                 .id(UUID.randomUUID().toString())
+                .name("Unnamed vehicle")
                 // SMALL frame
                 .vehicleFrame(carCreator.getFrames().get(1))
                 // +1speed, +1armor
@@ -211,10 +212,14 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .speed(1)
                 .armor(1)
                 .handling(0)
+                .strengths(List.of("fast"))
+                .weaknesses(List.of("quirky", "vintage"))
+                .looks(List.of("loud"))
                 .build();
 
         Vehicle car2 = Vehicle.builder()
                 .id(UUID.randomUUID().toString())
+                .name("Bess")
                 // LARGE frame
                 .vehicleFrame(carCreator.getFrames().get(3))
                 // +1massive, +1armor
@@ -223,10 +228,14 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .speed(0)
                 .armor(1)
                 .handling(0)
+                .strengths(List.of("rugged", "aggressive"))
+                .weaknesses(List.of("cramped", "picky"))
+                .looks(List.of("sleek", "powerful"))
                 .build();
 
         Vehicle bike = Vehicle.builder()
                 .id(UUID.randomUUID().toString())
+                .name("Ducati Monster")
                 // BIKE frame
                 .vehicleFrame(bikeCreator.getFrame())
                 // +1speed
@@ -235,6 +244,9 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .speed(1)
                 .armor(0)
                 .handling(0)
+                .strengths(List.of("tight", "huge"))
+                .weaknesses(List.of("massively-chopped", "fat-ass"))
+                .looks(List.of("bucking", "unreliable"))
                 .build();
 
         PlaybookUnique driverPlaybookUnique = PlaybookUnique.builder()
@@ -292,6 +304,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .playbookUnique(driverPlaybookUnique)
                 .characterMoves(characterMoves4)
                 .hasCompletedCharacterCreation(true)
+                .vehicleCount(3)
                 .build();
 
         // ----------------------- Add Characters to players and save ----------------------------- //

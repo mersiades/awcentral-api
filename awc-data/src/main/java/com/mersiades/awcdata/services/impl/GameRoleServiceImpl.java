@@ -1,27 +1,25 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.models.*;
+import com.mersiades.awccontent.services.MoveService;
+import com.mersiades.awccontent.services.PlaybookCreatorService;
+import com.mersiades.awccontent.services.StatModifierService;
+import com.mersiades.awccontent.services.StatsOptionService;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.AngelKit;
 import com.mersiades.awcdata.models.uniques.BrainerGear;
 import com.mersiades.awcdata.models.uniques.CustomWeapons;
+import com.mersiades.awcdata.models.uniques.Vehicle;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
-import com.mersiades.awccontent.enums.*;
-import com.mersiades.awccontent.models.*;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.mersiades.awccontent.services.MoveService;
-import com.mersiades.awccontent.services.PlaybookCreatorService;
-import com.mersiades.awccontent.services.StatModifierService;
-import com.mersiades.awccontent.services.StatsOptionService;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -125,6 +123,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
         // Set new playbook
         character.setPlaybook(playbookType);
+        character.setVehicleCount(0);
         characterService.save(character).block();
         gameRoleRepository.save(gameRole).block();
         return character;
@@ -357,6 +356,61 @@ public class GameRoleServiceImpl implements GameRoleService {
         characterService.save(character).block();
         gameRoleRepository.save(gameRole).block();
 
+        return character;
+    }
+
+    @Override
+    public Character setVehicle(String gameRoleId, String characterId, Vehicle vehicle) {
+        // If it's a new Vehicle, add id
+        if (vehicle.getId() == null) {
+            vehicle.setId(UUID.randomUUID().toString());
+        }
+
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+
+        // If the Character doesn't have a PlaybookUnique yet, create one and add vehicle to it
+        if (character.getPlaybookUnique() == null) {
+            PlaybookUnique unique = PlaybookUnique.builder()
+                    .id(UUID.randomUUID().toString())
+                    .type(UniqueType.VEHICLE)
+                    .vehicles(List.of(vehicle))
+                    .build();
+            character.setPlaybookUnique(unique);
+        } else {
+            List<Vehicle> existingVehicles = character.getPlaybookUnique().getVehicles();
+
+            if (existingVehicles.size() == 0) {
+                // Add first Vehicle
+                character.getPlaybookUnique().getVehicles().add(vehicle);
+            } else {
+                // Replace Vehicle with updated data, if it already exists
+                ListIterator<Vehicle> iterator = existingVehicles.listIterator();
+                boolean hasReplaced = false;
+                while (iterator.hasNext()) {
+                    Vehicle nextVehicle = iterator.next();
+                    if (nextVehicle.getId().equals(vehicle.getId())) {
+                        iterator.set(vehicle);
+                        hasReplaced = true;
+                    }
+                }
+
+                if (!hasReplaced) {
+                    // Add a new Vehicle to the existing Vehicles List
+                    character.getPlaybookUnique().getVehicles().add(vehicle);
+                }
+            }
+        }
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
         return character;
     }
 

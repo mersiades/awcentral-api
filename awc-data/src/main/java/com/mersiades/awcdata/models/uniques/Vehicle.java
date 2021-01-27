@@ -20,6 +20,8 @@ public class Vehicle {
     @Id
     private String id;
 
+    private String name;
+
     private VehicleFrame vehicleFrame;
 
     private int speed;
@@ -31,7 +33,13 @@ public class Vehicle {
     private int massive;
 
     @Builder.Default
-    private List<String> tags = new ArrayList<>();
+    private List<String> strengths = new ArrayList<>();
+
+    @Builder.Default
+    private List<String> weaknesses = new ArrayList<>();
+
+    @Builder.Default
+    private List<String> looks = new ArrayList<>();
 
     @Builder.Default
     private List<VehicleBattleOption> battleOptions = new ArrayList<>();

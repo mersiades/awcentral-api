@@ -5,6 +5,7 @@ import com.mersiades.awcdata.models.*;
 import com.mersiades.awccontent.enums.LookType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.StatType;
+import com.mersiades.awcdata.models.uniques.Vehicle;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -46,4 +47,5 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character finishCharacterCreation(String gameRoleId, String characterId);
 
+    Character setVehicle(String gameRoleId, String characterId, Vehicle vehicle);
 }
