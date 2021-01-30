@@ -4,7 +4,7 @@ import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.CharacterHarm;
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.HxStat;
-import com.mersiades.awcdata.models.uniques.Vehicle;
+import com.mersiades.awcdata.models.Vehicle;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awccontent.enums.LookType;

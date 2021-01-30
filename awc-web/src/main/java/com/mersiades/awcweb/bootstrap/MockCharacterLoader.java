@@ -2,18 +2,12 @@ package com.mersiades.awcweb.bootstrap;
 
 import com.mersiades.awccontent.enums.*;
 import com.mersiades.awccontent.models.*;
-import com.mersiades.awccontent.models.uniquecreators.BikeCreator;
-import com.mersiades.awccontent.models.uniquecreators.CarCreator;
-import com.mersiades.awccontent.services.LookService;
-import com.mersiades.awccontent.services.MoveService;
-import com.mersiades.awccontent.services.StatsOptionService;
-import com.mersiades.awccontent.services.PlaybookCreatorService;
+import com.mersiades.awccontent.services.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.AngelKit;
 import com.mersiades.awcdata.models.uniques.BrainerGear;
 import com.mersiades.awcdata.models.uniques.CustomWeapons;
-import com.mersiades.awcdata.models.uniques.Vehicle;
 import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
@@ -46,6 +40,7 @@ public class MockCharacterLoader implements CommandLineRunner {
     private final StatsOptionService statsOptionService;
     private final MoveService moveService;
     private final PlaybookCreatorService playbookCreatorService;
+    private final VehicleCreatorService vehicleCreatorService;
 
     @Autowired
     CharacterRepository characterRepository;
@@ -54,13 +49,16 @@ public class MockCharacterLoader implements CommandLineRunner {
                                LookService lookService,
                                CharacterService characterService,
                                StatsOptionService statsOptionService,
-                               MoveService moveService, PlaybookCreatorService playbookCreatorService) {
+                               MoveService moveService,
+                               PlaybookCreatorService playbookCreatorService,
+                               VehicleCreatorService vehicleCreatorService) {
         this.gameRoleService = gameRoleService;
         this.lookService = lookService;
         this.characterService = characterService;
         this.statsOptionService = statsOptionService;
         this.moveService = moveService;
         this.playbookCreatorService = playbookCreatorService;
+        this.vehicleCreatorService = vehicleCreatorService;
     }
 
     @Override
@@ -197,33 +195,39 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         PlaybookCreator driverCreator = playbookCreatorService.findByPlaybookType(PlaybookType.DRIVER).block();
         assert driverCreator != null;
-        CarCreator carCreator = driverCreator.getPlaybookUniqueCreator().getCarCreator();
-        BikeCreator bikeCreator = driverCreator.getPlaybookUniqueCreator().getBikeCreator();
+        VehicleCreator vehicleCreator = vehicleCreatorService.findAll().take(1).blockFirst();
+        assert vehicleCreator != null;
 
 
         Vehicle car1 = Vehicle.builder()
                 .id(UUID.randomUUID().toString())
+                .vehicleType(VehicleType.CAR)
                 .name("Unnamed vehicle")
                 // SMALL frame
-                .vehicleFrame(carCreator.getFrames().get(1))
+                .vehicleFrame(vehicleCreator.getCarCreator().getFrames().get(1))
                 // +1speed, +1armor
-                .battleOptions(List.of(carCreator.getBattleOptions().get(0), carCreator.getBattleOptions().get(3)))
+                .battleOptions(List.of(
+                        vehicleCreator.getCarCreator().getBattleOptions().get(0),
+                        vehicleCreator.getCarCreator().getBattleOptions().get(3)))
                 .massive(1)
                 .speed(1)
                 .armor(1)
                 .handling(0)
                 .strengths(List.of("fast"))
-                .weaknesses(List.of("quirky", "vintage"))
-                .looks(List.of("loud"))
+                .looks(List.of("quirky", "vintage"))
+                .weaknesses(List.of("loud"))
                 .build();
 
         Vehicle car2 = Vehicle.builder()
                 .id(UUID.randomUUID().toString())
+                .vehicleType(VehicleType.CAR)
                 .name("Bess")
                 // LARGE frame
-                .vehicleFrame(carCreator.getFrames().get(3))
+                .vehicleFrame(vehicleCreator.getCarCreator().getFrames().get(3))
                 // +1massive, +1armor
-                .battleOptions(List.of(carCreator.getBattleOptions().get(2), carCreator.getBattleOptions().get(3)))
+                .battleOptions(List.of(
+                        vehicleCreator.getCarCreator().getBattleOptions().get(2),
+                        vehicleCreator.getCarCreator().getBattleOptions().get(3)))
                 .massive(4)
                 .speed(0)
                 .armor(1)
@@ -235,23 +239,19 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         Vehicle bike = Vehicle.builder()
                 .id(UUID.randomUUID().toString())
+                .vehicleType(VehicleType.BIKE)
                 .name("Ducati Monster")
                 // BIKE frame
-                .vehicleFrame(bikeCreator.getFrame())
+                .vehicleFrame(vehicleCreator.getBikeCreator().getFrame())
                 // +1speed
-                .battleOptions(List.of(bikeCreator.getBattleOptions().get(0)))
+                .battleOptions(List.of(vehicleCreator.getBikeCreator().getBattleOptions().get(0)))
                 .massive(0)
                 .speed(1)
                 .armor(0)
                 .handling(0)
                 .strengths(List.of("tight", "huge"))
-                .weaknesses(List.of("massively-chopped", "fat-ass"))
-                .looks(List.of("bucking", "unreliable"))
-                .build();
-
-        PlaybookUnique driverPlaybookUnique = PlaybookUnique.builder()
-                .id(UUID.randomUUID().toString())
-                .vehicles(List.of(car1, car2, bike))
+                .looks(List.of("massively-chopped", "fat-ass"))
+                .weaknesses(List.of("bucking", "unreliable"))
                 .build();
 
         // -------------------------------- Create Sara's Angel ----------------------------------- //
@@ -301,10 +301,10 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .gear(List.of("Leather jacket", ".38 revolver"))
                 .statsBlock(driverStatsBlock)
                 .barter(4)
-                .playbookUnique(driverPlaybookUnique)
                 .characterMoves(characterMoves4)
                 .hasCompletedCharacterCreation(true)
                 .vehicleCount(3)
+                .vehicles(List.of(car1, car2, bike))
                 .build();
 
         // ----------------------- Add Characters to players and save ----------------------------- //

@@ -24,9 +24,4 @@ public class PlaybookUniqueCreator {
     private CustomWeaponsCreator customWeaponsCreator;
 
     private BrainerGearCreator brainerGearCreator;
-
-    private CarCreator carCreator;
-
-    private BikeCreator bikeCreator;
-
 }

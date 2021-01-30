@@ -5,7 +5,7 @@ import com.mersiades.awcdata.models.*;
 import com.mersiades.awccontent.enums.LookType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.StatType;
-import com.mersiades.awcdata.models.uniques.Vehicle;
+import com.mersiades.awcdata.models.Vehicle;
 import reactor.core.publisher.Flux;
 
 import java.util.List;

@@ -31,6 +31,8 @@ public class PlaybookCreator {
 
     private PlaybookUniqueCreator playbookUniqueCreator;
 
+    private int defaultVehicleCount;
+
     @Builder.Default
     private List<Move> optionalMoves = new ArrayList<>();
 
