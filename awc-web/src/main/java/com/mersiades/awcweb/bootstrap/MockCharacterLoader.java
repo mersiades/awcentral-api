@@ -214,8 +214,8 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .armor(1)
                 .handling(0)
                 .strengths(List.of("fast"))
-                .weaknesses(List.of("quirky", "vintage"))
-                .looks(List.of("loud"))
+                .looks(List.of("quirky", "vintage"))
+                .weaknesses(List.of("loud"))
                 .build();
 
         Vehicle car2 = Vehicle.builder()
@@ -250,8 +250,8 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .armor(0)
                 .handling(0)
                 .strengths(List.of("tight", "huge"))
-                .weaknesses(List.of("massively-chopped", "fat-ass"))
-                .looks(List.of("bucking", "unreliable"))
+                .looks(List.of("massively-chopped", "fat-ass"))
+                .weaknesses(List.of("bucking", "unreliable"))
                 .build();
 
         // -------------------------------- Create Sara's Angel ----------------------------------- //

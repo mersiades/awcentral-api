@@ -521,6 +521,7 @@ input VehicleBattleOptionInput {
 }
 input VehicleInput {
     id: ID
+    vehicleType: VehicleType
     name: String
     vehicleFrame: VehicleFrameInput
     speed: Int
@@ -544,6 +545,7 @@ type Query {
     playbooks: [Playbook]
     playbook(playbookType: PlaybookType!): Playbook
     playbookCreator(playbookType: PlaybookType!): PlaybookCreator
+    vehicleCreator: VehicleCreator
 }
 
 # --------------------------------------------- MUTATIONS -------------------------------------------- #
