@@ -43,6 +43,9 @@ public class Character {
     private int vehicleCount;
 
     @Builder.Default
+    private List<Vehicle> vehicles = new ArrayList<>();
+
+    @Builder.Default
     private List<HxStat> hxBlock = new ArrayList<>();
 
     @Builder.Default

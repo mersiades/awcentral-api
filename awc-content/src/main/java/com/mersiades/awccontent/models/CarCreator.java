@@ -1,7 +1,6 @@
-package com.mersiades.awcdata.models.uniques;
+package com.mersiades.awccontent.models;
 
-import com.mersiades.awccontent.models.VehicleBattleOption;
-import com.mersiades.awccontent.models.VehicleFrame;
+import com.mersiades.awccontent.enums.VehicleType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,35 +14,26 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Vehicle {
+public class CarCreator {
 
     @Id
     private String id;
 
-    private String name;
+    private VehicleType vehicleType;
 
-    private VehicleFrame vehicleFrame;
+    private String introInstructions;
 
-    private int speed;
-
-    private int handling;
-
-    private int armor;
-
-    private int massive;
+    private List<VehicleFrame> frames;
 
     @Builder.Default
     private List<String> strengths = new ArrayList<>();
 
     @Builder.Default
-    private List<String> weaknesses = new ArrayList<>();
-
-    @Builder.Default
     private List<String> looks = new ArrayList<>();
 
     @Builder.Default
+    private List<String> weaknesses = new ArrayList<>();
+
+    @Builder.Default
     private List<VehicleBattleOption> battleOptions = new ArrayList<>();
-
-
-
 }

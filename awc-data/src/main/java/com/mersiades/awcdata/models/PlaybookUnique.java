@@ -4,7 +4,6 @@ import com.mersiades.awccontent.enums.UniqueType;
 import com.mersiades.awcdata.models.uniques.AngelKit;
 import com.mersiades.awcdata.models.uniques.BrainerGear;
 import com.mersiades.awcdata.models.uniques.CustomWeapons;
-import com.mersiades.awcdata.models.uniques.Vehicle;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -29,6 +29,7 @@ public class GameDataLoader implements CommandLineRunner {
     private final StatsOptionService statsOptionService;
     private final MoveService moveService;
     private final StatModifierService statModifierService;
+    private final VehicleCreatorService vehicleCreatorService;
 
     @Autowired
     LookRepository lookRepository;
@@ -48,13 +49,17 @@ public class GameDataLoader implements CommandLineRunner {
     @Autowired
     StatsOptionRepository statsOptionRepository;
 
+    @Autowired
+    VehicleCreatorRepository vehicleCreatorRepository;
+
+
     public GameDataLoader(PlaybookCreatorService playbookCreatorService,
                           PlaybookService playbookService,
                           NameService nameService,
                           LookService lookService,
                           StatsOptionService statsOptionService,
                           MoveService moveService,
-                          StatModifierService statModifierService) {
+                          StatModifierService statModifierService, VehicleCreatorService vehicleCreatorService) {
         this.playbookCreatorService = playbookCreatorService;
         this.playbookService = playbookService;
         this.nameService = nameService;
@@ -62,6 +67,7 @@ public class GameDataLoader implements CommandLineRunner {
         this.statsOptionService = statsOptionService;
         this.moveService = moveService;
         this.statModifierService = statModifierService;
+        this.vehicleCreatorService = vehicleCreatorService;
     }
 
     @Override
@@ -104,6 +110,11 @@ public class GameDataLoader implements CommandLineRunner {
             loadPlaybooks();
         }
 
+        VehicleCreator vehicleCreator = vehicleCreatorRepository.findAll().take(1).blockFirst();
+        if (vehicleCreator == null) {
+            loadVehicleCreator();
+        }
+
         // 'Create if empty' conditionality is embedded in the createPlaybooks() method
         createPlaybooks();
 
@@ -111,6 +122,7 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("Move count: " + Objects.requireNonNull(moveRepository.count().block()).toString());
         System.out.println("Name count: " + Objects.requireNonNull(nameRepository.count().block()).toString());
         System.out.println("PlaybookCreator count: " + Objects.requireNonNull(playbookCreatorRepository.count().block()).toString());
+        System.out.println("CarCreator count: " + Objects.requireNonNull(vehicleCreatorRepository.count().block()).toString());
         System.out.println("Playbook count: " + Objects.requireNonNull(playbookRepository.count().block()).toString());
     }
 
@@ -1869,6 +1881,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultMoves(angelDefaultMoves)
                 .defaultMoveCount(1)
                 .moveChoiceCount(2)
+                .defaultVehicleCount(0)
                 .build();
 
 
@@ -1968,6 +1981,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultMoves(battlebabeDefaultMoves)
                 .defaultMoveCount(1)
                 .moveChoiceCount(2)
+                .defaultVehicleCount(0)
                 .build();
 
         /* ----------------------------- BRAINER PLAYBOOK CREATOR --------------------------------- */
@@ -2038,151 +2052,20 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultMoves(brainerDefaultMoves)
                 .defaultMoveCount(1)
                 .moveChoiceCount(2)
+                .defaultVehicleCount(0)
                 .build();
 
         /* ----------------------------- CHOPPER PLAYBOOK CREATOR --------------------------------- */
-        VehicleFrame bikeFrame = VehicleFrame.builder()
-                .id(UUID.randomUUID().toString())
-                .frameType(VehicleFrameType.BIKE)
-                .massive(0)
-                .examples("Road bike, trail bike, low-rider")
-                .battleOptionCount(1)
-                .build();
-
-        VehicleBattleOption battleOption1 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
-                .battleOptionType(BattleOptionType.SPEED)
-                .name("+1speed")
-                .build();
-
-        VehicleBattleOption battleOption2 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
-                .battleOptionType(BattleOptionType.HANDLING)
-                .name("+1handling")
-                .build();
-
-        BikeCreator bikeCreator = BikeCreator.builder()
-                .id(UUID.randomUUID().toString())
-                .introInstructions("By default, your bike has speed=0, handling=0, 0-armor and the massive rating of its frame.")
-                .frame(bikeFrame)
-                .strengths(List.of("fast",
-                        "rugged",
-                        "aggressive",
-                        "tight",
-                        "huge",
-                        "responsive"))
-                .looks(List.of(
-                        "sleek",
-                        "vintage",
-                        "massively-chopped",
-                        "muscular",
-                        "flashy",
-                        "luxe",
-                        "roaring",
-                        "fat-ass"))
-                .weaknesses(List.of("slow",
-                        "sloppy",
-                        "guzzler",
-                        "lazy",
-                        "unreliable",
-                        "cramped",
-                        "loud",
-                        "picky",
-                        "rabbity"))
-                .battleOptions(List.of(battleOption1, battleOption2))
-                .build();
 
         PlaybookUniqueCreator chopperUniqueCreator = PlaybookUniqueCreator.builder()
-                .type(UniqueType.VEHICLE)
+                .type(UniqueType.GANG)
                 .id(UUID.randomUUID().toString())
-                .bikeCreator(bikeCreator)
-                // TODO: add gang creator, and probably change UniqueType to GANG
+                // TODO: add gang creator,
                 .build();
 
         /* ----------------------------- DRIVER PLAYBOOK CREATOR --------------------------------- */
 
-        VehicleFrame smallFrame = VehicleFrame.builder()
-                .id(UUID.randomUUID().toString())
-                .frameType(VehicleFrameType.SMALL)
-                .massive(1)
-                .examples("Compact, buggy")
-                .battleOptionCount(2)
-                .build();
-
-        VehicleFrame mediumFrame = VehicleFrame.builder()
-                .id(UUID.randomUUID().toString())
-                .frameType(VehicleFrameType.MEDIUM)
-                .massive(2)
-                .examples("Coupe, sedan, jeep, pickup, van, limo, 4x4, tractor")
-                .battleOptionCount(2)
-                .build();
-
-        VehicleFrame largeFrame = VehicleFrame.builder()
-                .id(UUID.randomUUID().toString())
-                .frameType(VehicleFrameType.LARGE)
-                .massive(3)
-                .examples("Semi, bus, ambulance, construction/utility")
-                .battleOptionCount(2)
-                .build();
-
-        VehicleBattleOption battleOption3 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
-                .battleOptionType(BattleOptionType.MASSIVE)
-                .name("+1massive")
-                .build();
-
-        VehicleBattleOption battleOption4 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
-                .battleOptionType(BattleOptionType.ARMOR)
-                .name("+1armor")
-                .build();
-
-        CarCreator carCreator = CarCreator.builder()
-                .id(UUID.randomUUID().toString())
-                .introInstructions("By default, your vehicle has speed=0, handling=0, 0-armor and the massive rating of its frame.")
-                .frames(List.of(bikeFrame, smallFrame, mediumFrame, largeFrame))
-                .strengths(List.of("fast",
-                        "rugged",
-                        "aggressive",
-                        "tight",
-                        "huge",
-                        "responsive",
-                        "off-road",
-                        "uncomplaining",
-                        "capacious",
-                        "workhorse",
-                        "easily repaired"))
-                .looks(List.of(
-                        "sleek",
-                        "vintage",
-                        "muscular",
-                        "flashy",
-                        "luxe",
-                        "pristine",
-                        "powerful",
-                        "quirky",
-                        "pretty",
-                        "handcrafted",
-                        "spikes & plates",
-                        "garish"))
-                .weaknesses(List.of("slow",
-                        "sloppy",
-                        "guzzler",
-                        "lazy",
-                        "unreliable",
-                        "cramped",
-                        "loud",
-                        "picky",
-                        "rabbity"))
-                .battleOptions(List.of(battleOption1, battleOption2, battleOption3, battleOption4))
-                .build();
-
-        PlaybookUniqueCreator driverUniqueCreator = PlaybookUniqueCreator.builder()
-                .type(UniqueType.VEHICLE)
-                .id(UUID.randomUUID().toString())
-                .carCreator(carCreator)
-                .bikeCreator(bikeCreator)
-                .build();
+        // Driver has no PlaybookUnique; hav Vehicles instead
 
         List<Move> driverOptionalMoves = moveRepository
                 .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.CHARACTER)
@@ -2232,17 +2115,156 @@ public class GameDataLoader implements CommandLineRunner {
                         "On the others’ turns, answer their questions as you like.\n" +
                         "\n" +
                         "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
-                .playbookUniqueCreator(driverUniqueCreator)
                 .optionalMoves(driverOptionalMoves)
                 .defaultMoves(driverDefaultMoves)
                 .defaultMoveCount(1)
                 .moveChoiceCount(2)
+                .defaultVehicleCount(1)
                 .build();
 
         playbookCreatorService.saveAll(Flux.just(angelCreator,
                 battlebabePlaybookCreator,
                 playbookCreatorBrainer,
                 playbookCreatorDriver)).blockLast();
+    }
+
+    public void loadVehicleCreator() {
+        VehicleFrame bikeFrame = VehicleFrame.builder()
+                .id(UUID.randomUUID().toString())
+                .frameType(VehicleFrameType.BIKE)
+                .massive(0)
+                .examples("Road bike, trail bike, low-rider")
+                .battleOptionCount(1)
+                .build();
+
+        VehicleFrame smallFrame = VehicleFrame.builder()
+                .id(UUID.randomUUID().toString())
+                .frameType(VehicleFrameType.SMALL)
+                .massive(1)
+                .examples("Compact, buggy")
+                .battleOptionCount(2)
+                .build();
+
+        VehicleFrame mediumFrame = VehicleFrame.builder()
+                .id(UUID.randomUUID().toString())
+                .frameType(VehicleFrameType.MEDIUM)
+                .massive(2)
+                .examples("Coupe, sedan, jeep, pickup, van, limo, 4x4, tractor")
+                .battleOptionCount(2)
+                .build();
+
+        VehicleFrame largeFrame = VehicleFrame.builder()
+                .id(UUID.randomUUID().toString())
+                .frameType(VehicleFrameType.LARGE)
+                .massive(3)
+                .examples("Semi, bus, ambulance, construction/utility")
+                .battleOptionCount(2)
+                .build();
+
+        VehicleBattleOption battleOption1 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.SPEED)
+                .name("+1speed")
+                .build();
+
+        VehicleBattleOption battleOption2 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.HANDLING)
+                .name("+1handling")
+                .build();
+
+        VehicleBattleOption battleOption3 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.MASSIVE)
+                .name("+1massive")
+                .build();
+
+        VehicleBattleOption battleOption4 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.ARMOR)
+                .name("+1armor")
+                .build();
+
+        BikeCreator bikeCreator = BikeCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .vehicleType(VehicleType.BIKE)
+                .introInstructions("By default, your bike has speed=0, handling=0, 0-armor and the massive rating of its frame.")
+                .frame(bikeFrame)
+                .strengths(List.of("fast",
+                        "rugged",
+                        "aggressive",
+                        "tight",
+                        "huge",
+                        "responsive"))
+                .looks(List.of(
+                        "sleek",
+                        "vintage",
+                        "massively-chopped",
+                        "muscular",
+                        "flashy",
+                        "luxe",
+                        "roaring",
+                        "fat-ass"))
+                .weaknesses(List.of("slow",
+                        "sloppy",
+                        "guzzler",
+                        "lazy",
+                        "unreliable",
+                        "cramped",
+                        "loud",
+                        "picky",
+                        "rabbity"))
+                .battleOptions(List.of(battleOption1, battleOption2))
+                .build();
+
+        CarCreator carCreator = CarCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .vehicleType(VehicleType.CAR)
+                .introInstructions("By default, your vehicle has speed=0, handling=0, 0-armor and the massive rating of its frame.")
+                .frames(List.of(bikeFrame, smallFrame, mediumFrame, largeFrame))
+                .strengths(List.of("fast",
+                        "rugged",
+                        "aggressive",
+                        "tight",
+                        "huge",
+                        "responsive",
+                        "off-road",
+                        "uncomplaining",
+                        "capacious",
+                        "workhorse",
+                        "easily repaired"))
+                .looks(List.of(
+                        "sleek",
+                        "vintage",
+                        "muscular",
+                        "flashy",
+                        "luxe",
+                        "pristine",
+                        "powerful",
+                        "quirky",
+                        "pretty",
+                        "handcrafted",
+                        "spikes & plates",
+                        "garish"))
+                .weaknesses(List.of("slow",
+                        "sloppy",
+                        "guzzler",
+                        "lazy",
+                        "unreliable",
+                        "cramped",
+                        "loud",
+                        "picky",
+                        "rabbity"))
+                .battleOptions(List.of(battleOption1, battleOption2, battleOption3, battleOption4))
+                .build();
+
+        VehicleCreator vehicleCreator = VehicleCreator.builder()
+                .carCreator(carCreator)
+                .bikeCreator(bikeCreator)
+                // TODO: Add combat vehicle creator
+                .build();
+
+        vehicleCreatorService.save(vehicleCreator).block();
     }
 
     public void loadPlaybooks() {

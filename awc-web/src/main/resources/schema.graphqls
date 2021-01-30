@@ -89,7 +89,6 @@ enum UniqueType {
     CUSTOM_WEAPONS,
     BRAINER_GEAR,
     GANG,
-    VEHICLE,
     WEAPONS,
     HOLDING,
     FOLLOWERS,
@@ -110,6 +109,12 @@ enum BattleOptionType {
     HANDLING,
     MASSIVE,
     ARMOR
+}
+
+enum VehicleType {
+    BIKE,
+    CAR,
+    COMBAT
 }
 
 # ---------------------------------------- STATIC GAME DATA TYPES -------------------------------------- #
@@ -222,6 +227,7 @@ type PlaybookCreator {
     defaultMoves: [Move]
     defaultMoveCount: Int
     moveChoiceCount: Int
+    defaultVehicleCount: Int
 }
 
 type PlaybookUniqueCreator {
@@ -230,8 +236,6 @@ type PlaybookUniqueCreator {
     angelKitCreator: AngelKitCreator
     customWeaponsCreator: CustomWeaponsCreator
     brainerGearCreator: BrainerGearCreator
-    carCreator: CarCreator
-    bikeCreator: BikeCreator
 }
 
 type AngelKitCreator {
@@ -261,6 +265,7 @@ type BrainerGearCreator {
 
 type CarCreator {
     id: ID!
+    vehicleType: VehicleType
     introInstructions: String
     frames: [VehicleFrame]
     strengths: [String]
@@ -271,12 +276,19 @@ type CarCreator {
 
 type BikeCreator {
     id: ID!
+    vehicleType: VehicleType
     introInstructions: String
     frame: VehicleFrame
     strengths: [String]
     looks: [String]
     weaknesses: [String]
     battleOptions: [VehicleBattleOption]
+}
+
+type VehicleCreator {
+    id: ID!
+    bikeCreator: BikeCreator
+    carCreator: CarCreator
 }
 
 # ---------------------------------------- GAME & CHARACTER TYPES --------------------------------------- #
@@ -381,6 +393,7 @@ type Character {
     barter: Int
     harm: CharacterHarm
     vehicleCount: Int
+    vehicles: [Vehicle]
 }
 
 type GameRole {
@@ -436,6 +449,7 @@ type CustomWeapons {
 
 type Vehicle {
     id: ID!
+    vehicleType: VehicleType
     name: String
     vehicleFrame: VehicleFrame
     speed: Int

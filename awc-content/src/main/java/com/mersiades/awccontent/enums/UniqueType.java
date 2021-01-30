@@ -5,7 +5,6 @@ public enum UniqueType {
     CUSTOM_WEAPONS,
     BRAINER_GEAR,
     GANG,
-    VEHICLE,
     WEAPONS,
     HOLDING,
     FOLLOWERS,
