@@ -2129,10 +2129,136 @@ public class GameDataLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.DEFAULT_CHARACTER)
                 .collectList().block();
 
-        PlaybookUniqueCreator chopperUniqueCreator = PlaybookUniqueCreator.builder()
-                .type(UniqueType.GANG)
+        GangOption gangOption1 = GangOption.builder()
                 .id(UUID.randomUUID().toString())
-                // TODO: add gang creator,
+                .description("your gang consists of 30 or so violent bastards. Medium instead of small.")
+                .modifier("MEDIUM")
+                .build();
+
+        GangOption gangOption2 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's well-armed. +1harm")
+                .modifier("+1harm")
+                .build();
+
+        GangOption gangOption3 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's well-armored. +1armor")
+                .modifier("+1armor")
+                .build();
+
+        GangOption gangOption4 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's well-disciplined. Drop savage.")
+                .tag("-savage")
+                .build();
+
+        GangOption gangOption5 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's nomadic at heart, and able to maintain and repair its own bikes without a ome base. It gets +mobile.")
+                .tag("+mobile")
+                .build();
+
+        GangOption gangOption6 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's self-sufficient, able to provide for itself by raiding and scavenging. It gets +rich")
+                .tag("+rich")
+                .build();
+
+        GangOption gangOption7 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's bikes are in bad shape and need constant attention. Vulnerable: breakdown.")
+                .tag("+Vulnerable: breakdown")
+                .build();
+
+        GangOption gangOption8 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's bikes are picky and high-maintenance. Vulnerable: grounded.")
+                .tag("+Vulnerable: grounded")
+                .build();
+
+        GangOption gangOption9 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's loose-knit, with members coming and going as they choose. Vulnerable: desertion")
+                .tag("+Vulnerable: desertion")
+                .build();
+
+        GangOption gangOption10 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang is in significant debt to someone powerful. Vulnerable: obligation.")
+                .tag("+Vulnerable: obligation")
+                .build();
+
+        GangOption gangOption11 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang is filthy and unwell. Vulnerable: disease.")
+                .tag("+Vulnerable: disease")
+                .build();
+
+        GangCreator gangCreator = GangCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .intro("By default, your gang consists of about 15 violent bastards with scavenged and makeshift weapons and armor, and no fucking discipline at all (2-harm gang small savage 1-armor)")
+                .defaultSize(GangSize.SMALL)
+                .defaultArmor(1)
+                .defaultHarm(2)
+                .strengthChoiceCount(2)
+                .weaknessChoiceCount(1)
+                .defaultTags(List.of("+savage"))
+                .strengths(List.of(gangOption1, gangOption2, gangOption3, gangOption4, gangOption5, gangOption6))
+                .weaknesses(List.of(gangOption7, gangOption8, gangOption9, gangOption10, gangOption11))
+                .build();
+
+        PlaybookUniqueCreator chopperUniqueCreator = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.GANG)
+                .gangCreator(gangCreator)
+                .build();
+
+        GearInstructions chopperGearInstructions = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .gearIntro("In addition to your bike and gang, you get:")
+                .youGetItems(List.of("fashion suitable to your look, worth 1-armor or 2-armor (you detail)"))
+                .introduceChoice("No-nonsense weapons")
+                .numberCanChoose(2)
+                .chooseableGear(List.of("magnum (3-harm close reload loud)",
+                        "smg (2-harm close autofire load)",
+                        "sawed-off (3-harm close reload messy)",
+                        "crowbar (2-harm hand messy)",
+                        "machete (3-harm hand messy)",
+                        "crossbow (2-harm close slow)",
+                        "wrist crossbow (1-harm close slow)"))
+                .startingBarter(2)
+                .withMC("If you’d like to start play with a prosthetic, get with the MC.")
+                .build();
+
+        PlaybookCreator playbookCreatorChopper = PlaybookCreator.builder()
+                .playbookType(PlaybookType.CHOPPER)
+                .gearInstructions(chopperGearInstructions)
+                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
+                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .movesInstructions("You get all the basic moves. You  get both chopper moves.\n" +
+                        "You can use all the battle moves, and probably will, but when you gotta start somewhere. When you get teh chance, look up _**seize by force**_, _**laying down fire**_, and the _**road war**_ moves, as well as the rules for how gangs inflict and suffer harm.")
+                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
+                        "\n" +
+                        "List the other characters’ names.\n" +
+                        "\n" +
+                        "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                        "\n" +
+                        "- *Which one of you used to ride with my gang?* For that character, write Hx+1.\n" +
+                        "- *Which one of you figures that you could take me out in a fight, if it came to it?* For that character, write Hx+2.\n" +
+                        "- *Which one of you once stood up to me, gang and all?* For that character, write Hx+3.\n" +
+                        "\n" +
+                        "For everyone else, write Hx-1. You don't really care much about, y'know, people.\n" +
+                        "\n" +
+                        "On the others’ turns, answer their questions as you like.\n" +
+                        "\n" +
+                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                .playbookUniqueCreator(chopperUniqueCreator)
+                .optionalMoves(chopperOptionalMoves)
+                .defaultMoves(chopperDefaultMoves)
+                .defaultMoveCount(3)
+                .moveChoiceCount(0)
+                .defaultVehicleCount(1)
                 .build();
 
         /* ----------------------------- DRIVER PLAYBOOK CREATOR --------------------------------- */
@@ -2197,6 +2323,7 @@ public class GameDataLoader implements CommandLineRunner {
         playbookCreatorService.saveAll(Flux.just(angelCreator,
                 battlebabePlaybookCreator,
                 playbookCreatorBrainer,
+                playbookCreatorChopper,
                 playbookCreatorDriver)).blockLast();
     }
 
@@ -2637,6 +2764,32 @@ public class GameDataLoader implements CommandLineRunner {
             playbookCreatorService.save(playbookCreatorBrainer).block();
             playbookBrainer.setCreator(playbookCreatorBrainer);
             playbookService.save(playbookBrainer).block();
+        }
+
+        // -------------------------------------- CHOPPER -------------------------------------- //
+        Playbook playbookChopper = playbookService.findByPlaybookType(PlaybookType.BRAINER).block();
+        assert playbookChopper != null;
+
+        if (playbookChopper.getCreator() == null) {
+            PlaybookCreator playbookCreatorChopper = playbookCreatorService.findByPlaybookType(PlaybookType.CHOPPER).block();
+            assert playbookCreatorChopper != null;
+
+
+            List<Name> namesChopper = nameService.findAllByPlaybookType(PlaybookType.CHOPPER).collectList().block();
+            assert namesChopper != null;
+
+            List<Look> looksChopper = lookService.findAllByPlaybookType(PlaybookType.CHOPPER).collectList().block();
+            assert looksChopper != null;
+
+            List<StatsOption> statsOptionsChopper = statsOptionService.findAllByPlaybookType(PlaybookType.CHOPPER).collectList().block();
+            assert statsOptionsChopper != null;
+
+            statsOptionsChopper.forEach(statsOption -> playbookCreatorChopper.getStatsOptions().add(statsOption));
+            namesChopper.forEach(name -> playbookCreatorChopper.getNames().add(name));
+            looksChopper.forEach(look -> playbookCreatorChopper.getLooks().add(look));
+            playbookCreatorService.save(playbookCreatorChopper).block();
+            playbookChopper.setCreator(playbookCreatorChopper);
+            playbookService.save(playbookChopper).block();
         }
 
         // -------------------------------------- DRIVER -------------------------------------- //
