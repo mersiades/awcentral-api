@@ -2,12 +2,14 @@ package com.mersiades.awcweb.bootstrap;
 
 import com.mersiades.awccontent.enums.*;
 import com.mersiades.awccontent.models.*;
+import com.mersiades.awccontent.models.uniquecreators.GangCreator;
 import com.mersiades.awccontent.services.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.AngelKit;
 import com.mersiades.awcdata.models.uniques.BrainerGear;
 import com.mersiades.awcdata.models.uniques.CustomWeapons;
+import com.mersiades.awcdata.models.uniques.Gang;
 import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
@@ -18,6 +20,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -33,6 +36,7 @@ public class MockCharacterLoader implements CommandLineRunner {
     final String JOHN_AS_PLAYER_ID = "5ffe67b72e21523778660910)";
     final String MAYA_AS_PLAYER_ID = "5ffe67b72e21523778660911)";
     final String AHMAD_AS_PLAYER_ID = "5ffe67b72e21523778660912)";
+    final String TAKESHI_AS_PLAYER_ID = "5ffe67b72e21523778660913)";
 
     private final GameRoleService gameRoleService;
     private final LookService lookService;
@@ -78,6 +82,8 @@ public class MockCharacterLoader implements CommandLineRunner {
         assert mayaAsPlayer != null;
         GameRole ahmadAsPlayer = gameRoleService.findById(AHMAD_AS_PLAYER_ID).block();
         assert ahmadAsPlayer != null;
+        GameRole takeshiAsPlayer = gameRoleService.findById(TAKESHI_AS_PLAYER_ID).block();
+        assert takeshiAsPlayer != null;
 
         CharacterHarm harm = CharacterHarm.builder()
                 .hasChangedPlaybook(false)
@@ -87,6 +93,9 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .isStabilized(false)
                 .value(0)
                 .build();
+
+        VehicleCreator vehicleCreator = vehicleCreatorService.findAll().take(1).blockFirst();
+        assert vehicleCreator != null;
 
         // -------------------------------- Set up Sara's Angel ----------------------------------- //
         List<Look> angelLooks = getLooks(PlaybookType.ANGEL);
@@ -176,6 +185,57 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         List<CharacterMove> characterMoves3 = createAndMergeCharacterMoves(brainerMoves, brainerDefaultMoves);
 
+        // -------------------------------- Set up Takeshi's's Chopper ----------------------------------- //
+        GangCreator gangCreator = Objects.requireNonNull(playbookCreatorService.findByPlaybookType(PlaybookType.CHOPPER)
+                .block()).getPlaybookUniqueCreator().getGangCreator();
+
+        GangOption gangOption1 = gangCreator.getStrengths().get(0);
+        GangOption gangOption2 = gangCreator.getStrengths().get(1);
+        GangOption gangOption3 = gangCreator.getWeaknesses().get(0);
+
+        List<Look> chopperLooks = getLooks(PlaybookType.CHOPPER);
+
+        StatsBlock chopperStatsBlock = getStatsBlock(PlaybookType.CHOPPER);
+
+        Vehicle chopperBike = Vehicle.builder()
+                .id(UUID.randomUUID().toString())
+                .vehicleType(VehicleType.BIKE)
+                .name("Honda")
+                // BIKE frame
+                .vehicleFrame(vehicleCreator.getBikeCreator().getFrame())
+                // +1handling
+                .battleOptions(List.of(vehicleCreator.getBikeCreator().getBattleOptions().get(1)))
+                .massive(0)
+                .speed(0)
+                .armor(0)
+                .handling(1)
+                .strengths(List.of("fast", "responsive"))
+                .looks(List.of("flashy", "luxe"))
+                .weaknesses(List.of("lazy", "sloppy"))
+                .build();
+
+        Gang gang = Gang.builder()
+                .id(UUID.randomUUID().toString())
+                .size(GangSize.MEDIUM)
+                .harm(3)
+                .armor(1)
+                .tags(List.of("savage", "Vulnerable: breakdown"))
+                .gangOptions(List.of(gangOption1, gangOption2, gangOption3))
+                .build();
+
+        PlaybookUnique chopperUnique = PlaybookUnique.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.GANG)
+                .gang(gang)
+                .build();
+
+        List<Move> chopperDefaultMoves = moveService
+                .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.DEFAULT_CHARACTER).collectList().block();
+        assert chopperDefaultMoves != null;
+
+        List<CharacterMove> characterMoves5 = new ArrayList<>();
+        chopperDefaultMoves.forEach(move -> characterMoves5.add(CharacterMove.createFromMove(move)));
+
         // -------------------------------- Set up Ahmad's Driver ----------------------------------- //
         List<Look> driverLooks = getLooks(PlaybookType.DRIVER);
 
@@ -195,8 +255,6 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         PlaybookCreator driverCreator = playbookCreatorService.findByPlaybookType(PlaybookType.DRIVER).block();
         assert driverCreator != null;
-        VehicleCreator vehicleCreator = vehicleCreatorService.findAll().take(1).blockFirst();
-        assert vehicleCreator != null;
 
 
         Vehicle car1 = Vehicle.builder()
@@ -254,6 +312,8 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .weaknesses(List.of("bucking", "unreliable"))
                 .build();
 
+
+
         // -------------------------------- Create Sara's Angel ----------------------------------- //
         Character mockCharacter1 = Character.builder()
                 .name("Doc")
@@ -293,6 +353,21 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .hasCompletedCharacterCreation(true)
                 .build();
 
+        // -------------------------------- Create Takeshi's Chopper ----------------------------------- //
+        Character mockCharacter5 = Character.builder()
+                .name("Dog")
+                .playbook(PlaybookType.CHOPPER)
+                .looks(chopperLooks)
+                .gear(List.of("magnum (3-harm close reload loud)", "machete (3-harm hand messy"))
+                .statsBlock(chopperStatsBlock)
+                .barter(2)
+                .playbookUnique(chopperUnique)
+                .characterMoves(characterMoves5)
+                .hasCompletedCharacterCreation(true)
+                .vehicleCount(1)
+                .vehicles(List.of(chopperBike))
+                .build();
+
         // -------------------------------- Create Ahmad's Driver ----------------------------------- //
         Character mockCharacter4 = Character.builder()
                 .name("Phoenix")
@@ -313,6 +388,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         saveCharacter(johnAsPlayer, harm, mockCharacter2);
         saveCharacter(mayaAsPlayer, harm, mockCharacter3);
         saveCharacter(ahmadAsPlayer, harm, mockCharacter4);
+        saveCharacter(takeshiAsPlayer, harm, mockCharacter5);
     }
 
     private void loadHx() {
@@ -324,6 +400,8 @@ public class MockCharacterLoader implements CommandLineRunner {
         assert mayaAsPlayer != null;
         GameRole ahmadAsPlayer = gameRoleService.findById(AHMAD_AS_PLAYER_ID).block();
         assert ahmadAsPlayer != null;
+        GameRole takeshiAsPlayer = gameRoleService.findById(TAKESHI_AS_PLAYER_ID).block();
+        assert takeshiAsPlayer != null;
 
         Character doc = saraAsPlayer.getCharacters().stream().findFirst().orElseThrow();
         assert doc != null;
@@ -333,6 +411,8 @@ public class MockCharacterLoader implements CommandLineRunner {
         assert smith != null;
         Character nee = ahmadAsPlayer.getCharacters().stream().findFirst().orElseThrow();
         assert nee != null;
+        Character dog = takeshiAsPlayer.getCharacters().stream().findFirst().orElseThrow();
+        assert dog != null;
 
         // ------------------------------ Doc's Hx --------------------------------- //
         HxStat doc1 = HxStat.builder().id(UUID.randomUUID().toString())
@@ -378,9 +458,20 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .characterId(smith.getId()).characterName(smith.getName()).hxValue(3).build();
         nee.setHxBlock(List.of(nee1, nee2, nee3));
 
+        // ------------------------------ Dog's Hx --------------------------------- //
+        HxStat dog1 = HxStat.builder().id(UUID.randomUUID().toString())
+                .characterId(doc.getId()).characterName(doc.getName()).hxValue(-2).build();
+
+        HxStat dog2 = HxStat.builder().id(UUID.randomUUID().toString())
+                .characterId(scarlet.getId()).characterName(scarlet.getName()).hxValue(2).build();
+
+        HxStat dog3 = HxStat.builder().id(UUID.randomUUID().toString())
+                .characterId(smith.getId()).characterName(smith.getName()).hxValue(3).build();
+        dog.setHxBlock(List.of(dog1, dog2, dog3));
+
         // ------------------------------ Save to db --------------------------------- //
-        characterService.saveAll(Flux.just(doc, scarlet, smith, nee)).blockLast();
-        gameRoleService.saveAll(Flux.just(saraAsPlayer, johnAsPlayer, mayaAsPlayer, ahmadAsPlayer)).blockLast();
+        characterService.saveAll(Flux.just(doc, scarlet, smith, nee, dog)).blockLast();
+        gameRoleService.saveAll(Flux.just(saraAsPlayer, johnAsPlayer, mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer)).blockLast();
 
     }
 
