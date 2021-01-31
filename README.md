@@ -12,9 +12,18 @@ A web interface to play Apocalypse World online
 
 ### Deploying the app 
 
+- Checkout the `master` branch
+- run `./mvnw clean release:prepare` 
+  - this get the maven-release-plugin to update the release versions, commit the changes, and push commits to Github
+- run `./mvnw release:clean` to remove all the temporary files `release:perform` generates
 - run `mvn clean package`
-- manually deploy to AWS Elastic Beanstalk environment
+- manually deploy JAR to AWS Elastic Beanstalk environment
 
+
+
+- if you change your mind after running `./mvnw clean release:perform`, you can run `./mvnw release:rollback`.
+  - You may need to manually delete the release tag from Github
+    
 ### Testing the app
 
 - run `mvn clean install`
