@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.1.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>com.mersiades</groupId>
     <artifactId>awcentral</artifactId>
-    <version>${revision}</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -31,6 +29,7 @@
         <graphql-starter.version>7.1.0</graphql-starter.version>
         <graphiql-starter.version>5.0.2</graphiql-starter.version>
         <graphql-tools.version>6.2.0</graphql-tools.version>
+        <project.scm.id>github</project.scm.id>
     </properties>
 
     <dependencies>
@@ -72,6 +71,12 @@
         </dependencies>
     </dependencyManagement>
 
+    <scm>
+        <developerConnection>scm:git:https://github.com/mersiades/awcentral.git</developerConnection>
+        <url>https://github.com/mersiades/awcentral</url>
+      <tag>HEAD</tag>
+  </scm>
+
     <build>
         <plugins>
             <plugin>
@@ -96,6 +101,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
             </plugin>
         </plugins>
     </build>
