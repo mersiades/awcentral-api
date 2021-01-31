@@ -1611,7 +1611,7 @@ public class GameDataLoader implements CommandLineRunner {
         nameService.saveAll(Flux.just(smith2, jones, jackson, marsh, lively, burroughs, gritch, joyette, iris, marie,
                 amiette, suselle, cybelle, pallor, sin, charmer, pity, brace, sundown)).blockLast();
 
-        /* ----------------------------- BRAINER NAMES --------------------------------- */
+        /* ----------------------------- DRIVER NAMES --------------------------------- */
         Name lauren = Name.builder().playbookType(PlaybookType.DRIVER).name("Lauren").build();
         Name audrey = Name.builder().playbookType(PlaybookType.DRIVER).name("Audrey").build();
         Name farley = Name.builder().playbookType(PlaybookType.DRIVER).name("Farley").build();
@@ -1643,6 +1643,34 @@ public class GameDataLoader implements CommandLineRunner {
         nameService.saveAll(Flux.just(lauren, audrey, farley, sammy, katherine, marilyn, james, bridget, paul,
                 annette, marlene, frankie, marlon, kim1, errol, humphrey, phoenix, mustang, impala, suv, cougar,
                 cobra, dart, gremlin, grandCherokee, jag, beemer)).blockLast();
+
+        /* ----------------------------- CHOPPER NAMES --------------------------------- */
+        Name dog = Name.builder().playbookType(PlaybookType.CHOPPER).name("Dog").build();
+        Name domino = Name.builder().playbookType(PlaybookType.CHOPPER).name("Domino").build();
+        Name tBone = Name.builder().playbookType(PlaybookType.CHOPPER).name("T-bone").build();
+        Name stinky = Name.builder().playbookType(PlaybookType.CHOPPER).name("Stinky").build();
+        Name satan = Name.builder().playbookType(PlaybookType.CHOPPER).name("Satan").build();
+        Name lars = Name.builder().playbookType(PlaybookType.CHOPPER).name("Lars").build();
+        Name bullet = Name.builder().playbookType(PlaybookType.CHOPPER).name("Bullet").build();
+        Name dice = Name.builder().playbookType(PlaybookType.CHOPPER).name("Dice").build();
+        Name shitHead = Name.builder().playbookType(PlaybookType.CHOPPER).name("Shit head").build();
+        Name halfPint = Name.builder().playbookType(PlaybookType.CHOPPER).name("Half pint").build();
+        Name shooter = Name.builder().playbookType(PlaybookType.CHOPPER).name("Shooter").build();
+        Name diamond = Name.builder().playbookType(PlaybookType.CHOPPER).name("Diamond").build();
+        Name goldie = Name.builder().playbookType(PlaybookType.CHOPPER).name("Goldie").build();
+        Name tinker = Name.builder().playbookType(PlaybookType.CHOPPER).name("Tinker").build();
+        Name loose = Name.builder().playbookType(PlaybookType.CHOPPER).name("Loose").build();
+        Name baby = Name.builder().playbookType(PlaybookType.CHOPPER).name("Baby").build();
+        Name juck = Name.builder().playbookType(PlaybookType.CHOPPER).name("Juck").build();
+        Name hammer = Name.builder().playbookType(PlaybookType.CHOPPER).name("Hammer").build();
+        Name hooch = Name.builder().playbookType(PlaybookType.CHOPPER).name("Hooch").build();
+        Name snakeEyes = Name.builder().playbookType(PlaybookType.CHOPPER).name("Snake eyes").build();
+        Name pinkie = Name.builder().playbookType(PlaybookType.CHOPPER).name("Pinkie").build();
+        Name wire = Name.builder().playbookType(PlaybookType.CHOPPER).name("Wire").build();
+        Name blues = Name.builder().playbookType(PlaybookType.CHOPPER).name("Blues").build();
+
+        nameService.saveAll(Flux.just(dog, domino, tBone, stinky, satan, lars, bullet, dice, shitHead, halfPint,
+                shooter, diamond, goldie, tinker, loose, baby, juck, hammer, hooch, snakeEyes, pinkie, wire, blues)).blockLast();
     }
 
     private void loadLooks() {
@@ -1747,6 +1775,35 @@ public class GameDataLoader implements CommandLineRunner {
                 brainer27)).blockLast();
 
         /* ----------------------------- DRIVER LOOKS --------------------------------- */
+        Look chopper1 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("man").build();
+        Look chopper2 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("woman").build();
+        Look chopper3 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("ambiguous").build();
+        Look chopper4 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("transgressing").build();
+        Look chopper5 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("Combat biker wear").build();
+        Look chopper6 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("showy biker wear").build();
+        Look chopper7 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("scrounge biker wear").build();
+        Look chopper8 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("S&M biker wear").build();
+        Look chopper9 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("weathered face").build();
+        Look chopper10 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("strong face").build();
+        Look chopper11 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("rugged face").build();
+        Look chopper12 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("narrow face").build();
+        Look chopper13 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("busted face").build();
+        Look chopper14 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("narrow eyes").build();
+        Look chopper15 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("scorched eyes").build();
+        Look chopper16 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("calculating eyes").build();
+        Look chopper17 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("weary eyes").build();
+        Look chopper18 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("kind eyes").build();
+        Look chopper19 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("squat body").build();
+        Look chopper20 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("rangy body").build();
+        Look chopper21 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("wiry body").build();
+        Look chopper22 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("sturdy body").build();
+        Look chopper23 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("fat body").build();
+
+        lookService.saveAll(Flux.just(chopper1, chopper2, chopper3, chopper4, chopper5, chopper6, chopper7, chopper8,
+                chopper9, chopper10, chopper11, chopper12, chopper13, chopper14, chopper15, chopper16, chopper17,
+                chopper18, chopper19, chopper20, chopper21, chopper22, chopper23)).blockLast();
+
+        /* ----------------------------- DRIVER LOOKS --------------------------------- */
         Look driver1 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("man").build();
         Look driver2 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("woman").build();
         Look driver3 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("ambiguous").build();
@@ -1802,6 +1859,13 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption brainer3 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(1).HARD(-2).HOT(-1).SHARP(2).WEIRD(2).build();
         StatsOption brainer4 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(2).HARD(-1).HOT(-1).SHARP(0).WEIRD(2).build();
         statsOptionService.saveAll(Flux.just(brainer1, brainer2, brainer3, brainer4)).blockLast();
+
+        /* ----------------------------- CHOPPER STATS OPTIONS --------------------------------- */
+        StatsOption chopper1 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(-1).SHARP(1).WEIRD(0).build();
+        StatsOption chopper2 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(1).SHARP(0).WEIRD(1).build();
+        StatsOption chopper3 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(0).SHARP(1).WEIRD(1).build();
+        StatsOption chopper4 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(2).HARD(2).HOT(-1).SHARP(0).WEIRD(1).build();
+        statsOptionService.saveAll(Flux.just(chopper1, chopper2, chopper3, chopper4)).blockLast();
 
         /* ----------------------------- DRIVER STATS OPTIONS --------------------------------- */
         StatsOption driver1 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build();
@@ -2056,6 +2120,14 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         /* ----------------------------- CHOPPER PLAYBOOK CREATOR --------------------------------- */
+
+        List<Move> chopperOptionalMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.CHARACTER)
+                .collectList().block();
+
+        List<Move> chopperDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
 
         PlaybookUniqueCreator chopperUniqueCreator = PlaybookUniqueCreator.builder()
                 .type(UniqueType.GANG)
