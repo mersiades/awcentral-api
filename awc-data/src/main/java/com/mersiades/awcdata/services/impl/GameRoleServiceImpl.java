@@ -120,6 +120,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.getGear().clear();
         character.setPlaybookUnique(null);
         character.setCharacterMoves(null);
+        character.setVehicles(new ArrayList<>());
 
         // Set new playbook
         character.setPlaybook(playbookType);
