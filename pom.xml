@@ -31,6 +31,7 @@
         <graphql-starter.version>7.1.0</graphql-starter.version>
         <graphiql-starter.version>5.0.2</graphiql-starter.version>
         <graphql-tools.version>6.2.0</graphql-tools.version>
+        <project.scm.id>github</project.scm.id>
     </properties>
 
     <dependencies>
@@ -72,6 +73,11 @@
         </dependencies>
     </dependencyManagement>
 
+    <scm>
+        <developerConnection>scm:git:https://github.com/mersiades/awcentral.git</developerConnection>
+        <url>https://github.com/mersiades/awcentral</url>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
@@ -96,6 +102,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
             </plugin>
         </plugins>
     </build>
