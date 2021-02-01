@@ -30,7 +30,7 @@ import static com.mersiades.awccontent.constants.MoveNames.*;
 @Service
 public class GameServiceImpl implements GameService {
 
-    @Value("${spring.profiles.active:}")
+    @Value("${spring.profiles.active}")
     private String activeProfiles;
 
     private final GameRepository gameRepository;
@@ -276,9 +276,9 @@ public class GameServiceImpl implements GameService {
             claireGameRole.setCharacters(List.of(claireChar));
             ruthGameRole.setUser(ruth);
             ruthGameRole.setCharacters(List.of(ruthChar));
-            userService.saveAll(Flux.just(nate, claire, ruth)).log().blockLast();
+            userService.saveAll(Flux.just(nate, claire, ruth)).blockLast();
             gameRoleService.saveAll(Flux.just(nateGameRole, claireGameRole, ruthGameRole)).blockLast();
-            characterService.saveAll(Flux.just(claireChar, ruthChar)).log().blockLast();
+            characterService.saveAll(Flux.just(claireChar, ruthChar)).blockLast();
 
             return gameRepository.findAllByInviteesContaining(email).log("Games found: ")
                     .defaultIfEmpty(Game.builder()

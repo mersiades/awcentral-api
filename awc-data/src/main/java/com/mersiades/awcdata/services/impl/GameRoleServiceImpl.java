@@ -394,7 +394,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
                 if (!hasReplaced) {
                     // Add a new Vehicle to the existing Vehicles List
-                    character.getPlaybookUnique().getVehicles().add(vehicle);
+                    character.getVehicles().add(vehicle);
                 }
             }
 

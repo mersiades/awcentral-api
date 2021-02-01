@@ -5,3 +5,5 @@ spring:
         jwt:
           issuer-uri: http://localhost:8180/auth/realms/awc-realm
           jwk-set-uri: http://localhost:8180/auth/realms/awc-realm/protocol/openid-connect/certs
+  profiles:
+    active: test
