@@ -1,5 +1,6 @@
 package com.mersiades.awcweb.bootstrap;
 
+import com.mersiades.awccontent.constants.MoveNames;
 import com.mersiades.awccontent.enums.*;
 import com.mersiades.awccontent.models.*;
 import com.mersiades.awccontent.models.uniquecreators.*;
@@ -155,7 +156,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(HARD)
                 .build();
         Move goAggro = Move.builder()
-                .name("GO AGGRO ON SOMEONE")
+                .name(MoveNames.goAggro)
                 .description("When you _**go aggro on someone**_, make it clear what you want them to do and what you’ll do to them. Roll+hard.\n" +
                         "\n" +
                         "On a 10+, they have to choose:\n" +
@@ -182,7 +183,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(null)
                 .build();
         Move sucker = Move.builder()
-                .name("SUCKER SOMEONE")
+                .name(suckerSomeone)
                 .description("When you _**attack someone unsuspecting or helpless**_, ask the MC if you could miss. If you could, treat it as going aggro, but your victim has no choice to cave and do what you want. If you couldn’t, you simply inflict harm as established.")
                 .kind(MoveType.BASIC)
                 .moveAction(suckerAction)
@@ -1774,12 +1775,12 @@ public class GameDataLoader implements CommandLineRunner {
                 brainer18, brainer19, brainer20, brainer21, brainer22, brainer23, brainer24, brainer25, brainer26,
                 brainer27)).blockLast();
 
-        /* ----------------------------- DRIVER LOOKS --------------------------------- */
+        /* ----------------------------- CHOPPER LOOKS --------------------------------- */
         Look chopper1 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("man").build();
         Look chopper2 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("woman").build();
         Look chopper3 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("ambiguous").build();
         Look chopper4 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("transgressing").build();
-        Look chopper5 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("Combat biker wear").build();
+        Look chopper5 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("combat biker wear").build();
         Look chopper6 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("showy biker wear").build();
         Look chopper7 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("scrounge biker wear").build();
         Look chopper8 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("S&M biker wear").build();
@@ -2168,31 +2169,31 @@ public class GameDataLoader implements CommandLineRunner {
         GangOption gangOption7 = GangOption.builder()
                 .id(UUID.randomUUID().toString())
                 .description("your gang's bikes are in bad shape and need constant attention. Vulnerable: breakdown.")
-                .tag("+Vulnerable: breakdown")
+                .tag("+vulnerable: breakdown")
                 .build();
 
         GangOption gangOption8 = GangOption.builder()
                 .id(UUID.randomUUID().toString())
                 .description("your gang's bikes are picky and high-maintenance. Vulnerable: grounded.")
-                .tag("+Vulnerable: grounded")
+                .tag("+vulnerable: grounded")
                 .build();
 
         GangOption gangOption9 = GangOption.builder()
                 .id(UUID.randomUUID().toString())
                 .description("your gang's loose-knit, with members coming and going as they choose. Vulnerable: desertion")
-                .tag("+Vulnerable: desertion")
+                .tag("+vulnerable: desertion")
                 .build();
 
         GangOption gangOption10 = GangOption.builder()
                 .id(UUID.randomUUID().toString())
                 .description("your gang is in significant debt to someone powerful. Vulnerable: obligation.")
-                .tag("+Vulnerable: obligation")
+                .tag("+vulnerable: obligation")
                 .build();
 
         GangOption gangOption11 = GangOption.builder()
                 .id(UUID.randomUUID().toString())
                 .description("your gang is filthy and unwell. Vulnerable: disease.")
-                .tag("+Vulnerable: disease")
+                .tag("+vulnerable: disease")
                 .build();
 
         GangCreator gangCreator = GangCreator.builder()

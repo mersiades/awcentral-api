@@ -117,6 +117,12 @@ enum VehicleType {
     COMBAT
 }
 
+enum GangSize {
+    SMALL,
+    MEDIUM,
+    LARGE
+}
+
 # ---------------------------------------- STATIC GAME DATA TYPES -------------------------------------- #
 
 type HoldConditions {
@@ -199,6 +205,13 @@ type VehicleBattleOption {
     id: ID!
     battleOptionType: BattleOptionType
     name: String
+}
+
+type GangOption {
+    id: ID!
+    description: String!
+    modifier: String
+    tag: String
 }
 
 type GearInstructions {
@@ -425,7 +438,7 @@ type PlaybookUnique {
     brainerGear: BrainerGear
     angelKit: AngelKit
     customWeapons: CustomWeapons
-    vehicles: [Vehicle]
+    gang: Gang
 }
 
 type BrainerGear {
@@ -445,6 +458,15 @@ type AngelKit {
 type CustomWeapons {
     id: ID!
     weapons: [String]!
+}
+
+type Gang {
+    id: ID!
+    size: GangSize
+    harm: Int
+    armor: Int
+    gangOptions: [GangOption]
+    tags: [String]
 }
 
 type Vehicle {
@@ -614,12 +636,21 @@ type Mutation {
         characterId: String!): Character
     finishPreGame(gameId: String!): Game
 #    Move categories
-    performPrintMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
+    performPrintMove(gameId: String!,
+        gameroleId: String!,
+        characterId: String!,
+        moveId: String!,
+        isGangMove: Boolean!
+    ): Game
     performBarterMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
     performStockMove(gameId: String!, gameroleId: String!, characterId: String!, moveName: String!, stockSpent: Int!): Game
 
 #    Roll move categories
-    performStatRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
+    performStatRollMove(gameId: String!,
+        gameroleId: String!,
+        characterId: String!,
+        moveId: String!,
+        isGangMove: Boolean!): Game
 
 #    Specific moves
     performHelpOrInterfereMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game

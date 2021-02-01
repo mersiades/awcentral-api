@@ -219,7 +219,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .size(GangSize.MEDIUM)
                 .harm(3)
                 .armor(1)
-                .tags(List.of("savage", "Vulnerable: breakdown"))
+                .tags(List.of("savage", "vulnerable: breakdown"))
                 .gangOptions(List.of(gangOption1, gangOption2, gangOption3))
                 .build();
 

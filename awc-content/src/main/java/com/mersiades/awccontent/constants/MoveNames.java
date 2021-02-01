@@ -17,4 +17,7 @@ public class MoveNames {
     public static String reviveSomeoneName = "REVIVE SOMEONE";
     public static String treatNpcName = "TREAT AN NPC";
     public static String collector = "COLLECTOR";
+    public static String goAggro = "GO AGGRO ON SOMEONE";
+    public static String suckerSomeone = "SUCKER SOMEONE";
+
 }
