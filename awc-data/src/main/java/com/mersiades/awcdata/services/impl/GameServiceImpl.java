@@ -807,6 +807,7 @@ public class GameServiceImpl implements GameService {
                     // Find User's Character
                     Character userCharacter = characterService.findById(characterId).block();
                     assert userCharacter != null;
+                    System.out.println("hxChange = " + hxChange);
 
                     // Find other Character
                     Character otherCharacter = characterService.findById(otherCharacterId).block();
@@ -863,13 +864,14 @@ public class GameServiceImpl implements GameService {
                         return gameRole1;
                     }).flatMap(gameRoleService::save).block();
 
-                    gameMessage.setContent(String.format("%s and %s shagged, and now %s's Hx with %s is **3**, and %s's Hx with %s has increased by **1**.",
+                    gameMessage.setContent(String.format("%s and %s shagged, and now %s's Hx with %s is **3**, and %s's Hx with %s has %s by **1**.",
                             userCharacter.getName(),
                             otherCharacter.getName(),
                             otherCharacter.getName(),
                             userCharacter.getName(),
                             userCharacter.getName(),
-                            otherCharacter.getName()
+                            otherCharacter.getName(),
+                            hxChange == 1 ? "increased" : "decreased"
                     ));
                     gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), chopperSpecialMove.getName()).toUpperCase());
                     game.getGameMessages().add(gameMessage);

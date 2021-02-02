@@ -677,7 +677,8 @@ type Mutation {
         gameroleId: String!,
         otherGameroleId: String!,
         characterId: String!,
-        otherCharacterId: String!, hxChange: Int!): Game
+        otherCharacterId: String!,
+        hxChange: Int!): Game
     performStabilizeAndHealMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
 }
 

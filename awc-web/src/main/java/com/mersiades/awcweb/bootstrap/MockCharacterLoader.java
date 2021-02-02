@@ -423,7 +423,10 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         HxStat doc3 = HxStat.builder().id(UUID.randomUUID().toString())
                 .characterId(nee.getId()).characterName(nee.getName()).hxValue(3).build();
-        doc.setHxBlock(List.of(doc1, doc2, doc3));
+
+        HxStat doc4 = HxStat.builder().id(UUID.randomUUID().toString())
+                .characterId(dog.getId()).characterName(dog.getName()).hxValue(1).build();
+        doc.setHxBlock(List.of(doc1, doc2, doc3, doc4));
 
         // ------------------------------ Scarlet's Hx --------------------------------- //
         HxStat scarlet1 = HxStat.builder().id(UUID.randomUUID().toString())
@@ -434,7 +437,11 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         HxStat scarlet3 = HxStat.builder().id(UUID.randomUUID().toString())
                 .characterId(nee.getId()).characterName(nee.getName()).hxValue(-1).build();
-        scarlet.setHxBlock(List.of(scarlet1, scarlet2, scarlet3));
+
+        HxStat scarlet4 = HxStat.builder().id(UUID.randomUUID().toString())
+                .characterId(dog.getId()).characterName(dog.getName()).hxValue(0).build();
+
+        scarlet.setHxBlock(List.of(scarlet1, scarlet2, scarlet3, scarlet4));
 
         // ------------------------------ Smith's Hx --------------------------------- //
         HxStat smith1 = HxStat.builder().id(UUID.randomUUID().toString())
@@ -445,7 +452,11 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         HxStat smith3 = HxStat.builder().id(UUID.randomUUID().toString())
                 .characterId(nee.getId()).characterName(nee.getName()).hxValue(3).build();
-        smith.setHxBlock(List.of(smith1, smith2, smith3));
+
+        HxStat smith4 = HxStat.builder().id(UUID.randomUUID().toString())
+                .characterId(dog.getId()).characterName(dog.getName()).hxValue(1).build();
+
+        smith.setHxBlock(List.of(smith1, smith2, smith3, smith4));
 
         // ------------------------------ Nee's Hx --------------------------------- //
         HxStat nee1 = HxStat.builder().id(UUID.randomUUID().toString())
@@ -456,7 +467,11 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         HxStat nee3 = HxStat.builder().id(UUID.randomUUID().toString())
                 .characterId(smith.getId()).characterName(smith.getName()).hxValue(3).build();
-        nee.setHxBlock(List.of(nee1, nee2, nee3));
+
+        HxStat nee4 = HxStat.builder().id(UUID.randomUUID().toString())
+                .characterId(dog.getId()).characterName(dog.getName()).hxValue(-1).build();
+
+        nee.setHxBlock(List.of(nee1, nee2, nee3, nee4));
 
         // ------------------------------ Dog's Hx --------------------------------- //
         HxStat dog1 = HxStat.builder().id(UUID.randomUUID().toString())
@@ -467,7 +482,11 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         HxStat dog3 = HxStat.builder().id(UUID.randomUUID().toString())
                 .characterId(smith.getId()).characterName(smith.getName()).hxValue(3).build();
-        dog.setHxBlock(List.of(dog1, dog2, dog3));
+
+        HxStat dog4 = HxStat.builder().id(UUID.randomUUID().toString())
+                .characterId(nee.getId()).characterName(nee.getName()).hxValue(-1).build();
+
+        dog.setHxBlock(List.of(dog1, dog2, dog3, dog4));
 
         // ------------------------------ Save to db --------------------------------- //
         characterService.saveAll(Flux.just(doc, scarlet, smith, nee, dog)).blockLast();
