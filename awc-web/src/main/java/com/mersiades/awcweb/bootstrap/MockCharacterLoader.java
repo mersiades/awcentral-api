@@ -220,7 +220,8 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .harm(3)
                 .armor(1)
                 .tags(List.of("savage", "vulnerable: breakdown"))
-                .gangOptions(List.of(gangOption1, gangOption2, gangOption3))
+                .strengths(List.of(gangOption1, gangOption2))
+                .weaknesses(List.of(gangOption3))
                 .build();
 
         PlaybookUnique chopperUnique = PlaybookUnique.builder()

@@ -27,7 +27,10 @@ public class Gang {
     private int armor;
 
     @Builder.Default
-    private List<GangOption> gangOptions = new ArrayList<>();
+    private List<GangOption> strengths = new ArrayList<>();
+
+    @Builder.Default
+    private List<GangOption> weaknesses = new ArrayList<>();
 
     private List<String> tags = new ArrayList<>();
 

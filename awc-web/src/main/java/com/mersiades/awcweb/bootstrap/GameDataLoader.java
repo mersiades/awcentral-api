@@ -2156,7 +2156,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         GangOption gangOption5 = GangOption.builder()
                 .id(UUID.randomUUID().toString())
-                .description("your gang's nomadic at heart, and able to maintain and repair its own bikes without a ome base. It gets +mobile.")
+                .description("your gang's nomadic at heart, and able to maintain and repair its own bikes without a home base. It gets +mobile.")
                 .tag("+mobile")
                 .build();
 
@@ -2768,7 +2768,7 @@ public class GameDataLoader implements CommandLineRunner {
         }
 
         // -------------------------------------- CHOPPER -------------------------------------- //
-        Playbook playbookChopper = playbookService.findByPlaybookType(PlaybookType.BRAINER).block();
+        Playbook playbookChopper = playbookService.findByPlaybookType(PlaybookType.CHOPPER).block();
         assert playbookChopper != null;
 
         if (playbookChopper.getCreator() == null) {

@@ -249,6 +249,20 @@ type PlaybookUniqueCreator {
     angelKitCreator: AngelKitCreator
     customWeaponsCreator: CustomWeaponsCreator
     brainerGearCreator: BrainerGearCreator
+    gangCreator: GangCreator
+}
+
+type GangCreator {
+    id: ID!
+    intro: String!
+    defaultSize: GangSize!
+    defaultHarm: Int!
+    defaultArmor: Int!
+    strengthChoiceCount: Int!
+    weaknessChoiceCount: Int!
+    defaultTags: [String]!
+    strengths: [GangOption]!
+    weaknesses: [GangOption]!
 }
 
 type AngelKitCreator {
@@ -465,7 +479,8 @@ type Gang {
     size: GangSize
     harm: Int
     armor: Int
-    gangOptions: [GangOption]
+    strengths: [GangOption]
+    weaknesses: [GangOption]
     tags: [String]
 }
 
@@ -555,6 +570,23 @@ input VehicleInput {
     looks: [String]
     battleOptions: [VehicleBattleOptionInput]
 }
+
+input GangOptionInput {
+    id: ID!
+    description: String!
+    modifier: String
+    tag: String
+}
+
+input GangInput {
+    id: ID
+    size: GangSize
+    harm: Int
+    armor: Int
+    strengths: [GangOptionInput]
+    weaknesses: [GangOptionInput]
+    tags: [String]
+}
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -614,6 +646,9 @@ type Mutation {
         characterId: String!,
         stock: Int!,
         hasSupplier: Boolean! ): Character
+    setGang(gameRoleId: String!,
+        characterId: String!,
+        gang: GangInput! ): Character
     setCustomWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character

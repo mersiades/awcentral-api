@@ -1,15 +1,13 @@
 package com.mersiades.awcweb.graphql;
 
-import com.mersiades.awcdata.models.Character;
-import com.mersiades.awcdata.models.CharacterHarm;
-import com.mersiades.awcdata.models.Game;
-import com.mersiades.awcdata.models.HxStat;
-import com.mersiades.awcdata.models.Vehicle;
-import com.mersiades.awcdata.services.GameRoleService;
-import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awccontent.enums.LookType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.StatType;
+import com.mersiades.awcdata.models.Character;
+import com.mersiades.awcdata.models.*;
+import com.mersiades.awcdata.models.uniques.Gang;
+import com.mersiades.awcdata.services.GameRoleService;
+import com.mersiades.awcdata.services.GameService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.stereotype.Component;
 
@@ -114,6 +112,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Character setAngelKit(String gameRoleId, String characterId, int stock, Boolean hasSupplier) {
         System.out.println("Setting AngelKit for Character: " + characterId);
         return gameRoleService.setAngelKit(gameRoleId, characterId, stock, hasSupplier);
+    }
+
+    public Character setGang(String gameRoleId, String characterId, Gang gang) {
+        System.out.println("Setting Gang for Character: " + characterId);
+        return gameRoleService.setGang(gameRoleId, characterId, gang);
     }
 
     public Character setVehicle(String gameRoleId, String characterId, Vehicle vehicle) {
