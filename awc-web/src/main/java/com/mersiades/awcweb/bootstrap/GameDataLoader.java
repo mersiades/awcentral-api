@@ -2819,4 +2819,8 @@ public class GameDataLoader implements CommandLineRunner {
             playbookService.save(playbookDriver).block();
         }
     }
+
+    private void loadThreatCreator() {
+
+    }
 }

@@ -151,8 +151,21 @@ public class MockUserLoader implements CommandLineRunner {
             Npc mockNpc1 = Npc.builder().name("Vision").description("Badass truck; driver").build();
             Npc mockNpc2 = Npc.builder().name("Nbeke").build();
 
-            Threat mockThreat1 = Threat.builder().name("Tum Tum").threatKind(ThreatType.WARLORD).impulse("Slaver: to own and sell people").build();
-            Threat mockThreat2 = Threat.builder().name("Gnarly").threatKind(ThreatType.GROTESQUE).impulse("Cannibal: craves satiety and plenty").build();
+            Threat mockThreat1 = Threat.builder()
+                    .id(UUID.randomUUID().toString())
+                    .name("Tum Tum")
+                    .threatKind(ThreatType.WARLORD)
+                    .impulse("Slaver: to own and sell people")
+                    .description("consectetur adipiscing elit. Cras semper augue est, vel consequat dolor volutpat in")
+                    .stakes("Maecenas vitae consequat justo, quis sollicitudin nulla. Phasellus pulvinar nunc eget mauris tristique, ut aliquam felis mattis. Nulla ultricies feugiat arcu non facilisis.")
+                    .build();
+            Threat mockThreat2 = Threat.builder()
+                    .id(UUID.randomUUID().toString())
+                    .name("Gnarly")
+                    .threatKind(ThreatType.GROTESQUE)
+                    .impulse("Cannibal: craves satiety and plenty")
+                    .description("Maecenas tempus ac felis at sollicitudin. Etiam pulvinar, nibh eget fringilla pretium, sem sem ultricies augue, vitae condimentum enim nibh nec mi.")
+                    .build();
 
             daveAsMC.getNpcs().add(mockNpc1);
             daveAsMC.getNpcs().add(mockNpc2);
