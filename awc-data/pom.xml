@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.mersiades</groupId>
 		<artifactId>awcentral</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>0.0.2</version>
 	</parent>
 	<artifactId>awc-data</artifactId>
 	<name>awc-data</name>
