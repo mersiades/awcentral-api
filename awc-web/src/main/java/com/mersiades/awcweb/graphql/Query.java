@@ -1,19 +1,12 @@
 package com.mersiades.awcweb.graphql;
 
 import com.mersiades.awccontent.enums.PlaybookType;
-import com.mersiades.awccontent.models.Move;
-import com.mersiades.awccontent.models.Playbook;
-import com.mersiades.awccontent.models.PlaybookCreator;
-import com.mersiades.awccontent.models.VehicleCreator;
-import com.mersiades.awccontent.services.MoveService;
-import com.mersiades.awccontent.services.PlaybookCreatorService;
-import com.mersiades.awccontent.services.PlaybookService;
-import com.mersiades.awccontent.services.VehicleCreatorService;
+import com.mersiades.awccontent.models.*;
+import com.mersiades.awccontent.services.*;
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
-import com.mersiades.awcdata.services.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,28 +16,29 @@ import java.util.List;
 @Component
 public class Query implements GraphQLQueryResolver {
 
-    private final UserService userService;
     private final GameRoleService gameRoleService;
     private final GameService gameService;
     private final MoveService moveService;
     private final PlaybookService playbookService;
     private final PlaybookCreatorService playbookCreatorService;
     private final VehicleCreatorService vehicleCreatorService;
+    private final ThreatCreatorService threatCreatorService;
 
-    public Query(UserService userService,
+    public Query(
                  GameRoleService gameRoleService,
                  GameService gameService,
                  MoveService moveService,
                  PlaybookService playbookService,
                  PlaybookCreatorService playbookCreatorService,
-                 VehicleCreatorService vehicleCreatorService) {
-        this.userService = userService;
+                 VehicleCreatorService vehicleCreatorService,
+                 ThreatCreatorService threatCreatorService) {
         this.gameRoleService = gameRoleService;
         this.gameService = gameService;
         this.moveService = moveService;
         this.playbookService = playbookService;
         this.playbookCreatorService = playbookCreatorService;
         this.vehicleCreatorService = vehicleCreatorService;
+        this.threatCreatorService = threatCreatorService;
     }
 
     @CrossOrigin
@@ -106,5 +100,9 @@ public class Query implements GraphQLQueryResolver {
 
     public VehicleCreator vehicleCreator() {
         return vehicleCreatorService.findAll().take(1).blockFirst();
+    }
+
+    public ThreatCreator threatCreator() {
+        return threatCreatorService.findAll().take(1).blockFirst();
     }
 }
