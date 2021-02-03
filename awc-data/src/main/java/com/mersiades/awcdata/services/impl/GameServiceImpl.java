@@ -33,6 +33,33 @@ public class GameServiceImpl implements GameService {
     @Value("${spring.profiles.active}")
     private String activeProfiles;
 
+    private static final String GANG_CONTENT = "When you have a gang, you can _**sucker someone**_, _**go aggro on them**_, or make a _**battle move**_, using your gang as a weapon.\n"+
+            "\n" +
+            "When you do, you roll the dice and make your choices, but it’s your gang that inflicts and suffers harm, not you yourself.\n" +
+            "\n" +
+            "Gangs inflict and suffer harm as established, as usual: they inflict harm equal to their own harm rating, minus their enemy’s armor rating, and the suffer harm equal to their enemy’s harm rating minus their own armor. Harm = weapon - armor.\n" +
+            "\n" +
+            "However, if there’s a size mismatch, the bigger gang inflicts +1harm and gets +1armor for each step of size difference:\n"+
+            "\n" +
+            "- *Against a single person, a small gang inflicts +1harm and gets +1armor. A medium gang inflicts +2harm and gets +2armor, and a large gang inflicts +3harm and gets +3armor.*\n" +
+            "- *Against a small gang, a medium gang inflicts +1harm and gets +1armor, and a large gang inflicts +2harm and gets +2armor.*\n" +
+            "- *Give you something they think you want, or tell you what you want to hear.*\n" +
+            "- *Against a medium gang, a large gang inflicts +1harm and gets +1armor.*\n" +
+            "\n" +
+            "When gang takes harm:\n" +
+            "\n" +
+            "_**1-harm**: a few injuries, one or two serious, no fatalities._\n" +
+            "\n" +
+            "_**2-harm**: many injuries, several serious, a couple of fatalities._\n" +
+            "\n" +
+            "_**3-harm**: widespread injuries, many serious, several fatalities._\n" +
+            "\n" +
+            "_**4-harm**: widespread serious injuries, many fatalities._\n" +
+            "\n" +
+            "_**5-harm and more**: widespread fatalities, few survivors._\n" +
+            "\n" +
+            "Also see the rules about a gang holding together after it takes harm.";
+
     private final GameRepository gameRepository;
     private final UserService userService;
     private final GameRoleService gameRoleService;
@@ -304,7 +331,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Mono<Game> performPrintMove(String gameId, String gameroleId, String characterId, String moveId) {
+    public Mono<Game> performPrintMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove) {
         Character character = characterService.findById(characterId).block();
         assert character != null;
 
@@ -331,6 +358,10 @@ public class GameServiceImpl implements GameService {
             gameMessage.setContent(move.getDescription());
         }
 
+        if (isGangMove) {
+            gameMessage.setContent(gameMessage.getContent() + "\n\n" + GANG_CONTENT);
+        }
+
         return gameRepository.findById(gameId).map(game -> {
             game.getGameMessages().add(gameMessage);
             return game;
@@ -338,7 +369,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Mono<Game> performStatRollMove(String gameId, String gameroleId, String characterId, String moveId) {
+    public Mono<Game> performStatRollMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove) {
         Character character = characterService.findById(characterId).block();
         assert character != null;
 
@@ -364,6 +395,10 @@ public class GameServiceImpl implements GameService {
         gameMessage.setRollModifier(modifier.getValue());
         gameMessage.setModifierStatName(modifier.getStat());
         gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifier.getValue());
+
+        if (isGangMove) {
+            gameMessage.setContent(gameMessage.getContent() +"\n\n" + GANG_CONTENT);
+        }
         return gameRepository.findById(gameId).map(game -> {
             game.getGameMessages().add(gameMessage);
             return game;
@@ -772,6 +807,7 @@ public class GameServiceImpl implements GameService {
                     // Find User's Character
                     Character userCharacter = characterService.findById(characterId).block();
                     assert userCharacter != null;
+                    System.out.println("hxChange = " + hxChange);
 
                     // Find other Character
                     Character otherCharacter = characterService.findById(otherCharacterId).block();
@@ -828,13 +864,14 @@ public class GameServiceImpl implements GameService {
                         return gameRole1;
                     }).flatMap(gameRoleService::save).block();
 
-                    gameMessage.setContent(String.format("%s and %s shagged, and now %s's Hx with %s is **3**, and %s's Hx with %s has increased by **1**.",
+                    gameMessage.setContent(String.format("%s and %s shagged, and now %s's Hx with %s is **3**, and %s's Hx with %s has %s by **1**.",
                             userCharacter.getName(),
                             otherCharacter.getName(),
                             otherCharacter.getName(),
                             userCharacter.getName(),
                             userCharacter.getName(),
-                            otherCharacter.getName()
+                            otherCharacter.getName(),
+                            hxChange == 1 ? "increased" : "decreased"
                     ));
                     gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), chopperSpecialMove.getName()).toUpperCase());
                     game.getGameMessages().add(gameMessage);

@@ -24,4 +24,6 @@ public class PlaybookUniqueCreator {
     private CustomWeaponsCreator customWeaponsCreator;
 
     private BrainerGearCreator brainerGearCreator;
+
+    private GangCreator gangCreator;
 }

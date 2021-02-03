@@ -12,6 +12,7 @@ import com.mersiades.awcdata.models.uniques.AngelKit;
 import com.mersiades.awcdata.models.uniques.BrainerGear;
 import com.mersiades.awcdata.models.uniques.CustomWeapons;
 import com.mersiades.awcdata.models.Vehicle;
+import com.mersiades.awcdata.models.uniques.Gang;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
@@ -402,6 +403,40 @@ public class GameRoleServiceImpl implements GameRoleService {
         // Save to db
         characterService.save(character).block();
         gameRoleRepository.save(gameRole).block();
+        return character;
+    }
+
+    @Override
+    public Character setGang(String gameRoleId, String characterId, Gang gang) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        if (gang.getId() == null) {
+            gang.setId(UUID.randomUUID().toString());
+        }
+
+        if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.GANG) {
+            PlaybookUnique gangUnique = PlaybookUnique.builder()
+                    .id(UUID.randomUUID().toString())
+                    .type(UniqueType.GANG)
+                    .gang(gang)
+                    .build();
+
+            character.setPlaybookUnique(gangUnique);
+        } else {
+            // Update existing AngelKit
+            character.getPlaybookUnique().setGang(gang);
+        }
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
         return character;
     }
 

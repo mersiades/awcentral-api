@@ -117,6 +117,12 @@ enum VehicleType {
     COMBAT
 }
 
+enum GangSize {
+    SMALL,
+    MEDIUM,
+    LARGE
+}
+
 # ---------------------------------------- STATIC GAME DATA TYPES -------------------------------------- #
 
 type HoldConditions {
@@ -201,6 +207,13 @@ type VehicleBattleOption {
     name: String
 }
 
+type GangOption {
+    id: ID!
+    description: String!
+    modifier: String
+    tag: String
+}
+
 type GearInstructions {
     id: ID!
     gearIntro: String
@@ -236,6 +249,20 @@ type PlaybookUniqueCreator {
     angelKitCreator: AngelKitCreator
     customWeaponsCreator: CustomWeaponsCreator
     brainerGearCreator: BrainerGearCreator
+    gangCreator: GangCreator
+}
+
+type GangCreator {
+    id: ID!
+    intro: String!
+    defaultSize: GangSize!
+    defaultHarm: Int!
+    defaultArmor: Int!
+    strengthChoiceCount: Int!
+    weaknessChoiceCount: Int!
+    defaultTags: [String]!
+    strengths: [GangOption]!
+    weaknesses: [GangOption]!
 }
 
 type AngelKitCreator {
@@ -425,7 +452,7 @@ type PlaybookUnique {
     brainerGear: BrainerGear
     angelKit: AngelKit
     customWeapons: CustomWeapons
-    vehicles: [Vehicle]
+    gang: Gang
 }
 
 type BrainerGear {
@@ -445,6 +472,16 @@ type AngelKit {
 type CustomWeapons {
     id: ID!
     weapons: [String]!
+}
+
+type Gang {
+    id: ID!
+    size: GangSize
+    harm: Int
+    armor: Int
+    strengths: [GangOption]
+    weaknesses: [GangOption]
+    tags: [String]
 }
 
 type Vehicle {
@@ -533,6 +570,23 @@ input VehicleInput {
     looks: [String]
     battleOptions: [VehicleBattleOptionInput]
 }
+
+input GangOptionInput {
+    id: ID!
+    description: String!
+    modifier: String
+    tag: String
+}
+
+input GangInput {
+    id: ID
+    size: GangSize
+    harm: Int
+    armor: Int
+    strengths: [GangOptionInput]
+    weaknesses: [GangOptionInput]
+    tags: [String]
+}
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -592,6 +646,9 @@ type Mutation {
         characterId: String!,
         stock: Int!,
         hasSupplier: Boolean! ): Character
+    setGang(gameRoleId: String!,
+        characterId: String!,
+        gang: GangInput! ): Character
     setCustomWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
@@ -614,12 +671,21 @@ type Mutation {
         characterId: String!): Character
     finishPreGame(gameId: String!): Game
 #    Move categories
-    performPrintMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
+    performPrintMove(gameId: String!,
+        gameroleId: String!,
+        characterId: String!,
+        moveId: String!,
+        isGangMove: Boolean!
+    ): Game
     performBarterMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
     performStockMove(gameId: String!, gameroleId: String!, characterId: String!, moveName: String!, stockSpent: Int!): Game
 
 #    Roll move categories
-    performStatRollMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!): Game
+    performStatRollMove(gameId: String!,
+        gameroleId: String!,
+        characterId: String!,
+        moveId: String!,
+        isGangMove: Boolean!): Game
 
 #    Specific moves
     performHelpOrInterfereMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
@@ -646,7 +712,8 @@ type Mutation {
         gameroleId: String!,
         otherGameroleId: String!,
         characterId: String!,
-        otherCharacterId: String!, hxChange: Int!): Game
+        otherCharacterId: String!,
+        hxChange: Int!): Game
     performStabilizeAndHealMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
 }
 

@@ -1,5 +1,6 @@
 package com.mersiades.awcweb.bootstrap;
 
+import com.mersiades.awccontent.constants.MoveNames;
 import com.mersiades.awccontent.enums.*;
 import com.mersiades.awccontent.models.*;
 import com.mersiades.awccontent.models.uniquecreators.*;
@@ -155,7 +156,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(HARD)
                 .build();
         Move goAggro = Move.builder()
-                .name("GO AGGRO ON SOMEONE")
+                .name(MoveNames.goAggro)
                 .description("When you _**go aggro on someone**_, make it clear what you want them to do and what you’ll do to them. Roll+hard.\n" +
                         "\n" +
                         "On a 10+, they have to choose:\n" +
@@ -182,7 +183,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(null)
                 .build();
         Move sucker = Move.builder()
-                .name("SUCKER SOMEONE")
+                .name(suckerSomeone)
                 .description("When you _**attack someone unsuspecting or helpless**_, ask the MC if you could miss. If you could, treat it as going aggro, but your victim has no choice to cave and do what you want. If you couldn’t, you simply inflict harm as established.")
                 .kind(MoveType.BASIC)
                 .moveAction(suckerAction)
@@ -1611,7 +1612,7 @@ public class GameDataLoader implements CommandLineRunner {
         nameService.saveAll(Flux.just(smith2, jones, jackson, marsh, lively, burroughs, gritch, joyette, iris, marie,
                 amiette, suselle, cybelle, pallor, sin, charmer, pity, brace, sundown)).blockLast();
 
-        /* ----------------------------- BRAINER NAMES --------------------------------- */
+        /* ----------------------------- DRIVER NAMES --------------------------------- */
         Name lauren = Name.builder().playbookType(PlaybookType.DRIVER).name("Lauren").build();
         Name audrey = Name.builder().playbookType(PlaybookType.DRIVER).name("Audrey").build();
         Name farley = Name.builder().playbookType(PlaybookType.DRIVER).name("Farley").build();
@@ -1643,6 +1644,34 @@ public class GameDataLoader implements CommandLineRunner {
         nameService.saveAll(Flux.just(lauren, audrey, farley, sammy, katherine, marilyn, james, bridget, paul,
                 annette, marlene, frankie, marlon, kim1, errol, humphrey, phoenix, mustang, impala, suv, cougar,
                 cobra, dart, gremlin, grandCherokee, jag, beemer)).blockLast();
+
+        /* ----------------------------- CHOPPER NAMES --------------------------------- */
+        Name dog = Name.builder().playbookType(PlaybookType.CHOPPER).name("Dog").build();
+        Name domino = Name.builder().playbookType(PlaybookType.CHOPPER).name("Domino").build();
+        Name tBone = Name.builder().playbookType(PlaybookType.CHOPPER).name("T-bone").build();
+        Name stinky = Name.builder().playbookType(PlaybookType.CHOPPER).name("Stinky").build();
+        Name satan = Name.builder().playbookType(PlaybookType.CHOPPER).name("Satan").build();
+        Name lars = Name.builder().playbookType(PlaybookType.CHOPPER).name("Lars").build();
+        Name bullet = Name.builder().playbookType(PlaybookType.CHOPPER).name("Bullet").build();
+        Name dice = Name.builder().playbookType(PlaybookType.CHOPPER).name("Dice").build();
+        Name shitHead = Name.builder().playbookType(PlaybookType.CHOPPER).name("Shit head").build();
+        Name halfPint = Name.builder().playbookType(PlaybookType.CHOPPER).name("Half pint").build();
+        Name shooter = Name.builder().playbookType(PlaybookType.CHOPPER).name("Shooter").build();
+        Name diamond = Name.builder().playbookType(PlaybookType.CHOPPER).name("Diamond").build();
+        Name goldie = Name.builder().playbookType(PlaybookType.CHOPPER).name("Goldie").build();
+        Name tinker = Name.builder().playbookType(PlaybookType.CHOPPER).name("Tinker").build();
+        Name loose = Name.builder().playbookType(PlaybookType.CHOPPER).name("Loose").build();
+        Name baby = Name.builder().playbookType(PlaybookType.CHOPPER).name("Baby").build();
+        Name juck = Name.builder().playbookType(PlaybookType.CHOPPER).name("Juck").build();
+        Name hammer = Name.builder().playbookType(PlaybookType.CHOPPER).name("Hammer").build();
+        Name hooch = Name.builder().playbookType(PlaybookType.CHOPPER).name("Hooch").build();
+        Name snakeEyes = Name.builder().playbookType(PlaybookType.CHOPPER).name("Snake eyes").build();
+        Name pinkie = Name.builder().playbookType(PlaybookType.CHOPPER).name("Pinkie").build();
+        Name wire = Name.builder().playbookType(PlaybookType.CHOPPER).name("Wire").build();
+        Name blues = Name.builder().playbookType(PlaybookType.CHOPPER).name("Blues").build();
+
+        nameService.saveAll(Flux.just(dog, domino, tBone, stinky, satan, lars, bullet, dice, shitHead, halfPint,
+                shooter, diamond, goldie, tinker, loose, baby, juck, hammer, hooch, snakeEyes, pinkie, wire, blues)).blockLast();
     }
 
     private void loadLooks() {
@@ -1746,6 +1775,35 @@ public class GameDataLoader implements CommandLineRunner {
                 brainer18, brainer19, brainer20, brainer21, brainer22, brainer23, brainer24, brainer25, brainer26,
                 brainer27)).blockLast();
 
+        /* ----------------------------- CHOPPER LOOKS --------------------------------- */
+        Look chopper1 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("man").build();
+        Look chopper2 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("woman").build();
+        Look chopper3 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("ambiguous").build();
+        Look chopper4 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("transgressing").build();
+        Look chopper5 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("combat biker wear").build();
+        Look chopper6 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("showy biker wear").build();
+        Look chopper7 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("scrounge biker wear").build();
+        Look chopper8 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("S&M biker wear").build();
+        Look chopper9 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("weathered face").build();
+        Look chopper10 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("strong face").build();
+        Look chopper11 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("rugged face").build();
+        Look chopper12 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("narrow face").build();
+        Look chopper13 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("busted face").build();
+        Look chopper14 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("narrow eyes").build();
+        Look chopper15 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("scorched eyes").build();
+        Look chopper16 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("calculating eyes").build();
+        Look chopper17 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("weary eyes").build();
+        Look chopper18 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("kind eyes").build();
+        Look chopper19 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("squat body").build();
+        Look chopper20 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("rangy body").build();
+        Look chopper21 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("wiry body").build();
+        Look chopper22 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("sturdy body").build();
+        Look chopper23 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("fat body").build();
+
+        lookService.saveAll(Flux.just(chopper1, chopper2, chopper3, chopper4, chopper5, chopper6, chopper7, chopper8,
+                chopper9, chopper10, chopper11, chopper12, chopper13, chopper14, chopper15, chopper16, chopper17,
+                chopper18, chopper19, chopper20, chopper21, chopper22, chopper23)).blockLast();
+
         /* ----------------------------- DRIVER LOOKS --------------------------------- */
         Look driver1 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("man").build();
         Look driver2 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("woman").build();
@@ -1802,6 +1860,13 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption brainer3 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(1).HARD(-2).HOT(-1).SHARP(2).WEIRD(2).build();
         StatsOption brainer4 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(2).HARD(-1).HOT(-1).SHARP(0).WEIRD(2).build();
         statsOptionService.saveAll(Flux.just(brainer1, brainer2, brainer3, brainer4)).blockLast();
+
+        /* ----------------------------- CHOPPER STATS OPTIONS --------------------------------- */
+        StatsOption chopper1 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(-1).SHARP(1).WEIRD(0).build();
+        StatsOption chopper2 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(1).SHARP(0).WEIRD(1).build();
+        StatsOption chopper3 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(0).SHARP(1).WEIRD(1).build();
+        StatsOption chopper4 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(2).HARD(2).HOT(-1).SHARP(0).WEIRD(1).build();
+        statsOptionService.saveAll(Flux.just(chopper1, chopper2, chopper3, chopper4)).blockLast();
 
         /* ----------------------------- DRIVER STATS OPTIONS --------------------------------- */
         StatsOption driver1 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build();
@@ -2057,10 +2122,144 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- CHOPPER PLAYBOOK CREATOR --------------------------------- */
 
-        PlaybookUniqueCreator chopperUniqueCreator = PlaybookUniqueCreator.builder()
-                .type(UniqueType.GANG)
+        List<Move> chopperOptionalMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.CHARACTER)
+                .collectList().block();
+
+        List<Move> chopperDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
+
+        GangOption gangOption1 = GangOption.builder()
                 .id(UUID.randomUUID().toString())
-                // TODO: add gang creator,
+                .description("your gang consists of 30 or so violent bastards. Medium instead of small.")
+                .modifier("MEDIUM")
+                .build();
+
+        GangOption gangOption2 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's well-armed. +1harm")
+                .modifier("+1harm")
+                .build();
+
+        GangOption gangOption3 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's well-armored. +1armor")
+                .modifier("+1armor")
+                .build();
+
+        GangOption gangOption4 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's well-disciplined. Drop savage.")
+                .tag("-savage")
+                .build();
+
+        GangOption gangOption5 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's nomadic at heart, and able to maintain and repair its own bikes without a home base. It gets +mobile.")
+                .tag("+mobile")
+                .build();
+
+        GangOption gangOption6 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's self-sufficient, able to provide for itself by raiding and scavenging. It gets +rich")
+                .tag("+rich")
+                .build();
+
+        GangOption gangOption7 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's bikes are in bad shape and need constant attention. Vulnerable: breakdown.")
+                .tag("+vulnerable: breakdown")
+                .build();
+
+        GangOption gangOption8 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's bikes are picky and high-maintenance. Vulnerable: grounded.")
+                .tag("+vulnerable: grounded")
+                .build();
+
+        GangOption gangOption9 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang's loose-knit, with members coming and going as they choose. Vulnerable: desertion")
+                .tag("+vulnerable: desertion")
+                .build();
+
+        GangOption gangOption10 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang is in significant debt to someone powerful. Vulnerable: obligation.")
+                .tag("+vulnerable: obligation")
+                .build();
+
+        GangOption gangOption11 = GangOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang is filthy and unwell. Vulnerable: disease.")
+                .tag("+vulnerable: disease")
+                .build();
+
+        GangCreator gangCreator = GangCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .intro("By default, your gang consists of about 15 violent bastards with scavenged and makeshift weapons and armor, and no fucking discipline at all (2-harm gang small savage 1-armor)")
+                .defaultSize(GangSize.SMALL)
+                .defaultArmor(1)
+                .defaultHarm(2)
+                .strengthChoiceCount(2)
+                .weaknessChoiceCount(1)
+                .defaultTags(List.of("+savage"))
+                .strengths(List.of(gangOption1, gangOption2, gangOption3, gangOption4, gangOption5, gangOption6))
+                .weaknesses(List.of(gangOption7, gangOption8, gangOption9, gangOption10, gangOption11))
+                .build();
+
+        PlaybookUniqueCreator chopperUniqueCreator = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.GANG)
+                .gangCreator(gangCreator)
+                .build();
+
+        GearInstructions chopperGearInstructions = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .gearIntro("In addition to your bike and gang, you get:")
+                .youGetItems(List.of("fashion suitable to your look, worth 1-armor or 2-armor (you detail)"))
+                .introduceChoice("No-nonsense weapons")
+                .numberCanChoose(2)
+                .chooseableGear(List.of("magnum (3-harm close reload loud)",
+                        "smg (2-harm close autofire load)",
+                        "sawed-off (3-harm close reload messy)",
+                        "crowbar (2-harm hand messy)",
+                        "machete (3-harm hand messy)",
+                        "crossbow (2-harm close slow)",
+                        "wrist crossbow (1-harm close slow)"))
+                .startingBarter(2)
+                .withMC("If you’d like to start play with a prosthetic, get with the MC.")
+                .build();
+
+        PlaybookCreator playbookCreatorChopper = PlaybookCreator.builder()
+                .playbookType(PlaybookType.CHOPPER)
+                .gearInstructions(chopperGearInstructions)
+                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
+                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .movesInstructions("You get all the basic moves. You  get both chopper moves.\n" +
+                        "You can use all the battle moves, and probably will, but when you gotta start somewhere. When you get teh chance, look up _**seize by force**_, _**laying down fire**_, and the _**road war**_ moves, as well as the rules for how gangs inflict and suffer harm.")
+                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
+                        "\n" +
+                        "List the other characters’ names.\n" +
+                        "\n" +
+                        "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                        "\n" +
+                        "- *Which one of you used to ride with my gang?* For that character, write Hx+1.\n" +
+                        "- *Which one of you figures that you could take me out in a fight, if it came to it?* For that character, write Hx+2.\n" +
+                        "- *Which one of you once stood up to me, gang and all?* For that character, write Hx+3.\n" +
+                        "\n" +
+                        "For everyone else, write Hx-1. You don't really care much about, y'know, people.\n" +
+                        "\n" +
+                        "On the others’ turns, answer their questions as you like.\n" +
+                        "\n" +
+                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                .playbookUniqueCreator(chopperUniqueCreator)
+                .optionalMoves(chopperOptionalMoves)
+                .defaultMoves(chopperDefaultMoves)
+                .defaultMoveCount(3)
+                .moveChoiceCount(0)
+                .defaultVehicleCount(1)
                 .build();
 
         /* ----------------------------- DRIVER PLAYBOOK CREATOR --------------------------------- */
@@ -2125,6 +2324,7 @@ public class GameDataLoader implements CommandLineRunner {
         playbookCreatorService.saveAll(Flux.just(angelCreator,
                 battlebabePlaybookCreator,
                 playbookCreatorBrainer,
+                playbookCreatorChopper,
                 playbookCreatorDriver)).blockLast();
     }
 
@@ -2565,6 +2765,32 @@ public class GameDataLoader implements CommandLineRunner {
             playbookCreatorService.save(playbookCreatorBrainer).block();
             playbookBrainer.setCreator(playbookCreatorBrainer);
             playbookService.save(playbookBrainer).block();
+        }
+
+        // -------------------------------------- CHOPPER -------------------------------------- //
+        Playbook playbookChopper = playbookService.findByPlaybookType(PlaybookType.CHOPPER).block();
+        assert playbookChopper != null;
+
+        if (playbookChopper.getCreator() == null) {
+            PlaybookCreator playbookCreatorChopper = playbookCreatorService.findByPlaybookType(PlaybookType.CHOPPER).block();
+            assert playbookCreatorChopper != null;
+
+
+            List<Name> namesChopper = nameService.findAllByPlaybookType(PlaybookType.CHOPPER).collectList().block();
+            assert namesChopper != null;
+
+            List<Look> looksChopper = lookService.findAllByPlaybookType(PlaybookType.CHOPPER).collectList().block();
+            assert looksChopper != null;
+
+            List<StatsOption> statsOptionsChopper = statsOptionService.findAllByPlaybookType(PlaybookType.CHOPPER).collectList().block();
+            assert statsOptionsChopper != null;
+
+            statsOptionsChopper.forEach(statsOption -> playbookCreatorChopper.getStatsOptions().add(statsOption));
+            namesChopper.forEach(name -> playbookCreatorChopper.getNames().add(name));
+            looksChopper.forEach(look -> playbookCreatorChopper.getLooks().add(look));
+            playbookCreatorService.save(playbookCreatorChopper).block();
+            playbookChopper.setCreator(playbookCreatorChopper);
+            playbookService.save(playbookChopper).block();
         }
 
         // -------------------------------------- DRIVER -------------------------------------- //
