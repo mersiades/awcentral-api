@@ -416,7 +416,6 @@ public class GameRoleServiceImpl implements GameRoleService {
         Character character = gameRole.getCharacters().stream()
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
-        System.out.println("GangInput.id " + gang.getId());
         if (gang.getId() == null) {
             gang.setId(UUID.randomUUID().toString());
         }
