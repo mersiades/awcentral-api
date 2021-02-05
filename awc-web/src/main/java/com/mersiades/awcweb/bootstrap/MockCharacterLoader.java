@@ -72,11 +72,14 @@ public class MockCharacterLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        loadMockCharacters();
-        loadHx();
-        loadThreats();
+        Long characterCount = Objects.requireNonNull(characterRepository.count().block());
+        if (characterCount == 0) {
+            loadMockCharacters();
+            loadHx();
+            loadThreats(); // characterCount is serving as a proxy for threatCount here
+        }
 
-        System.out.println("Character count: " + Objects.requireNonNull(characterRepository.count().block()).toString());
+        System.out.println("Character count: " + Objects.requireNonNull(characterRepository.count().block()));
     }
 
     private void loadMockCharacters() {
