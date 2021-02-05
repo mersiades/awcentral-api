@@ -77,6 +77,7 @@ public class MockCharacterLoader implements CommandLineRunner {
             loadMockCharacters();
             loadHx();
             loadThreats(); // characterCount is serving as a proxy for threatCount here
+            loadNpcs(); // characterCount is serving as a proxy for npcCount here
         }
 
         System.out.println("Character count: " + Objects.requireNonNull(characterRepository.count().block()));
@@ -558,6 +559,38 @@ public class MockCharacterLoader implements CommandLineRunner {
         saraAsMC.getThreats().add(mockThreat3);
         saraAsMC.getThreats().add(mockThreat4);
         gameRoleService.saveAll(Flux.just(daveAsMC, saraAsMC)).blockLast();
+    }
+
+    private void loadNpcs() {
+        GameRole daveAsMC = gameRoleService.findAllByUserId(KEYCLOAK_ID_1)
+                .filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).blockLast();
+        assert daveAsMC != null;
+        GameRole saraAsMC = gameRoleService.findAllByUserId(KEYCLOAK_ID_2)
+                .filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).blockLast();
+        assert saraAsMC != null;
+        ThreatCreator threatCreator = threatCreatorService.findAll().take(1).blockFirst();
+        assert threatCreator != null;
+
+        Npc mockNpc1 = Npc.builder()
+                .id(UUID.randomUUID().toString())
+                .name("Vision")
+                .description("Badass truck; driver").build();
+        Npc mockNpc2 = Npc.builder()
+                .id(UUID.randomUUID().toString())
+                .name("Nbeke").build();
+        Npc mockNpc3 = Npc.builder()
+                .id(UUID.randomUUID().toString())
+                .name("Batty")
+                .description("Overly polite gun for hire").build();
+        Npc mockNpc4 = Npc.builder()
+                .id(UUID.randomUUID().toString())
+                .name("Farley").build();
+
+        daveAsMC.getNpcs().add(mockNpc1);
+        daveAsMC.getNpcs().add(mockNpc2);
+        saraAsMC.getNpcs().add(mockNpc3);
+        saraAsMC.getNpcs().add(mockNpc4);
+        gameRoleService.saveAll(Flux.just(saraAsMC, daveAsMC)).blockLast();
     }
 
     private List<CharacterMove> createAndMergeCharacterMoves(List<Move> choiceMoves, List<Move> defaultMoves) {
