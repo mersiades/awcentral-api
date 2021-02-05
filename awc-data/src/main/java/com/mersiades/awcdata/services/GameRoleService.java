@@ -1,13 +1,13 @@
 package com.mersiades.awcdata.services;
 
-import com.mersiades.awcdata.models.Character;
-import com.mersiades.awcdata.models.*;
 import com.mersiades.awccontent.enums.LookType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.StatType;
-import com.mersiades.awcdata.models.Vehicle;
+import com.mersiades.awcdata.models.Character;
+import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.Gang;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -51,4 +51,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character setVehicle(String gameRoleId, String characterId, Vehicle vehicle);
 
     Character setGang(String gameRoleId, String characterId, Gang gang);
+
+    Mono<GameRole> addThreat(String gameRoleId, Threat threat);
 }

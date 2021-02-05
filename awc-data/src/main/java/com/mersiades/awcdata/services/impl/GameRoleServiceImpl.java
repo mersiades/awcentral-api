@@ -441,6 +441,37 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
+    public Mono<GameRole> addThreat(String gameRoleId, Threat threat) {
+        return gameRoleRepository.findById(gameRoleId).flatMap(gameRole -> {
+            if (threat.getId() == null) {
+                threat.setId(UUID.randomUUID().toString());
+            }
+            if (gameRole.getThreats().size() == 0) {
+                gameRole.getThreats().add(threat);
+
+            } else {
+                ListIterator<Threat> iterator = gameRole.getThreats().listIterator();
+                boolean hasReplaced = false;
+                while (iterator.hasNext()) {
+                    Threat nextThreat = iterator.next();
+                    if (nextThreat.getId().equals(threat.getId())) {
+                        iterator.set(threat);
+                        hasReplaced = true;
+                    }
+                }
+
+                if (!hasReplaced) {
+                    gameRole.getThreats().add(threat);
+                }
+            }
+//            GameRole savedGamerole = gameRoleRepository.save(gameRole).block();
+//            assert savedGamerole != null;
+//            return Mono.just(savedGamerole);
+            return Mono.just(gameRole);
+        }).flatMap(gameRoleRepository::save);
+    }
+
+    @Override
     public Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons) {
 
         // Get the GameRole

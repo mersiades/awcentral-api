@@ -37,7 +37,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000",
+                "https://app.aw-central.com",
+                "https://app-demo.aw-central.com",
+                "https://app-staging.aw-central.com"));
         configuration.addAllowedHeader("*");
         configuration.applyPermitDefaultValues();
         configuration.setAllowCredentials(true);

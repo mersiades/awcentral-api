@@ -318,6 +318,21 @@ type VehicleCreator {
     carCreator: CarCreator
 }
 
+type ThreatCreatorContent {
+    id: ID!
+    threatType: ThreatType!
+    impulses: [String]!
+    moves: [String]!
+}
+
+type ThreatCreator {
+    id: ID!
+    createThreatInstructions: String!
+    essentialThreatInstructions: String!
+    threatNames: [String]!
+    threats: [ThreatCreatorContent]!
+}
+
 # ---------------------------------------- GAME & CHARACTER TYPES --------------------------------------- #
 
 type User {
@@ -587,6 +602,15 @@ input GangInput {
     weaknesses: [GangOptionInput]
     tags: [String]
 }
+
+input ThreatInput {
+    id: ID
+    name: String!
+    threatKind: ThreatType!
+    impulse: String!
+    description: String
+    stakes: String
+}
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -600,6 +624,7 @@ type Query {
     playbook(playbookType: PlaybookType!): Playbook
     playbookCreator(playbookType: PlaybookType!): PlaybookCreator
     vehicleCreator: VehicleCreator
+    threatCreator: ThreatCreator
 }
 
 # --------------------------------------------- MUTATIONS -------------------------------------------- #
@@ -619,6 +644,13 @@ type Mutation {
         userId: String!,
         displayName: String!,
         email: String!): Game
+    finishPreGame(gameId: String!): Game
+
+    # MC stuff
+#    addThreat(gameId: String!, gameRoleId: String!, threat: ThreatInput): Game
+    addThreat(gameRoleId: String!, threat: ThreatInput): GameRole
+
+    # Creating and editing characters
     createCharacter(gameRoleId: String!): Character
     setCharacterPlaybook(gameRoleId: String!,
         characterId: String!,
@@ -669,7 +701,7 @@ type Mutation {
         characterId: String!, stat: StatType): Character
     finishCharacterCreation(gameRoleId: String!,
         characterId: String!): Character
-    finishPreGame(gameId: String!): Game
+
 #    Move categories
     performPrintMove(gameId: String!,
         gameroleId: String!,
