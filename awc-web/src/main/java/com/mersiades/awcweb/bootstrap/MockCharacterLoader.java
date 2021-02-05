@@ -32,6 +32,9 @@ import java.util.stream.Collectors;
 @Profile("dev")
 public class MockCharacterLoader implements CommandLineRunner {
 
+    final String KEYCLOAK_ID_1 = System.getenv("DAVE_ID");
+    final String KEYCLOAK_ID_2 = System.getenv("SARA_ID");
+
     final String SARA_AS_PLAYER_ID = "be6b09af-9c96-452a-8b05-922be820c88f";
     final String JOHN_AS_PLAYER_ID = "5ffe67b72e21523778660910)";
     final String MAYA_AS_PLAYER_ID = "5ffe67b72e21523778660911)";
@@ -45,6 +48,7 @@ public class MockCharacterLoader implements CommandLineRunner {
     private final MoveService moveService;
     private final PlaybookCreatorService playbookCreatorService;
     private final VehicleCreatorService vehicleCreatorService;
+    private final ThreatCreatorService threatCreatorService;
 
     @Autowired
     CharacterRepository characterRepository;
@@ -55,7 +59,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                                StatsOptionService statsOptionService,
                                MoveService moveService,
                                PlaybookCreatorService playbookCreatorService,
-                               VehicleCreatorService vehicleCreatorService) {
+                               VehicleCreatorService vehicleCreatorService, ThreatCreatorService threatCreatorService) {
         this.gameRoleService = gameRoleService;
         this.lookService = lookService;
         this.characterService = characterService;
@@ -63,12 +67,14 @@ public class MockCharacterLoader implements CommandLineRunner {
         this.moveService = moveService;
         this.playbookCreatorService = playbookCreatorService;
         this.vehicleCreatorService = vehicleCreatorService;
+        this.threatCreatorService = threatCreatorService;
     }
 
     @Override
     public void run(String... args) {
         loadMockCharacters();
         loadHx();
+        loadThreats();
 
         System.out.println("Character count: " + Objects.requireNonNull(characterRepository.count().block()).toString());
     }
@@ -493,6 +499,62 @@ public class MockCharacterLoader implements CommandLineRunner {
         characterService.saveAll(Flux.just(doc, scarlet, smith, nee, dog)).blockLast();
         gameRoleService.saveAll(Flux.just(saraAsPlayer, johnAsPlayer, mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer)).blockLast();
 
+    }
+
+    private void loadThreats() {
+        GameRole daveAsMC = gameRoleService.findAllByUserId(KEYCLOAK_ID_1)
+                .filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).blockLast();
+        assert daveAsMC != null;
+        GameRole saraAsMC = gameRoleService.findAllByUserId(KEYCLOAK_ID_2)
+                .filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).blockLast();
+        assert saraAsMC != null;
+        ThreatCreator threatCreator = threatCreatorService.findAll().take(1).blockFirst();
+        assert threatCreator != null;
+
+        Threat mockThreat1 = Threat.builder()
+                .id(UUID.randomUUID().toString())
+                .name("Tum Tum")
+                .threatKind(ThreatType.WARLORD)
+                .impulse(threatCreator.getThreats().stream()
+                        .filter(threatCreatorContent -> threatCreatorContent.getThreatType().equals(ThreatType.WARLORD))
+                        .findFirst().orElseThrow().getImpulses().get(0))
+                .description("consectetur adipiscing elit. Cras semper augue est, vel consequat dolor volutpat in")
+                .stakes("Maecenas vitae consequat justo, quis sollicitudin nulla. Phasellus pulvinar nunc eget mauris tristique, ut aliquam felis mattis. Nulla ultricies feugiat arcu non facilisis.")
+                .build();
+        Threat mockThreat2 = Threat.builder()
+                .id(UUID.randomUUID().toString())
+                .name("Gnarly")
+                .threatKind(ThreatType.GROTESQUE)
+                .impulse(threatCreator.getThreats().stream()
+                        .filter(threatCreatorContent -> threatCreatorContent.getThreatType().equals(ThreatType.GROTESQUE))
+                        .findFirst().orElseThrow().getImpulses().get(0))
+                .description("Maecenas tempus ac felis at sollicitudin. Etiam pulvinar, nibh eget fringilla pretium, sem sem ultricies augue, vitae condimentum enim nibh nec mi.")
+                .build();
+        Threat mockThreat3 = Threat.builder()
+                .id(UUID.randomUUID().toString())
+                .name("Fleece")
+                .threatKind(ThreatType.BRUTE)
+                .impulse(threatCreator.getThreats().stream()
+                        .filter(threatCreatorContent -> threatCreatorContent.getThreatType().equals(ThreatType.BRUTE))
+                        .findFirst().orElseThrow().getImpulses().get(0))
+                .description("Maecenas tempus ac felis at sollicitudin. Etiam pulvinar, nibh eget fringilla pretium, sem sem ultricies augue, vitae condimentum enim nibh nec mi.")
+                .build();
+        Threat mockThreat4 = Threat.builder()
+                .id(UUID.randomUUID().toString())
+                .name("Wet Rot")
+                .threatKind(ThreatType.AFFLICTION)
+                .impulse(threatCreator.getThreats().stream()
+                        .filter(threatCreatorContent -> threatCreatorContent.getThreatType().equals(ThreatType.AFFLICTION))
+                        .findFirst().orElseThrow().getImpulses().get(0))
+                .description("Maecenas tempus ac felis at sollicitudin. Etiam pulvinar, nibh eget fringilla pretium, sem sem ultricies augue, vitae condimentum enim nibh nec mi.")
+                .build();
+
+
+        daveAsMC.getThreats().add(mockThreat1);
+        daveAsMC.getThreats().add(mockThreat2);
+        saraAsMC.getThreats().add(mockThreat3);
+        saraAsMC.getThreats().add(mockThreat4);
+        gameRoleService.saveAll(Flux.just(daveAsMC, saraAsMC)).blockLast();
     }
 
     private List<CharacterMove> createAndMergeCharacterMoves(List<Move> choiceMoves, List<Move> defaultMoves) {
