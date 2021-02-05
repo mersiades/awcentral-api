@@ -69,9 +69,14 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.finishPreGame(gameId).block();
     }
 
-    public Game addThreat(String gameId, String gameRoleId, Threat threat) {
-        System.out.println("Adding Threat for Game with id: " + gameId);
-        return gameService.addThreat(gameId, gameRoleId, threat).block();
+//    public Game addThreat(String gameId, String gameRoleId, Threat threat) {
+//        System.out.println("Adding Threat for Game with id: " + gameId);
+//        return gameService.addThreat(gameId, gameRoleId, threat).block();
+//    }
+
+    public GameRole addThreat(String gameRoleId, Threat threat) {
+        System.out.println("Adding Threat for GameRole with id: " + gameRoleId);
+        return gameRoleService.addThreat(gameRoleId, threat).block();
     }
 
     public Character createCharacter(String gameRoleId) {
