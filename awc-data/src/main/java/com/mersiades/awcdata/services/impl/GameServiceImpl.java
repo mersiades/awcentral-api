@@ -323,6 +323,22 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Mono<Game> addThreat(String gameId, String gameRoleId, Threat threat) {
+        return gameRepository.findById(gameId)
+                .flatMap(game -> {
+                    if (threat.getId() == null) {
+                        threat.setId(UUID.randomUUID().toString());
+                    }
+                    gameRoleService.findById(gameRoleId).map(gameRole1 -> {
+                        gameRole1.getThreats().add(threat);
+                        return gameRole1;
+                    }).flatMap(gameRoleService::save).block();
+                    return Mono.just(game);
+                })
+                .flatMap(gameRepository::save);
+    }
+
+    @Override
     public Mono<Game> finishPreGame(String gameId) {
         return findById(gameId).map(game -> {
             game.setHasFinishedPreGame(true);

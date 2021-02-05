@@ -1,10 +1,12 @@
 package com.mersiades.awcweb.bootstrap;
 
 import com.mersiades.awccontent.enums.RoleType;
-import com.mersiades.awcdata.models.*;
+import com.mersiades.awcdata.models.Game;
+import com.mersiades.awcdata.models.GameRole;
+import com.mersiades.awcdata.models.Npc;
+import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.repositories.*;
 import com.mersiades.awcdata.services.*;
-import com.mersiades.awccontent.enums.ThreatType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -23,7 +25,6 @@ public class MockUserLoader implements CommandLineRunner {
 
     private final GameService gameService;
     private final GameRoleService gameRoleService;
-    private final ThreatService threatService;
     private final NpcService npcService;
     private final UserService userService;
 
@@ -58,9 +59,6 @@ public class MockUserLoader implements CommandLineRunner {
     UserRepository userRepository;
 
     @Autowired
-    ThreatRepository threatRepository;
-
-    @Autowired
     NpcRepository npcRepository;
 
     @Autowired
@@ -74,12 +72,10 @@ public class MockUserLoader implements CommandLineRunner {
 
     public MockUserLoader(GameService gameService,
                           GameRoleService gameRoleService,
-                          ThreatService threatService,
                           NpcService npcService,
                           UserService userService) {
         this.gameService = gameService;
         this.gameRoleService = gameRoleService;
-        this.threatService = threatService;
         this.npcService = npcService;
         this.userService = userService;
     }
@@ -91,7 +87,6 @@ public class MockUserLoader implements CommandLineRunner {
         System.out.println("Game count: " + Objects.requireNonNull(gameRepository.count().block()).toString());
         System.out.println("GameRole count: " + Objects.requireNonNull(gameRoleRepository.count().block()).toString());
         System.out.println("Npc count: " + Objects.requireNonNull(npcRepository.count().block()).toString());
-        System.out.println("Threat count: " + Objects.requireNonNull(threatRepository.count().block()).toString());
         System.out.println("User count: " + Objects.requireNonNull(userRepository.count().block()).toString());
     }
 
@@ -151,26 +146,8 @@ public class MockUserLoader implements CommandLineRunner {
             Npc mockNpc1 = Npc.builder().name("Vision").description("Badass truck; driver").build();
             Npc mockNpc2 = Npc.builder().name("Nbeke").build();
 
-            Threat mockThreat1 = Threat.builder()
-                    .id(UUID.randomUUID().toString())
-                    .name("Tum Tum")
-                    .threatKind(ThreatType.WARLORD)
-                    .impulse("Slaver: to own and sell people")
-                    .description("consectetur adipiscing elit. Cras semper augue est, vel consequat dolor volutpat in")
-                    .stakes("Maecenas vitae consequat justo, quis sollicitudin nulla. Phasellus pulvinar nunc eget mauris tristique, ut aliquam felis mattis. Nulla ultricies feugiat arcu non facilisis.")
-                    .build();
-            Threat mockThreat2 = Threat.builder()
-                    .id(UUID.randomUUID().toString())
-                    .name("Gnarly")
-                    .threatKind(ThreatType.GROTESQUE)
-                    .impulse("Cannibal: craves satiety and plenty")
-                    .description("Maecenas tempus ac felis at sollicitudin. Etiam pulvinar, nibh eget fringilla pretium, sem sem ultricies augue, vitae condimentum enim nibh nec mi.")
-                    .build();
-
             daveAsMC.getNpcs().add(mockNpc1);
             daveAsMC.getNpcs().add(mockNpc2);
-            daveAsMC.getThreats().add(mockThreat1);
-            daveAsMC.getThreats().add(mockThreat2);
 
             mockGame1.getGameRoles().add(daveAsMC);
             mockGame1.getGameRoles().add(sarahAsPlayer);
@@ -209,7 +186,6 @@ public class MockUserLoader implements CommandLineRunner {
             gameRoleService.saveAll(Flux.just(daveAsMC, sarahAsPlayer, johnAsPlayer,
                     mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer)).blockLast();
 
-            threatService.saveAll(Flux.just(mockThreat1, mockThreat2)).blockLast();
             npcService.saveAll(Flux.just(mockNpc1, mockNpc2)).blockLast();
 
             // ------------------------------ Set up mock Game 2 with Game RoleType ----------------------------- //
@@ -227,13 +203,8 @@ public class MockUserLoader implements CommandLineRunner {
             Npc mockNpc3 = Npc.builder().name("Batty").description("Overly polite gun for hire").build();
             Npc mockNpc4 = Npc.builder().name("Farley").build();
 
-            Threat mockThreat3 = Threat.builder().name("Fleece").threatKind(ThreatType.BRUTE).impulse("Hunting pack: to victimize anyone vulnerable").build();
-            Threat mockThreat4 = Threat.builder().name("Wet Rot").threatKind(ThreatType.AFFLICTION).impulse("Condition: to expose people to danger").build();
-
             sarahAsMC.getNpcs().add(mockNpc3);
             sarahAsMC.getNpcs().add(mockNpc4);
-            sarahAsMC.getThreats().add(mockThreat3);
-            sarahAsMC.getThreats().add(mockThreat4);
 
             mockGame2.getGameRoles().add(daveAsPlayer);
             mockGame2.getGameRoles().add(sarahAsMC);
@@ -252,7 +223,6 @@ public class MockUserLoader implements CommandLineRunner {
             sarahAsMC.setUser(mockUser2);
             gameRoleService.saveAll(Flux.just(daveAsPlayer, sarahAsMC)).blockLast();
 
-            threatService.saveAll(Flux.just(mockThreat3, mockThreat4)).blockLast();
             npcService.saveAll(Flux.just(mockNpc3, mockNpc4)).blockLast();
 
         }
