@@ -604,7 +604,7 @@ input GangInput {
 }
 
 input ThreatInput {
-    id: ID!
+    id: ID
     name: String!
     threatKind: ThreatType!
     impulse: String!
