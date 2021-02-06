@@ -911,11 +911,11 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Angel moves --- ||");
         RollModifier sixthSenseMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .moveToModify(openBrain)
+                .movesToModify(List.of(openBrain))
                 .statToRollWith(StatType.SHARP).build();
         RollModifier profCompassionMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .moveToModify(helpOrInterfere)
+                .movesToModify(List.of(helpOrInterfere))
                 .statToRollWith(StatType.SHARP).build();
         MoveAction angelSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
@@ -1078,7 +1078,7 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Battlebabe moves --- ||");
         RollModifier iceColdMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .moveToModify(goAggro)
+                .movesToModify(List.of(goAggro))
                 .statToRollWith(HARD).build();
         MoveAction battlebabeSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
@@ -1179,7 +1179,7 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Brainer moves --- ||");
         RollModifier lustMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .moveToModify(seduceOrManip)
+                .movesToModify(List.of(seduceOrManip))
                 .statToRollWith(StatType.WEIRD).build();
         StatModifier attunementMod = StatModifier.builder()
                 .id(UUID.randomUUID().toString())
@@ -1341,7 +1341,7 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Driver moves --- ||");
         RollModifier weatherEyeMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .moveToModify(openBrain)
+                .movesToModify(List.of(openBrain))
                 .statToRollWith(COOL).build();
         MoveAction driverSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
@@ -1446,12 +1446,11 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Gunlugger moves --- ||");
         RollModifier battleHardenedMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                // TODO: Add standoverwatch
-                .moveToModify(doSomethingUnderFire)
+                .movesToModify(List.of(doSomethingUnderFire, standOverwatch))
                 .statToRollWith(HARD).build();
         RollModifier battlefieldInstinctsMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .moveToModify(openBrain)
+                .movesToModify(List.of(openBrain))
                 .statToRollWith(HARD).build();
         StatModifier insanoMod = StatModifier.builder()
                 .id(UUID.randomUUID().toString())

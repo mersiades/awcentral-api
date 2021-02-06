@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +19,8 @@ public class RollModifier {
     @Id
     private String id;
 
-    private Move moveToModify;
-
     private StatType statToRollWith;
+
+    @Builder.Default
+    private List<Move> movesToModify = new ArrayList<>();
 }

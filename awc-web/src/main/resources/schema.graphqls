@@ -530,7 +530,7 @@ type ItemCharacteristic {
 
 type RollModifier {
     id: ID!
-    moveToModify: Move!
+    movesToModify: [Move!]
     statToRollWith: StatType!
 }
 
