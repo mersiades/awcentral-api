@@ -53,4 +53,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character setGang(String gameRoleId, String characterId, Gang gang);
 
     Mono<GameRole> addThreat(String gameRoleId, Threat threat);
+
+    Mono<GameRole> addNpc(String gameRoleId, Npc npc);
 }

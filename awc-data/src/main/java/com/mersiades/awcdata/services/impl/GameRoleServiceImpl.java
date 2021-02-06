@@ -464,10 +464,35 @@ public class GameRoleServiceImpl implements GameRoleService {
                     gameRole.getThreats().add(threat);
                 }
             }
-//            GameRole savedGamerole = gameRoleRepository.save(gameRole).block();
-//            assert savedGamerole != null;
-//            return Mono.just(savedGamerole);
             return Mono.just(gameRole);
+        }).flatMap(gameRoleRepository::save);
+    }
+
+    @Override
+    public Mono<GameRole> addNpc(String gameRoleId, Npc npc) {
+        return gameRoleRepository.findById(gameRoleId).map(gameRole -> {
+            if (npc.getId() == null) {
+                npc.setId(UUID.randomUUID().toString());
+            }
+            if (gameRole.getNpcs().size() == 0) {
+                gameRole.getNpcs().add(npc);
+
+            } else {
+                ListIterator<Npc> iterator = gameRole.getNpcs().listIterator();
+                boolean hasReplaced = false;
+                while (iterator.hasNext()) {
+                    Npc nextNpc = iterator.next();
+                    if (nextNpc.getId().equals(npc.getId())) {
+                        iterator.set(npc);
+                        hasReplaced = true;
+                    }
+                }
+
+                if (!hasReplaced) {
+                    gameRole.getNpcs().add(npc);
+                }
+            }
+            return gameRole;
         }).flatMap(gameRoleRepository::save);
     }
 
