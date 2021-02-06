@@ -2431,6 +2431,9 @@ public class GameDataLoader implements CommandLineRunner {
 
         WeaponsCreator weaponsCreator = WeaponsCreator.builder()
                 .id(UUID.randomUUID().toString())
+                .bfoGunOptionCount(1)
+                .seriousGunOptionCount(2)
+                .backupWeaponsOptionCount(1)
                 .bigFuckOffGuns(List.of(
                         "silenced sniper rifle (3-harm far hi-tech)",
                         "mg (3-harm close/far area messy)",
@@ -2986,6 +2989,32 @@ public class GameDataLoader implements CommandLineRunner {
             playbookCreatorService.save(playbookCreatorDriver).block();
             playbookDriver.setCreator(playbookCreatorDriver);
             playbookService.save(playbookDriver).block();
+        }
+
+        // -------------------------------------- DRIVER -------------------------------------- //
+        Playbook playbookGunlugger = playbookService.findByPlaybookType(PlaybookType.GUNLUGGER).block();
+        assert playbookGunlugger != null;
+
+        if (playbookGunlugger.getCreator() == null) {
+            PlaybookCreator playbookCreatorGunlugger = playbookCreatorService.findByPlaybookType(PlaybookType.GUNLUGGER).block();
+            assert playbookCreatorGunlugger != null;
+
+            List<Name> namesGunlugger = nameService.findAllByPlaybookType(PlaybookType.GUNLUGGER).collectList().block();
+            assert namesGunlugger != null;
+
+
+            List<Look> looksGunlugger = lookService.findAllByPlaybookType(PlaybookType.GUNLUGGER).collectList().block();
+            assert looksGunlugger != null;
+
+            List<StatsOption> statsOptionsGunlugger = statsOptionService.findAllByPlaybookType(PlaybookType.GUNLUGGER).collectList().block();
+            assert statsOptionsGunlugger != null;
+
+            statsOptionsGunlugger.forEach(statsOption -> playbookCreatorGunlugger.getStatsOptions().add(statsOption));
+            namesGunlugger.forEach(name -> playbookCreatorGunlugger.getNames().add(name));
+            looksGunlugger.forEach(look -> playbookCreatorGunlugger.getLooks().add(look));
+            playbookCreatorService.save(playbookCreatorGunlugger).block();
+            playbookGunlugger.setCreator(playbookCreatorGunlugger);
+            playbookService.save(playbookGunlugger).block();
         }
     }
 

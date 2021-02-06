@@ -18,9 +18,9 @@ public class WeaponsCreator {
     @Id
     private String id;
 
-    private final int bfoGunOptionCount = 1;
-    private final int seriousGunOptionCount = 2;
-    private final int backupWeaponsOptionCount = 1;
+    private int bfoGunOptionCount;
+    private int seriousGunOptionCount;
+    private int backupWeaponsOptionCount;
 
     @Builder.Default
     private List<String> bigFuckOffGuns = new ArrayList<>();

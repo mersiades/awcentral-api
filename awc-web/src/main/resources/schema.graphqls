@@ -250,6 +250,7 @@ type PlaybookUniqueCreator {
     customWeaponsCreator: CustomWeaponsCreator
     brainerGearCreator: BrainerGearCreator
     gangCreator: GangCreator
+    weaponsCreator: WeaponsCreator
 }
 
 type GangCreator {
@@ -288,6 +289,16 @@ type CustomWeaponsCreator {
 type BrainerGearCreator {
     id: ID!
     gear: [String]!
+}
+
+type WeaponsCreator {
+    id: ID!
+    bfoGunOptionCount: Int!
+    seriousGunOptionCount: Int!
+    backupWeaponsOptionCount: Int!
+    bigFuckOffGuns: [String]!
+    seriousGuns: [String]!
+    backupWeapons: [String]!
 }
 
 type CarCreator {
