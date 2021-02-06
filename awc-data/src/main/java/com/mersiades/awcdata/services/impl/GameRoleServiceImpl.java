@@ -8,11 +8,8 @@ import com.mersiades.awccontent.services.StatModifierService;
 import com.mersiades.awccontent.services.StatsOptionService;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
-import com.mersiades.awcdata.models.uniques.AngelKit;
-import com.mersiades.awcdata.models.uniques.BrainerGear;
-import com.mersiades.awcdata.models.uniques.CustomWeapons;
+import com.mersiades.awcdata.models.uniques.*;
 import com.mersiades.awcdata.models.Vehicle;
-import com.mersiades.awcdata.models.uniques.Gang;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
@@ -377,27 +374,26 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
 
-
-            if (character.getVehicles().size() == 0) {
-                // Add first Vehicle
-                character.getVehicles().add(vehicle);
-            } else {
-                // Replace Vehicle with updated data, if it already exists
-                ListIterator<Vehicle> iterator = character.getVehicles().listIterator();
-                boolean hasReplaced = false;
-                while (iterator.hasNext()) {
-                    Vehicle nextVehicle = iterator.next();
-                    if (nextVehicle.getId().equals(vehicle.getId())) {
-                        iterator.set(vehicle);
-                        hasReplaced = true;
-                    }
-                }
-
-                if (!hasReplaced) {
-                    // Add a new Vehicle to the existing Vehicles List
-                    character.getVehicles().add(vehicle);
+        if (character.getVehicles().size() == 0) {
+            // Add first Vehicle
+            character.getVehicles().add(vehicle);
+        } else {
+            // Replace Vehicle with updated data, if it already exists
+            ListIterator<Vehicle> iterator = character.getVehicles().listIterator();
+            boolean hasReplaced = false;
+            while (iterator.hasNext()) {
+                Vehicle nextVehicle = iterator.next();
+                if (nextVehicle.getId().equals(vehicle.getId())) {
+                    iterator.set(vehicle);
+                    hasReplaced = true;
                 }
             }
+
+            if (!hasReplaced) {
+                // Add a new Vehicle to the existing Vehicles List
+                character.getVehicles().add(vehicle);
+            }
+        }
 
 
         // Save to db
@@ -523,6 +519,41 @@ public class GameRoleServiceImpl implements GameRoleService {
         } else {
             // Update existing PlaybookUnique
             character.getPlaybookUnique().getCustomWeapons().setWeapons(weapons);
+        }
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
+    public Character setWeapons(String gameRoleId, String characterId, List<String> weapons) {
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.WEAPONS) {
+            // Create new PlaybookUnique for Battlebabe
+            Weapons newWeapons = Weapons.builder()
+                    .id(UUID.randomUUID().toString())
+                    .weapons(weapons)
+                    .build();
+
+            PlaybookUnique gunluggerUnique = PlaybookUnique.builder()
+                    .id(UUID.randomUUID().toString())
+                    .type(UniqueType.WEAPONS)
+                    .weapons(newWeapons)
+                    .build();
+
+            character.setPlaybookUnique(gunluggerUnique);
+        } else {
+            // Update existing PlaybookUnique
+            character.getPlaybookUnique().getWeapons().setWeapons(weapons);
         }
 
         // Save to db

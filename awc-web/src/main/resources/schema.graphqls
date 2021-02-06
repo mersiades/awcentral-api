@@ -479,6 +479,7 @@ type PlaybookUnique {
     angelKit: AngelKit
     customWeapons: CustomWeapons
     gang: Gang
+    weapons: Weapons
 }
 
 type BrainerGear {
@@ -496,6 +497,11 @@ type AngelKit {
 }
 
 type CustomWeapons {
+    id: ID!
+    weapons: [String]!
+}
+
+type Weapons {
     id: ID!
     weapons: [String]!
 }
@@ -628,6 +634,7 @@ input NpcInput {
     name: String!
     description: String
 }
+
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -701,6 +708,9 @@ type Mutation {
     setCustomWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
+    setWeapons(gameRoleId: String!,
+        characterId: String!,
+        weapons: [String]! ): Character
     setVehicle(gameRoleId: String!,
         characterId: String!,
         vehicleInput: VehicleInput! ): Character
@@ -719,7 +729,7 @@ type Mutation {
     finishCharacterCreation(gameRoleId: String!,
         characterId: String!): Character
 
-#    Move categories
+    #    Move categories
     performPrintMove(gameId: String!,
         gameroleId: String!,
         characterId: String!,
@@ -729,14 +739,14 @@ type Mutation {
     performBarterMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
     performStockMove(gameId: String!, gameroleId: String!, characterId: String!, moveName: String!, stockSpent: Int!): Game
 
-#    Roll move categories
+    #    Roll move categories
     performStatRollMove(gameId: String!,
         gameroleId: String!,
         characterId: String!,
         moveId: String!,
         isGangMove: Boolean!): Game
 
-#    Specific moves
+    #    Specific moves
     performHelpOrInterfereMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
     performMakeWantKnownMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
     performSufferHarmMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, harm: Int!): Game
