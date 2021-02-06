@@ -611,6 +611,12 @@ input ThreatInput {
     description: String
     stakes: String
 }
+
+input NpcInput {
+    id: ID
+    name: String!
+    description: String
+}
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -647,8 +653,8 @@ type Mutation {
     finishPreGame(gameId: String!): Game
 
     # MC stuff
-#    addThreat(gameId: String!, gameRoleId: String!, threat: ThreatInput): Game
     addThreat(gameRoleId: String!, threat: ThreatInput): GameRole
+    addNpc(gameRoleId: String!, npc: NpcInput): GameRole
 
     # Creating and editing characters
     createCharacter(gameRoleId: String!): Character

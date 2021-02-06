@@ -3,10 +3,11 @@ package com.mersiades.awcweb.bootstrap;
 import com.mersiades.awccontent.enums.RoleType;
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
-import com.mersiades.awcdata.models.Npc;
 import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.repositories.*;
-import com.mersiades.awcdata.services.*;
+import com.mersiades.awcdata.services.GameRoleService;
+import com.mersiades.awcdata.services.GameService;
+import com.mersiades.awcdata.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -25,7 +26,6 @@ public class MockUserLoader implements CommandLineRunner {
 
     private final GameService gameService;
     private final GameRoleService gameRoleService;
-    private final NpcService npcService;
     private final UserService userService;
 
     final String KEYCLOAK_ID_1 = System.getenv("DAVE_ID");
@@ -72,11 +72,9 @@ public class MockUserLoader implements CommandLineRunner {
 
     public MockUserLoader(GameService gameService,
                           GameRoleService gameRoleService,
-                          NpcService npcService,
                           UserService userService) {
         this.gameService = gameService;
         this.gameRoleService = gameRoleService;
-        this.npcService = npcService;
         this.userService = userService;
     }
 
@@ -86,7 +84,6 @@ public class MockUserLoader implements CommandLineRunner {
 
         System.out.println("Game count: " + Objects.requireNonNull(gameRepository.count().block()).toString());
         System.out.println("GameRole count: " + Objects.requireNonNull(gameRoleRepository.count().block()).toString());
-        System.out.println("Npc count: " + Objects.requireNonNull(npcRepository.count().block()).toString());
         System.out.println("User count: " + Objects.requireNonNull(userRepository.count().block()).toString());
     }
 
@@ -143,12 +140,6 @@ public class MockUserLoader implements CommandLineRunner {
             GameRole ahmadAsPlayer = GameRole.builder().id(AHMAD_AS_PLAYER_ID).role(RoleType.PLAYER).build();
             GameRole takeshiAsPlayer = GameRole.builder().id(TAKESHI_AS_PLAYER_ID).role(RoleType.PLAYER).build();
 
-            Npc mockNpc1 = Npc.builder().name("Vision").description("Badass truck; driver").build();
-            Npc mockNpc2 = Npc.builder().name("Nbeke").build();
-
-            daveAsMC.getNpcs().add(mockNpc1);
-            daveAsMC.getNpcs().add(mockNpc2);
-
             mockGame1.getGameRoles().add(daveAsMC);
             mockGame1.getGameRoles().add(sarahAsPlayer);
             mockGame1.getGameRoles().add(johnAsPlayer);
@@ -186,8 +177,6 @@ public class MockUserLoader implements CommandLineRunner {
             gameRoleService.saveAll(Flux.just(daveAsMC, sarahAsPlayer, johnAsPlayer,
                     mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer)).blockLast();
 
-            npcService.saveAll(Flux.just(mockNpc1, mockNpc2)).blockLast();
-
             // ------------------------------ Set up mock Game 2 with Game RoleType ----------------------------- //
             Game mockGame2 = Game.builder()
                     .id(MOCK_GAME_2_ID)
@@ -199,12 +188,6 @@ public class MockUserLoader implements CommandLineRunner {
 
             GameRole daveAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
             GameRole sarahAsMC = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.MC).build();
-
-            Npc mockNpc3 = Npc.builder().name("Batty").description("Overly polite gun for hire").build();
-            Npc mockNpc4 = Npc.builder().name("Farley").build();
-
-            sarahAsMC.getNpcs().add(mockNpc3);
-            sarahAsMC.getNpcs().add(mockNpc4);
 
             mockGame2.getGameRoles().add(daveAsPlayer);
             mockGame2.getGameRoles().add(sarahAsMC);
@@ -222,8 +205,6 @@ public class MockUserLoader implements CommandLineRunner {
             sarahAsMC.setGame(mockGame2);
             sarahAsMC.setUser(mockUser2);
             gameRoleService.saveAll(Flux.just(daveAsPlayer, sarahAsMC)).blockLast();
-
-            npcService.saveAll(Flux.just(mockNpc3, mockNpc4)).blockLast();
 
         }
 
