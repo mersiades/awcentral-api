@@ -2411,11 +2411,90 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultVehicleCount(1)
                 .build();
 
+        /* ----------------------------- GUNLUGGER PLAYBOOK CREATOR --------------------------------- */
+
+        List<Move> gunluggerOptionalMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.GUNLUGGER, MoveType.CHARACTER)
+                .collectList().block();
+
+        List<Move> gunluggerDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.GUNLUGGER, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
+
+        GearInstructions gearInstructionsGunlugger = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .gearIntro("You get:")
+                .youGetItems(List.of("armor worth 2-armor (you detail)"))
+                .startingBarter(2)
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .build();
+
+        WeaponsCreator weaponsCreator = WeaponsCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .bigFuckOffGuns(List.of(
+                        "silenced sniper rifle (3-harm far hi-tech)",
+                        "mg (3-harm close/far area messy)",
+                        "assault rifle (3-harm close/far loud autofire)",
+                        "grenade launcher (4-harm close area messy)"
+                ))
+                .seriousGuns(List.of(
+                        "hunting rifle (3-harm far loud)",
+                        "shotgun (3-harm close messy)",
+                        "smg (2-harm close autofire loud)",
+                        "magnum (3-harm close reload loud)",
+                        "grenade tube (4-harm close area reload messy)"
+                ))
+                .backupWeapons(List.of(
+                        "9mm (2-harm close loud)",
+                        "big-ass knife (2-harm hand)",
+                        "machete (3-harm hand messy)",
+                        "many knives (2-harm hand infinite)",
+                        "grenades (4-harm hand area reload messy)"
+                ))
+                .build();
+
+        PlaybookUniqueCreator gunluggerUniqueCreator = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.WEAPONS)
+                .weaponsCreator(weaponsCreator)
+                .build();
+
+        PlaybookCreator playbookCreatorGunlugger = PlaybookCreator.builder()
+                .playbookType(PlaybookType.GUNLUGGER)
+                .gearInstructions(gearInstructionsGunlugger)
+                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
+                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .movesInstructions("You get all the basic moves. Choose 3 gunlugger moves.\n" +
+                        "You can use all the battle moves, and probably will, but you gotta start somewhere. When you get the chance, look up _**seize by force**_ and  _**laying down fire**_.")
+                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
+                        "\n" +
+                        "List the other characters’ names.\n" +
+                        "\n" +
+                        "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                        "\n" +
+                        "- *Which one of you left me bleeding, and did nothing for me?* For that character, write Hx-2.\n" +
+                        "- *Which one of you has fought shoulder to shoulder with me?* For that character, write Hx+2.\n" +
+                        "- *Which one of you is prettiest and/or smartest?* For that character, write Hx+3.\n" +
+                        "\n" +
+                        "For everyone else, write Hx-1. You find no particular need to understand most people.\n" +
+                        "\n" +
+                        "On the others’ turns, answer their questions as you like.\n" +
+                        "\n" +
+                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                .defaultMoves(gunluggerDefaultMoves)
+                .optionalMoves(gunluggerOptionalMoves)
+                .playbookUniqueCreator(gunluggerUniqueCreator)
+                .defaultMoveCount(1)
+                .moveChoiceCount(3)
+                .defaultVehicleCount(0)
+                .build();
+
         playbookCreatorService.saveAll(Flux.just(angelCreator,
                 battlebabePlaybookCreator,
                 playbookCreatorBrainer,
                 playbookCreatorChopper,
-                playbookCreatorDriver)).blockLast();
+                playbookCreatorDriver,
+                playbookCreatorGunlugger)).blockLast();
     }
 
     public void loadVehicleCreator() {
