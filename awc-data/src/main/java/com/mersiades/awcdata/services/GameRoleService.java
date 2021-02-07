@@ -36,6 +36,8 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons);
 
+    Character setWeapons(String gameRoleId, String characterId, List<String> weapons);
+
     Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats);
 
     Character adjustCharacterHx(String gameRoleId, String characterId, String hxId, int value);

@@ -911,11 +911,11 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Angel moves --- ||");
         RollModifier sixthSenseMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .moveToModify(openBrain)
+                .movesToModify(List.of(openBrain))
                 .statToRollWith(StatType.SHARP).build();
         RollModifier profCompassionMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .moveToModify(helpOrInterfere)
+                .movesToModify(List.of(helpOrInterfere))
                 .statToRollWith(StatType.SHARP).build();
         MoveAction angelSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
@@ -1078,7 +1078,7 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Battlebabe moves --- ||");
         RollModifier iceColdMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .moveToModify(goAggro)
+                .movesToModify(List.of(goAggro))
                 .statToRollWith(HARD).build();
         MoveAction battlebabeSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
@@ -1179,7 +1179,7 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Brainer moves --- ||");
         RollModifier lustMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .moveToModify(seduceOrManip)
+                .movesToModify(List.of(seduceOrManip))
                 .statToRollWith(StatType.WEIRD).build();
         StatModifier attunementMod = StatModifier.builder()
                 .id(UUID.randomUUID().toString())
@@ -1341,7 +1341,7 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Driver moves --- ||");
         RollModifier weatherEyeMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .moveToModify(openBrain)
+                .movesToModify(List.of(openBrain))
                 .statToRollWith(COOL).build();
         MoveAction driverSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
@@ -1446,12 +1446,11 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading Gunlugger moves --- ||");
         RollModifier battleHardenedMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                // TODO: Add standoverwatch
-                .moveToModify(doSomethingUnderFire)
+                .movesToModify(List.of(doSomethingUnderFire, standOverwatch))
                 .statToRollWith(HARD).build();
         RollModifier battlefieldInstinctsMod = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
-                .moveToModify(openBrain)
+                .movesToModify(List.of(openBrain))
                 .statToRollWith(HARD).build();
         StatModifier insanoMod = StatModifier.builder()
                 .id(UUID.randomUUID().toString())
@@ -1626,6 +1625,34 @@ public class GameDataLoader implements CommandLineRunner {
         nameService.saveAll(Flux.just(smith2, jones, jackson, marsh, lively, burroughs, gritch, joyette, iris, marie,
                 amiette, suselle, cybelle, pallor, sin, charmer, pity, brace, sundown)).blockLast();
 
+        /* ----------------------------- CHOPPER NAMES --------------------------------- */
+        Name dog = Name.builder().playbookType(PlaybookType.CHOPPER).name("Dog").build();
+        Name domino = Name.builder().playbookType(PlaybookType.CHOPPER).name("Domino").build();
+        Name tBone = Name.builder().playbookType(PlaybookType.CHOPPER).name("T-bone").build();
+        Name stinky = Name.builder().playbookType(PlaybookType.CHOPPER).name("Stinky").build();
+        Name satan = Name.builder().playbookType(PlaybookType.CHOPPER).name("Satan").build();
+        Name lars = Name.builder().playbookType(PlaybookType.CHOPPER).name("Lars").build();
+        Name bullet = Name.builder().playbookType(PlaybookType.CHOPPER).name("Bullet").build();
+        Name dice = Name.builder().playbookType(PlaybookType.CHOPPER).name("Dice").build();
+        Name shitHead = Name.builder().playbookType(PlaybookType.CHOPPER).name("Shit head").build();
+        Name halfPint = Name.builder().playbookType(PlaybookType.CHOPPER).name("Half pint").build();
+        Name shooter = Name.builder().playbookType(PlaybookType.CHOPPER).name("Shooter").build();
+        Name diamond = Name.builder().playbookType(PlaybookType.CHOPPER).name("Diamond").build();
+        Name goldie = Name.builder().playbookType(PlaybookType.CHOPPER).name("Goldie").build();
+        Name tinker = Name.builder().playbookType(PlaybookType.CHOPPER).name("Tinker").build();
+        Name loose = Name.builder().playbookType(PlaybookType.CHOPPER).name("Loose").build();
+        Name baby = Name.builder().playbookType(PlaybookType.CHOPPER).name("Baby").build();
+        Name juck = Name.builder().playbookType(PlaybookType.CHOPPER).name("Juck").build();
+        Name hammer = Name.builder().playbookType(PlaybookType.CHOPPER).name("Hammer").build();
+        Name hooch = Name.builder().playbookType(PlaybookType.CHOPPER).name("Hooch").build();
+        Name snakeEyes = Name.builder().playbookType(PlaybookType.CHOPPER).name("Snake eyes").build();
+        Name pinkie = Name.builder().playbookType(PlaybookType.CHOPPER).name("Pinkie").build();
+        Name wire = Name.builder().playbookType(PlaybookType.CHOPPER).name("Wire").build();
+        Name blues = Name.builder().playbookType(PlaybookType.CHOPPER).name("Blues").build();
+
+        nameService.saveAll(Flux.just(dog, domino, tBone, stinky, satan, lars, bullet, dice, shitHead, halfPint,
+                shooter, diamond, goldie, tinker, loose, baby, juck, hammer, hooch, snakeEyes, pinkie, wire, blues)).blockLast();
+
         /* ----------------------------- DRIVER NAMES --------------------------------- */
         Name lauren = Name.builder().playbookType(PlaybookType.DRIVER).name("Lauren").build();
         Name audrey = Name.builder().playbookType(PlaybookType.DRIVER).name("Audrey").build();
@@ -1659,33 +1686,41 @@ public class GameDataLoader implements CommandLineRunner {
                 annette, marlene, frankie, marlon, kim1, errol, humphrey, phoenix, mustang, impala, suv, cougar,
                 cobra, dart, gremlin, grandCherokee, jag, beemer)).blockLast();
 
-        /* ----------------------------- CHOPPER NAMES --------------------------------- */
-        Name dog = Name.builder().playbookType(PlaybookType.CHOPPER).name("Dog").build();
-        Name domino = Name.builder().playbookType(PlaybookType.CHOPPER).name("Domino").build();
-        Name tBone = Name.builder().playbookType(PlaybookType.CHOPPER).name("T-bone").build();
-        Name stinky = Name.builder().playbookType(PlaybookType.CHOPPER).name("Stinky").build();
-        Name satan = Name.builder().playbookType(PlaybookType.CHOPPER).name("Satan").build();
-        Name lars = Name.builder().playbookType(PlaybookType.CHOPPER).name("Lars").build();
-        Name bullet = Name.builder().playbookType(PlaybookType.CHOPPER).name("Bullet").build();
-        Name dice = Name.builder().playbookType(PlaybookType.CHOPPER).name("Dice").build();
-        Name shitHead = Name.builder().playbookType(PlaybookType.CHOPPER).name("Shit head").build();
-        Name halfPint = Name.builder().playbookType(PlaybookType.CHOPPER).name("Half pint").build();
-        Name shooter = Name.builder().playbookType(PlaybookType.CHOPPER).name("Shooter").build();
-        Name diamond = Name.builder().playbookType(PlaybookType.CHOPPER).name("Diamond").build();
-        Name goldie = Name.builder().playbookType(PlaybookType.CHOPPER).name("Goldie").build();
-        Name tinker = Name.builder().playbookType(PlaybookType.CHOPPER).name("Tinker").build();
-        Name loose = Name.builder().playbookType(PlaybookType.CHOPPER).name("Loose").build();
-        Name baby = Name.builder().playbookType(PlaybookType.CHOPPER).name("Baby").build();
-        Name juck = Name.builder().playbookType(PlaybookType.CHOPPER).name("Juck").build();
-        Name hammer = Name.builder().playbookType(PlaybookType.CHOPPER).name("Hammer").build();
-        Name hooch = Name.builder().playbookType(PlaybookType.CHOPPER).name("Hooch").build();
-        Name snakeEyes = Name.builder().playbookType(PlaybookType.CHOPPER).name("Snake eyes").build();
-        Name pinkie = Name.builder().playbookType(PlaybookType.CHOPPER).name("Pinkie").build();
-        Name wire = Name.builder().playbookType(PlaybookType.CHOPPER).name("Wire").build();
-        Name blues = Name.builder().playbookType(PlaybookType.CHOPPER).name("Blues").build();
+        /* ----------------------------- GUNLUGGER NAMES --------------------------------- */
+        Name vonk = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Vonk the Sculptor").build();
+        Name batty = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Batty").build();
+        Name jonker = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Jonker").build();
+        Name at = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("A.T.").build();
+        Name rueWakeman = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Rue Wakeman").build();
+        Name navarre = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Navarre").build();
+        Name man = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Man").build();
+        Name kartak = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Kartak").build();
+        Name barbarossa = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Barbarossa").build();
+        Name keeler = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Keeler").build();
+        Name grekkor = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Grekkor").build();
+        Name crille = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Crille").build();
+        Name doom = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Doom").build();
+        Name chaplain = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Chaplain").build();
+        Name rex = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Rex").build();
+        Name fido = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Fido").build();
+        Name spot = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Spot").build();
+        Name boxer = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Boxer").build();
+        Name doberman = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Doberman").build();
+        Name trey = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Trey").build();
+        Name killer = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Killer").build();
+        Name butch = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Butch").build();
+        Name fifi = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Fifi").build();
+        Name fluffy = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Fluffy").build();
+        Name duke = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Duke").build();
+        Name wolf = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Wolf").build();
+        Name rover = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Rover").build();
+        Name max = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Max").build();
+        Name buddy = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Buddy").build();
 
-        nameService.saveAll(Flux.just(dog, domino, tBone, stinky, satan, lars, bullet, dice, shitHead, halfPint,
-                shooter, diamond, goldie, tinker, loose, baby, juck, hammer, hooch, snakeEyes, pinkie, wire, blues)).blockLast();
+
+        nameService.saveAll(Flux.just(vonk, batty, jonker, at, rueWakeman, navarre, man, kartak, barbarossa,
+                keeler, grekkor, crille, doom, chaplain, rex, fido, spot, boxer, doberman, trey, killer, butch,
+                fifi, fluffy, duke, wolf, rover, max, buddy)).blockLast();
     }
 
     private void loadLooks() {
@@ -1850,15 +1885,49 @@ public class GameDataLoader implements CommandLineRunner {
         lookService.saveAll(Flux.just(driver1, driver2, driver3, driver4, driver5, driver6, driver7, driver8, driver9,
                 driver10, driver11, driver12, driver13, driver14, driver15, driver16, driver17, driver18, driver19,
                 driver20, driver21, driver22, driver23, driver24, driver25, driver26, driver26, driver27)).blockLast();
+
+        /* ----------------------------- GUNLUGGER LOOKS --------------------------------- */
+        Look gunlugger1 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.GENDER).look("man").build();
+        Look gunlugger2 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.GENDER).look("woman").build();
+        Look gunlugger3 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.GENDER).look("ambiguous").build();
+        Look gunlugger4 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.GENDER).look("transgressing").build();
+        Look gunlugger5 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.GENDER).look("concealed").build();
+        Look gunlugger6 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.CLOTHES).look("scrounged mismatched armor").build();
+        Look gunlugger7 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.CLOTHES).look("battered old armor").build();
+        Look gunlugger8 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.CLOTHES).look("custom homemade armor").build();
+        Look gunlugger10 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.FACE).look("scarred face").build();
+        Look gunlugger11 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.FACE).look("blunt face").build();
+        Look gunlugger12 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.FACE).look("bony face").build();
+        Look gunlugger13 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.FACE).look("dull face").build();
+        Look gunlugger14 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.FACE).look("worn face").build();
+        Look gunlugger15 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.FACE).look("blasted face").build();
+        Look gunlugger16 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.EYES).look("mad eyes").build();
+        Look gunlugger17 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.EYES).look("raging eyes").build();
+        Look gunlugger18 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.EYES).look("wise eyes").build();
+        Look gunlugger19 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.EYES).look("sad eyes").build();
+        Look gunlugger20 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.EYES).look("little piggy eyes").build();
+        Look gunlugger21 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.EYES).look("cunning eyes").build();
+        Look gunlugger22 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("hard body").build();
+        Look gunlugger23 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("stocky body").build();
+        Look gunlugger24 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("stringy body").build();
+        Look gunlugger25 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("battered body").build();
+        Look gunlugger26 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("overbuilt body").build();
+        Look gunlugger27 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("compact body").build();
+        Look gunlugger9 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("huge body").build();
+
+        lookService.saveAll(Flux.just(gunlugger1, gunlugger2, gunlugger3, gunlugger4, gunlugger5, gunlugger6, gunlugger7,
+                gunlugger8, gunlugger9, gunlugger10, gunlugger11, gunlugger12, gunlugger13, gunlugger14, gunlugger15,
+                gunlugger16, gunlugger17, gunlugger18, gunlugger19, gunlugger20, gunlugger21, gunlugger22, gunlugger23,
+                gunlugger24, gunlugger25, gunlugger26, gunlugger27)).blockLast();
     }
 
     public void loadStatsOptions() {
         System.out.println("|| --- Loading playbook stats options --- ||");
         /* ----------------------------- ANGEL STATS OPTIONS --------------------------------- */
-        StatsOption angel1 = new StatsOption(PlaybookType.ANGEL, 1, 0, 1, 2, -1);
-        StatsOption angel2 = new StatsOption(PlaybookType.ANGEL, 1, 1, 0, 2, -1);
-        StatsOption angel3 = new StatsOption(PlaybookType.ANGEL, -1, 1, 0, 2, 1);
-        StatsOption angel4 = new StatsOption(PlaybookType.ANGEL, 2, 0, -1, 2, -1);
+        StatsOption angel1 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(1).HARD(0).HOT(1).SHARP(2).WEIRD(-1).build();
+        StatsOption angel2 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(1).HARD(1).HOT(0).SHARP(2).WEIRD(-1).build();
+        StatsOption angel3 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(-1).HARD(1).HOT(0).SHARP(2).WEIRD(1).build();
+        StatsOption angel4 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(2).HARD(0).HOT(-1).SHARP(2).WEIRD(-1).build();
         statsOptionService.saveAll(Flux.just(angel1, angel2, angel3, angel4)).blockLast();
 
         /* ----------------------------- BATTLEBABE STATS OPTIONS --------------------------------- */
@@ -1888,6 +1957,13 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption driver3 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(1).HOT(-1).SHARP(0).WEIRD(1).build();
         StatsOption driver4 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-2).HOT(0).SHARP(2).WEIRD(1).build();
         statsOptionService.saveAll(Flux.just(driver1, driver2, driver3, driver4)).blockLast();
+
+        /* ----------------------------- GUNLUGGER STATS OPTIONS --------------------------------- */
+        StatsOption gunlugger1 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(1).HARD(2).HOT(-1).SHARP(1).WEIRD(0).build();
+        StatsOption gunlugger2 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(-1).HARD(2).HOT(-2).SHARP(1).WEIRD(2).build();
+        StatsOption gunlugger3 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(1).HARD(2).HOT(-2).SHARP(2).WEIRD(-1).build();
+        StatsOption gunlugger4 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(2).HARD(2).HOT(-2).SHARP(0).WEIRD(0).build();
+        statsOptionService.saveAll(Flux.just(gunlugger1, gunlugger2, gunlugger3, gunlugger4)).blockLast();
     }
 
     public void loadPlaybookCreators() {
@@ -2335,11 +2411,93 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultVehicleCount(1)
                 .build();
 
+        /* ----------------------------- GUNLUGGER PLAYBOOK CREATOR --------------------------------- */
+
+        List<Move> gunluggerOptionalMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.GUNLUGGER, MoveType.CHARACTER)
+                .collectList().block();
+
+        List<Move> gunluggerDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.GUNLUGGER, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
+
+        GearInstructions gearInstructionsGunlugger = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .gearIntro("You get:")
+                .youGetItems(List.of("armor worth 2-armor (you detail)"))
+                .startingBarter(2)
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .build();
+
+        WeaponsCreator weaponsCreator = WeaponsCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .bfoGunOptionCount(1)
+                .seriousGunOptionCount(2)
+                .backupWeaponsOptionCount(1)
+                .bigFuckOffGuns(List.of(
+                        "silenced sniper rifle (3-harm far hi-tech)",
+                        "mg (3-harm close/far area messy)",
+                        "assault rifle (3-harm close/far loud autofire)",
+                        "grenade launcher (4-harm close area messy)"
+                ))
+                .seriousGuns(List.of(
+                        "hunting rifle (3-harm far loud)",
+                        "shotgun (3-harm close messy)",
+                        "smg (2-harm close autofire loud)",
+                        "magnum (3-harm close reload loud)",
+                        "grenade tube (4-harm close area reload messy)"
+                ))
+                .backupWeapons(List.of(
+                        "9mm (2-harm close loud)",
+                        "big-ass knife (2-harm hand)",
+                        "machete (3-harm hand messy)",
+                        "many knives (2-harm hand infinite)",
+                        "grenades (4-harm hand area reload messy)"
+                ))
+                .build();
+
+        PlaybookUniqueCreator gunluggerUniqueCreator = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.WEAPONS)
+                .weaponsCreator(weaponsCreator)
+                .build();
+
+        PlaybookCreator playbookCreatorGunlugger = PlaybookCreator.builder()
+                .playbookType(PlaybookType.GUNLUGGER)
+                .gearInstructions(gearInstructionsGunlugger)
+                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
+                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .movesInstructions("You get all the basic moves. Choose 3 gunlugger moves.\n" +
+                        "You can use all the battle moves, and probably will, but you gotta start somewhere. When you get the chance, look up _**seize by force**_ and  _**laying down fire**_.")
+                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
+                        "\n" +
+                        "List the other characters’ names.\n" +
+                        "\n" +
+                        "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                        "\n" +
+                        "- *Which one of you left me bleeding, and did nothing for me?* For that character, write Hx-2.\n" +
+                        "- *Which one of you has fought shoulder to shoulder with me?* For that character, write Hx+2.\n" +
+                        "- *Which one of you is prettiest and/or smartest?* For that character, write Hx+3.\n" +
+                        "\n" +
+                        "For everyone else, write Hx-1. You find no particular need to understand most people.\n" +
+                        "\n" +
+                        "On the others’ turns, answer their questions as you like.\n" +
+                        "\n" +
+                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                .defaultMoves(gunluggerDefaultMoves)
+                .optionalMoves(gunluggerOptionalMoves)
+                .playbookUniqueCreator(gunluggerUniqueCreator)
+                .defaultMoveCount(1)
+                .moveChoiceCount(3)
+                .defaultVehicleCount(0)
+                .build();
+
         playbookCreatorService.saveAll(Flux.just(angelCreator,
                 battlebabePlaybookCreator,
                 playbookCreatorBrainer,
                 playbookCreatorChopper,
-                playbookCreatorDriver)).blockLast();
+                playbookCreatorDriver,
+                playbookCreatorGunlugger)).blockLast();
     }
 
     public void loadVehicleCreator() {
@@ -2831,6 +2989,32 @@ public class GameDataLoader implements CommandLineRunner {
             playbookCreatorService.save(playbookCreatorDriver).block();
             playbookDriver.setCreator(playbookCreatorDriver);
             playbookService.save(playbookDriver).block();
+        }
+
+        // -------------------------------------- DRIVER -------------------------------------- //
+        Playbook playbookGunlugger = playbookService.findByPlaybookType(PlaybookType.GUNLUGGER).block();
+        assert playbookGunlugger != null;
+
+        if (playbookGunlugger.getCreator() == null) {
+            PlaybookCreator playbookCreatorGunlugger = playbookCreatorService.findByPlaybookType(PlaybookType.GUNLUGGER).block();
+            assert playbookCreatorGunlugger != null;
+
+            List<Name> namesGunlugger = nameService.findAllByPlaybookType(PlaybookType.GUNLUGGER).collectList().block();
+            assert namesGunlugger != null;
+
+
+            List<Look> looksGunlugger = lookService.findAllByPlaybookType(PlaybookType.GUNLUGGER).collectList().block();
+            assert looksGunlugger != null;
+
+            List<StatsOption> statsOptionsGunlugger = statsOptionService.findAllByPlaybookType(PlaybookType.GUNLUGGER).collectList().block();
+            assert statsOptionsGunlugger != null;
+
+            statsOptionsGunlugger.forEach(statsOption -> playbookCreatorGunlugger.getStatsOptions().add(statsOption));
+            namesGunlugger.forEach(name -> playbookCreatorGunlugger.getNames().add(name));
+            looksGunlugger.forEach(look -> playbookCreatorGunlugger.getLooks().add(look));
+            playbookCreatorService.save(playbookCreatorGunlugger).block();
+            playbookGunlugger.setCreator(playbookCreatorGunlugger);
+            playbookService.save(playbookGunlugger).block();
         }
     }
 

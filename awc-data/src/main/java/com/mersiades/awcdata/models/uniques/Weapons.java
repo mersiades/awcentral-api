@@ -1,6 +1,5 @@
-package com.mersiades.awccontent.models;
+package com.mersiades.awcdata.models.uniques;
 
-import com.mersiades.awccontent.enums.StatType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,16 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class RollModifier {
+public class Weapons {
 
     @Id
     private String id;
 
-    private StatType statToRollWith;
-
     @Builder.Default
-    private List<Move> movesToModify = new ArrayList<>();
+    private List<String> weapons = new ArrayList<>();
 }

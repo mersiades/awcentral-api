@@ -382,13 +382,13 @@ public class GameServiceImpl implements GameService {
                 .stream().filter(characterMove -> characterMove.getId().equals(moveId)).findFirst();
         CharacterStat modifier;
         if (moveOptional.isPresent()) {
-            modifier = getStatToRoll(character, moveOptional.get().getName(), moveOptional.get().getMoveAction().getStatToRollWith());
+            modifier = getStatToRoll(character, moveOptional.get());
             gameMessage.setContent(moveOptional.get().getDescription());
             gameMessage.setTitle(String.format("%s: %s", character.getName(), moveOptional.get().getName()).toUpperCase());
         } else {
             Move move = moveService.findById(moveId).block();
             assert move != null;
-            modifier = getStatToRoll(character, move.getName(), move.getMoveAction().getStatToRollWith());
+            modifier = getStatToRoll(character, move);
             gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
             gameMessage.setContent(move.getDescription());
         }
@@ -418,7 +418,7 @@ public class GameServiceImpl implements GameService {
 
         if (moveOptional.isPresent()) {
             // Check if Character has Move to roll with a different stat
-            CharacterStat alternateStat = checkForHxAlternative(character, moveOptional.get().getName());
+            CharacterStat alternateStat = checkForHxAlternative(character, moveOptional.get());
 
             // Set stat value and name
             if (alternateStat != null) {
@@ -442,7 +442,7 @@ public class GameServiceImpl implements GameService {
             Move move = moveService.findById(moveId).block();
             assert move != null;
             // Check if Character has Move to roll with a different stat
-            CharacterStat alternateStat = checkForHxAlternative(character, move.getName());
+            CharacterStat alternateStat = checkForHxAlternative(character, move);
 
             // Set stat value and name
             if (alternateStat != null) {
@@ -966,9 +966,9 @@ public class GameServiceImpl implements GameService {
         return gameRepository.findById(gameId, skip, limit);
     }
 
-    private CharacterStat checkForHxAlternative(Character character, String moveName) {
+    private CharacterStat checkForHxAlternative(Character character, Move move) {
         Optional<RollModifier> optionalRollModifier = character.getCharacterMoves()
-                .stream().filter(characterMove -> characterMove.getRollModifier() != null && characterMove.getRollModifier().getMoveToModify().getName().equals(moveName))
+                .stream().filter(characterMove -> characterMove.getRollModifier() != null && characterMove.getRollModifier().getMovesToModify().contains(move))
                 .map(Move::getRollModifier).findFirst();
 
         if (optionalRollModifier.isPresent()) {
@@ -980,10 +980,10 @@ public class GameServiceImpl implements GameService {
         }
     }
 
-    private CharacterStat getStatToRoll(Character character, String moveName, StatType statToRollWith) {
+    private CharacterStat getStatToRoll(Character character, Move move) {
         // Only some characters will have a RollModifier for the Move they are rolling
         Optional<RollModifier> rollModifierOptional = character.getCharacterMoves()
-                .stream().filter(characterMove -> characterMove.getRollModifier() != null && characterMove.getRollModifier().getMoveToModify().getName().equals(moveName))
+                .stream().filter(characterMove -> characterMove.getRollModifier() != null && characterMove.getRollModifier().getMovesToModify().contains(move))
                 .map(Move::getRollModifier).findFirst();
 
         StatType statToFind;
@@ -991,7 +991,7 @@ public class GameServiceImpl implements GameService {
         if (rollModifierOptional.isPresent()) {
             statToFind = rollModifierOptional.get().getStatToRollWith();
         } else {
-            statToFind = statToRollWith;
+            statToFind = move.getMoveAction().getStatToRollWith();
         }
 
         return character.getStatsBlock().getStats()

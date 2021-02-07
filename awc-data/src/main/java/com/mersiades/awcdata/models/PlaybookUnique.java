@@ -1,10 +1,7 @@
 package com.mersiades.awcdata.models;
 
 import com.mersiades.awccontent.enums.UniqueType;
-import com.mersiades.awcdata.models.uniques.AngelKit;
-import com.mersiades.awcdata.models.uniques.BrainerGear;
-import com.mersiades.awcdata.models.uniques.CustomWeapons;
-import com.mersiades.awcdata.models.uniques.Gang;
+import com.mersiades.awcdata.models.uniques.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,4 +26,6 @@ public class PlaybookUnique {
     private BrainerGear brainerGear;
 
     private Gang gang;
+
+    private Weapons weapons;
 }
