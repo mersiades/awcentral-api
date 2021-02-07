@@ -379,6 +379,7 @@ type GameMessage {
     roll1: Int
     roll2: Int
     rollModifier: Int
+    usedPlusOneForward: Boolean
     rollResult: Int
     modifierStatName: StatType
     barterSpent: Int
@@ -438,6 +439,7 @@ type Character {
     gear: [String]
     playbook: PlaybookType
     hasCompletedCharacterCreation: Boolean
+    hasPlusOneForward: Boolean
     looks: [Look]
     statsBlock: StatsBlock
     hxBlock: [HxStat]
