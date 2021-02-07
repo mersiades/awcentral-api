@@ -381,13 +381,16 @@ public class GameServiceImpl implements GameService {
         Optional<CharacterMove> moveOptional = character.getCharacterMoves()
                 .stream().filter(characterMove -> characterMove.getId().equals(moveId)).findFirst();
         CharacterStat modifier;
+        boolean canGainPlusOneForward = false;
         if (moveOptional.isPresent()) {
+            canGainPlusOneForward = List.of(catOrMouse, reputation).contains(moveOptional.get().getName());
             modifier = getStatToRoll(character, moveOptional.get());
             gameMessage.setContent(moveOptional.get().getDescription());
             gameMessage.setTitle(String.format("%s: %s", character.getName(), moveOptional.get().getName()).toUpperCase());
         } else {
             Move move = moveService.findById(moveId).block();
             assert move != null;
+            canGainPlusOneForward = List.of(catOrMouse, reputation).contains(move.getName());
             modifier = getStatToRoll(character, move);
             gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
             gameMessage.setContent(move.getDescription());
@@ -396,10 +399,15 @@ public class GameServiceImpl implements GameService {
         gameMessage.setModifierStatName(modifier.getStat());
         gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifier.getValue());
 
+
         if (character.getHasPlusOneForward()) {
             gameMessage.setUsedPlusOneForward(true);
             gameMessage.setRollResult(gameMessage.getRollResult() + 1);
             character.setHasPlusOneForward(false);
+        }
+
+        if (gameMessage.getRollResult() >= 10 && canGainPlusOneForward) {
+            character.setHasPlusOneForward(true);
         }
 
         if (isGangMove) {

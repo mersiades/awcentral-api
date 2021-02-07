@@ -20,5 +20,7 @@ public class MoveNames {
     public static String collector = "COLLECTOR";
     public static String goAggro = "GO AGGRO ON SOMEONE";
     public static String suckerSomeone = "SUCKER SOMEONE";
+    public static String catOrMouse = "CAT OR MOUSE";
+    public static String reputation = "REPUTATION";
 
 }
