@@ -914,6 +914,85 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Mono<Game> performGunluggerSpecialMove(String gameId,
+                                                String gameroleId,
+                                                String otherGameroleId,
+                                                String characterId,
+                                                String otherCharacterId,
+                                                boolean addPlus1Forward) {
+        return gameRepository.findById(gameId)
+                .flatMap(game -> {
+                    // Find User's Character
+                    Character userCharacter = characterService.findById(characterId).block();
+                    assert userCharacter != null;
+
+                    CharacterMove gunluggerSpecialMove = userCharacter.getCharacterMoves()
+                            .stream().filter(characterMove -> characterMove.getName().equals(gunluggerSpecialName))
+                            .findFirst().orElseThrow();
+                    assert gunluggerSpecialMove != null;
+
+                    // Find other Character
+                    Character otherCharacter = characterService.findById(otherCharacterId).block();
+                    assert otherCharacter != null;
+
+
+                    // Add +1forward to user's Character
+                    gameRoleService.findById(gameroleId).map(gameRole1 -> {
+                        Character character = gameRole1.getCharacters()
+                                .stream().filter(character1 -> character1.getId().equals(characterId))
+                                .findFirst().orElseThrow();
+
+                        character.setHasPlusOneForward(true);
+
+                        characterService.save(character).block();
+
+                        return gameRole1;
+                    }).flatMap(gameRoleService::save).block();
+
+                    // Add +1forward to other character (maybe)
+                    if (addPlus1Forward) {
+                        gameRoleService.findById(otherGameroleId).map(gameRole1 -> {
+                            Character character = gameRole1.getCharacters()
+                                    .stream().filter(character1 -> character1.getId().equals(otherCharacterId))
+                                    .findFirst().orElseThrow();
+
+                            character.setHasPlusOneForward(true);
+
+                            characterService.save(character).block();
+
+                            return gameRole1;
+                        }).flatMap(gameRoleService::save).block();
+                    }
+
+                    GameMessage gameMessage = GameMessage.builder()
+                            .id(UUID.randomUUID().toString())
+                            .gameId(gameId)
+                            .gameroleId(gameroleId)
+                            .messageType(MessageType.ADJUST_HX_MOVE)
+                            .sentOn(Instant.now().toString()).build();
+
+
+                    String content = String.format("%s and %s had sex. %s has gained +1forward, ",
+                            userCharacter.getName(),
+                            otherCharacter.getName(),
+                            userCharacter.getName()
+                            );
+
+                    if (addPlus1Forward) {
+                        content += String.format("and %s got +1forward too.", otherCharacter.getName());
+                    } else {
+                        content += String.format("but %s didn't.", otherCharacter.getName());
+                    }
+
+                    gameMessage.setContent(content);
+                    gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), gunluggerSpecialMove.getName()).toUpperCase());
+                    game.getGameMessages().add(gameMessage);
+                    return Mono.just(game);
+                })
+                .flatMap(gameRepository::save);
+    }
+
+    @Override
     public Mono<Game> performStabilizeAndHealMove(String gameId, String gameroleId, String characterId, int stockSpent) {
         return gameRepository.findById(gameId)
                 .flatMap(game -> {

@@ -40,6 +40,7 @@ enum MoveActionType {
     BARTER,
     ADJUST_HX,
     STOCK,
+    GUNLUGGER_SPECIAL
 }
 
 enum RollType {
@@ -775,6 +776,12 @@ type Mutation {
         characterId: String!,
         otherCharacterId: String!,
         hxChange: Int!): Game
+    performGunluggerSpecialMove(gameId: String!,
+        gameroleId: String!,
+        otherGameroleId: String!,
+        characterId: String!,
+        otherCharacterId: String!,
+        addPlus1Forward: Boolean!): Game
     performStabilizeAndHealMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
 }
 

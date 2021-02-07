@@ -1456,10 +1456,17 @@ public class GameDataLoader implements CommandLineRunner {
                 .id(UUID.randomUUID().toString())
                 .statToModify(HARD)
                 .modification(1).build();
+        MoveAction gunluggerSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.GUNLUGGER_SPECIAL)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move gunluggerSpecial = Move.builder()
-                .name("GUNLUGGER SPECIAL")
+                .name(gunluggerSpecialName)
                 .description("If you and another character have sex, you take +1 forward. At your option, they take +1 forward too.")
                 .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(gunluggerSpecialAction)
                 .stat(null)
                 .playbook(PlaybookType.GUNLUGGER).build();
         Move battleHardened = Move.builder()

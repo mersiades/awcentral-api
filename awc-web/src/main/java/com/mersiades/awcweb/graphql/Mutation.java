@@ -199,7 +199,6 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.performMakeWantKnownMove(gameId, gameroleId, characterId, moveId, barter).block();
     }
 
-
     public Game performInflictHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm) {
         System.out.println("Performing INFLICT HARM ON PC move for Character: " + characterId);
         return gameService.performInflictHarmMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, harm).block();
@@ -218,6 +217,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Game performChopperSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int hxChange) {
         System.out.println("Performing CHOPPER SPECIAL move for Character: " + characterId);
         return gameService.performChopperSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, hxChange).block();
+    }
+
+    public Game performGunluggerSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, boolean addPlus1Forward) {
+        System.out.println("Performing GUNLUGGER SPECIAL move for Character: " + characterId);
+        return gameService.performGunluggerSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, addPlus1Forward).block();
     }
 
     public Game performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm) {
