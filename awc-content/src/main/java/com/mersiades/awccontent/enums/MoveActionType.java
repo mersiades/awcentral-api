@@ -24,4 +24,6 @@ public enum MoveActionType {
     // Only three moves: SPEED THE RECOVERY OF SOMEONE, REVIVE SOMEONE, and TREAT AN NPC
     // Handled by: TODO
     STOCK,
+
+    GUNLUGGER_SPECIAL,
 }

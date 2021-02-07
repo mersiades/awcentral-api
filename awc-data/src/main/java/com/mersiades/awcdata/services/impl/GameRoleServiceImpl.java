@@ -96,7 +96,10 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .value(0)
                 .build();
 
-        Character newCharacter = Character.builder().hasCompletedCharacterCreation(false).harm(harm).build();
+        Character newCharacter = Character.builder()
+                .hasCompletedCharacterCreation(false)
+                .hasPlusOneForward(false)
+                .harm(harm).build();
         characterService.save(newCharacter).block();
         assert gameRole != null;
         gameRole.getCharacters().add(newCharacter);

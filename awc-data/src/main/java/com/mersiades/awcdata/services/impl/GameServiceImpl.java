@@ -381,13 +381,16 @@ public class GameServiceImpl implements GameService {
         Optional<CharacterMove> moveOptional = character.getCharacterMoves()
                 .stream().filter(characterMove -> characterMove.getId().equals(moveId)).findFirst();
         CharacterStat modifier;
+        boolean canGainPlusOneForward = false;
         if (moveOptional.isPresent()) {
+            canGainPlusOneForward = List.of(catOrMouse, reputation).contains(moveOptional.get().getName());
             modifier = getStatToRoll(character, moveOptional.get());
             gameMessage.setContent(moveOptional.get().getDescription());
             gameMessage.setTitle(String.format("%s: %s", character.getName(), moveOptional.get().getName()).toUpperCase());
         } else {
             Move move = moveService.findById(moveId).block();
             assert move != null;
+            canGainPlusOneForward = List.of(catOrMouse, reputation).contains(move.getName());
             modifier = getStatToRoll(character, move);
             gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
             gameMessage.setContent(move.getDescription());
@@ -396,9 +399,27 @@ public class GameServiceImpl implements GameService {
         gameMessage.setModifierStatName(modifier.getStat());
         gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifier.getValue());
 
+
+        if (character.getHasPlusOneForward()) {
+            gameMessage.setUsedPlusOneForward(true);
+            gameMessage.setRollResult(gameMessage.getRollResult() + 1);
+            character.setHasPlusOneForward(false);
+        }
+
+        if (gameMessage.getRollResult() >= 10 && canGainPlusOneForward) {
+            character.setHasPlusOneForward(true);
+        }
+
         if (isGangMove) {
             gameMessage.setContent(gameMessage.getContent() +"\n\n" + GANG_CONTENT);
         }
+
+        characterService.save(character).block();
+        gameRoleService.findById(gameroleId).map(gameRole -> {
+            gameRole.setCharacters(List.of(character));
+            return gameRole;
+        }).flatMap(gameRoleService::save).block();
+
         return gameRepository.findById(gameId).map(game -> {
             game.getGameMessages().add(gameMessage);
             return game;
@@ -461,6 +482,18 @@ public class GameServiceImpl implements GameService {
         }
 
         gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + gameMessage.getRollModifier());
+
+        if (character.getHasPlusOneForward()) {
+            gameMessage.setUsedPlusOneForward(true);
+            gameMessage.setRollResult(gameMessage.getRollResult() + 1);
+            character.setHasPlusOneForward(false);
+        }
+        characterService.save(character).block();
+        gameRoleService.findById(gameroleId).map(gameRole -> {
+            gameRole.setCharacters(List.of(character));
+            return gameRole;
+        }).flatMap(gameRoleService::save).block();
+
         return gameRepository.findById(gameId).map(game -> {
             game.getGameMessages().add(gameMessage);
             return game;
@@ -512,14 +545,6 @@ public class GameServiceImpl implements GameService {
         Character character = characterService.findById(characterId).block();
         assert character != null;
         character.setBarter(character.getBarter() - barter);
-        Character savedCharacter = characterService.save(character).block();
-            assert savedCharacter != null;
-
-        // Save Character on GameRole
-        gameRoleService.findById(gameroleId).map(gameRole1 -> {
-            gameRole1.setCharacters(List.of(savedCharacter));
-            return gameRole1;
-        }).flatMap(gameRoleService::save).block();
 
         // Find move
         Move move = moveService.findById(moveId).block();
@@ -532,6 +557,22 @@ public class GameServiceImpl implements GameService {
         gameMessage.setBarterSpent(barter);
         gameMessage.setCurrentBarter(character.getBarter());
         gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + barter);
+
+        if (character.getHasPlusOneForward()) {
+            gameMessage.setUsedPlusOneForward(true);
+            gameMessage.setRollResult(gameMessage.getRollResult() + 1);
+            character.setHasPlusOneForward(false);
+        }
+
+
+        Character savedCharacter = characterService.save(character).block();
+        assert savedCharacter != null;
+
+        // Save Character on GameRole
+        gameRoleService.findById(gameroleId).map(gameRole1 -> {
+            gameRole1.setCharacters(List.of(savedCharacter));
+            return gameRole1;
+        }).flatMap(gameRoleService::save).block();
 
         return gameRepository.findById(gameId).map(game -> {
             game.getGameMessages().add(gameMessage);
@@ -881,6 +922,85 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Mono<Game> performGunluggerSpecialMove(String gameId,
+                                                String gameroleId,
+                                                String otherGameroleId,
+                                                String characterId,
+                                                String otherCharacterId,
+                                                boolean addPlus1Forward) {
+        return gameRepository.findById(gameId)
+                .flatMap(game -> {
+                    // Find User's Character
+                    Character userCharacter = characterService.findById(characterId).block();
+                    assert userCharacter != null;
+
+                    CharacterMove gunluggerSpecialMove = userCharacter.getCharacterMoves()
+                            .stream().filter(characterMove -> characterMove.getName().equals(gunluggerSpecialName))
+                            .findFirst().orElseThrow();
+                    assert gunluggerSpecialMove != null;
+
+                    // Find other Character
+                    Character otherCharacter = characterService.findById(otherCharacterId).block();
+                    assert otherCharacter != null;
+
+
+                    // Add +1forward to user's Character
+                    gameRoleService.findById(gameroleId).map(gameRole1 -> {
+                        Character character = gameRole1.getCharacters()
+                                .stream().filter(character1 -> character1.getId().equals(characterId))
+                                .findFirst().orElseThrow();
+
+                        character.setHasPlusOneForward(true);
+
+                        characterService.save(character).block();
+
+                        return gameRole1;
+                    }).flatMap(gameRoleService::save).block();
+
+                    // Add +1forward to other character (maybe)
+                    if (addPlus1Forward) {
+                        gameRoleService.findById(otherGameroleId).map(gameRole1 -> {
+                            Character character = gameRole1.getCharacters()
+                                    .stream().filter(character1 -> character1.getId().equals(otherCharacterId))
+                                    .findFirst().orElseThrow();
+
+                            character.setHasPlusOneForward(true);
+
+                            characterService.save(character).block();
+
+                            return gameRole1;
+                        }).flatMap(gameRoleService::save).block();
+                    }
+
+                    GameMessage gameMessage = GameMessage.builder()
+                            .id(UUID.randomUUID().toString())
+                            .gameId(gameId)
+                            .gameroleId(gameroleId)
+                            .messageType(MessageType.ADJUST_HX_MOVE)
+                            .sentOn(Instant.now().toString()).build();
+
+
+                    String content = String.format("%s and %s had sex. %s has gained +1forward, ",
+                            userCharacter.getName(),
+                            otherCharacter.getName(),
+                            userCharacter.getName()
+                            );
+
+                    if (addPlus1Forward) {
+                        content += String.format("and %s got +1forward too.", otherCharacter.getName());
+                    } else {
+                        content += String.format("but %s didn't.", otherCharacter.getName());
+                    }
+
+                    gameMessage.setContent(content);
+                    gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), gunluggerSpecialMove.getName()).toUpperCase());
+                    game.getGameMessages().add(gameMessage);
+                    return Mono.just(game);
+                })
+                .flatMap(gameRepository::save);
+    }
+
+    @Override
     public Mono<Game> performStabilizeAndHealMove(String gameId, String gameroleId, String characterId, int stockSpent) {
         return gameRepository.findById(gameId)
                 .flatMap(game -> {
@@ -894,6 +1014,16 @@ public class GameServiceImpl implements GameService {
                     GameMessage gameMessage = getGameMessageWithDiceRolls(gameId, gameroleId, MessageType.ROLL_STOCK_MOVE);
 
 
+
+
+                    gameMessage.setContent(stabilizeMove.getDescription());
+                    gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), stabilizeMove.getName()).toUpperCase());
+                    gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + stockSpent);
+                    if (userCharacter.getHasPlusOneForward()) {
+                        gameMessage.setUsedPlusOneForward(true);
+                        gameMessage.setRollResult(gameMessage.getRollResult() + 1);
+                    }
+
                     // Adjust stock on user's Character
                     gameRoleService.findById(gameroleId).map(gameRole1 -> {
                         Character character = gameRole1.getCharacters()
@@ -903,14 +1033,16 @@ public class GameServiceImpl implements GameService {
                         character.getPlaybookUnique().getAngelKit()
                                 .setStock(character.getPlaybookUnique().getAngelKit().getStock() - stockSpent);
 
+                        if (character.getHasPlusOneForward()) {
+                            character.setHasPlusOneForward(false);
+                        }
+
                         characterService.save(character).block();
 
                         return gameRole1;
                     }).flatMap(gameRoleService::save).block();
 
-                    gameMessage.setContent(stabilizeMove.getDescription());
-                    gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), stabilizeMove.getName()).toUpperCase());
-                    gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + stockSpent);
+
                     gameMessage.setStockSpent(stockSpent);
                     gameMessage.setCurrentStock(userCharacter.getPlaybookUnique().getAngelKit().getStock() - stockSpent);
                     game.getGameMessages().add(gameMessage);

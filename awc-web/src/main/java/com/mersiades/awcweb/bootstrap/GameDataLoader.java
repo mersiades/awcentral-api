@@ -804,8 +804,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollType(RollType.STAT)
                 .statToRollWith(SHARP)
                 .build();
-        Move catOrMouse = Move.builder()
-                .name("CAT OR MOUSE")
+        Move catOrMouseMove = Move.builder()
+                .name(catOrMouse)
                 .description("When _**it’s not certain whether you’re the cat or the mouse**_, roll+sharp. On a hit, you decide which you are.\n" +
                         "\n" +
                         "On a 10+, you take +1forward as well.\n" +
@@ -818,7 +818,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         moveService.saveAll(Flux.just(exchangeHarm, seizeByForce, assaultAPosition, keepHoldOfSomething,
                 fightFree, defendSomeone, doSingleCombat, layDownFire, standOverwatch, keepAnEyeOut,
-                beTheBait, beTheCat, beTheMouse, catOrMouse)).blockLast();
+                beTheBait, beTheCat, beTheMouse, catOrMouseMove)).blockLast();
 
         System.out.println("|| --- Loading road war moves --- ||");
         /* ----------------------------- ROAD WAR MOVES --------------------------------- */
@@ -1403,8 +1403,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollType(RollType.STAT)
                 .statToRollWith(COOL)
                 .build();
-        Move reputation = Move.builder()
-                .name("REPUTATION")
+        Move reputationMove = Move.builder()
+                .name(reputation)
                 .description("_**Reputation**_: when you meet someone important (your call), roll+cool.\n" +
                         "\n" +
                         "On a hit, they’ve heard of you, and you say what they’ve heard; the MC has them respond accordingly.\n" +
@@ -1440,7 +1440,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .playbook(PlaybookType.DRIVER).build();
 
-        moveService.saveAll(Flux.just(driverSpecial, combatDriver, eyeOnTheDoor, weatherEye, reputation, daredevil, collectorMove, myOtherCarIsATank)).blockLast();
+        moveService.saveAll(Flux.just(driverSpecial, combatDriver, eyeOnTheDoor, weatherEye, reputationMove, daredevil, collectorMove, myOtherCarIsATank)).blockLast();
 
         /* ----------------------------- GUNLUGGER MOVES --------------------------------- */
         System.out.println("|| --- Loading Gunlugger moves --- ||");
@@ -1456,10 +1456,17 @@ public class GameDataLoader implements CommandLineRunner {
                 .id(UUID.randomUUID().toString())
                 .statToModify(HARD)
                 .modification(1).build();
+        MoveAction gunluggerSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.GUNLUGGER_SPECIAL)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
         Move gunluggerSpecial = Move.builder()
-                .name("GUNLUGGER SPECIAL")
+                .name(gunluggerSpecialName)
                 .description("If you and another character have sex, you take +1 forward. At your option, they take +1 forward too.")
                 .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(gunluggerSpecialAction)
                 .stat(null)
                 .playbook(PlaybookType.GUNLUGGER).build();
         Move battleHardened = Move.builder()

@@ -34,6 +34,8 @@ public class Character {
 
     private Boolean hasCompletedCharacterCreation;
 
+    private Boolean hasPlusOneForward;
+
     private int barter;
 
     private CharacterHarm harm;

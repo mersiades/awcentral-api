@@ -37,6 +37,8 @@ public class GameMessage {
 
     private int rollModifier;
 
+    private boolean usedPlusOneForward;
+
     private int rollResult;
 
     private StatType modifierStatName;
