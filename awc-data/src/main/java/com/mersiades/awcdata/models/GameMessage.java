@@ -43,6 +43,10 @@ public class GameMessage {
 
     private StatType modifierStatName;
 
+    private int additionalModifierValue;
+
+    private String additionalModifierName;
+
     private int barterSpent;
 
     private int currentBarter;

@@ -822,8 +822,14 @@ public class GameDataLoader implements CommandLineRunner {
 
         System.out.println("|| --- Loading road war moves --- ||");
         /* ----------------------------- ROAD WAR MOVES --------------------------------- */
-        Move boardAMovingVehicle = Move.builder()
-                .name("BOARD A MOVING VEHICLE")
+        MoveAction boardVehicleAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.SPEED)
+                .statToRollWith(COOL)
+                .build();
+        Move boardAMovingVehicleMove = Move.builder()
+                .name(boardVehicle)
                 .description("To _**board a moving vehicle**_, roll+cool, minus its speed. To board one moving vehicle from another, roll+cool, minus the difference between their speeds.\n" +
                         "\n" +
                         "On a 10+, you’re on and you made it look easy. Take +1forward.\n" +
@@ -832,11 +838,17 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, the MC chooses: you’re hanging on for dear life, or you’re down and good luck to you.")
                 .kind(MoveType.ROAD_WAR)
-                .stat(COOL)
+                .moveAction(boardVehicleAction)
                 .playbook(null)
                 .build();
-        Move outdistanceAnotherVehicle = Move.builder()
-                .name("OUTDISTANCE ANOTHER VEHICLE")
+        MoveAction outdistanceVehicleAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.SPEED)
+                .statToRollWith(COOL)
+                .build();
+        Move outdistanceAnotherVehicleMove = Move.builder()
+                .name(outdistanceVehicle)
                 .description("When you try to outdistance another vehicle, roll+cool, modified by the vehicles’ relative speed.\n" +
                         "\n" +
                         "On a 10+, you outdistance them and break away.\n" +
@@ -849,11 +861,17 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, your counterpart chooses 1 against you.")
                 .kind(MoveType.ROAD_WAR)
-                .stat(COOL)
+                .moveAction(outdistanceVehicleAction)
                 .playbook(null)
                 .build();
-        Move overtakeAnotherVehicle = Move.builder()
-                .name("OVERTAKE ANOTHER VEHICLE")
+        MoveAction overtakeVehicleAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.SPEED)
+                .statToRollWith(COOL)
+                .build();
+        Move overtakeAnotherVehicleMove = Move.builder()
+                .name(overtakeVehicle)
                 .description("When you _**try to overtake another vehicle**_, roll+cool, modified by the vehicles’ relative speed.\n" +
                         "\n" +
                         "On a 10+, you overtake them and draw alongside.\n" +
@@ -866,11 +884,17 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, your counterpart chooses 1 against you.")
                 .kind(MoveType.ROAD_WAR)
-                .stat(COOL)
+                .moveAction(overtakeVehicleAction)
                 .playbook(null)
                 .build();
-        Move dealWithBadTerrain = Move.builder()
-                .name("DEAL WITH BAD TERRAIN")
+        MoveAction dealWithTerrainAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.HANDLING)
+                .statToRollWith(COOL)
+                .build();
+        Move dealWithBadTerrainMove = Move.builder()
+                .name(dealWithTerrain)
                 .description("When you have to _**deal with bad terrain**_, roll+cool, plus your vehicle’s handling.\n" +
                         "\n" +
                         "On a 10+, you fly through untouched.\n" +
@@ -883,7 +907,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a miss, the MC chooses 1 for you; the others are impossible.")
                 .kind(MoveType.ROAD_WAR)
-                .stat(COOL)
+                .moveAction(dealWithTerrainAction)
                 .playbook(null)
                 .build();
         MoveAction shoulderAnotherVehicleAction = MoveAction.builder()
@@ -904,8 +928,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
 
-        moveService.saveAll(Flux.just(boardAMovingVehicle, outdistanceAnotherVehicle, overtakeAnotherVehicle,
-                dealWithBadTerrain, shoulderAnotherVehicle)).blockLast();
+        moveService.saveAll(Flux.just(boardAMovingVehicleMove, outdistanceAnotherVehicleMove, overtakeAnotherVehicleMove,
+                dealWithBadTerrainMove, shoulderAnotherVehicle)).blockLast();
 
         /* ----------------------------- ANGEL MOVES --------------------------------- */
         System.out.println("|| --- Loading Angel moves --- ||");

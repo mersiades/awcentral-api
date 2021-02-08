@@ -383,6 +383,8 @@ type GameMessage {
     usedPlusOneForward: Boolean
     rollResult: Int
     modifierStatName: StatType
+    additionalModifierValue: Int
+    additionalModifierName: String
     barterSpent: Int
     currentBarter: Int
     harmSuffered: Int
@@ -748,6 +750,11 @@ type Mutation {
         characterId: String!,
         moveId: String!,
         isGangMove: Boolean!): Game
+    performSpeedRollMove(gameId: String!,
+        gameroleId: String!,
+        characterId: String!,
+        moveId: String!,
+        modifier: Int!): Game # Modifier can be speed difference, relative speed, or handling
 
     #    Specific moves
     performHelpOrInterfereMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
