@@ -170,7 +170,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(HARD)
                 .build();
         Move goAggro = Move.builder()
-                .name(MoveNames.goAggro)
+                .name(MoveNames.goAggroName)
                 .description("When you _**go aggro on someone**_, make it clear what you want them to do and what you’ll do to them. Roll+hard.\n" +
                         "\n" +
                         "On a 10+, they have to choose:\n" +
@@ -197,7 +197,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(null)
                 .build();
         Move sucker = Move.builder()
-                .name(suckerSomeone)
+                .name(suckerSomeoneName)
                 .description("When you _**attack someone unsuspecting or helpless**_, ask the MC if you could miss. If you could, treat it as going aggro, but your victim has no choice to cave and do what you want. If you couldn’t, you simply inflict harm as established.")
                 .kind(MoveType.BASIC)
                 .moveAction(suckerAction)
@@ -805,7 +805,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(SHARP)
                 .build();
         Move catOrMouseMove = Move.builder()
-                .name(catOrMouse)
+                .name(catOrMouseName)
                 .description("When _**it’s not certain whether you’re the cat or the mouse**_, roll+sharp. On a hit, you decide which you are.\n" +
                         "\n" +
                         "On a 10+, you take +1forward as well.\n" +
@@ -829,7 +829,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(COOL)
                 .build();
         Move boardAMovingVehicleMove = Move.builder()
-                .name(boardVehicle)
+                .name(boardVehicleName)
                 .description("To _**board a moving vehicle**_, roll+cool, minus its speed. To board one moving vehicle from another, roll+cool, minus the difference between their speeds.\n" +
                         "\n" +
                         "On a 10+, you’re on and you made it look easy. Take +1forward.\n" +
@@ -848,7 +848,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(COOL)
                 .build();
         Move outdistanceAnotherVehicleMove = Move.builder()
-                .name(outdistanceVehicle)
+                .name(outdistanceVehicleName)
                 .description("When you try to outdistance another vehicle, roll+cool, modified by the vehicles’ relative speed.\n" +
                         "\n" +
                         "On a 10+, you outdistance them and break away.\n" +
@@ -871,7 +871,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(COOL)
                 .build();
         Move overtakeAnotherVehicleMove = Move.builder()
-                .name(overtakeVehicle)
+                .name(overtakeVehicleName)
                 .description("When you _**try to overtake another vehicle**_, roll+cool, modified by the vehicles’ relative speed.\n" +
                         "\n" +
                         "On a 10+, you overtake them and draw alongside.\n" +
@@ -893,8 +893,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollType(RollType.HANDLING)
                 .statToRollWith(COOL)
                 .build();
-        Move dealWithBadTerrainMove = Move.builder()
-                .name(dealWithTerrain)
+        Move dealWithBadTerrain = Move.builder()
+                .name(dealWithTerrainName)
                 .description("When you have to _**deal with bad terrain**_, roll+cool, plus your vehicle’s handling.\n" +
                         "\n" +
                         "On a 10+, you fly through untouched.\n" +
@@ -929,7 +929,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         moveService.saveAll(Flux.just(boardAMovingVehicleMove, outdistanceAnotherVehicleMove, overtakeAnotherVehicleMove,
-                dealWithBadTerrainMove, shoulderAnotherVehicle)).blockLast();
+                dealWithBadTerrain, shoulderAnotherVehicle)).blockLast();
 
         /* ----------------------------- ANGEL MOVES --------------------------------- */
         System.out.println("|| --- Loading Angel moves --- ||");
@@ -1428,7 +1428,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(COOL)
                 .build();
         Move reputationMove = Move.builder()
-                .name(reputation)
+                .name(reputationName)
                 .description("_**Reputation**_: when you meet someone important (your call), roll+cool.\n" +
                         "\n" +
                         "On a hit, they’ve heard of you, and you say what they’ve heard; the MC has them respond accordingly.\n" +
@@ -1452,7 +1452,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(daredevilAction)
                 .playbook(PlaybookType.DRIVER).build();
         Move collectorMove = Move.builder()
-                .name(collector)
+                .name(collectorName)
                 .description("_**Collector**_: you get 2 additional cars (you detail).")
                 .kind(MoveType.CHARACTER)
                 .stat(null)
@@ -1563,6 +1563,63 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(PlaybookType.GUNLUGGER).build();
 
         moveService.saveAll(Flux.just(gunluggerSpecial, battleHardened, fuckThisShit, battlefieldInstincts, insanoLikeDrano, preparedForTheInevitable, bloodcrazed, notToBeFuckedWith)).blockLast();
+
+        /* ----------------------------- HARDHOLDER MOVES --------------------------------- */
+        MoveAction hardholderSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
+        Move harholderSpecial = Move.builder()
+                .name(hardholderSpecialName)
+                .description("If you and another character have sex, you can give the other character gifts worth 1-barter, at no cost to you.")
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(hardholderSpecialAction)
+                .playbook(PlaybookType.HARDHOLDER).build();
+        MoveAction leadershipAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
+                .build();
+        Move leadership = Move.builder()
+                .name("LEADERSHIP")
+                .description("_**Leadership**_: when you have to order your gang to advance, regroup, hold position, hold discipline, or put their damn backs into it, roll+hard.\n" +
+                        "\n" +
+                        "On a hit, they do it.\n" +
+                        "\n" +
+                        "On a 10+, they snap to; take +1forward.\n" +
+                        "\n" +
+                        "On a miss, they do it, but you'll hear about it later."
+                )
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(leadershipAction)
+                .playbook(PlaybookType.HARDHOLDER).build();
+        MoveAction wealthAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
+                .build();
+        Move wealth = Move.builder()
+                .name("WEALTH")
+                .description("_**Wealth**_: if your hold is secure and your rule unchallenged, at the beginning of the session, roll+hard.\n" +
+                        "\n" +
+                        "OOn a 10+, you have surplus on hand and available for the needs of the session.\n" +
+                        "\n" +
+                        "On a 7-9, you have surplus, but choose 1 want.\n" +
+                        "\n" +
+                        "On a miss, or if your hold is compromised or your rule contested, your hold is in want." +
+                        "\n" +
+                        "The precise values of your surplus and want depend on your holding."
+                )
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(wealthAction)
+                .playbook(PlaybookType.HARDHOLDER).build();
+
+        moveService.saveAll(Flux.just(harholderSpecial, leadership, wealth)).blockLast();
+
     }
 
     private void loadNames() {
@@ -1752,6 +1809,32 @@ public class GameDataLoader implements CommandLineRunner {
         nameService.saveAll(Flux.just(vonk, batty, jonker, at, rueWakeman, navarre, man, kartak, barbarossa,
                 keeler, grekkor, crille, doom, chaplain, rex, fido, spot, boxer, doberman, trey, killer, butch,
                 fifi, fluffy, duke, wolf, rover, max, buddy)).blockLast();
+
+        /* ----------------------------- HARDHOLDER NAMES --------------------------------- */
+        Name hardholderName1 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Nbeke").build();
+        Name hardholderName2 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Allison").build();
+        Name hardholderName3 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Kobe").build();
+        Name hardholderName4 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Kreider").build();
+        Name hardholderName5 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Tranh").build();
+        Name hardholderName6 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Marco").build();
+        Name hardholderName7 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Sadiq").build();
+        Name hardholderName8 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Vega").build();
+        Name hardholderName9 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Lang").build();
+        Name hardholderName10 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Lin").build();
+        Name hardholderName11 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Jackson").build();
+        Name hardholderName12 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Madame").build();
+        Name hardholderName13 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Barbecue").build();
+        Name hardholderName14 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Grandma").build();
+        Name hardholderName15 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Uncle").build();
+        Name hardholderName16 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Parson").build();
+        Name hardholderName17 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Barnum").build();
+        Name hardholderName18 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Colonel").build();
+        Name hardholderName19 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Mother Superior").build();
+
+        nameService.saveAll(Flux.just(hardholderName1, hardholderName2, hardholderName3, hardholderName4,
+                hardholderName5, hardholderName6, hardholderName7, hardholderName8, hardholderName9,
+                hardholderName10, hardholderName11, hardholderName12, hardholderName13, hardholderName14,
+                hardholderName15, hardholderName16, hardholderName17, hardholderName18, hardholderName19)).blockLast();
     }
 
     private void loadLooks() {
@@ -1950,51 +2033,93 @@ public class GameDataLoader implements CommandLineRunner {
                 gunlugger8, gunlugger9, gunlugger10, gunlugger11, gunlugger12, gunlugger13, gunlugger14, gunlugger15,
                 gunlugger16, gunlugger17, gunlugger18, gunlugger19, gunlugger20, gunlugger21, gunlugger22, gunlugger23,
                 gunlugger24, gunlugger25, gunlugger26, gunlugger27)).blockLast();
+
+        /* ----------------------------- HARDHOLDER LOOKS --------------------------------- */
+        Look hardHolder1 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.GENDER).look("man").build();
+        Look hardHolder2 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.GENDER).look("woman").build();
+        Look hardHolder3 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.GENDER).look("ambiguous").build();
+        Look hardHolder4 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.GENDER).look("transgressing").build();
+        Look hardHolder5 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.CLOTHES).look("luxe wear").build();
+        Look hardHolder6 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.CLOTHES).look("display wear").build();
+        Look hardHolder7 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.CLOTHES).look("fetish wear").build();
+        Look hardHolder8 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.CLOTHES).look("casual wear").build();
+        Look hardHolder9 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.CLOTHES).look("junta wear").build();
+        Look hardHolder10 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.FACE).look("strong face").build();
+        Look hardHolder11 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.FACE).look("stern face").build();
+        Look hardHolder12 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.FACE).look("cruel face").build();
+        Look hardHolder13 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.FACE).look("soft face").build();
+        Look hardHolder14 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.FACE).look("aristocratic face").build();
+        Look hardHolder15 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.FACE).look("gorgeous").build();
+        Look hardHolder16 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.EYES).look("cool eyes").build();
+        Look hardHolder17 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.EYES).look("commanding eyes").build();
+        Look hardHolder18 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.EYES).look("languid eyes").build();
+        Look hardHolder19 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.EYES).look("sharp eyes").build();
+        Look hardHolder20 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.EYES).look("forgiving eyes").build();
+        Look hardHolder21 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.EYES).look("generous eyes").build();
+        Look hardHolder22 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("massive body").build();
+        Look hardHolder23 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("soft body").build();
+        Look hardHolder24 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("wiry body").build();
+        Look hardHolder25 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("fat body").build();
+        Look hardHolder26 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("tall spare body").build();
+        Look hardHolder27 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("sensual body").build();
+
+        lookService.saveAll(Flux.just(hardHolder1, hardHolder2, hardHolder3, hardHolder4, hardHolder5, hardHolder6,
+                hardHolder7, hardHolder8, hardHolder9, hardHolder10, hardHolder11, hardHolder12, hardHolder13,
+                hardHolder14, hardHolder15, hardHolder16, hardHolder17, hardHolder18, hardHolder19, hardHolder20,
+                hardHolder21, hardHolder22, hardHolder23, hardHolder24, hardHolder25, hardHolder26, hardHolder27)).blockLast();
     }
 
     public void loadStatsOptions() {
         System.out.println("|| --- Loading playbook stats options --- ||");
         /* ----------------------------- ANGEL STATS OPTIONS --------------------------------- */
-        StatsOption angel1 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(1).HARD(0).HOT(1).SHARP(2).WEIRD(-1).build();
-        StatsOption angel2 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(1).HARD(1).HOT(0).SHARP(2).WEIRD(-1).build();
-        StatsOption angel3 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(-1).HARD(1).HOT(0).SHARP(2).WEIRD(1).build();
-        StatsOption angel4 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(2).HARD(0).HOT(-1).SHARP(2).WEIRD(-1).build();
+        StatsOption angel1 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(1).HARD(0).HOT(1).SHARP(2).WEIRD(-1).build(); // 3
+        StatsOption angel2 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(1).HARD(1).HOT(0).SHARP(2).WEIRD(-1).build(); // 3
+        StatsOption angel3 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(-1).HARD(1).HOT(0).SHARP(2).WEIRD(1).build(); // 3
+        StatsOption angel4 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(2).HARD(0).HOT(-1).SHARP(2).WEIRD(-1).build(); // 2
         statsOptionService.saveAll(Flux.just(angel1, angel2, angel3, angel4)).blockLast();
 
         /* ----------------------------- BATTLEBABE STATS OPTIONS --------------------------------- */
-        StatsOption battlebabe1 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build();
-        StatsOption battlebabe2 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(-1).HOT(2).SHARP(0).WEIRD(-1).build();
-        StatsOption battlebabe3 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(-2).HOT(1).SHARP(1).WEIRD(1).build();
-        StatsOption battlebabe4 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(0).HOT(1).SHARP(1).WEIRD(-1).build();
+        StatsOption battlebabe1 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build(); // 4
+        StatsOption battlebabe2 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(-1).HOT(2).SHARP(0).WEIRD(-1).build(); // 3
+        StatsOption battlebabe3 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(-2).HOT(1).SHARP(1).WEIRD(1).build(); // 4
+        StatsOption battlebabe4 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(0).HOT(1).SHARP(1).WEIRD(-1).build(); // 3
         statsOptionService.saveAll(Flux.just(battlebabe1, battlebabe2, battlebabe3, battlebabe4)).blockLast();
 
         /* ----------------------------- BRAINER STATS OPTIONS --------------------------------- */
-        StatsOption brainer1 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(1).HARD(1).HOT(-2).SHARP(1).WEIRD(2).build();
-        StatsOption brainer2 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(0).HARD(0).HOT(1).SHARP(0).WEIRD(2).build();
-        StatsOption brainer3 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(1).HARD(-2).HOT(-1).SHARP(2).WEIRD(2).build();
-        StatsOption brainer4 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(2).HARD(-1).HOT(-1).SHARP(0).WEIRD(2).build();
+        StatsOption brainer1 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(1).HARD(1).HOT(-2).SHARP(1).WEIRD(2).build(); // 3
+        StatsOption brainer2 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(0).HARD(0).HOT(1).SHARP(0).WEIRD(2).build(); // 3
+        StatsOption brainer3 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(1).HARD(-2).HOT(-1).SHARP(2).WEIRD(2).build(); // 2
+        StatsOption brainer4 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(2).HARD(-1).HOT(-1).SHARP(0).WEIRD(2).build(); // 2
         statsOptionService.saveAll(Flux.just(brainer1, brainer2, brainer3, brainer4)).blockLast();
 
         /* ----------------------------- CHOPPER STATS OPTIONS --------------------------------- */
-        StatsOption chopper1 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(-1).SHARP(1).WEIRD(0).build();
-        StatsOption chopper2 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(1).SHARP(0).WEIRD(1).build();
-        StatsOption chopper3 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(0).SHARP(1).WEIRD(1).build();
-        StatsOption chopper4 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(2).HARD(2).HOT(-1).SHARP(0).WEIRD(1).build();
+        StatsOption chopper1 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(-1).SHARP(1).WEIRD(0).build(); // 3
+        StatsOption chopper2 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(1).SHARP(0).WEIRD(1).build(); // 4
+        StatsOption chopper3 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(0).SHARP(1).WEIRD(1).build(); // 5
+        StatsOption chopper4 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(2).HARD(2).HOT(-1).SHARP(0).WEIRD(1).build(); // 4
         statsOptionService.saveAll(Flux.just(chopper1, chopper2, chopper3, chopper4)).blockLast();
 
         /* ----------------------------- DRIVER STATS OPTIONS --------------------------------- */
-        StatsOption driver1 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build();
-        StatsOption driver2 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(0).HOT(1).SHARP(1).WEIRD(-1).build();
-        StatsOption driver3 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(1).HOT(-1).SHARP(0).WEIRD(1).build();
-        StatsOption driver4 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-2).HOT(0).SHARP(2).WEIRD(1).build();
+        StatsOption driver1 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build(); // 3
+        StatsOption driver2 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(0).HOT(1).SHARP(1).WEIRD(-1).build(); // 3
+        StatsOption driver3 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(1).HOT(-1).SHARP(0).WEIRD(1).build(); // 3
+        StatsOption driver4 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-2).HOT(0).SHARP(2).WEIRD(1).build(); // 3
         statsOptionService.saveAll(Flux.just(driver1, driver2, driver3, driver4)).blockLast();
 
         /* ----------------------------- GUNLUGGER STATS OPTIONS --------------------------------- */
-        StatsOption gunlugger1 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(1).HARD(2).HOT(-1).SHARP(1).WEIRD(0).build();
-        StatsOption gunlugger2 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(-1).HARD(2).HOT(-2).SHARP(1).WEIRD(2).build();
-        StatsOption gunlugger3 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(1).HARD(2).HOT(-2).SHARP(2).WEIRD(-1).build();
-        StatsOption gunlugger4 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(2).HARD(2).HOT(-2).SHARP(0).WEIRD(0).build();
+        StatsOption gunlugger1 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(1).HARD(2).HOT(-1).SHARP(1).WEIRD(0).build(); // 3
+        StatsOption gunlugger2 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(-1).HARD(2).HOT(-2).SHARP(1).WEIRD(2).build(); // 2
+        StatsOption gunlugger3 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(1).HARD(2).HOT(-2).SHARP(2).WEIRD(-1).build(); // 2
+        StatsOption gunlugger4 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(2).HARD(2).HOT(-2).SHARP(0).WEIRD(0).build(); // 2
         statsOptionService.saveAll(Flux.just(gunlugger1, gunlugger2, gunlugger3, gunlugger4)).blockLast();
+
+        /* ----------------------------- GUNLUGGER STATS OPTIONS --------------------------------- */
+        StatsOption hardHolder1 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(-1).HARD(2).HOT(1).SHARP(1).WEIRD(0).build(); // 3
+        StatsOption hardHolder2 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(1).HARD(2).HOT(1).SHARP(1).WEIRD(-2).build(); // 3
+        StatsOption hardHolder3 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(-2).HARD(2).HOT(0).SHARP(2).WEIRD(0).build(); // 2
+        StatsOption hardHolder4 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(0).HARD(2).HOT(1).SHARP(-1).WEIRD(1).build(); // 3
+
+        statsOptionService.saveAll(Flux.just(hardHolder1, hardHolder2, hardHolder3, hardHolder4)).blockLast();
     }
 
     public void loadPlaybookCreators() {
@@ -3249,14 +3374,14 @@ public class GameDataLoader implements CommandLineRunner {
                 "Parcher", "Millions", "Grome", "Foster", "Mill", "Dustwich", "Newton", "Tao", "Missed",
                 "III", "Princy", "East Harrow", "Kettle", "Putrid", "Last", "Twice", "Clarion", "Abondo",
                 "Mimi", "Fianelly", "Pellet", "Li", "Harridan", "Rice", "Do", "Winkle", "Fuse", "Visage");
-    ThreatCreator threatCreator = ThreatCreator.builder()
-            .createThreatInstructions(createThreatInstructions)
-            .essentialThreatInstructions(essentialThreatInstructions)
-            .threats(List.of(warlord, grotesque, brute, affliction, landscape, terrain, vehicle))
-            .threatNames(threatNames)
-            .build();
+        ThreatCreator threatCreator = ThreatCreator.builder()
+                .createThreatInstructions(createThreatInstructions)
+                .essentialThreatInstructions(essentialThreatInstructions)
+                .threats(List.of(warlord, grotesque, brute, affliction, landscape, terrain, vehicle))
+                .threatNames(threatNames)
+                .build();
 
-    threatCreatorService.save(threatCreator).block();
+        threatCreatorService.save(threatCreator).block();
     }
 
 }

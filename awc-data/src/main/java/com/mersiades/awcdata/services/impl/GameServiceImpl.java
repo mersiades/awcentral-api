@@ -383,14 +383,14 @@ public class GameServiceImpl implements GameService {
         CharacterStat modifier;
         boolean canGainPlusOneForward = false;
         if (moveOptional.isPresent()) {
-            canGainPlusOneForward = List.of(catOrMouse, reputation).contains(moveOptional.get().getName());
+            canGainPlusOneForward = List.of(catOrMouseName, reputationName).contains(moveOptional.get().getName());
             modifier = getStatToRoll(character, moveOptional.get());
             gameMessage.setContent(moveOptional.get().getDescription());
             gameMessage.setTitle(String.format("%s: %s", character.getName(), moveOptional.get().getName()).toUpperCase());
         } else {
             Move move = moveService.findById(moveId).block();
             assert move != null;
-            canGainPlusOneForward = List.of(catOrMouse, reputation).contains(move.getName());
+            canGainPlusOneForward = List.of(catOrMouseName, reputationName).contains(move.getName());
             modifier = getStatToRoll(character, move);
             gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
             gameMessage.setContent(move.getDescription());
@@ -439,15 +439,15 @@ public class GameServiceImpl implements GameService {
         String additionalModifierName;
 
         switch (move.getName()) {
-            case boardVehicle:
+            case boardVehicleName:
                 additionalModifierName = "SPEED DIFF.";
                 break;
             case dealWithTerrain:
                 additionalModifierName = "HANDLING";
                 break;
-            case overtakeVehicle:
+            case overtakeVehicleName:
                 // Deliberately falls through
-            case outdistanceVehicle:
+            case outdistanceVehicleName:
                 additionalModifierName = "REL. SPEED";
                 break;
             default:
