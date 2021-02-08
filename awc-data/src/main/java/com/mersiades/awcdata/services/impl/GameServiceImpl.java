@@ -33,13 +33,13 @@ public class GameServiceImpl implements GameService {
     @Value("${spring.profiles.active}")
     private String activeProfiles;
 
-    private static final String GANG_CONTENT = "When you have a gang, you can _**sucker someone**_, _**go aggro on them**_, or make a _**battle move**_, using your gang as a weapon.\n"+
+    private static final String GANG_CONTENT = "When you have a gang, you can _**sucker someone**_, _**go aggro on them**_, or make a _**battle move**_, using your gang as a weapon.\n" +
             "\n" +
             "When you do, you roll the dice and make your choices, but it’s your gang that inflicts and suffers harm, not you yourself.\n" +
             "\n" +
             "Gangs inflict and suffer harm as established, as usual: they inflict harm equal to their own harm rating, minus their enemy’s armor rating, and the suffer harm equal to their enemy’s harm rating minus their own armor. Harm = weapon - armor.\n" +
             "\n" +
-            "However, if there’s a size mismatch, the bigger gang inflicts +1harm and gets +1armor for each step of size difference:\n"+
+            "However, if there’s a size mismatch, the bigger gang inflicts +1harm and gets +1armor for each step of size difference:\n" +
             "\n" +
             "- *Against a single person, a small gang inflicts +1harm and gets +1armor. A medium gang inflicts +2harm and gets +2armor, and a large gang inflicts +3harm and gets +3armor.*\n" +
             "- *Against a small gang, a medium gang inflicts +1harm and gets +1armor, and a large gang inflicts +2harm and gets +2armor.*\n" +
@@ -411,8 +411,67 @@ public class GameServiceImpl implements GameService {
         }
 
         if (isGangMove) {
-            gameMessage.setContent(gameMessage.getContent() +"\n\n" + GANG_CONTENT);
+            gameMessage.setContent(gameMessage.getContent() + "\n\n" + GANG_CONTENT);
         }
+
+        characterService.save(character).block();
+        gameRoleService.findById(gameroleId).map(gameRole -> {
+            gameRole.setCharacters(List.of(character));
+            return gameRole;
+        }).flatMap(gameRoleService::save).block();
+
+        return gameRepository.findById(gameId).map(game -> {
+            game.getGameMessages().add(gameMessage);
+            return game;
+        }).flatMap(gameRepository::save);
+    }
+
+    @Override
+    public Mono<Game> performSpeedRollMove(String gameId, String gameroleId, String characterId, String moveId, int modifier) {
+        Character character = characterService.findById(characterId).block();
+        assert character != null;
+
+        GameMessage gameMessage = getGameMessageWithDiceRolls(gameId, gameroleId, MessageType.ROLL_STAT_MOVE);
+
+        Move move = moveService.findById(moveId).block();
+        assert move != null;
+
+        String additionalModifierName;
+
+        switch (move.getName()) {
+            case boardVehicle:
+                additionalModifierName = "SPEED DIFF.";
+                break;
+            case dealWithTerrain:
+                additionalModifierName = "HANDLING";
+                break;
+            case overtakeVehicle:
+                // Deliberately falls through
+            case outdistanceVehicle:
+                additionalModifierName = "REL. SPEED";
+                break;
+            default:
+                additionalModifierName = "SPEED";
+                break;
+        }
+
+        CharacterStat modifyingStat = getStatToRoll(character, move);
+        gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
+        gameMessage.setContent(move.getDescription());
+
+        gameMessage.setRollModifier(modifyingStat.getValue());
+        gameMessage.setModifierStatName(modifyingStat.getStat());
+        gameMessage.setAdditionalModifierValue(modifier);
+        gameMessage.setAdditionalModifierName(additionalModifierName);
+        gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifyingStat.getValue() + modifier);
+
+
+        if (character.getHasPlusOneForward()) {
+            gameMessage.setUsedPlusOneForward(true);
+            gameMessage.setRollResult(gameMessage.getRollResult() + 1);
+            character.setHasPlusOneForward(false);
+        }
+
 
         characterService.save(character).block();
         gameRoleService.findById(gameroleId).map(gameRole -> {
@@ -923,11 +982,11 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Mono<Game> performGunluggerSpecialMove(String gameId,
-                                                String gameroleId,
-                                                String otherGameroleId,
-                                                String characterId,
-                                                String otherCharacterId,
-                                                boolean addPlus1Forward) {
+                                                  String gameroleId,
+                                                  String otherGameroleId,
+                                                  String characterId,
+                                                  String otherCharacterId,
+                                                  boolean addPlus1Forward) {
         return gameRepository.findById(gameId)
                 .flatMap(game -> {
                     // Find User's Character
@@ -984,7 +1043,7 @@ public class GameServiceImpl implements GameService {
                             userCharacter.getName(),
                             otherCharacter.getName(),
                             userCharacter.getName()
-                            );
+                    );
 
                     if (addPlus1Forward) {
                         content += String.format("and %s got +1forward too.", otherCharacter.getName());
@@ -1012,8 +1071,6 @@ public class GameServiceImpl implements GameService {
                     assert stabilizeMove != null;
 
                     GameMessage gameMessage = getGameMessageWithDiceRolls(gameId, gameroleId, MessageType.ROLL_STOCK_MOVE);
-
-
 
 
                     gameMessage.setContent(stabilizeMove.getDescription());
