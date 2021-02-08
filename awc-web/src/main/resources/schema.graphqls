@@ -124,6 +124,12 @@ enum GangSize {
     LARGE
 }
 
+enum HoldingSize {
+    SMALL,
+    MEDIUM,
+    LARGE
+}
+
 # ---------------------------------------- STATIC GAME DATA TYPES -------------------------------------- #
 
 type HoldConditions {
@@ -290,6 +296,39 @@ type CustomWeaponsCreator {
 type BrainerGearCreator {
     id: ID!
     gear: [String]!
+}
+
+type HoldingOption {
+    id: ID!
+    description: String!
+    surplusChange: String
+    wantChange: [String]
+    newHoldingSize: HoldingSize
+    gigChange: String
+    newGangSize: GangSize
+    gangTagChange: String
+    gangHarmChange: Int
+    newVehicleCount: Int
+    newBattleVehicleCount: Int
+    newArmorBonus: Int
+}
+
+type HoldingCreator {
+    id: ID!
+    defaultHoldingSize: HoldingSize!
+    instructions: String!
+    defaultGigs: [String]!
+    defaultArmorBonus: Int!
+    defaultVehiclesCount: Int!
+    defaultBattleVehicleCount: Int!
+    defaultGangSize: GangSize!
+    defaultGangHarm: Int!
+    defaultGangArmor: Int!
+    defaultGangTag: String!
+    strengthCount: Int!
+    weaknessCount: Int!
+    strengthOptions: [HoldingOption]!
+    weaknessOptions: [HoldingOption]!
 }
 
 type WeaponsCreator {
@@ -519,6 +558,21 @@ type Gang {
     strengths: [GangOption]
     weaknesses: [GangOption]
     tags: [String]
+}
+
+type Holding {
+    id: ID!
+    holdingSize: HoldingSize!
+    gangSize: GangSize!
+    souls: String!
+    surplus: Int!
+    barter: Int!
+    gangHarm: Int!
+    gangArmor: Int!
+    gangDefenseArmorBonus: Int!
+    wants: [String]!
+    gigs: [String]!
+    gangTags: [String]!
 }
 
 type Vehicle {
