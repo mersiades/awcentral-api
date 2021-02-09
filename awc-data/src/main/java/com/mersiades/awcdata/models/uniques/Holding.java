@@ -2,6 +2,7 @@ package com.mersiades.awcdata.models.uniques;
 
 import com.mersiades.awccontent.enums.GangSize;
 import com.mersiades.awccontent.enums.HoldingSize;
+import com.mersiades.awccontent.models.HoldingOption;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -50,5 +51,11 @@ public class Holding {
 
     @Builder.Default
     private List<String> gangTags = new ArrayList<>();
+
+    @Builder.Default
+    private List<HoldingOption> selectedStrengths = new ArrayList<>();
+
+    @Builder.Default
+    private List<HoldingOption> selectedWeaknesses = new ArrayList<>();
 
 }

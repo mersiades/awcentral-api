@@ -6,6 +6,7 @@ import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.Gang;
+import com.mersiades.awcdata.models.uniques.Holding;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -36,6 +37,8 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons);
 
+    Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount);
+
     Character setWeapons(String gameRoleId, String characterId, List<String> weapons);
 
     Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats);
@@ -57,4 +60,5 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Mono<GameRole> addThreat(String gameRoleId, Threat threat);
 
     Mono<GameRole> addNpc(String gameRoleId, Npc npc);
+
 }

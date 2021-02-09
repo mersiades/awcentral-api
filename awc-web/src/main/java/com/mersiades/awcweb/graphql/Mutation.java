@@ -6,6 +6,7 @@ import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.Gang;
+import com.mersiades.awcdata.models.uniques.Holding;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -137,6 +138,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons) {
         System.out.println("Setting CustomWeapons for Character: " + characterId);
         return gameRoleService.setCustomWeapons(gameRoleId, characterId, weapons);
+    }
+
+    public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount) {
+        System.out.println("Setting Holding for Character: " + characterId);
+        return gameRoleService.setHolding(gameRoleId, characterId, holding, vehicleCount);
     }
 
     public Character setWeapons(String gameRoleId, String characterId, List<String> weapons) {

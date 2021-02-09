@@ -442,7 +442,7 @@ public class GameServiceImpl implements GameService {
             case boardVehicleName:
                 additionalModifierName = "SPEED DIFF.";
                 break;
-            case dealWithTerrain:
+            case dealWithTerrainName:
                 additionalModifierName = "HANDLING";
                 break;
             case overtakeVehicleName:

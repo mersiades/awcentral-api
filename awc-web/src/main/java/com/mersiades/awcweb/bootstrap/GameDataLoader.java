@@ -1606,7 +1606,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .name("WEALTH")
                 .description("_**Wealth**_: if your hold is secure and your rule unchallenged, at the beginning of the session, roll+hard.\n" +
                         "\n" +
-                        "OOn a 10+, you have surplus on hand and available for the needs of the session.\n" +
+                        "On a 10+, you have surplus on hand and available for the needs of the session.\n" +
                         "\n" +
                         "On a 7-9, you have surplus, but choose 1 want.\n" +
                         "\n" +
@@ -2648,12 +2648,372 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultVehicleCount(0)
                 .build();
 
+        /* ----------------------------- HARDHOLDER PLAYBOOK CREATOR --------------------------------- */
+        List<Move> hardholderDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.HARDHOLDER, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
+
+        GearInstructions gearInstructionsHardholder = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .gearIntro("In addition to your holding, detail your personal fashion.\n" +
+                        "\n" +
+                        "You can have, for your personal use, with the MC's approval, a few pieces of non-specialized gear or weapons from any character playbook.")
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .build();
+
+        HoldingOption holdingOption1 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your population in large, 200-300 souls. Surplus: +1barter, want: +disease")
+                .surplusChange(1)
+                .wantChange(List.of("+disease"))
+                .newHoldingSize(HoldingSize.LARGE)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption2 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your population in small, 50-60 souls. Want: anxiety instead of want: hungry")
+                .surplusChange(-2)
+                .wantChange(List.of("+anxiety", "-hungry"))
+                .newHoldingSize(HoldingSize.SMALL)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption3 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("for gigs, add lucrative raiding. Surplus: +1barter, want: +reprisals")
+                .surplusChange(1)
+                .wantChange(List.of("+reprisals"))
+                .newHoldingSize(null)
+                .gigChange("+lucrative raiding")
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption4 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("for gigs, add protection tribute. Surplus: +1barter, want: +obligation")
+                .surplusChange(1)
+                .wantChange(List.of("+obligation"))
+                .newHoldingSize(null)
+                .gigChange("+protection tribute")
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption5 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("for gigs, add a manufactory. Surplus: +1barter, want: +idle")
+                .surplusChange(1)
+                .wantChange(List.of("+idle"))
+                .newHoldingSize(null)
+                .gigChange("+a manufactory")
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption6 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("for gigs, add a bustling, widely-known market commons. Surplus: +1barter, want: +strangers")
+                .surplusChange(1)
+                .wantChange(List.of("+strangers"))
+                .newHoldingSize(null)
+                .gigChange("+market commons")
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption7 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang is large instead of medium, 60 violent bastards or so.")
+                .surplusChange(-2)
+                .wantChange(null)
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(GangSize.LARGE)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption8 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang is well-disciplined. Drop unruly.")
+                .surplusChange(-2)
+                .wantChange(null)
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange("-unruly")
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption9 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your armory is sophisticated and extensive. Your gang gets +1harm.")
+                .surplusChange(-2)
+                .wantChange(null)
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(1)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption10 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your garage includes 7 battle vehicles, plus a couple more utility vehicles if you want them.")
+                .surplusChange(-2)
+                .wantChange(null)
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(6)
+                .newBattleVehicleCount(7)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption11 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your compound is tall, deep and mighty, of stone and iron. Your gang gets +2armor with fighting in its defense.")
+                .surplusChange(-2)
+                .wantChange(null)
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(2)
+                .build();
+        HoldingOption holdingOption12 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your population is filthy and unwell. Want: +disease.")
+                .surplusChange(-2)
+                .wantChange(List.of("+disease"))
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption13 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your population is lazy and drug-stupored. Want: +famine.")
+                .surplusChange(-2)
+                .wantChange(List.of("+famine"))
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption14 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your population is decadent and perverse. Surplus: -1barter, want: +savagery.")
+                .surplusChange(-1)
+                .wantChange(List.of("+savagery"))
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption15 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your holding owes protection to tribute. Surplus: -1barter, want: +reprisals")
+                .surplusChange(-1)
+                .wantChange(List.of("+reprisals"))
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption16 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang is small instead of medium, only 10-20 violent bastards.")
+                .surplusChange(-2)
+                .wantChange(null)
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(GangSize.SMALL)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption17 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your gang is a pack of fucking hyenas. Want: +savagery.")
+                .surplusChange(-2)
+                .wantChange(null)
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange("+savagery")
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption18 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your armory is for shit. Your gang gets -1harm.")
+                .surplusChange(-2)
+                .wantChange(null)
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-1)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption19 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your garage is for shit. It has only 4 vehicles, and only 2 of them are suitable for battle.")
+                .surplusChange(-2)
+                .wantChange(null)
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(2)
+                .newBattleVehicleCount(2)
+                .newArmorBonus(-1)
+                .build();
+        HoldingOption holdingOption20 = HoldingOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("your compound is mostly tents, lean-tos and wooden walls. Your gang gets no armor bonus when fighting to defend it.")
+                .surplusChange(-2)
+                .wantChange(null)
+                .newHoldingSize(null)
+                .gigChange(null)
+                .newGangSize(null)
+                .gangTagChange(null)
+                .gangHarmChange(-2)
+                .newVehicleCount(-1)
+                .newBattleVehicleCount(-1)
+                .newArmorBonus(0)
+                .build();
+
+        HoldingCreator holdingCreator = HoldingCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .defaultHoldingSize(HoldingSize.MEDIUM)
+                .instructions("By default, your holding has:\n" +
+                        "\n" +
+                        "- 75-150 souls.\n" +
+                        "- for gigs, a mix of hunting, crude farming, and scavenging. (surplus: 1-barter, want: hungry)\n" +
+                        "- a makeshift compound of concrete, sheet metal and rebar. Your gang gets +1armor when fighting in its defense.\n" +
+                        "- an armory of scavenged and makeshift weapons.\n" +
+                        "- a garage of 4 utility vehicles and 4 specialized battle vehicles (detail with the MC).\n" +
+                        "- a gang of about 40 violent bastards (2-harm gang medium unruly 1-armor).\n")
+                .defaultGigs(List.of("hunting", "crude farming", "scavenging"))
+                .defaultWant("hungry")
+                .defaultArmorBonus(1)
+                .defaultSurplus(1)
+                .defaultVehiclesCount(4)
+                .defaultBattleVehicleCount(4)
+                .defaultGangSize(GangSize.MEDIUM)
+                .defaultGangHarm(2)
+                .defaultGangArmor(1)
+                .defaultGangTag("unruly")
+                .strengthCount(4)
+                .weaknessCount(2)
+                .strengthOptions(List.of(holdingOption1, holdingOption2, holdingOption3, holdingOption4, holdingOption5,
+                        holdingOption6, holdingOption7, holdingOption8, holdingOption9, holdingOption10, holdingOption11))
+                .weaknessOptions(List.of(holdingOption12, holdingOption13, holdingOption14, holdingOption15,
+                        holdingOption16, holdingOption17, holdingOption18, holdingOption19, holdingOption20))
+                .build();
+
+        PlaybookUniqueCreator playbookUniqueCreatorHardHolder = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.HOLDING)
+                .holdingCreator(holdingCreator)
+                .build();
+
+
+        PlaybookCreator playbookCreatorHardHolder = PlaybookCreator.builder()
+                .playbookType(PlaybookType.HARDHOLDER)
+                .gearInstructions(gearInstructionsHardholder)
+                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
+                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .movesInstructions("You get all the basic moves. You get both hardholder moves.\n" +
+                        "You can use all the battle moves, and probably will, but you gotta start somewhere. When you get the chance, look up _**seize by force**_ and the rules for how gangs inflict and suffer harm.")
+                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
+                        "\n" +
+                        "List the other characters’ names.\n" +
+                        "\n" +
+                        "Go around again for Hx. On your turn, ask either or both:\n" +
+                        "\n" +
+                        "- *Which one of you has been with me since before?* For that character, write Hx+2.\n" +
+                        "- *Which one of you has betrayed or stolen from me?* For that character, write Hx+3.\n" +
+                        "\n" +
+                        "For everyone else, write Hx+1. It's in your interests to know everyone's business.\n" +
+                        "\n" +
+                        "On the others’ turns, answer their questions as you like.\n" +
+                        "\n" +
+                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                .playbookUniqueCreator(playbookUniqueCreatorHardHolder)
+                .defaultVehicleCount(4)
+                .defaultMoves(hardholderDefaultMoves)
+                .moveChoiceCount(0)
+                .defaultMoveCount(3)
+                .build();
+
         playbookCreatorService.saveAll(Flux.just(angelCreator,
                 battlebabePlaybookCreator,
                 playbookCreatorBrainer,
                 playbookCreatorChopper,
                 playbookCreatorDriver,
-                playbookCreatorGunlugger)).blockLast();
+                playbookCreatorGunlugger,
+                playbookCreatorHardHolder
+        )).blockLast();
     }
 
     public void loadVehicleCreator() {
@@ -3147,7 +3507,7 @@ public class GameDataLoader implements CommandLineRunner {
             playbookService.save(playbookDriver).block();
         }
 
-        // -------------------------------------- DRIVER -------------------------------------- //
+        // -------------------------------------- GUNLUGGER -------------------------------------- //
         Playbook playbookGunlugger = playbookService.findByPlaybookType(PlaybookType.GUNLUGGER).block();
         assert playbookGunlugger != null;
 
@@ -3171,6 +3531,32 @@ public class GameDataLoader implements CommandLineRunner {
             playbookCreatorService.save(playbookCreatorGunlugger).block();
             playbookGunlugger.setCreator(playbookCreatorGunlugger);
             playbookService.save(playbookGunlugger).block();
+        }
+
+        // -------------------------------------- HARDHOLDER -------------------------------------- //
+        Playbook playbookHardHolder = playbookService.findByPlaybookType(PlaybookType.HARDHOLDER).block();
+        assert playbookHardHolder != null;
+
+        if (playbookHardHolder.getCreator() == null) {
+            PlaybookCreator playbookCreatorHardHolder = playbookCreatorService.findByPlaybookType(PlaybookType.HARDHOLDER).block();
+            assert playbookCreatorHardHolder != null;
+
+            List<Name> namesHardHolder = nameService.findAllByPlaybookType(PlaybookType.HARDHOLDER).collectList().block();
+            assert namesHardHolder != null;
+
+
+            List<Look> looksHardHolder = lookService.findAllByPlaybookType(PlaybookType.HARDHOLDER).collectList().block();
+            assert looksHardHolder != null;
+
+            List<StatsOption> statsOptionsHardHolder = statsOptionService.findAllByPlaybookType(PlaybookType.HARDHOLDER).collectList().block();
+            assert statsOptionsHardHolder != null;
+
+            statsOptionsHardHolder.forEach(statsOption -> playbookCreatorHardHolder.getStatsOptions().add(statsOption));
+            namesHardHolder.forEach(name -> playbookCreatorHardHolder.getNames().add(name));
+            looksHardHolder.forEach(look -> playbookCreatorHardHolder.getLooks().add(look));
+            playbookCreatorService.save(playbookCreatorHardHolder).block();
+            playbookHardHolder.setCreator(playbookCreatorHardHolder);
+            playbookService.save(playbookHardHolder).block();
         }
     }
 

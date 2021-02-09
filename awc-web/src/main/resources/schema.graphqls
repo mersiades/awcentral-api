@@ -258,6 +258,7 @@ type PlaybookUniqueCreator {
     brainerGearCreator: BrainerGearCreator
     gangCreator: GangCreator
     weaponsCreator: WeaponsCreator
+    holdingCreator: HoldingCreator
 }
 
 type GangCreator {
@@ -301,22 +302,24 @@ type BrainerGearCreator {
 type HoldingOption {
     id: ID!
     description: String!
-    surplusChange: String
+    surplusChange: Int!
     wantChange: [String]
     newHoldingSize: HoldingSize
     gigChange: String
     newGangSize: GangSize
     gangTagChange: String
-    gangHarmChange: Int
-    newVehicleCount: Int
-    newBattleVehicleCount: Int
-    newArmorBonus: Int
+    gangHarmChange: Int!
+    newVehicleCount: Int!
+    newBattleVehicleCount: Int!
+    newArmorBonus: Int!
 }
 
 type HoldingCreator {
     id: ID!
     defaultHoldingSize: HoldingSize!
     instructions: String!
+    defaultSurplus: Int!
+    defaultWant: String!
     defaultGigs: [String]!
     defaultArmorBonus: Int!
     defaultVehiclesCount: Int!
@@ -524,6 +527,7 @@ type PlaybookUnique {
     customWeapons: CustomWeapons
     gang: Gang
     weapons: Weapons
+    holding: Holding
 }
 
 type BrainerGear {
@@ -573,6 +577,8 @@ type Holding {
     wants: [String]!
     gigs: [String]!
     gangTags: [String]!
+    selectedStrengths: [HoldingOption]!
+    selectedWeaknesses: [HoldingOption]!
 }
 
 type Vehicle {
@@ -694,6 +700,38 @@ input NpcInput {
     description: String
 }
 
+input HoldingOptionInput {
+    id: ID!
+    description: String!
+    surplusChange: Int!
+    wantChange: [String]
+    newHoldingSize: HoldingSize
+    gigChange: String
+    newGangSize: GangSize
+    gangTagChange: String
+    gangHarmChange: Int!
+    newVehicleCount: Int!
+    newBattleVehicleCount: Int!
+    newArmorBonus: Int!
+}
+
+input HoldingInput {
+    id: ID
+    holdingSize: HoldingSize!
+    gangSize: GangSize!
+    souls: String!
+    surplus: Int!
+    barter: Int!
+    gangHarm: Int!
+    gangArmor: Int!
+    gangDefenseArmorBonus: Int!
+    wants: [String]!
+    gigs: [String]!
+    gangTags: [String]!
+    selectedStrengths: [HoldingOptionInput]!
+    selectedWeaknesses: [HoldingOptionInput]!
+}
+
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -767,6 +805,11 @@ type Mutation {
     setCustomWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
+    setHolding(gameRoleId: String!,
+        characterId: String!,
+        holding: HoldingInput!,
+        vehicleCount: Int!
+    ): Character
     setWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character

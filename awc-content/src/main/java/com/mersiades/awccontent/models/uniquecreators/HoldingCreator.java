@@ -21,35 +21,36 @@ public class HoldingCreator {
     @Id
     private String id;
 
-    // HoldingSize provided by enum
-    private static final HoldingSize defaultHoldingSize = HoldingSize.MEDIUM;
-
-    // GangSize provided by enum
+    private HoldingSize defaultHoldingSize;
 
     // Souls calculated on setHolding based on HoldingSize
 
     private String instructions;
 
     @Builder.Default
-    private static final List<String> defaultGigs = new ArrayList<>(List.of("hunting", "crude farming", "scavenging"));
+    private List<String> defaultGigs = new ArrayList<>();
 
-    private static final int defaultArmorBonus = 1;
+    private String defaultWant;
 
-    private static final int defaultVehiclesCount = 4;
+    private int defaultArmorBonus;
 
-    private static final int defaultBattleVehicleCount = 4;
+    private int defaultSurplus;
 
-    private static final GangSize defaultGangSize = GangSize.MEDIUM;
+    private int defaultVehiclesCount;
 
-    private static final int defaultGangHarm = 2;
+    private int defaultBattleVehicleCount;
 
-    private static final int defaultGangArmor = 1;
+    private GangSize defaultGangSize;
 
-    private static final String defaultGangTag = "unruly";
+    private int defaultGangHarm;
 
-    private static final int strengthCount = 4;
+    private int defaultGangArmor;
 
-    private static final int weaknessCount = 2;
+    private String defaultGangTag;
+
+    private int strengthCount;
+
+    private int weaknessCount;
 
     @Builder.Default
     private List<HoldingOption> strengthOptions = new ArrayList<>();

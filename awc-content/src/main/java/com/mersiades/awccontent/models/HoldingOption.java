@@ -25,7 +25,8 @@ public class HoldingOption {
 
     private String description;
 
-    private String surplusChange;
+    // Ranges from -1 to 1, with -2 representing null
+    private int surplusChange;
 
     @Builder.Default
     private List<String> wantChange = new ArrayList<>();
@@ -38,12 +39,16 @@ public class HoldingOption {
 
     private String gangTagChange;
 
+    // Ranges from -1 to 1, with -2 representing null
     private int gangHarmChange;
 
+    // Ranges from 2 to 6, with - 1 representing null
     private int newVehicleCount;
 
+    // Ranges from 2 to 7, with - 1 representing null
     private int newBattleVehicleCount;
 
+    // Ranges from 0 - 2, with -1 representing null
     private int newArmorBonus;
 
 
