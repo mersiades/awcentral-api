@@ -36,6 +36,8 @@ public class Character {
 
     private Boolean hasPlusOneForward;
 
+    private int holds;
+
     private int barter;
 
     private CharacterHarm harm;

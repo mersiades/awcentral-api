@@ -30,4 +30,11 @@ public class MoveNames {
     public static final String leadershipName = "LEADERSHIP";
     public static final String wealthName = "WEALTH";
 
+    // Moves that can earn holds
+    public static final String readPersonName = "READ A PERSON";
+    public static final String keepEyeOutName = "KEEP AN EYE OUT";
+    public static final String dangerousAndSexyName = "DANGEROUS & SEXY";
+    public static final String brainScanName = "DEEP BRAIN SCAN";
+    public static final String puppetStringsName = "IN BRAIN PUPPET STRINGS";
+
 }

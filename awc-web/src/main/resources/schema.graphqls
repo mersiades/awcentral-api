@@ -485,6 +485,7 @@ type Character {
     playbook: PlaybookType
     hasCompletedCharacterCreation: Boolean
     hasPlusOneForward: Boolean
+    holds: Int
     looks: [Look]
     statsBlock: StatsBlock
     hxBlock: [HxStat]
@@ -751,6 +752,7 @@ type Query {
 # --------------------------------------------- MUTATIONS -------------------------------------------- #
 
 type Mutation {
+    # Game-related
     createGame(userId: String!,
         displayName: String!,
         email: String!
@@ -893,6 +895,9 @@ type Mutation {
         otherCharacterId: String!,
         addPlus1Forward: Boolean!): Game
     performStabilizeAndHealMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
+
+    # Other
+    spendHold(gameId: String!, gameroleId: String!, characterId: String!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #
