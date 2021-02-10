@@ -381,16 +381,17 @@ public class GameServiceImpl implements GameService {
         Optional<CharacterMove> moveOptional = character.getCharacterMoves()
                 .stream().filter(characterMove -> characterMove.getId().equals(moveId)).findFirst();
         CharacterStat modifier;
-        boolean canGainPlusOneForward = false;
+        String moveName;
+
         if (moveOptional.isPresent()) {
-            canGainPlusOneForward = List.of(catOrMouseName, reputationName, leadershipName).contains(moveOptional.get().getName());
+            moveName = moveOptional.get().getName();
             modifier = getStatToRoll(character, moveOptional.get());
             gameMessage.setContent(moveOptional.get().getDescription());
             gameMessage.setTitle(String.format("%s: %s", character.getName(), moveOptional.get().getName()).toUpperCase());
         } else {
             Move move = moveService.findById(moveId).block();
             assert move != null;
-            canGainPlusOneForward = List.of(catOrMouseName, reputationName).contains(move.getName());
+            moveName = move.getName();
             modifier = getStatToRoll(character, move);
             gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
             gameMessage.setContent(move.getDescription());
@@ -399,14 +400,44 @@ public class GameServiceImpl implements GameService {
         gameMessage.setModifierStatName(modifier.getStat());
         gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifier.getValue());
 
-
+        // Uses a +1forward if the character has one
         if (character.getHasPlusOneForward()) {
             gameMessage.setUsedPlusOneForward(true);
             gameMessage.setRollResult(gameMessage.getRollResult() + 1);
             character.setHasPlusOneForward(false);
         }
 
-        if (gameMessage.getRollResult() >= 10 && canGainPlusOneForward) {
+        // Handles one pattern for awarding holds
+        if (List.of(readPersonName, brainScanName, puppetStringsName).contains(moveName)) {
+            if (gameMessage.getRollResult() >= 10) {
+                character.setHolds(3);
+            } else if (gameMessage.getRollResult() >= 7) {
+                character.setHolds(1);
+            }
+        }
+
+        // Handles second pattern for awarding holds
+        if (moveName.equals(keepEyeOutName)) {
+            if (gameMessage.getRollResult() >= 10) {
+                character.setHolds(3);
+            } else if (gameMessage.getRollResult() >= 7) {
+                character.setHolds(2);
+            } else {
+                character.setHolds(1);
+            }
+        }
+
+        // Handles third pattern for awarding holds
+        if (moveName.equals(dangerousAndSexyName)) {
+            if (gameMessage.getRollResult() >= 10) {
+                character.setHolds(2);
+            } else if (gameMessage.getRollResult() >= 7) {
+                character.setHolds(1);
+            }
+        }
+
+        // Awards +1forward on high rolls for particular moves
+        if (gameMessage.getRollResult() >= 10 && List.of(catOrMouseName, reputationName, leadershipName).contains(moveName)) {
             character.setHasPlusOneForward(true);
         }
 
@@ -1189,6 +1220,38 @@ public class GameServiceImpl implements GameService {
         }
         content += move.getDescription();
         gameMessage.setContent(content);
+
+        characterService.save(character).block();
+        gameRoleService.findById(gameroleId).map(gameRole -> {
+            gameRole.setCharacters(List.of(character));
+            return gameRole;
+        }).flatMap(gameRoleService::save).block();
+
+        return gameRepository.findById(gameId).map(game -> {
+            game.getGameMessages().add(gameMessage);
+            return game;
+        }).flatMap(gameRepository::save);
+    }
+
+    @Override
+    public Mono<Game> spendHold(String gameId, String gameroleId, String characterId) {
+        Character character = characterService.findById(characterId).block();
+        assert character != null;
+        character.setHolds(character.getHolds() - 1);
+
+        GameMessage gameMessage = GameMessage.builder()
+                .id(UUID.randomUUID().toString())
+                .gameId(gameId)
+                .gameroleId(gameroleId)
+                .messageType(MessageType.PRINT_MOVE)
+                .sentOn(Instant.now().toString())
+                .title(character.getName().toUpperCase() + ": SPENDS A HOLD")
+                .content(String.format("%s has %s %s left.",
+                        character.getName(),
+                        character.getHolds(),
+                        character.getHolds() == 1 ? "hold" : "holds"
+                        ) )
+                .build();
 
         characterService.save(character).block();
         gameRoleService.findById(gameroleId).map(gameRole -> {

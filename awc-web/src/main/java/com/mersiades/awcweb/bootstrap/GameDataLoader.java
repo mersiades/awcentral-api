@@ -292,7 +292,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(SHARP)
                 .build();
         Move readAPerson = Move.builder()
-                .name("READ A PERSON")
+                .name(readPersonName)
                 .description("When you _**read a person**_ in a charged interaction, roll+sharp.\n" +
                         "\n" +
                         "On a 10+, hold 3. On a 7–9, hold 1. While you’re interacting with them, spend your hold to ask their player questions, 1 for 1:\n" +
@@ -726,7 +726,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(SHARP)
                 .build();
         Move keepAnEyeOut = Move.builder()
-                .name("KEEP AN EYE OUT")
+                .name(keepEyeOutName)
                 .description("When you _**keep an eye out**_ for what’s coming, roll+sharp.\n" +
                         "\n" +
                         "On a 10+, hold 3. On a 7–9, hold 2. On a miss, hold 1. During the battle, spend your hold, 1 for 1, to ask the MC what’s coming and choose 1:\n" +
@@ -1123,7 +1123,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(HOT)
                 .build();
         Move dangerousAndSexy = Move.builder()
-                .name("DANGEROUS & SEXY")
+                .name(dangerousAndSexyName)
                 .description("_**Dangerous & sexy**_: when you enter into a charged situation, roll+hot.\n" +
                         "\n" +
                         "On a 10+, hold 2. On a 7–9, hold 1.\n" +
@@ -1252,7 +1252,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(WEIRD)
                 .build();
         Move brainScan = Move.builder()
-                .name("DEEP BRAIN SCAN")
+                .name(brainScanName)
                 .description("_**Deep brain scan**_: when you have time and physical intimacy with someone — mutual intimacy like holding them in your arms, or 1-sided intimacy like they’re restrained to a table — you can read them more deeply than normal. Roll+weird.\n" +
                         "\n" +
                         "On a 10+, hold 3. On a 7–9, hold 1. While you’re reading them, spend your hold to ask their player questions, 1 for 1:\n" +
@@ -1287,7 +1287,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(WEIRD)
                 .build();
         Move puppetStrings = Move.builder()
-                .name("IN BRAIN PUPPET STRINGS")
+                .name(puppetStringsName)
                 .description("_**In-brain puppet strings**_: when you have time and physical intimacy with someone — again, mutual or 1-sided — you can plant a command inside their mind. Roll+weird.\n" +
                         "\n" +
                         "On a 10+, hold 3. On a 7–9, hold 1.\n" +
