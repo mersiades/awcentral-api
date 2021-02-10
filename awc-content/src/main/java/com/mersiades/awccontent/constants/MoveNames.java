@@ -27,5 +27,7 @@ public class MoveNames {
     public static final String outdistanceVehicleName = "OUTDISTANCE ANOTHER VEHICLE";
     public static final String overtakeVehicleName = "OVERTAKE ANOTHER VEHICLE";
     public static final String dealWithTerrainName = "DEAL WITH BAD TERRAIN";
+    public static final String leadershipName = "LEADERSHIP";
+    public static final String wealthName = "WEALTH";
 
 }

@@ -854,6 +854,9 @@ type Mutation {
         modifier: Int!): Game # Modifier can be speed difference, relative speed, or handling
 
     #    Specific moves
+    performWealthMove(gameId: String!,
+        gameroleId: String!,
+        characterId: String!): Game
     performHelpOrInterfereMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
     performMakeWantKnownMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
     performSufferHarmMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, harm: Int!): Game

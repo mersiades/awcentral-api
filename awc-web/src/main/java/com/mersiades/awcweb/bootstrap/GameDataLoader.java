@@ -1571,7 +1571,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollType(null)
                 .statToRollWith(null)
                 .build();
-        Move harholderSpecial = Move.builder()
+        Move hardholderSpecial = Move.builder()
                 .name(hardholderSpecialName)
                 .description("If you and another character have sex, you can give the other character gifts worth 1-barter, at no cost to you.")
                 .kind(MoveType.DEFAULT_CHARACTER)
@@ -1584,7 +1584,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(HARD)
                 .build();
         Move leadership = Move.builder()
-                .name("LEADERSHIP")
+                .name(leadershipName)
                 .description("_**Leadership**_: when you have to order your gang to advance, regroup, hold position, hold discipline, or put their damn backs into it, roll+hard.\n" +
                         "\n" +
                         "On a hit, they do it.\n" +
@@ -1603,7 +1603,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(HARD)
                 .build();
         Move wealth = Move.builder()
-                .name("WEALTH")
+                .name(wealthName)
                 .description("_**Wealth**_: if your hold is secure and your rule unchallenged, at the beginning of the session, roll+hard.\n" +
                         "\n" +
                         "On a 10+, you have surplus on hand and available for the needs of the session.\n" +
@@ -1618,7 +1618,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(wealthAction)
                 .playbook(PlaybookType.HARDHOLDER).build();
 
-        moveService.saveAll(Flux.just(harholderSpecial, leadership, wealth)).blockLast();
+        moveService.saveAll(Flux.just(hardholderSpecial, leadership, wealth)).blockLast();
 
     }
 
