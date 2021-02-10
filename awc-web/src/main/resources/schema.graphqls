@@ -792,6 +792,9 @@ type Mutation {
     setCharacterBarter(gameRoleId: String!,
         characterId: String!,
         amount: Int! ): Character
+    setHoldingBarter(gameRoleId: String!,
+        characterId: String!,
+        amount: Int! ): Character
     setBrainerGear(gameRoleId: String!,
         characterId: String!,
         brainerGear: [String]! ): Character

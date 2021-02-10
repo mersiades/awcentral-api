@@ -705,6 +705,25 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
+    public Character setHoldingBarter(String gameRoleId, String characterId, int amount) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        character.getPlaybookUnique().getHolding().setBarter(amount);
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
     public Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm) {
         // Get the GameRole
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();

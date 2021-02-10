@@ -47,6 +47,8 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character setCharacterBarter(String gameRoleId, String characterId, int amount);
 
+    Character setHoldingBarter(String gameRoleId, String characterId, int amount);
+
     Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm);
 
     Character toggleStatHighlight(String gameRoleId, String characterId, StatType stat);
@@ -60,5 +62,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Mono<GameRole> addThreat(String gameRoleId, Threat threat);
 
     Mono<GameRole> addNpc(String gameRoleId, Npc npc);
+
 
 }
