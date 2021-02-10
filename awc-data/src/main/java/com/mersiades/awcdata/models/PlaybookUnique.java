@@ -28,4 +28,6 @@ public class PlaybookUnique {
     private Gang gang;
 
     private Weapons weapons;
+
+    private Holding holding;
 }

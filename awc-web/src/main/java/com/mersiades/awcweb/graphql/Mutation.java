@@ -6,6 +6,7 @@ import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.Gang;
+import com.mersiades.awcdata.models.uniques.Holding;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -114,6 +115,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCharacterBarter(gameRoleId, characterId, amount);
     }
 
+    public Character setHoldingBarter(String gameRoleId, String characterId, int amount) {
+        System.out.println("Setting barter for Character: " + characterId);
+        return gameRoleService.setHoldingBarter(gameRoleId, characterId, amount);
+    }
+
     public Character setBrainerGear(String gameRoleId, String characterId, List<String> brainerGear) {
         System.out.println("Setting setBrainerGear for Character: " + characterId);
         return gameRoleService.setBrainerGear(gameRoleId, characterId, brainerGear);
@@ -137,6 +143,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons) {
         System.out.println("Setting CustomWeapons for Character: " + characterId);
         return gameRoleService.setCustomWeapons(gameRoleId, characterId, weapons);
+    }
+
+    public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount) {
+        System.out.println("Setting Holding for Character: " + characterId);
+        return gameRoleService.setHolding(gameRoleId, characterId, holding, vehicleCount);
     }
 
     public Character setWeapons(String gameRoleId, String characterId, List<String> weapons) {
@@ -202,6 +213,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Game performMakeWantKnownMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
         System.out.println("Performing barter roll move for Character: " + characterId);
         return gameService.performMakeWantKnownMove(gameId, gameroleId, characterId, moveId, barter).block();
+    }
+
+    public Game performWealthMove(String gameId, String gameroleId, String characterId) {
+        System.out.println("Performing barter roll move for Character: " + characterId);
+        return gameService.performWealthMove(gameId, gameroleId, characterId).block();
     }
 
     public Game performInflictHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm) {

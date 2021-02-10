@@ -383,14 +383,14 @@ public class GameServiceImpl implements GameService {
         CharacterStat modifier;
         boolean canGainPlusOneForward = false;
         if (moveOptional.isPresent()) {
-            canGainPlusOneForward = List.of(catOrMouse, reputation).contains(moveOptional.get().getName());
+            canGainPlusOneForward = List.of(catOrMouseName, reputationName, leadershipName).contains(moveOptional.get().getName());
             modifier = getStatToRoll(character, moveOptional.get());
             gameMessage.setContent(moveOptional.get().getDescription());
             gameMessage.setTitle(String.format("%s: %s", character.getName(), moveOptional.get().getName()).toUpperCase());
         } else {
             Move move = moveService.findById(moveId).block();
             assert move != null;
-            canGainPlusOneForward = List.of(catOrMouse, reputation).contains(move.getName());
+            canGainPlusOneForward = List.of(catOrMouseName, reputationName).contains(move.getName());
             modifier = getStatToRoll(character, move);
             gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
             gameMessage.setContent(move.getDescription());
@@ -439,15 +439,15 @@ public class GameServiceImpl implements GameService {
         String additionalModifierName;
 
         switch (move.getName()) {
-            case boardVehicle:
+            case boardVehicleName:
                 additionalModifierName = "SPEED DIFF.";
                 break;
-            case dealWithTerrain:
+            case dealWithTerrainName:
                 additionalModifierName = "HANDLING";
                 break;
-            case overtakeVehicle:
+            case overtakeVehicleName:
                 // Deliberately falls through
-            case outdistanceVehicle:
+            case outdistanceVehicleName:
                 additionalModifierName = "REL. SPEED";
                 break;
             default:
@@ -1148,6 +1148,58 @@ public class GameServiceImpl implements GameService {
                     return Mono.just(game);
                 })
                 .flatMap(gameRepository::save);
+    }
+
+    @Override
+    public Mono<Game> performWealthMove(String gameId, String gameroleId, String characterId) {
+        Character character = characterService.findById(characterId).block();
+        assert character != null;
+
+        GameMessage gameMessage = getGameMessageWithDiceRolls(gameId, gameroleId, MessageType.ROLL_STAT_MOVE);
+
+        // This method handles both Moves and CharacterMoves.
+        // First it tries to find the move in the List of CharacterMoves
+        // If it doesn't find the move there, it searches the Moves collection in the db
+        CharacterMove move = character.getCharacterMoves()
+                .stream().filter(characterMove -> characterMove.getName().equals(wealthName)).findFirst().orElseThrow();
+        CharacterStat modifier = getStatToRoll(character, move);
+
+        gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
+
+        gameMessage.setRollModifier(modifier.getValue());
+        gameMessage.setModifierStatName(modifier.getStat());
+        gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifier.getValue());
+
+        if (character.getHasPlusOneForward()) {
+            gameMessage.setUsedPlusOneForward(true);
+            gameMessage.setRollResult(gameMessage.getRollResult() + 1);
+            character.setHasPlusOneForward(false);
+        }
+
+        String content = "";
+        if (gameMessage.getRollResult() > 6 ) {
+            int sessionBarter = character.getPlaybookUnique().getHolding().getSurplus();
+            character.getPlaybookUnique().getHolding().setBarter(sessionBarter);
+            content = String.format("The holding's barter for the session is now **%s**\n" +
+                    "\n", sessionBarter);
+        } else {
+            character.getPlaybookUnique().getHolding().setBarter(0);
+            content = "The holding's barter for the session is now **0**\n" +
+                    "\n";
+        }
+        content += move.getDescription();
+        gameMessage.setContent(content);
+
+        characterService.save(character).block();
+        gameRoleService.findById(gameroleId).map(gameRole -> {
+            gameRole.setCharacters(List.of(character));
+            return gameRole;
+        }).flatMap(gameRoleService::save).block();
+
+        return gameRepository.findById(gameId).map(game -> {
+            game.getGameMessages().add(gameMessage);
+            return game;
+        }).flatMap(gameRepository::save);
     }
 
     @Override

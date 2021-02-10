@@ -28,4 +28,6 @@ public class PlaybookUniqueCreator {
     private GangCreator gangCreator;
 
     private WeaponsCreator weaponsCreator;
+
+    private HoldingCreator holdingCreator;
 }

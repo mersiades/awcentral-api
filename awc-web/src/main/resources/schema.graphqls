@@ -124,6 +124,12 @@ enum GangSize {
     LARGE
 }
 
+enum HoldingSize {
+    SMALL,
+    MEDIUM,
+    LARGE
+}
+
 # ---------------------------------------- STATIC GAME DATA TYPES -------------------------------------- #
 
 type HoldConditions {
@@ -252,6 +258,7 @@ type PlaybookUniqueCreator {
     brainerGearCreator: BrainerGearCreator
     gangCreator: GangCreator
     weaponsCreator: WeaponsCreator
+    holdingCreator: HoldingCreator
 }
 
 type GangCreator {
@@ -290,6 +297,41 @@ type CustomWeaponsCreator {
 type BrainerGearCreator {
     id: ID!
     gear: [String]!
+}
+
+type HoldingOption {
+    id: ID!
+    description: String!
+    surplusChange: Int!
+    wantChange: [String]
+    newHoldingSize: HoldingSize
+    gigChange: String
+    newGangSize: GangSize
+    gangTagChange: String
+    gangHarmChange: Int!
+    newVehicleCount: Int!
+    newBattleVehicleCount: Int!
+    newArmorBonus: Int!
+}
+
+type HoldingCreator {
+    id: ID!
+    defaultHoldingSize: HoldingSize!
+    instructions: String!
+    defaultSurplus: Int!
+    defaultWant: String!
+    defaultGigs: [String]!
+    defaultArmorBonus: Int!
+    defaultVehiclesCount: Int!
+    defaultBattleVehicleCount: Int!
+    defaultGangSize: GangSize!
+    defaultGangHarm: Int!
+    defaultGangArmor: Int!
+    defaultGangTag: String!
+    strengthCount: Int!
+    weaknessCount: Int!
+    strengthOptions: [HoldingOption]!
+    weaknessOptions: [HoldingOption]!
 }
 
 type WeaponsCreator {
@@ -485,6 +527,7 @@ type PlaybookUnique {
     customWeapons: CustomWeapons
     gang: Gang
     weapons: Weapons
+    holding: Holding
 }
 
 type BrainerGear {
@@ -519,6 +562,23 @@ type Gang {
     strengths: [GangOption]
     weaknesses: [GangOption]
     tags: [String]
+}
+
+type Holding {
+    id: ID!
+    holdingSize: HoldingSize!
+    gangSize: GangSize!
+    souls: String!
+    surplus: Int!
+    barter: Int!
+    gangHarm: Int!
+    gangArmor: Int!
+    gangDefenseArmorBonus: Int!
+    wants: [String]!
+    gigs: [String]!
+    gangTags: [String]!
+    selectedStrengths: [HoldingOption]!
+    selectedWeaknesses: [HoldingOption]!
 }
 
 type Vehicle {
@@ -640,6 +700,38 @@ input NpcInput {
     description: String
 }
 
+input HoldingOptionInput {
+    id: ID!
+    description: String!
+    surplusChange: Int!
+    wantChange: [String]
+    newHoldingSize: HoldingSize
+    gigChange: String
+    newGangSize: GangSize
+    gangTagChange: String
+    gangHarmChange: Int!
+    newVehicleCount: Int!
+    newBattleVehicleCount: Int!
+    newArmorBonus: Int!
+}
+
+input HoldingInput {
+    id: ID
+    holdingSize: HoldingSize!
+    gangSize: GangSize!
+    souls: String!
+    surplus: Int!
+    barter: Int!
+    gangHarm: Int!
+    gangArmor: Int!
+    gangDefenseArmorBonus: Int!
+    wants: [String]!
+    gigs: [String]!
+    gangTags: [String]!
+    selectedStrengths: [HoldingOptionInput]!
+    selectedWeaknesses: [HoldingOptionInput]!
+}
+
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -700,6 +792,9 @@ type Mutation {
     setCharacterBarter(gameRoleId: String!,
         characterId: String!,
         amount: Int! ): Character
+    setHoldingBarter(gameRoleId: String!,
+        characterId: String!,
+        amount: Int! ): Character
     setBrainerGear(gameRoleId: String!,
         characterId: String!,
         brainerGear: [String]! ): Character
@@ -713,6 +808,11 @@ type Mutation {
     setCustomWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
+    setHolding(gameRoleId: String!,
+        characterId: String!,
+        holding: HoldingInput!,
+        vehicleCount: Int!
+    ): Character
     setWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
@@ -757,6 +857,9 @@ type Mutation {
         modifier: Int!): Game # Modifier can be speed difference, relative speed, or handling
 
     #    Specific moves
+    performWealthMove(gameId: String!,
+        gameroleId: String!,
+        characterId: String!): Game
     performHelpOrInterfereMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
     performMakeWantKnownMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
     performSufferHarmMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, harm: Int!): Game
