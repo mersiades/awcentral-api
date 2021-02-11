@@ -223,7 +223,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(HOT)
                 .build();
         Move seduceOrManip = Move.builder()
-                .name("SEDUCE OR MANIPULATE SOMEONE")
+                .name(manipulateName)
                 .description("When you _**try to seduce, manipulate, bluff, fast-talk, or lie to someone**_, tell them what you want them to do, give them a reason, and roll+hot.\n" +
                         "\n" +
                         "**For NPCs**: on a 10+, they’ll go along with you, unless or until some fact or action betrays the reason you gave them.\n" +
@@ -1619,6 +1619,110 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(PlaybookType.HARDHOLDER).build();
 
         moveService.saveAll(Flux.just(hardholderSpecial, leadership, wealth)).blockLast();
+
+        /* ----------------------------- HOCUS MOVES --------------------------------- */
+        MoveAction hocusSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
+        Move hocusSpecial = Move.builder()
+                .name(hocusSpecialName)
+                .description("If you and another character have sex, you each get 1 hold. Either of you can spend your hold any time to help or interfere with the other, at a distance or despite any barriers that would normally prevent it.")
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(hocusSpecialAction)
+                .playbook(PlaybookType.HOCUS).build();
+        MoveAction fortunesAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.FORTUNE)
+                .build();
+        Move fortunes = Move.builder()
+                .name("FORTUNES")
+                .description("_**Fortunes**: fortune, surplus and want all depend on your followers._ At the beginning of the session, roll+fortune.\n" +
+                        "\n" +
+                        "On a 10+, your followers have surplus." +
+                        "\n" +
+                        "On a 7-9, they have surplus, but choose one want." +
+                        "\n" +
+                        "On a miss, they are in want." +
+                        "\n" +
+                        "If their surplus lists barter, like 1-barter or 2-barter, that's your personal share, to spend on your lifestyle or for what you will.")
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(fortunesAction)
+                .playbook(PlaybookType.HOCUS).build();
+        MoveAction frenzyAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(WEIRD)
+                .build();
+        Move frenzy = Move.builder()
+                .name("FRENZY")
+                .description("_**Frenzy**_: When you speak the truth to a mob, roll+weird." +
+                        "\n" +
+                        "On a 10+, hold 3." +
+                        "\n" +
+                        "On a 7-9, hold 1. Spend your hold 1 for 1 to make the mob:" +
+                        "\n" +
+                        "Spend your hold 1 for 1 to make the mob:" +
+                        "\n" +
+                        "- *Bring people forward and deliver them.*\n" +
+                        "- *Bring forward all their precious things.*\n" +
+                        "- *Unite and fight for you as a gang (2-harm 0-armor size appropriate).*\n" +
+                        "- *Fall into an orgy of uninhibited emotion: fucking, lamenting, fighting, sharing, celebrating, as you choose.*\n" +
+                        "- *Go quietly back to their lives.*\n" +
+                        "\n" +
+                        "On a miss, the mob turns on you.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(frenzyAction)
+                .playbook(PlaybookType.HOCUS).build();
+        RollModifier charismaticModifier = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(List.of(seduceOrManip))
+                .statToRollWith(WEIRD).build();
+        Move charismatic = Move.builder()
+                .name("CHARISMATIC")
+                .description("_**Charismatic**_: when you try to manipulate someone, roll+weird instead of roll+hot")
+                .kind(MoveType.CHARACTER)
+                .rollModifier(charismaticModifier)
+                .playbook(PlaybookType.HOCUS).build();
+        StatModifier wacknutModifier = StatModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .statToModify(WEIRD)
+                .modification(1).build();
+        Move fuckingWacknut = Move.builder()
+                .name("FUCKING WACKNUT")
+                .description("_**Fucking wacknut**_: you get +1weird (weird+3)")
+                .kind(MoveType.CHARACTER)
+                .statModifier(wacknutModifier)
+                .playbook(PlaybookType.HOCUS).build();
+        RollModifier seeingSoulsModifier = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(List.of(helpOrInterfere))
+                .statToRollWith(WEIRD).build();
+        Move seeingSouls = Move.builder()
+                .name("SEEING SOULS")
+                .description("_**Seeing souls**_: when you help or interfere with someone, roll+weird instead of roll+Hx")
+                .kind(MoveType.CHARACTER)
+                .rollModifier(seeingSoulsModifier)
+                .playbook(PlaybookType.HOCUS).build();
+        MoveAction divineProtectionAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
+        Move divineProtection = Move.builder()
+                .name("DIVINE PROTECTION")
+                .description("_**Divine protection**_: your gods give you 1-armor. If you wear armor, use that instead, they don't add.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(divineProtectionAction)
+                .playbook(PlaybookType.HOCUS).build();
+
+        moveService.saveAll(Flux.just(hocusSpecial, fortunes, frenzy, charismatic, fuckingWacknut, seeingSouls,
+                divineProtection)).blockLast();
 
     }
 

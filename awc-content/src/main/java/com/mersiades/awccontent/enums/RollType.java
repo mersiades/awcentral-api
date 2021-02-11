@@ -8,5 +8,5 @@ public enum RollType {
     SPEED,
     HANDLING,
     STOCK,
-
+    FORTUNE
 }

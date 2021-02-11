@@ -12,6 +12,7 @@ public class MoveNames {
     public static final String chopperSpecialName = "CHOPPER SPECIAL";
     public static final String gunluggerSpecialName = "GUNLUGGER SPECIAL";
     public static final String hardholderSpecialName = "HARDHOLDER SPECIAL";
+    public static final String hocusSpecialName = "HOCUS SPECIAL";
     public static final String makeWantKnownName = "MAKE WANT KNOWN";
     public static final String helpOrInterfereName = "HELP OR INTERFERE WITH SOMEONE";
     public static final String stabilizeAndHealName = "STABILIZE AND HEAL SOMEONE";
@@ -29,6 +30,7 @@ public class MoveNames {
     public static final String dealWithTerrainName = "DEAL WITH BAD TERRAIN";
     public static final String leadershipName = "LEADERSHIP";
     public static final String wealthName = "WEALTH";
+    public static final String manipulateName = "SEDUCE OR MANIPULATE SOMEONE";
 
     // Moves that can earn holds
     public static final String readPersonName = "READ A PERSON";

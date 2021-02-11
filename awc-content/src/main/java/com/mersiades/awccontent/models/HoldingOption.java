@@ -28,9 +28,6 @@ public class HoldingOption {
     // Ranges from -1 to 1, with -2 representing null
     private int surplusChange;
 
-    @Builder.Default
-    private List<String> wantChange = new ArrayList<>();
-
     private HoldingSize newHoldingSize;
 
     private String gigChange;
@@ -51,7 +48,8 @@ public class HoldingOption {
     // Ranges from 0 - 2, with -1 representing null
     private int newArmorBonus;
 
-
+    @Builder.Default
+    private List<String> wantChange = new ArrayList<>();
 
 
 }
