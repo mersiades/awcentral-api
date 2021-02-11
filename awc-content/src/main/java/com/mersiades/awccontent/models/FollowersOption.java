@@ -23,6 +23,7 @@ public class FollowersOption {
 
     private String description;
 
+    //  -1 represents null
     private int newNumberOfFollowers;
 
     // Ranges from -1 to 1, with -2 representing null

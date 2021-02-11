@@ -21,19 +21,22 @@ public class FollowersCreator {
 
     private String instructions;
 
-    private List<String> travelOptions = new ArrayList<>();
-
-    private List<String> characterizationOptions = new ArrayList<>();
-
     private int defaultNumberOfFollowers;
 
-    private List<String> defaultSurplus = new ArrayList<>();
-
-    private List<String> defaultWants = new ArrayList<>();
+    private int defaultSurplusBarter;
 
     private int strengthCount;
 
     private int weaknessCount;
+
+    @Builder.Default
+    private List<String> travelOptions = new ArrayList<>();
+
+    @Builder.Default
+    private List<String> characterizationOptions = new ArrayList<>();
+
+    @Builder.Default
+    private List<String> defaultWants = new ArrayList<>();
 
     @Builder.Default
     private List<FollowersOption> strengthOptions = new ArrayList<>();

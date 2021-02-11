@@ -2298,6 +2298,19 @@ public class GameDataLoader implements CommandLineRunner {
 
     public void loadPlaybookCreators() {
         System.out.println("|| --- Loading playbook creators --- ||");
+        String IMPROVEMENT_INSTRUCTIONS = "Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
+                "\n" +
+                "Each time you improve, choose one of the options. Check it off; you can’t choose it again.";
+
+        String HX_INSTRUCTIONS_START = "Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
+                "\n" +
+                "List the other characters’ names.\n" +
+                "\n";
+
+        String HX_INSTRUCTIONS_END = "\n" +
+                "On the others’ turns, answer their questions as you like.\n" +
+                "\n" +
+                "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.";
         /* ----------------------------- ANGEL PLAYBOOK CREATOR --------------------------------- */
         List<Move> angelOptionalMoves = moveRepository
                 .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.CHARACTER)
@@ -2340,16 +2353,11 @@ public class GameDataLoader implements CommandLineRunner {
         PlaybookCreator angelCreator = PlaybookCreator.builder()
                 .playbookType(PlaybookType.ANGEL)
                 .gearInstructions(angelGearInstructions)
-                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
-                        "\n" +
-                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
                 .movesInstructions("You get all the basic moves. Choose 2 angel moves.\n" +
                         "\n" +
                         "You can use all the battle moves, but when you get the chance, look up _**keeping an eye out**_, and _**baiting a trap**_, as well as the rules for harm.")
-                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
-                        "\n" +
-                        "List the other characters’ names.\n" +
-                        "\n" +
+                .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask 1, 2, or all 3:\n" +
                         "\n" +
                         "- *Which one of you do I figure is doomed to self-destruction?* For that character, write Hx-2.\n" +
@@ -2357,10 +2365,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *Which one of you has been beside me all along, and has seen everything I’ve seen?* For that character, write Hx+3.\n" +
                         "\n" +
                         "For everyone else, write Hx+1. You keep your eyes open.\n" +
-                        "\n" +
-                        "On the others’ turns, answer their questions as you like.\n" +
-                        "\n" +
-                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                        HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(angelUniqueCreator)
                 .optionalMoves(angelOptionalMoves)
                 .defaultMoves(angelDefaultMoves)
@@ -2447,20 +2452,14 @@ public class GameDataLoader implements CommandLineRunner {
                         "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
                 .movesInstructions("You get all the basic moves. Choose 2 battlebabe moves.\n" +
                         "You can use all the battle moves, but when you get the chance, look up _**standing overwatch**_, _**boarding a moving vehicle**_, and the _**subterfuge**_ moves.")
-                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
-                        "\n" +
-                        "List the other characters’ names.\n" +
-                        "\n" +
+                .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask the other players which of their characters you can trust.\n" +
                         "\n" +
                         "- *For the characters you can trust, write Hx-1.*\n" +
                         "- *For the characters you can’t trust, write Hx+3.*\n" +
                         "\n" +
                         "You are indifferent to what is safe, and drawn to what is not.\n" +
-                        "\n" +
-                        "On the others’ turns, answer their questions as you like.\n" +
-                        "\n" +
-                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                        HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(battlebabeUniqueCreator)
                 .optionalMoves(battlebabeOptionalMoves)
                 .defaultMoves(battlebabeDefaultMoves)
@@ -2513,14 +2512,10 @@ public class GameDataLoader implements CommandLineRunner {
         PlaybookCreator playbookCreatorBrainer = PlaybookCreator.builder()
                 .playbookType(PlaybookType.BRAINER)
                 .gearInstructions(brainerGearInstructions)
-                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
-                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
                 .movesInstructions("You get all the basic moves. Choose 2 brainer moves.\n" +
                         "You can use all the battle moves, but when you get the chance, look up _**keeping an eye out**_, _**baiting a trap**_, and _**turning the tables**_.")
-                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
-                        "\n" +
-                        "List the other characters’ names.\n" +
-                        "\n" +
+                .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
                         "\n" +
                         "- *Which one of you has slept in my presence (knowingly or un-)?* For that character, write Hx+2.\n" +
@@ -2528,10 +2523,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *Which one of you most evidently dislikes and distrusts me?* For that character, write Hx+3.\n" +
                         "\n" +
                         "For everyone else, write Hx+1. You have weird insights into everyone.\n" +
-                        "\n" +
-                        "On the others’ turns, answer their questions as you like.\n" +
-                        "\n" +
-                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                        HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(brainerUniqueCreator)
                 .optionalMoves(brainerOptionalMoves)
                 .defaultMoves(brainerDefaultMoves)
@@ -2655,14 +2647,10 @@ public class GameDataLoader implements CommandLineRunner {
         PlaybookCreator playbookCreatorChopper = PlaybookCreator.builder()
                 .playbookType(PlaybookType.CHOPPER)
                 .gearInstructions(chopperGearInstructions)
-                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
-                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
                 .movesInstructions("You get all the basic moves. You  get both chopper moves.\n" +
                         "You can use all the battle moves, and probably will, but when you gotta start somewhere. When you get teh chance, look up _**seize by force**_, _**laying down fire**_, and the _**road war**_ moves, as well as the rules for how gangs inflict and suffer harm.")
-                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
-                        "\n" +
-                        "List the other characters’ names.\n" +
-                        "\n" +
+                .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
                         "\n" +
                         "- *Which one of you used to ride with my gang?* For that character, write Hx+1.\n" +
@@ -2670,10 +2658,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *Which one of you once stood up to me, gang and all?* For that character, write Hx+3.\n" +
                         "\n" +
                         "For everyone else, write Hx-1. You don't really care much about, y'know, people.\n" +
-                        "\n" +
-                        "On the others’ turns, answer their questions as you like.\n" +
-                        "\n" +
-                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                        HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(chopperUniqueCreator)
                 .optionalMoves(chopperOptionalMoves)
                 .defaultMoves(chopperDefaultMoves)
@@ -2715,14 +2700,10 @@ public class GameDataLoader implements CommandLineRunner {
         PlaybookCreator playbookCreatorDriver = PlaybookCreator.builder()
                 .playbookType(PlaybookType.DRIVER)
                 .gearInstructions(driverGearInstructions)
-                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
-                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
                 .movesInstructions("You get all the basic moves. Choose 2 driver moves.\n" +
                         "You can use all the battle moves, but when you get the chance, look up _**standing overwatch**_, the _**road war**_ moves, and the rules for how vehicles suffer harm")
-                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
-                        "\n" +
-                        "List the other characters’ names.\n" +
-                        "\n" +
+                .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
                         "\n" +
                         "- *Which one of you got me out of some serious shit?* For that character, write Hx+1.\n" +
@@ -2730,10 +2711,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *Which one of you have I caught sometimes staring out at the horizon?* For that character, write Hx+3.\n" +
                         "\n" +
                         "For everyone else, write Hx+1. You aren't naturally inclined to get too close to too many people.\n" +
-                        "\n" +
-                        "On the others’ turns, answer their questions as you like.\n" +
-                        "\n" +
-                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                        HX_INSTRUCTIONS_END)
                 .optionalMoves(driverOptionalMoves)
                 .defaultMoves(driverDefaultMoves)
                 .defaultMoveCount(1)
@@ -2795,14 +2773,10 @@ public class GameDataLoader implements CommandLineRunner {
         PlaybookCreator playbookCreatorGunlugger = PlaybookCreator.builder()
                 .playbookType(PlaybookType.GUNLUGGER)
                 .gearInstructions(gearInstructionsGunlugger)
-                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
-                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
                 .movesInstructions("You get all the basic moves. Choose 3 gunlugger moves.\n" +
                         "You can use all the battle moves, and probably will, but you gotta start somewhere. When you get the chance, look up _**seize by force**_ and  _**laying down fire**_.")
-                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
-                        "\n" +
-                        "List the other characters’ names.\n" +
-                        "\n" +
+                .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
                         "\n" +
                         "- *Which one of you left me bleeding, and did nothing for me?* For that character, write Hx-2.\n" +
@@ -2810,10 +2784,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *Which one of you is prettiest and/or smartest?* For that character, write Hx+3.\n" +
                         "\n" +
                         "For everyone else, write Hx-1. You find no particular need to understand most people.\n" +
-                        "\n" +
-                        "On the others’ turns, answer their questions as you like.\n" +
-                        "\n" +
-                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                        HX_INSTRUCTIONS_END)
                 .defaultMoves(gunluggerDefaultMoves)
                 .optionalMoves(gunluggerOptionalMoves)
                 .playbookUniqueCreator(gunluggerUniqueCreator)
@@ -3155,29 +3126,209 @@ public class GameDataLoader implements CommandLineRunner {
         PlaybookCreator playbookCreatorHardHolder = PlaybookCreator.builder()
                 .playbookType(PlaybookType.HARDHOLDER)
                 .gearInstructions(gearInstructionsHardholder)
-                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
-                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
                 .movesInstructions("You get all the basic moves. You get both hardholder moves.\n" +
                         "You can use all the battle moves, and probably will, but you gotta start somewhere. When you get the chance, look up _**seize by force**_ and the rules for how gangs inflict and suffer harm.")
-                .hxInstructions("Everyone introduces their characters by name, look and outlook. Take your turn.\n" +
-                        "\n" +
-                        "List the other characters’ names.\n" +
-                        "\n" +
+                .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask either or both:\n" +
                         "\n" +
                         "- *Which one of you has been with me since before?* For that character, write Hx+2.\n" +
                         "- *Which one of you has betrayed or stolen from me?* For that character, write Hx+3.\n" +
                         "\n" +
                         "For everyone else, write Hx+1. It's in your interests to know everyone's business.\n" +
-                        "\n" +
-                        "On the others’ turns, answer their questions as you like.\n" +
-                        "\n" +
-                        "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.")
+                        HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(playbookUniqueCreatorHardHolder)
                 .defaultVehicleCount(4)
                 .defaultMoves(hardholderDefaultMoves)
                 .moveChoiceCount(0)
                 .defaultMoveCount(3)
+                .build();
+
+        /* ----------------------------- HOCUS PLAYBOOK CREATOR --------------------------------- */
+        List<Move> hocusDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.HOCUS, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
+
+        List<Move> hocusMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.HOCUS, MoveType.CHARACTER)
+                .collectList().block();
+
+        GearInstructions gearInstructionsHocus = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .gearIntro("In addition to your followers, detail your fashion according to your look. But apart from that and some barter, you have no gear to speak of.")
+                .startingBarter(4)
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .build();
+
+        FollowersOption followersOption1 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers are dedicated to you. Surplus: +1barter, and replace want: desertion with want: hungry.")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(1)
+                .fortuneChange(-1)
+                .surplusChange(null)
+                .wantChange(List.of("+hungry", "-desertion"))
+                .build();
+        FollowersOption followersOption2 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers are involved in successful commerce. +1fortune.")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(-2)
+                .fortuneChange(1)
+                .surplusChange(null)
+                .wantChange(null)
+                .build();
+        FollowersOption followersOption3 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers, taken as a body, constitute a powerful psychic antenna. Surplus +augury.")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(-2)
+                .fortuneChange(-1)
+                .surplusChange("+augury")
+                .wantChange(null)
+                .build();
+        FollowersOption followersOption4 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers are joyous and celebratory. Surplus: +party.")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(-2)
+                .fortuneChange(-1)
+                .surplusChange("+party")
+                .wantChange(null)
+                .build();
+        FollowersOption followersOption5 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers are rigorous and argumentative. Surplus: +insight.")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(-2)
+                .fortuneChange(-1)
+                .surplusChange("+insight")
+                .wantChange(null)
+                .build();
+        FollowersOption followersOption6 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers are hard-working, no-nonsense. +1barter.")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(1)
+                .fortuneChange(-1)
+                .surplusChange(null)
+                .wantChange(null)
+                .build();
+        FollowersOption followersOption7 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers are eager, enthusiastic and successful recruiters. Surplus: +growth.")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(-2)
+                .fortuneChange(-1)
+                .surplusChange("+growth")
+                .wantChange(null)
+                .build();
+        FollowersOption followersOption8 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("ou have few followers, 10 or fewer. Surplus: -1barter.")
+                .newNumberOfFollowers(10)
+                .surplusBarterChange(-1)
+                .fortuneChange(-1)
+                .surplusChange(null)
+                .wantChange(null)
+                .build();
+        FollowersOption followersOption9 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers aren't really yours, more like you're theirs. Want: judgement instead of want: desertion.")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(-2)
+                .fortuneChange(-1)
+                .surplusChange(null)
+                .wantChange(List.of("+judgement", "-desertion"))
+                .build();
+        FollowersOption followersOption10 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers rely entirely on you for their lives and needs. Want: +desperation")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(-2)
+                .fortuneChange(-1)
+                .surplusChange(null)
+                .wantChange(List.of("+desperation"))
+                .build();
+        FollowersOption followersOption11 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers are drug-fixated. Surplus: +stupor")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(-2)
+                .fortuneChange(-1)
+                .surplusChange("+stupor")
+                .wantChange(null)
+                .build();
+        FollowersOption followersOption12 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers disdain fashion, luxury and convention. Want: +disease.")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(-2)
+                .fortuneChange(-1)
+                .surplusChange(null)
+                .wantChange(List.of("+disease"))
+                .build();
+        FollowersOption followersOption13 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers disdain law, peace, reason and society. Surplus: +violence.")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(-2)
+                .fortuneChange(-1)
+                .surplusChange("+violence")
+                .wantChange(null)
+                .build();
+        FollowersOption followersOption14 = FollowersOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("Your followers are decadent and perverse. Want: +savagery.")
+                .newNumberOfFollowers(-1)
+                .surplusBarterChange(-2)
+                .fortuneChange(-1)
+                .surplusChange(null)
+                .wantChange(List.of("+savagery"))
+                .build();
+
+        FollowersCreator followersCreator = FollowersCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .instructions("By default you have around 20 followers, loyal to you but not fanatical. They have their own lives apart from you, integrated into the local population (fortune+1 surplus: 1-barter want: desertion")
+                .defaultNumberOfFollowers(20)
+                .defaultSurplusBarter(1)
+                .strengthCount(2)
+                .weaknessCount(2)
+                .travelOptions(List.of("travel with you", "congregate in their own communities"))
+                .characterizationOptions(List.of("your cult", "your scene", "your family", "your staff", "your students", "your court"))
+                .defaultWants(List.of("desertion"))
+                .strengthOptions(List.of(followersOption1, followersOption2, followersOption3, followersOption4,
+                        followersOption5, followersOption6, followersOption7))
+                .weaknessOptions(List.of(followersOption8, followersOption9, followersOption10, followersOption11,
+                        followersOption12, followersOption13, followersOption14))
+                .build();
+
+        PlaybookUniqueCreator playbookUniqueCreatorHocus = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.FOLLOWERS)
+                .followersCreator(followersCreator)
+                .build();
+
+        PlaybookCreator playbookCreatorHocus = PlaybookCreator.builder()
+                .playbookType(PlaybookType.HOCUS)
+                .gearInstructions(gearInstructionsHocus)
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+                .movesInstructions("You get all the basic moves. You get _**fortunes**_, and the choose 2 more hocus moves.\n" +
+                        "You can use all the battle moves, but when you get the chance, look up _**seize by force**_, _**keeping an eye out**_ and the rules for how gangs inflict and suffer harm.")
+                .hxInstructions(HX_INSTRUCTIONS_START +
+                        "Go around again for Hx. On your turn, ask either or both:\n" +
+                        "\n" +
+                        "- *Which one of you are my followers?* For that character, write Hx+2.\n" +
+                        "- *One of you, I've seen your soul. Which one?* For that character, write Hx+3.\n" +
+                        "\n" +
+                        "For everyone else, write Hx+1. You're a good and quick judge of others.\n" +
+                        HX_INSTRUCTIONS_END)
+                .playbookUniqueCreator(playbookUniqueCreatorHocus)
+                .defaultVehicleCount(0)
+                .defaultMoves(hocusDefaultMoves)
+                .optionalMoves(hocusMoves)
+                .moveChoiceCount(2)
+                .defaultMoveCount(2)
                 .build();
 
         playbookCreatorService.saveAll(Flux.just(angelCreator,
@@ -3186,7 +3337,8 @@ public class GameDataLoader implements CommandLineRunner {
                 playbookCreatorChopper,
                 playbookCreatorDriver,
                 playbookCreatorGunlugger,
-                playbookCreatorHardHolder
+                playbookCreatorHardHolder,
+                playbookCreatorHocus
         )).blockLast();
     }
 
