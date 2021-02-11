@@ -1939,6 +1939,34 @@ public class GameDataLoader implements CommandLineRunner {
                 hardholderName5, hardholderName6, hardholderName7, hardholderName8, hardholderName9,
                 hardholderName10, hardholderName11, hardholderName12, hardholderName13, hardholderName14,
                 hardholderName15, hardholderName16, hardholderName17, hardholderName18, hardholderName19)).blockLast();
+
+        /* ----------------------------- HOCUS NAMES --------------------------------- */
+        Name hocus = Name.builder().playbookType(PlaybookType.HOCUS).name("Vision").build();
+        Name hocus1 = Name.builder().playbookType(PlaybookType.HOCUS).name("Hope").build();
+        Name hocus2 = Name.builder().playbookType(PlaybookType.HOCUS).name("Dust").build();
+        Name hocus3 = Name.builder().playbookType(PlaybookType.HOCUS).name("Truth").build();
+        Name hocus4 = Name.builder().playbookType(PlaybookType.HOCUS).name("Found").build();
+        Name hocus5 = Name.builder().playbookType(PlaybookType.HOCUS).name("Always").build();
+        Name hocus6 = Name.builder().playbookType(PlaybookType.HOCUS).name("Lost").build();
+        Name hocus7 = Name.builder().playbookType(PlaybookType.HOCUS).name("Want").build();
+        Name hocus8 = Name.builder().playbookType(PlaybookType.HOCUS).name("Must").build();
+        Name hocus9 = Name.builder().playbookType(PlaybookType.HOCUS).name("Bright").build();
+        Name hocus10 = Name.builder().playbookType(PlaybookType.HOCUS).name("Sorrow").build();
+        Name hocus11 = Name.builder().playbookType(PlaybookType.HOCUS).name("Horse").build();
+        Name hocus12 = Name.builder().playbookType(PlaybookType.HOCUS).name("Rabbit").build();
+        Name hocus13 = Name.builder().playbookType(PlaybookType.HOCUS).name("Trout").build();
+        Name hocus14 = Name.builder().playbookType(PlaybookType.HOCUS).name("Cat").build();
+        Name hocus15 = Name.builder().playbookType(PlaybookType.HOCUS).name("Spider").build();
+        Name hocus16 = Name.builder().playbookType(PlaybookType.HOCUS).name("Snake").build();
+        Name hocus17 = Name.builder().playbookType(PlaybookType.HOCUS).name("Bat").build();
+        Name hocus18 = Name.builder().playbookType(PlaybookType.HOCUS).name("Lizard").build();
+        Name hocus19 = Name.builder().playbookType(PlaybookType.HOCUS).name("Jackal").build();
+        Name hocus20 = Name.builder().playbookType(PlaybookType.HOCUS).name("Weaver Bird").build();
+        Name hocus21 = Name.builder().playbookType(PlaybookType.HOCUS).name("Lark").build();
+
+        nameService.saveAll(Flux.just(hocus, hocus1, hocus2, hocus3, hocus4, hocus5, hocus6, hocus7,
+                hocus8, hocus9, hocus10, hocus11, hocus12, hocus13, hocus14, hocus15, hocus16,
+                hocus17, hocus18, hocus19, hocus20, hocus21)).blockLast();
     }
 
     private void loadLooks() {
@@ -2171,6 +2199,40 @@ public class GameDataLoader implements CommandLineRunner {
                 hardHolder7, hardHolder8, hardHolder9, hardHolder10, hardHolder11, hardHolder12, hardHolder13,
                 hardHolder14, hardHolder15, hardHolder16, hardHolder17, hardHolder18, hardHolder19, hardHolder20,
                 hardHolder21, hardHolder22, hardHolder23, hardHolder24, hardHolder25, hardHolder26, hardHolder27)).blockLast();
+
+        /* ----------------------------- HOCUS LOOKS --------------------------------- */
+        Look hocus1 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.GENDER).look("man").build();
+        Look hocus2 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.GENDER).look("woman").build();
+        Look hocus3 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.GENDER).look("ambiguous").build();
+        Look hocus4 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.GENDER).look("transgressing").build();
+        Look hocus5 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.GENDER).look("concealed").build();
+        Look hocus6 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.CLOTHES).look("tattered vestments").build();
+        Look hocus7 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.CLOTHES).look("formal vestments").build();
+        Look hocus8 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.CLOTHES).look("scrounge vestments").build();
+        Look hocus9 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.CLOTHES).look("fetish vestments").build();
+        Look hocus10 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.CLOTHES).look("tech vestments").build();
+        Look hocus11 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.FACE).look("innocent face").build();
+        Look hocus12 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.FACE).look("dirty face").build();
+        Look hocus13 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.FACE).look("determined face").build();
+        Look hocus14 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.FACE).look("open face").build();
+        Look hocus15 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.FACE).look("severe face").build();
+        Look hocus16 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.FACE).look("ascetic face").build();
+        Look hocus17 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("mesmerizing eyes").build();
+        Look hocus18 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("dazed eyes").build();
+        Look hocus19 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("forgiving eyes").build();
+        Look hocus20 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("suspicious eyes").build();
+        Look hocus21 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("clear eyes").build();
+        Look hocus22 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("burning eyes").build();
+        Look hocus23 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("bony body").build();
+        Look hocus24 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.BODY).look("lanky body").build();
+        Look hocus25 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.BODY).look("soft body").build();
+        Look hocus26 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.BODY).look("fit body").build();
+        Look hocus27 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.BODY).look("graceful body").build();
+        Look hocus28 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.BODY).look("fat body").build();
+
+        lookService.saveAll(Flux.just(hocus1, hocus2, hocus3, hocus4, hocus5, hocus6, hocus7, hocus8, hocus9, hocus10,
+                hocus11, hocus12, hocus13, hocus14, hocus15, hocus16, hocus17, hocus18, hocus19, hocus20, hocus21,
+                hocus22, hocus23, hocus24, hocus25, hocus26, hocus27, hocus28)).blockLast();
     }
 
     public void loadStatsOptions() {
@@ -2217,13 +2279,21 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption gunlugger4 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(2).HARD(2).HOT(-2).SHARP(0).WEIRD(0).build(); // 2
         statsOptionService.saveAll(Flux.just(gunlugger1, gunlugger2, gunlugger3, gunlugger4)).blockLast();
 
-        /* ----------------------------- GUNLUGGER STATS OPTIONS --------------------------------- */
+        /* ----------------------------- HARDHOLDER STATS OPTIONS --------------------------------- */
         StatsOption hardHolder1 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(-1).HARD(2).HOT(1).SHARP(1).WEIRD(0).build(); // 3
         StatsOption hardHolder2 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(1).HARD(2).HOT(1).SHARP(1).WEIRD(-2).build(); // 3
         StatsOption hardHolder3 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(-2).HARD(2).HOT(0).SHARP(2).WEIRD(0).build(); // 2
         StatsOption hardHolder4 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(0).HARD(2).HOT(1).SHARP(-1).WEIRD(1).build(); // 3
 
         statsOptionService.saveAll(Flux.just(hardHolder1, hardHolder2, hardHolder3, hardHolder4)).blockLast();
+
+        /* ----------------------------- HOCUS STATS OPTIONS --------------------------------- */
+        StatsOption hocus1 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(0).HARD(1).HOT(-1).SHARP(1).WEIRD(2).build(); // 3
+        StatsOption hocus2 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(1).HARD(-1).HOT(1).SHARP(0).WEIRD(2).build(); // 3
+        StatsOption hocus3 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(-1).HARD(1).HOT(0).SHARP(1).WEIRD(2).build(); // 3
+        StatsOption hocus4 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(1).HARD(0).HOT(1).SHARP(-1).WEIRD(2).build(); // 3
+
+        statsOptionService.saveAll(Flux.just(hocus1, hocus2, hocus3, hocus4)).blockLast();
     }
 
     public void loadPlaybookCreators() {
