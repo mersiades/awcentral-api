@@ -3703,187 +3703,14 @@ public class GameDataLoader implements CommandLineRunner {
     }
 
     private void createPlaybooks() {
-        // -------------------------------------- Set up PlaybookType -------------------------------------- //
-        // -------------------------------------- ANGEL -------------------------------------- //
-        Playbook playbookAngel = playbookService.findByPlaybookType(PlaybookType.ANGEL).block();
-        assert playbookAngel != null;
-
-        if (playbookAngel.getCreator() == null) {
-            PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(PlaybookType.ANGEL).block();
-            assert playbookCreatorAngel != null;
-
-            List<Name> namesAngel = nameService.findAllByPlaybookType(PlaybookType.ANGEL).collectList().block();
-            assert namesAngel != null;
-
-            List<Look> looksAngel = lookService.findAllByPlaybookType(PlaybookType.ANGEL).collectList().block();
-            assert looksAngel != null;
-
-            List<StatsOption> statsOptionsAngel = statsOptionService.findAllByPlaybookType(PlaybookType.ANGEL).collectList().block();
-            assert statsOptionsAngel != null;
-
-            statsOptionsAngel.forEach(statsOption -> playbookCreatorAngel.getStatsOptions().add(statsOption));
-            namesAngel.forEach(name -> playbookCreatorAngel.getNames().add(name));
-            looksAngel.forEach(look -> playbookCreatorAngel.getLooks().add(look));
-            playbookCreatorService.save(playbookCreatorAngel).block();
-            playbookAngel.setCreator(playbookCreatorAngel);
-            playbookService.save(playbookAngel).block();
-        }
-
-        // -------------------------------------- BATTLEBABE -------------------------------------- //
-        Playbook playbookBattlebabe = playbookService.findByPlaybookType(PlaybookType.BATTLEBABE).block();
-        assert playbookBattlebabe != null;
-
-        if (playbookBattlebabe.getCreator() == null) {
-            PlaybookCreator playbookCreatorBattlebabe = playbookCreatorService.findByPlaybookType(PlaybookType.BATTLEBABE).block();
-            assert playbookCreatorBattlebabe != null;
-
-
-            List<Name> namesBattlebabe = nameService.findAllByPlaybookType(PlaybookType.BATTLEBABE).collectList().block();
-            assert namesBattlebabe != null;
-
-            List<Look> looksBattlebabe = lookService.findAllByPlaybookType(PlaybookType.BATTLEBABE).collectList().block();
-            assert looksBattlebabe != null;
-
-            List<StatsOption> statsOptionsBattlebabe = statsOptionService.findAllByPlaybookType(PlaybookType.BATTLEBABE).collectList().block();
-            assert statsOptionsBattlebabe != null;
-
-            statsOptionsBattlebabe.forEach(statsOption -> playbookCreatorBattlebabe.getStatsOptions().add(statsOption));
-            namesBattlebabe.forEach(name -> playbookCreatorBattlebabe.getNames().add(name));
-            looksBattlebabe.forEach(look -> playbookCreatorBattlebabe.getLooks().add(look));
-            playbookCreatorService.save(playbookCreatorBattlebabe).block();
-            playbookBattlebabe.setCreator(playbookCreatorBattlebabe);
-            playbookService.save(playbookBattlebabe).block();
-        }
-
-        // -------------------------------------- BRAINER -------------------------------------- //
-        Playbook playbookBrainer = playbookService.findByPlaybookType(PlaybookType.BRAINER).block();
-        assert playbookBrainer != null;
-
-        if (playbookBrainer.getCreator() == null) {
-            PlaybookCreator playbookCreatorBrainer = playbookCreatorService.findByPlaybookType(PlaybookType.BRAINER).block();
-            assert playbookCreatorBrainer != null;
-
-
-            List<Name> namesBrainer = nameService.findAllByPlaybookType(PlaybookType.BRAINER).collectList().block();
-            assert namesBrainer != null;
-
-            List<Look> looksBrainer = lookService.findAllByPlaybookType(PlaybookType.BRAINER).collectList().block();
-            assert looksBrainer != null;
-
-            List<StatsOption> statsOptionsBrainer = statsOptionService.findAllByPlaybookType(PlaybookType.BRAINER).collectList().block();
-            assert statsOptionsBrainer != null;
-
-            statsOptionsBrainer.forEach(statsOption -> playbookCreatorBrainer.getStatsOptions().add(statsOption));
-            namesBrainer.forEach(name -> playbookCreatorBrainer.getNames().add(name));
-            looksBrainer.forEach(look -> playbookCreatorBrainer.getLooks().add(look));
-            playbookCreatorService.save(playbookCreatorBrainer).block();
-            playbookBrainer.setCreator(playbookCreatorBrainer);
-            playbookService.save(playbookBrainer).block();
-        }
-
-        // -------------------------------------- CHOPPER -------------------------------------- //
-        Playbook playbookChopper = playbookService.findByPlaybookType(PlaybookType.CHOPPER).block();
-        assert playbookChopper != null;
-
-        if (playbookChopper.getCreator() == null) {
-            PlaybookCreator playbookCreatorChopper = playbookCreatorService.findByPlaybookType(PlaybookType.CHOPPER).block();
-            assert playbookCreatorChopper != null;
-
-
-            List<Name> namesChopper = nameService.findAllByPlaybookType(PlaybookType.CHOPPER).collectList().block();
-            assert namesChopper != null;
-
-            List<Look> looksChopper = lookService.findAllByPlaybookType(PlaybookType.CHOPPER).collectList().block();
-            assert looksChopper != null;
-
-            List<StatsOption> statsOptionsChopper = statsOptionService.findAllByPlaybookType(PlaybookType.CHOPPER).collectList().block();
-            assert statsOptionsChopper != null;
-
-            statsOptionsChopper.forEach(statsOption -> playbookCreatorChopper.getStatsOptions().add(statsOption));
-            namesChopper.forEach(name -> playbookCreatorChopper.getNames().add(name));
-            looksChopper.forEach(look -> playbookCreatorChopper.getLooks().add(look));
-            playbookCreatorService.save(playbookCreatorChopper).block();
-            playbookChopper.setCreator(playbookCreatorChopper);
-            playbookService.save(playbookChopper).block();
-        }
-
-        // -------------------------------------- DRIVER -------------------------------------- //
-        Playbook playbookDriver = playbookService.findByPlaybookType(PlaybookType.DRIVER).block();
-        assert playbookDriver != null;
-
-        if (playbookDriver.getCreator() == null) {
-            PlaybookCreator playbookCreatorDriver = playbookCreatorService.findByPlaybookType(PlaybookType.DRIVER).block();
-            assert playbookCreatorDriver != null;
-
-            List<Name> namesDriver = nameService.findAllByPlaybookType(PlaybookType.DRIVER).collectList().block();
-            assert namesDriver != null;
-
-
-            List<Look> looksDriver = lookService.findAllByPlaybookType(PlaybookType.DRIVER).collectList().block();
-            assert looksDriver != null;
-
-            List<StatsOption> statsOptionsDriver = statsOptionService.findAllByPlaybookType(PlaybookType.DRIVER).collectList().block();
-            assert statsOptionsDriver != null;
-
-            statsOptionsDriver.forEach(statsOption -> playbookCreatorDriver.getStatsOptions().add(statsOption));
-            namesDriver.forEach(name -> playbookCreatorDriver.getNames().add(name));
-            looksDriver.forEach(look -> playbookCreatorDriver.getLooks().add(look));
-            playbookCreatorService.save(playbookCreatorDriver).block();
-            playbookDriver.setCreator(playbookCreatorDriver);
-            playbookService.save(playbookDriver).block();
-        }
-
-        // -------------------------------------- GUNLUGGER -------------------------------------- //
-        Playbook playbookGunlugger = playbookService.findByPlaybookType(PlaybookType.GUNLUGGER).block();
-        assert playbookGunlugger != null;
-
-        if (playbookGunlugger.getCreator() == null) {
-            PlaybookCreator playbookCreatorGunlugger = playbookCreatorService.findByPlaybookType(PlaybookType.GUNLUGGER).block();
-            assert playbookCreatorGunlugger != null;
-
-            List<Name> namesGunlugger = nameService.findAllByPlaybookType(PlaybookType.GUNLUGGER).collectList().block();
-            assert namesGunlugger != null;
-
-
-            List<Look> looksGunlugger = lookService.findAllByPlaybookType(PlaybookType.GUNLUGGER).collectList().block();
-            assert looksGunlugger != null;
-
-            List<StatsOption> statsOptionsGunlugger = statsOptionService.findAllByPlaybookType(PlaybookType.GUNLUGGER).collectList().block();
-            assert statsOptionsGunlugger != null;
-
-            statsOptionsGunlugger.forEach(statsOption -> playbookCreatorGunlugger.getStatsOptions().add(statsOption));
-            namesGunlugger.forEach(name -> playbookCreatorGunlugger.getNames().add(name));
-            looksGunlugger.forEach(look -> playbookCreatorGunlugger.getLooks().add(look));
-            playbookCreatorService.save(playbookCreatorGunlugger).block();
-            playbookGunlugger.setCreator(playbookCreatorGunlugger);
-            playbookService.save(playbookGunlugger).block();
-        }
-
-        // -------------------------------------- HARDHOLDER -------------------------------------- //
-        Playbook playbookHardHolder = playbookService.findByPlaybookType(PlaybookType.HARDHOLDER).block();
-        assert playbookHardHolder != null;
-
-        if (playbookHardHolder.getCreator() == null) {
-            PlaybookCreator playbookCreatorHardHolder = playbookCreatorService.findByPlaybookType(PlaybookType.HARDHOLDER).block();
-            assert playbookCreatorHardHolder != null;
-
-            List<Name> namesHardHolder = nameService.findAllByPlaybookType(PlaybookType.HARDHOLDER).collectList().block();
-            assert namesHardHolder != null;
-
-
-            List<Look> looksHardHolder = lookService.findAllByPlaybookType(PlaybookType.HARDHOLDER).collectList().block();
-            assert looksHardHolder != null;
-
-            List<StatsOption> statsOptionsHardHolder = statsOptionService.findAllByPlaybookType(PlaybookType.HARDHOLDER).collectList().block();
-            assert statsOptionsHardHolder != null;
-
-            statsOptionsHardHolder.forEach(statsOption -> playbookCreatorHardHolder.getStatsOptions().add(statsOption));
-            namesHardHolder.forEach(name -> playbookCreatorHardHolder.getNames().add(name));
-            looksHardHolder.forEach(look -> playbookCreatorHardHolder.getLooks().add(look));
-            playbookCreatorService.save(playbookCreatorHardHolder).block();
-            playbookHardHolder.setCreator(playbookCreatorHardHolder);
-            playbookService.save(playbookHardHolder).block();
-        }
+        fleshOutPlaybookAndSave(PlaybookType.ANGEL);
+        fleshOutPlaybookAndSave(PlaybookType.BATTLEBABE);
+        fleshOutPlaybookAndSave(PlaybookType.BRAINER);
+        fleshOutPlaybookAndSave(PlaybookType.CHOPPER);
+        fleshOutPlaybookAndSave(PlaybookType.DRIVER);
+        fleshOutPlaybookAndSave(PlaybookType.GUNLUGGER);
+        fleshOutPlaybookAndSave(PlaybookType.HARDHOLDER);
+        fleshOutPlaybookAndSave(PlaybookType.HOCUS);
     }
 
     private void loadThreatCreator() {
@@ -4094,6 +3921,31 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         threatCreatorService.save(threatCreator).block();
+    }
+
+    private void fleshOutPlaybookAndSave(PlaybookType playbookType) {
+        Playbook playbook = playbookService.findByPlaybookType(playbookType).block();
+        assert playbook != null;
+        if (playbook.getCreator() == null) {
+            PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(playbookType).block();
+            assert playbookCreator != null;
+
+            List<Name> names = nameService.findAllByPlaybookType(playbookType).collectList().block();
+            assert names != null;
+
+            List<Look> looks = lookService.findAllByPlaybookType(playbookType).collectList().block();
+            assert looks != null;
+
+            List<StatsOption> statsOptions = statsOptionService.findAllByPlaybookType(playbookType).collectList().block();
+            assert statsOptions != null;
+
+            statsOptions.forEach(statsOption -> playbookCreator.getStatsOptions().add(statsOption));
+            names.forEach(name -> playbookCreator.getNames().add(name));
+            looks.forEach(look -> playbookCreator.getLooks().add(look));
+            playbookCreatorService.save(playbookCreator).block();
+            playbook.setCreator(playbookCreator);
+            playbookService.save(playbook).block();
+        }
     }
 
 }
