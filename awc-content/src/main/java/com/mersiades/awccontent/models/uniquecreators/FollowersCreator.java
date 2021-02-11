@@ -25,6 +25,8 @@ public class FollowersCreator {
 
     private int defaultSurplusBarter;
 
+    private int defaultFortune;
+
     private int strengthCount;
 
     private int weaknessCount;

@@ -51,6 +51,7 @@ enum RollType {
     SPEED,
     HANDLING,
     STOCK,
+    FORTUNE
 }
 
 enum PlaybookType {
@@ -259,6 +260,7 @@ type PlaybookUniqueCreator {
     gangCreator: GangCreator
     weaponsCreator: WeaponsCreator
     holdingCreator: HoldingCreator
+    followersCreator: FollowersCreator
 }
 
 type GangCreator {
@@ -332,6 +334,31 @@ type HoldingCreator {
     weaknessCount: Int!
     strengthOptions: [HoldingOption]!
     weaknessOptions: [HoldingOption]!
+}
+
+type FollowersOption {
+    id: ID!
+    description: String!
+    newNumberOfFollowers: Int!
+    surplusBarterChange: Int!
+    fortuneChange: Int!
+    surplusChange: String
+    wantChange: [String]
+}
+
+type FollowersCreator {
+    id: ID!
+    instructions: String!
+    defaultNumberOfFollowers: Int!
+    defaultSurplusBarter: Int!
+    defaultFortune: Int!
+    strengthCount: Int!
+    weaknessCount: Int!
+    travelOptions: [String]!
+    characterizationOptions: [String]!
+    defaultWants: [String]!
+    strengthOptions: [FollowersOption]!
+    weaknessOptions: [FollowersOption]!
 }
 
 type WeaponsCreator {
@@ -529,6 +556,7 @@ type PlaybookUnique {
     gang: Gang
     weapons: Weapons
     holding: Holding
+    followers: Followers
 }
 
 type BrainerGear {
@@ -581,6 +609,22 @@ type Holding {
     selectedStrengths: [HoldingOption]!
     selectedWeaknesses: [HoldingOption]!
 }
+
+type Followers {
+    id: ID!
+    description: String!
+    travelOption: String!
+    characterization: String!
+    followers: Int!
+    fortune: Int!
+    barter: Int!
+    surplusBarter: Int!
+    surplus: [String]!
+    wants: [String]!
+    selectedStrengths: [FollowersOption]!
+    selectedWeaknesses: [FollowersOption]!
+}
+
 
 type Vehicle {
     id: ID!
@@ -731,6 +775,31 @@ input HoldingInput {
     gangTags: [String]!
     selectedStrengths: [HoldingOptionInput]!
     selectedWeaknesses: [HoldingOptionInput]!
+}
+
+input FollowersOptionInput {
+    id: ID!
+    description: String!
+    newNumberOfFollowers: Int!
+    surplusBarterChange: Int!
+    fortuneChange: Int!
+    surplusChange: String
+    wantChange: [String]
+}
+
+input FollowersInput {
+    id: ID
+    description: String!
+    travelOption: String!
+    characterization: String!
+    followers: Int!
+    fortune: Int!
+    barter: Int!
+    surplusBarter: Int!
+    surplus: [String]!
+    wants: [String]!
+    selectedStrengths: [FollowersOptionInput]!
+    selectedWeaknesses: [FollowersOptionInput]!
 }
 
 # ---------------------------------------------- QUERIES --------------------------------------------- #

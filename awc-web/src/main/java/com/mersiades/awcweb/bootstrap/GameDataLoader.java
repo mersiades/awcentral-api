@@ -3225,7 +3225,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         FollowersOption followersOption8 = FollowersOption.builder()
                 .id(UUID.randomUUID().toString())
-                .description("ou have few followers, 10 or fewer. Surplus: -1barter.")
+                .description("You have few followers, 10 or fewer. Surplus: -1barter.")
                 .newNumberOfFollowers(10)
                 .surplusBarterChange(-1)
                 .fortuneChange(-1)
@@ -3243,7 +3243,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         FollowersOption followersOption10 = FollowersOption.builder()
                 .id(UUID.randomUUID().toString())
-                .description("Your followers rely entirely on you for their lives and needs. Want: +desperation")
+                .description("Your followers rely entirely on you for their lives and needs. Want: +desperation.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
                 .fortuneChange(-1)
@@ -3252,7 +3252,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         FollowersOption followersOption11 = FollowersOption.builder()
                 .id(UUID.randomUUID().toString())
-                .description("Your followers are drug-fixated. Surplus: +stupor")
+                .description("Your followers are drug-fixated. Surplus: +stupor.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
                 .fortuneChange(-1)
@@ -3289,9 +3289,10 @@ public class GameDataLoader implements CommandLineRunner {
 
         FollowersCreator followersCreator = FollowersCreator.builder()
                 .id(UUID.randomUUID().toString())
-                .instructions("By default you have around 20 followers, loyal to you but not fanatical. They have their own lives apart from you, integrated into the local population (fortune+1 surplus: 1-barter want: desertion")
+                .instructions("By default you have around 20 followers, loyal to you but not fanatical. They have their own lives apart from you, integrated into the local population (fortune+1 surplus: 1-barter want: desertion)")
                 .defaultNumberOfFollowers(20)
                 .defaultSurplusBarter(1)
+                .defaultFortune(1)
                 .strengthCount(2)
                 .weaknessCount(2)
                 .travelOptions(List.of("travel with you", "congregate in their own communities"))
