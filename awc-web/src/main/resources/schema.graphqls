@@ -41,7 +41,8 @@ enum MoveActionType {
     ADJUST_HX,
     STOCK,
     GUNLUGGER_SPECIAL,
-    HOCUS_SPECIAL
+    HOCUS_SPECIAL,
+    SKINNER_SPECIAL
 }
 
 enum RollType {

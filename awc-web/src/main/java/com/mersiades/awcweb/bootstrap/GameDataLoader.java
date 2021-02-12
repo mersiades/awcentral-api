@@ -1724,6 +1724,122 @@ public class GameDataLoader implements CommandLineRunner {
         moveService.saveAll(Flux.just(hocusSpecial, fortunes, frenzy, charismatic, fuckingWacknut, seeingSouls,
                 divineProtection)).blockLast();
 
+        /* ----------------------------- HOCUS MOVES --------------------------------- */
+        MoveAction skinnerSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.SKINNER_SPECIAL)
+                .build();
+        Move skinnerSpecial = Move.builder()
+                .name(skinnerSpecialName)
+                .description("If you and another character have sex, choose one:\n" +
+                        "\n" +
+                        "- You take +1forward, and so do they.\n" +
+                        "- You take +1forward; they take -1.\n" +
+                        "- They must give you a gift worth at least 1-barter.\n" +
+                        "- You can _**hypnotize**_ as though you'd rolled a 10+, even if you haven't chosen to get the move.\n" +
+                        "\n")
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(skinnerSpecialAction)
+                .playbook(PlaybookType.HOCUS).build();
+
+        StatModifier breathtakingModifier = StatModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .statToModify(HOT)
+                .modification(1).build();
+        Move breathtaking = Move.builder()
+                .name("BREATHTAKING")
+                .description("_**Breathtaking**_: you get +1hot (hot+3).")
+                .kind(MoveType.CHARACTER)
+                .statModifier(breathtakingModifier)
+                .playbook(PlaybookType.SKINNER).build();
+        MoveAction lostAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(WEIRD)
+                .build();
+        Move lost = Move.builder()
+                .name("LOST")
+                .description("_**Lost**_: when you whisper someone's name to the world's psychic maelstrom, roll+weird.\n" +
+                        "\n" +
+                        "On a hit, they come to you, with or without any clear explanation why.\n" +
+                        "\n" +
+                        "On a 10+, take +1forward against them." +
+                        "\n" +
+                        "On a miss, the MC will ask you 3 questions; answer them truthfully."
+                )
+                .kind(MoveType.CHARACTER)
+                .moveAction(lostAction)
+                .playbook(PlaybookType.SKINNER).build();
+        MoveAction artfulAction= MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HOT)
+                .build();
+        Move artful = Move.builder()
+                .name("ARTFUL & GRACIOUS")
+                .description("_**Artful & gracious**_: when you perform your chosen art - any act of expression or culture - or when you put its product before an audience, roll+hot.\n" +
+                        "\n" +
+                        "On a hit, spend 3. On a 7-9, spend 1.\n" +
+                        "\n" +
+                        "Spend 1 to name an NPC member of your audience and choose one:" +
+                        "\n" +
+                        "- *This person must meet me.*\n" +
+                        "- *This person must have my services.*\n" +
+                        "- *This person loves me.*\n" +
+                        "- *This person must give me a gift.*\n" +
+                        "- *This person admires my patron.*\n" +
+                        "\n" +
+                        "On a miss, you gain no benefit, but suffer ho harm of lost opportunity. You simply perform very well.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(artfulAction)
+                .playbook(PlaybookType.SKINNER).build();
+        MoveAction arrestingSkinnerAction= MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
+        Move anArrestingSkinner = Move.builder()
+                .name("AN ARRESTING SKINNER")
+                .description("_**An arresting skinner**_: when you remove a piece of clothing, your own or someone else's, no one who can see you can do anything but watch.\n" +
+                        "\n" +
+                        "You command their absolute attention. If you choose, you can exempt individual people, by name.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(arrestingSkinnerAction)
+                .playbook(PlaybookType.SKINNER).build();
+        MoveAction hypnoticAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HOT)
+                .build();
+        Move hypnotic = Move.builder()
+                .name("HYPNOTIC")
+                .description("_**Hypnotic**_: when you have time and solitude with someone, they become fixated upon you. Roll+hot.\n" +
+                        "\n" +
+                        "On a 10+, hold 3. On a 7-9, hold 2.\n" +
+                        "\n" +
+                        "They can spend your hold, 1 for 1, by:" +
+                        "\n" +
+                        "- *Giving you something you want.*\n" +
+                        "- *Acting as your eyes and ears.*\n" +
+                        "- *Fighting to protect you.*\n" +
+                        "- *Doing something you tell them to.*\n" +
+                        "\n" +
+                        "For NPCs, while you have a hold over them they can't act against you. For PCs, instead, any time you like you can spend your hold, 1 for 1:" +
+                        "\n" +
+                        "- *They distract themselves with the thought of you. They're acting under fire.*\n" +
+                        "- *They inspire themselves with the thought of you. They take +1forward now.*\n" +
+                        "\n" +
+                        "On a miss, they hold two over you, on the exact same terms.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(hypnoticAction)
+                .playbook(PlaybookType.SKINNER).build();
+
+        moveService.saveAll(Flux.just()).blockLast();
+
     }
 
     private void loadNames() {
