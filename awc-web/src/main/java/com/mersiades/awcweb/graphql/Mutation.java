@@ -227,8 +227,13 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public Game performWealthMove(String gameId, String gameroleId, String characterId) {
-        System.out.println("Performing barter roll move for Character: " + characterId);
+        System.out.println("Performing Wealth roll move for Character: " + characterId);
         return gameService.performWealthMove(gameId, gameroleId, characterId).block();
+    }
+
+    public Game performFortunesMove(String gameId, String gameroleId, String characterId) {
+        System.out.println("Performing Fortunes roll move for Character: " + characterId);
+        return gameService.performFortunesMove(gameId, gameroleId, characterId).block();
     }
 
     public Game performInflictHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm) {

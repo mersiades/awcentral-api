@@ -62,5 +62,7 @@ public interface GameService extends ReactiveCrudService<Game, String> {
 
     Mono<Game> performWealthMove(String gameId, String gameroleId, String characterId);
 
+    Mono<Game> performFortunesMove(String gameId, String gameroleId, String characterId);
+
     Mono<Game> spendHold(String gameId, String gameroleId, String characterId);
 }

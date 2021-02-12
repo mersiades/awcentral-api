@@ -1639,7 +1639,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollType(RollType.FORTUNE)
                 .build();
         Move fortunes = Move.builder()
-                .name("FORTUNES")
+                .name(fortunesName)
                 .description("_**Fortunes**: fortune, surplus and want all depend on your followers._ At the beginning of the session, roll+fortune.\n" +
                         "\n" +
                         "On a 10+, your followers have surplus." +
