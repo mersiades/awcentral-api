@@ -866,6 +866,12 @@ type Mutation {
     setHoldingBarter(gameRoleId: String!,
         characterId: String!,
         amount: Int! ): Character
+    updateFollowers(gameRoleId: String!,
+        characterId: String!,
+        barter: Int!,
+        followers: Int!,
+        description: String!
+    ): Character
     setBrainerGear(gameRoleId: String!,
         characterId: String!,
         brainerGear: [String]! ): Character
@@ -883,6 +889,10 @@ type Mutation {
         characterId: String!,
         holding: HoldingInput!,
         vehicleCount: Int!
+    ): Character
+    setFollowers(gameRoleId: String!,
+        characterId: String!,
+        followers: FollowersInput!
     ): Character
     setWeapons(gameRoleId: String!,
         characterId: String!,
