@@ -223,6 +223,16 @@ public class GameServiceImpl implements GameService {
     public Flux<Game> findAllByInvitee(String email) {
         // Add a demo game if running demo profile
         if (activeProfiles != null && (activeProfiles.equals("demo") || activeProfiles.equals("staging"))) {
+            CharacterHarm harm = CharacterHarm.builder()
+                    .id(UUID.randomUUID().toString())
+                    .hasChangedPlaybook(false)
+                    .hasComeBackHard(false)
+                    .hasComeBackWeird(false)
+                    .hasDied(false)
+                    .isStabilized(false)
+                    .value(0)
+                    .build();
+
             GameRole nateGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.MC).build();
             GameRole claireGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
             GameRole ruthGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
@@ -262,6 +272,7 @@ public class GameServiceImpl implements GameService {
                     .looks(List.of(angel2, angel6, angel10, angel15, angel21))
                     .statsBlock(angelStatsBlock1)
                     .name("Nee")
+                    .harm(harm)
                     .build();
 
             Look brainer3 = new Look(PlaybookType.BRAINER, LookType.GENDER, "ambiguous");
@@ -295,6 +306,7 @@ public class GameServiceImpl implements GameService {
                     .playbook(PlaybookType.BRAINER)
                     .looks(List.of(brainer3, brainer6, brainer12, brainer17, brainer23))
                     .name("Jackson")
+                    .harm(harm)
                     .statsBlock(brainerStatsBlock)
                     .build();
 
@@ -1070,7 +1082,7 @@ public class GameServiceImpl implements GameService {
                             .sentOn(Instant.now().toString()).build();
 
 
-                    String content = String.format("%s and %s had sex. %s has gained +1forward, ",
+                    String content = String.format("%s and %s had sex. %s has gained +1forward.",
                             userCharacter.getName(),
                             otherCharacter.getName(),
                             userCharacter.getName()
@@ -1088,6 +1100,56 @@ public class GameServiceImpl implements GameService {
                     return Mono.just(game);
                 })
                 .flatMap(gameRepository::save);
+    }
+
+    @Override
+    public Mono<Game> performHocusSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId) {
+
+        GameRole gameRoleUser =  gameRoleService.findById(gameroleId).block();
+        assert gameRoleUser != null;
+        GameRole gameRoleOther = gameRoleService.findById(otherGameroleId).block();
+        assert gameRoleOther != null;
+        Character characterUser = gameRoleUser.getCharacters().stream()
+                .filter(character -> character.getId().equals(characterId)).findFirst().orElseThrow();
+        assert characterUser != null;
+        Character characterOther = gameRoleOther.getCharacters().stream()
+                .filter(character -> character.getId().equals(otherCharacterId)).findFirst().orElseThrow();
+        assert  characterOther != null;
+        CharacterMove hocusSpecialMove = characterUser.getCharacterMoves()
+                .stream().filter(characterMove -> characterMove.getName().equals(hocusSpecialName))
+                .findFirst().orElseThrow();
+        assert hocusSpecialMove != null;
+
+        characterUser.setHolds(characterUser.getHolds() + 1);
+        characterOther.setHolds(characterOther.getHolds() + 1);
+
+        GameMessage gameMessage = GameMessage.builder()
+                .id(UUID.randomUUID().toString())
+                .gameId(gameId)
+                .gameroleId(gameroleId)
+                .messageType(MessageType.PRINT_MOVE)
+                .sentOn(Instant.now().toString()).build();
+
+        String content = String.format("%s and %s had sex. They have both gained 1 hold.\n" +
+                        "\n",
+                characterUser.getName(),
+                characterOther.getName()
+        );
+
+        content += hocusSpecialMove.getDescription();
+
+        gameMessage.setContent(content);
+        gameMessage.setTitle(String.format("%s: %s", characterUser.getName().toUpperCase(), "HOCUS SPECIAL"));
+
+        characterService.saveAll(Flux.just(characterUser, characterOther)).blockLast();
+        gameRoleService.saveAll(Flux.just(gameRoleUser, gameRoleOther)).blockLast();
+
+        return gameRepository.findById(gameId)
+                .flatMap(game -> {
+                    game.getGameMessages().add(gameMessage);
+                    return Mono.just(game);
+                })
+                .flatMap(gameRepository::save).log();
     }
 
     @Override
@@ -1216,6 +1278,58 @@ public class GameServiceImpl implements GameService {
         } else {
             character.getPlaybookUnique().getHolding().setBarter(0);
             content = "The holding's barter for the session is now **0**\n" +
+                    "\n";
+        }
+        content += move.getDescription();
+        gameMessage.setContent(content);
+
+        characterService.save(character).block();
+        gameRoleService.findById(gameroleId).map(gameRole -> {
+            gameRole.setCharacters(List.of(character));
+            return gameRole;
+        }).flatMap(gameRoleService::save).block();
+
+        return gameRepository.findById(gameId).map(game -> {
+            game.getGameMessages().add(gameMessage);
+            return game;
+        }).flatMap(gameRepository::save);
+    }
+
+    @Override
+    public Mono<Game> performFortunesMove(String gameId, String gameroleId, String characterId) {
+        Character character = characterService.findById(characterId).block();
+        assert character != null;
+
+        GameMessage gameMessage = getGameMessageWithDiceRolls(gameId, gameroleId, MessageType.ROLL_STAT_MOVE);
+
+        // This method handles both Moves and CharacterMoves.
+        // First it tries to find the move in the List of CharacterMoves
+        // If it doesn't find the move there, it searches the Moves collection in the db
+        CharacterMove move = character.getCharacterMoves()
+                .stream().filter(characterMove -> characterMove.getName().equals(fortunesName)).findFirst().orElseThrow();
+        int modifier = character.getPlaybookUnique().getFollowers().getFortune();
+
+        gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
+
+        gameMessage.setAdditionalModifierName("FORTUNE");
+        gameMessage.setAdditionalModifierValue(modifier);
+        gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifier);
+
+        if (character.getHasPlusOneForward()) {
+            gameMessage.setUsedPlusOneForward(true);
+            gameMessage.setRollResult(gameMessage.getRollResult() + 1);
+            character.setHasPlusOneForward(false);
+        }
+
+        String content;
+        if (gameMessage.getRollResult() > 6 ) {
+            int sessionBarter = character.getPlaybookUnique().getFollowers().getSurplusBarter();
+            character.getPlaybookUnique().getFollowers().setBarter(sessionBarter);
+            content = String.format("The followers' barter for the session is now **%s**\n" +
+                    "\n", sessionBarter);
+        } else {
+            character.getPlaybookUnique().getFollowers().setBarter(0);
+            content = "The followers' barter for the session is now **0**\n" +
                     "\n";
         }
         content += move.getDescription();

@@ -30,4 +30,6 @@ public class PlaybookUniqueCreator {
     private WeaponsCreator weaponsCreator;
 
     private HoldingCreator holdingCreator;
+
+    private FollowersCreator followersCreator;
 }

@@ -30,4 +30,6 @@ public class PlaybookUnique {
     private Weapons weapons;
 
     private Holding holding;
+
+    private Followers followers;
 }

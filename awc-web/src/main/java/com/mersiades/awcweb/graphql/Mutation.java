@@ -5,6 +5,7 @@ import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
+import com.mersiades.awcdata.models.uniques.Followers;
 import com.mersiades.awcdata.models.uniques.Gang;
 import com.mersiades.awcdata.models.uniques.Holding;
 import com.mersiades.awcdata.services.GameRoleService;
@@ -116,8 +117,13 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public Character setHoldingBarter(String gameRoleId, String characterId, int amount) {
-        System.out.println("Setting barter for Character: " + characterId);
+        System.out.println("Setting Holding barter for Character: " + characterId);
         return gameRoleService.setHoldingBarter(gameRoleId, characterId, amount);
+    }
+
+    public Character updateFollowers(String gameRoleId, String characterId, int barter, int followers, String description) {
+        System.out.println("Updating Followers for Character: " + characterId);
+        return gameRoleService.updateFollowers(gameRoleId, characterId, barter, followers, description);
     }
 
     public Character setBrainerGear(String gameRoleId, String characterId, List<String> brainerGear) {
@@ -148,6 +154,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount) {
         System.out.println("Setting Holding for Character: " + characterId);
         return gameRoleService.setHolding(gameRoleId, characterId, holding, vehicleCount);
+    }
+
+    public Character setFollowers(String gameRoleId, String characterId, Followers followers) {
+        System.out.println("Setting Holding for Character: " + characterId);
+        return gameRoleService.setFollowers(gameRoleId, characterId, followers);
     }
 
     public Character setWeapons(String gameRoleId, String characterId, List<String> weapons) {
@@ -216,8 +227,13 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public Game performWealthMove(String gameId, String gameroleId, String characterId) {
-        System.out.println("Performing barter roll move for Character: " + characterId);
+        System.out.println("Performing Wealth roll move for Character: " + characterId);
         return gameService.performWealthMove(gameId, gameroleId, characterId).block();
+    }
+
+    public Game performFortunesMove(String gameId, String gameroleId, String characterId) {
+        System.out.println("Performing Fortunes roll move for Character: " + characterId);
+        return gameService.performFortunesMove(gameId, gameroleId, characterId).block();
     }
 
     public Game performInflictHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm) {
@@ -243,6 +259,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Game performGunluggerSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, boolean addPlus1Forward) {
         System.out.println("Performing GUNLUGGER SPECIAL move for Character: " + characterId);
         return gameService.performGunluggerSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, addPlus1Forward).block();
+    }
+
+    public Game performHocusSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId) {
+        System.out.println("Performing HOCUS SPECIAL move for Character: " + characterId);
+        return gameService.performHocusSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId).block();
     }
 
     public Game performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm) {

@@ -40,7 +40,8 @@ enum MoveActionType {
     BARTER,
     ADJUST_HX,
     STOCK,
-    GUNLUGGER_SPECIAL
+    GUNLUGGER_SPECIAL,
+    HOCUS_SPECIAL
 }
 
 enum RollType {
@@ -51,6 +52,7 @@ enum RollType {
     SPEED,
     HANDLING,
     STOCK,
+    FORTUNE
 }
 
 enum PlaybookType {
@@ -259,6 +261,7 @@ type PlaybookUniqueCreator {
     gangCreator: GangCreator
     weaponsCreator: WeaponsCreator
     holdingCreator: HoldingCreator
+    followersCreator: FollowersCreator
 }
 
 type GangCreator {
@@ -332,6 +335,31 @@ type HoldingCreator {
     weaknessCount: Int!
     strengthOptions: [HoldingOption]!
     weaknessOptions: [HoldingOption]!
+}
+
+type FollowersOption {
+    id: ID!
+    description: String!
+    newNumberOfFollowers: Int!
+    surplusBarterChange: Int!
+    fortuneChange: Int!
+    surplusChange: String
+    wantChange: [String]
+}
+
+type FollowersCreator {
+    id: ID!
+    instructions: String!
+    defaultNumberOfFollowers: Int!
+    defaultSurplusBarter: Int!
+    defaultFortune: Int!
+    strengthCount: Int!
+    weaknessCount: Int!
+    travelOptions: [String]!
+    characterizationOptions: [String]!
+    defaultWants: [String]!
+    strengthOptions: [FollowersOption]!
+    weaknessOptions: [FollowersOption]!
 }
 
 type WeaponsCreator {
@@ -529,6 +557,7 @@ type PlaybookUnique {
     gang: Gang
     weapons: Weapons
     holding: Holding
+    followers: Followers
 }
 
 type BrainerGear {
@@ -581,6 +610,22 @@ type Holding {
     selectedStrengths: [HoldingOption]!
     selectedWeaknesses: [HoldingOption]!
 }
+
+type Followers {
+    id: ID!
+    description: String!
+    travelOption: String!
+    characterization: String!
+    followers: Int!
+    fortune: Int!
+    barter: Int!
+    surplusBarter: Int!
+    surplus: [String]!
+    wants: [String]!
+    selectedStrengths: [FollowersOption]!
+    selectedWeaknesses: [FollowersOption]!
+}
+
 
 type Vehicle {
     id: ID!
@@ -733,6 +778,31 @@ input HoldingInput {
     selectedWeaknesses: [HoldingOptionInput]!
 }
 
+input FollowersOptionInput {
+    id: ID!
+    description: String!
+    newNumberOfFollowers: Int!
+    surplusBarterChange: Int!
+    fortuneChange: Int!
+    surplusChange: String
+    wantChange: [String]
+}
+
+input FollowersInput {
+    id: ID
+    description: String!
+    travelOption: String!
+    characterization: String!
+    followers: Int!
+    fortune: Int!
+    barter: Int!
+    surplusBarter: Int!
+    surplus: [String]!
+    wants: [String]!
+    selectedStrengths: [FollowersOptionInput]!
+    selectedWeaknesses: [FollowersOptionInput]!
+}
+
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -797,6 +867,12 @@ type Mutation {
     setHoldingBarter(gameRoleId: String!,
         characterId: String!,
         amount: Int! ): Character
+    updateFollowers(gameRoleId: String!,
+        characterId: String!,
+        barter: Int!,
+        followers: Int!,
+        description: String!
+    ): Character
     setBrainerGear(gameRoleId: String!,
         characterId: String!,
         brainerGear: [String]! ): Character
@@ -814,6 +890,10 @@ type Mutation {
         characterId: String!,
         holding: HoldingInput!,
         vehicleCount: Int!
+    ): Character
+    setFollowers(gameRoleId: String!,
+        characterId: String!,
+        followers: FollowersInput!
     ): Character
     setWeapons(gameRoleId: String!,
         characterId: String!,
@@ -862,6 +942,9 @@ type Mutation {
     performWealthMove(gameId: String!,
         gameroleId: String!,
         characterId: String!): Game
+    performFortunesMove(gameId: String!,
+        gameroleId: String!,
+        characterId: String!): Game
     performHelpOrInterfereMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
     performMakeWantKnownMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
     performSufferHarmMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, harm: Int!): Game
@@ -894,6 +977,11 @@ type Mutation {
         characterId: String!,
         otherCharacterId: String!,
         addPlus1Forward: Boolean!): Game
+    performHocusSpecialMove(gameId: String!,
+        gameroleId: String!,
+        otherGameroleId: String!,
+        characterId: String!,
+        otherCharacterId: String!): Game
     performStabilizeAndHealMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
 
     # Other

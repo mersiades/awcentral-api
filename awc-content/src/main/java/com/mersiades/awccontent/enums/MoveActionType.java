@@ -26,4 +26,6 @@ public enum MoveActionType {
     STOCK,
 
     GUNLUGGER_SPECIAL,
+
+    HOCUS_SPECIAL
 }

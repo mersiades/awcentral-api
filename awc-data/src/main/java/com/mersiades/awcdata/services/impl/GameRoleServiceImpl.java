@@ -568,6 +568,41 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
+    public Character setFollowers(String gameRoleId, String characterId, Followers followers) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        if (followers.getId() == null) {
+            followers.setId(UUID.randomUUID().toString());
+        }
+
+        if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.FOLLOWERS) {
+
+            PlaybookUnique playbookUniqueHardHolder = PlaybookUnique.builder()
+                    .id(UUID.randomUUID().toString())
+                    .type(UniqueType.FOLLOWERS)
+                    .followers(followers)
+                    .build();
+
+            character.setPlaybookUnique(playbookUniqueHardHolder);
+        } else {
+            // Update existing PlaybookUnique
+            character.getPlaybookUnique().setFollowers(followers);
+        }
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
     public Character setWeapons(String gameRoleId, String characterId, List<String> weapons) {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
         assert gameRole != null;
@@ -715,6 +750,27 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
         character.getPlaybookUnique().getHolding().setBarter(amount);
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
+    public Character updateFollowers(String gameRoleId, String characterId, int barter, int followers, String description) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        character.getPlaybookUnique().getFollowers().setBarter(barter);
+        character.getPlaybookUnique().getFollowers().setFollowers(followers);
+        character.getPlaybookUnique().getFollowers().setDescription(description);
 
         // Save to db
         characterService.save(character).block();

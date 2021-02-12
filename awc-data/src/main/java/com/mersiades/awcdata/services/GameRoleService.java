@@ -5,6 +5,7 @@ import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
+import com.mersiades.awcdata.models.uniques.Followers;
 import com.mersiades.awcdata.models.uniques.Gang;
 import com.mersiades.awcdata.models.uniques.Holding;
 import reactor.core.publisher.Flux;
@@ -39,6 +40,8 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount);
 
+    Character setFollowers(String gameRoleId, String characterId, Followers followers);
+
     Character setWeapons(String gameRoleId, String characterId, List<String> weapons);
 
     Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats);
@@ -48,6 +51,8 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character setCharacterBarter(String gameRoleId, String characterId, int amount);
 
     Character setHoldingBarter(String gameRoleId, String characterId, int amount);
+
+    Character updateFollowers(String gameRoleId, String characterId, int barter, int followers, String description);
 
     Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm);
 
