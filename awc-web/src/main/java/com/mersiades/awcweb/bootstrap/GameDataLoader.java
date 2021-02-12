@@ -1623,7 +1623,7 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- HOCUS MOVES --------------------------------- */
         MoveAction hocusSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
-                .actionType(MoveActionType.PRINT)
+                .actionType(MoveActionType.HOCUS_SPECIAL)
                 .rollType(null)
                 .statToRollWith(null)
                 .build();
