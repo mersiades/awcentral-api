@@ -223,6 +223,16 @@ public class GameServiceImpl implements GameService {
     public Flux<Game> findAllByInvitee(String email) {
         // Add a demo game if running demo profile
         if (activeProfiles != null && (activeProfiles.equals("demo") || activeProfiles.equals("staging"))) {
+            CharacterHarm harm = CharacterHarm.builder()
+                    .id(UUID.randomUUID().toString())
+                    .hasChangedPlaybook(false)
+                    .hasComeBackHard(false)
+                    .hasComeBackWeird(false)
+                    .hasDied(false)
+                    .isStabilized(false)
+                    .value(0)
+                    .build();
+
             GameRole nateGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.MC).build();
             GameRole claireGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
             GameRole ruthGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
@@ -262,6 +272,7 @@ public class GameServiceImpl implements GameService {
                     .looks(List.of(angel2, angel6, angel10, angel15, angel21))
                     .statsBlock(angelStatsBlock1)
                     .name("Nee")
+                    .harm(harm)
                     .build();
 
             Look brainer3 = new Look(PlaybookType.BRAINER, LookType.GENDER, "ambiguous");
@@ -295,6 +306,7 @@ public class GameServiceImpl implements GameService {
                     .playbook(PlaybookType.BRAINER)
                     .looks(List.of(brainer3, brainer6, brainer12, brainer17, brainer23))
                     .name("Jackson")
+                    .harm(harm)
                     .statsBlock(brainerStatsBlock)
                     .build();
 
