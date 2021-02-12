@@ -1104,68 +1104,52 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Mono<Game> performHocusSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId) {
+
+        GameRole gameRoleUser =  gameRoleService.findById(gameroleId).block();
+        assert gameRoleUser != null;
+        GameRole gameRoleOther = gameRoleService.findById(otherGameroleId).block();
+        assert gameRoleOther != null;
+        Character characterUser = gameRoleUser.getCharacters().stream()
+                .filter(character -> character.getId().equals(characterId)).findFirst().orElseThrow();
+        assert characterUser != null;
+        Character characterOther = gameRoleOther.getCharacters().stream()
+                .filter(character -> character.getId().equals(otherCharacterId)).findFirst().orElseThrow();
+        assert  characterOther != null;
+        CharacterMove hocusSpecialMove = characterUser.getCharacterMoves()
+                .stream().filter(characterMove -> characterMove.getName().equals(hocusSpecialName))
+                .findFirst().orElseThrow();
+        assert hocusSpecialMove != null;
+
+        characterUser.setHolds(characterUser.getHolds() + 1);
+        characterOther.setHolds(characterOther.getHolds() + 1);
+
+        GameMessage gameMessage = GameMessage.builder()
+                .id(UUID.randomUUID().toString())
+                .gameId(gameId)
+                .gameroleId(gameroleId)
+                .messageType(MessageType.PRINT_MOVE)
+                .sentOn(Instant.now().toString()).build();
+
+        String content = String.format("%s and %s had sex. They have both gained 1 hold.\n" +
+                        "\n",
+                characterUser.getName(),
+                characterOther.getName()
+        );
+
+        content += hocusSpecialMove.getDescription();
+
+        gameMessage.setContent(content);
+        gameMessage.setTitle(String.format("%s: %s", characterUser.getName().toUpperCase(), "HOCUS SPECIAL"));
+
+        characterService.saveAll(Flux.just(characterUser, characterOther)).blockLast();
+        gameRoleService.saveAll(Flux.just(gameRoleUser, gameRoleOther)).blockLast();
+
         return gameRepository.findById(gameId)
                 .flatMap(game -> {
-                    // Find User's Character
-                    Character userCharacter = characterService.findById(characterId).block();
-                    assert userCharacter != null;
-
-                    // Find other Character
-                    Character otherCharacter = characterService.findById(otherCharacterId).block();
-                    assert otherCharacter != null;
-
-                    CharacterMove hocusSpecialMove = userCharacter.getCharacterMoves()
-                            .stream().filter(characterMove -> characterMove.getName().equals(hocusSpecialName))
-                            .findFirst().orElseThrow();
-                    assert hocusSpecialMove != null;
-
-                    // Add 1 hold to user's Character
-                    gameRoleService.findById(gameroleId).map(gameRole1 -> {
-                        Character character = gameRole1.getCharacters()
-                                .stream().filter(character1 -> character1.getId().equals(characterId))
-                                .findFirst().orElseThrow();
-
-                        character.setHolds(character.getHolds() + 1);
-
-                        characterService.save(character).block();
-
-                        return gameRole1;
-                    }).flatMap(gameRoleService::save).block();
-
-                    // Add 1 hold to other Character
-                    gameRoleService.findById(otherGameroleId).map(gameRole1 -> {
-                        Character character = gameRole1.getCharacters()
-                                .stream().filter(character1 -> character1.getId().equals(otherCharacterId))
-                                .findFirst().orElseThrow();
-
-                        character.setHolds(character.getHolds() + 1);
-
-                        characterService.save(character).block();
-
-                        return gameRole1;
-                    }).flatMap(gameRoleService::save).block();
-
-                    GameMessage gameMessage = GameMessage.builder()
-                            .id(UUID.randomUUID().toString())
-                            .gameId(gameId)
-                            .gameroleId(gameroleId)
-                            .messageType(MessageType.PRINT_MOVE)
-                            .sentOn(Instant.now().toString()).build();
-
-                    String content = String.format("%s and %s had sex. They have both gained 1 hold.\n" +
-                            "\n",
-                            userCharacter.getName(),
-                            otherCharacter.getName()
-                    );
-
-                    content += hocusSpecialMove.getDescription();
-
-                    gameMessage.setContent(content);
-                    gameMessage.setTitle(String.format("%s: %s", userCharacter.getName().toUpperCase(), "HOCUS SPECIAL"));
                     game.getGameMessages().add(gameMessage);
                     return Mono.just(game);
                 })
-                .flatMap(gameRepository::save);
+                .flatMap(gameRepository::save).log();
     }
 
     @Override

@@ -262,7 +262,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public Game performHocusSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId) {
-        System.out.println("Performing GUNLUGGER SPECIAL move for Character: " + characterId);
+        System.out.println("Performing HOCUS SPECIAL move for Character: " + characterId);
         return gameService.performHocusSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId).block();
     }
 
