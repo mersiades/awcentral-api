@@ -10,6 +10,7 @@ enum MessageType {
     ROLL_STOCK_MOVE
     STOCK_MOVE
 }
+
 enum RoleType {
     MC
     PLAYER
@@ -263,6 +264,7 @@ type PlaybookUniqueCreator {
     weaponsCreator: WeaponsCreator
     holdingCreator: HoldingCreator
     followersCreator: FollowersCreator
+    skinnerGearCreator: SkinnerGearCreator
 }
 
 type GangCreator {
@@ -361,6 +363,20 @@ type FollowersCreator {
     defaultWants: [String]!
     strengthOptions: [FollowersOption]!
     weaknessOptions: [FollowersOption]!
+}
+
+type SkinnerGearItem {
+    id: ID!
+    item: String!
+    note: String
+}
+
+type SkinnerGearCreator {
+    id: ID!
+    graciousWeaponCount: Int!
+    luxeGearCount: Int!
+    graciousWeaponChoices: [SkinnerGearItem]!
+    luxeGearChoices: [SkinnerGearItem]!
 }
 
 type WeaponsCreator {
