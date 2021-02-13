@@ -32,4 +32,6 @@ public class PlaybookUniqueCreator {
     private HoldingCreator holdingCreator;
 
     private FollowersCreator followersCreator;
+
+    private SkinnerGearCreator skinnerGearCreator;
 }

@@ -3523,6 +3523,109 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultMoveCount(2)
                 .build();
 
+        /* ----------------------------- SKINNER PLAYBOOK CREATOR --------------------------------- */
+        List<Move> skinnerOptionalMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.CHARACTER)
+                .collectList().block();
+
+        List<Move> skinnerDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
+
+        GearInstructions gearInstructionsSkinner = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .gearIntro("You get:")
+                .youGetItems(List.of("fashion suitable to your look (you detail)"))
+                .startingBarter(2)
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .build();
+
+        SkinnerGearItem item1 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("sleeve pistol (2-harm close reload loud)")
+                .build();
+        SkinnerGearItem item2 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("ornate dagger (2-harm hand valuable)")
+                .build();
+        SkinnerGearItem item3 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("hidden knives (2-harm hand infinite)")
+                .build();
+        SkinnerGearItem item4 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("ornate sword (3-harm hand valuable)")
+                .build();
+        SkinnerGearItem item5 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("antique handgun (2-harm close reload loud valuable)")
+                .build();
+        SkinnerGearItem item6 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("antique coins (worn valuable)")
+                .note("Drilled with holes for jewelry")
+                .build();
+        SkinnerGearItem item7 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("eyeglasses (worn valuable)")
+                .note("You may use these for +1sharp when your eyesight matters, but if you do, without them you get -1sharp when your eyesight matters.")
+                .build();
+        SkinnerGearItem item8 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("long gorgeous coat (worn valuable)")
+                .build();
+        SkinnerGearItem item9 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("spectacular tattoos (implanted)")
+                .build();
+        SkinnerGearItem item10 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("skin & hair kit (applied valuable)")
+                .note("Soaps, ochres, paints, creams, salves. Using it lets you take +1hot forward.")
+                .build();
+        SkinnerGearItem item11 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("a pet (valuable alive")
+                .note("Your choice and yours to detail.")
+                .build();
+
+        SkinnerGearCreator skinnerGearCreator = SkinnerGearCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .graciousWeaponCount(1)
+                .luxeGearCount(2)
+                .graciousWeaponChoices(List.of(item1, item2, item3, item4, item5))
+                .luxeGearChoices(List.of(item6, item7, item8, item9, item10, item11))
+                .build();
+
+        PlaybookUniqueCreator playbookUniqueCreatorSkinner = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.SKINNER_GEAR)
+                .skinnerGearCreator(skinnerGearCreator)
+                .build();
+
+        PlaybookCreator playbookCreatorSkinner = PlaybookCreator.builder()
+                .playbookType(PlaybookType.SKINNER)
+                .gearInstructions(gearInstructionsSkinner)
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+                .movesInstructions("You get all the basic moves. Choose 2 skinner moves.\n" +
+                        "You can use all the battle moves, but when you get the chance, look up _**standing overwatch**_, _**keeping an eye out**_, _**baiting a trap**_, and _**turning the tables**_.")
+                .hxInstructions(HX_INSTRUCTIONS_START +
+                        "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                        "\n" +
+                        "- *Which one of you is my friend?* For that character, write Hx+2.\n" +
+                        "- *Which one of you is my lover?* For that character, write Hx+1.\n" +
+                        "- *Which one of you is in love with me?* For that character, write Hx-1.\n" +
+                        "\n" +
+                        "For everyone else, write Hx+1 or HX-1, as you choose.\n" +
+                        HX_INSTRUCTIONS_END)
+                .playbookUniqueCreator(playbookUniqueCreatorSkinner)
+                .defaultVehicleCount(0)
+                .defaultMoves(skinnerDefaultMoves)
+                .optionalMoves(skinnerOptionalMoves)
+                .moveChoiceCount(2)
+                .defaultMoveCount(1)
+                .build();
+
         playbookCreatorService.saveAll(Flux.just(angelCreator,
                 battlebabePlaybookCreator,
                 playbookCreatorBrainer,
@@ -3530,7 +3633,8 @@ public class GameDataLoader implements CommandLineRunner {
                 playbookCreatorDriver,
                 playbookCreatorGunlugger,
                 playbookCreatorHardHolder,
-                playbookCreatorHocus
+                playbookCreatorHocus,
+                playbookCreatorSkinner
         )).blockLast();
     }
 
@@ -3903,6 +4007,7 @@ public class GameDataLoader implements CommandLineRunner {
         fleshOutPlaybookAndSave(PlaybookType.GUNLUGGER);
         fleshOutPlaybookAndSave(PlaybookType.HARDHOLDER);
         fleshOutPlaybookAndSave(PlaybookType.HOCUS);
+        fleshOutPlaybookAndSave(PlaybookType.SKINNER);
     }
 
     private void loadThreatCreator() {
