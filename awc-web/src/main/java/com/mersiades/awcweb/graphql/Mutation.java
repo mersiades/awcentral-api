@@ -8,6 +8,7 @@ import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.Followers;
 import com.mersiades.awcdata.models.uniques.Gang;
 import com.mersiades.awcdata.models.uniques.Holding;
+import com.mersiades.awcdata.models.uniques.SkinnerGear;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -164,6 +165,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Character setWeapons(String gameRoleId, String characterId, List<String> weapons) {
         System.out.println("Setting Weapons for Character: " + characterId);
         return gameRoleService.setWeapons(gameRoleId, characterId, weapons);
+    }
+
+    public Character setSkinnerGear(String gameRoleId, String characterId, SkinnerGear skinnerGear) {
+        System.out.println("Setting SkinnerGear for Character: " + characterId);
+        return gameRoleService.setSkinnerGear(gameRoleId, characterId, skinnerGear);
     }
 
     public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {

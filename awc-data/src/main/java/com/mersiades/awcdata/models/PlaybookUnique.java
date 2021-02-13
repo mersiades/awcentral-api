@@ -32,4 +32,6 @@ public class PlaybookUnique {
     private Holding holding;
 
     private Followers followers;
+
+    private SkinnerGear skinnerGear;
 }

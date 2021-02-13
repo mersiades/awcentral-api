@@ -638,6 +638,40 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
+    public Character setSkinnerGear(String gameRoleId, String characterId, SkinnerGear skinnerGear) {
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        if (skinnerGear.getId() == null) {
+            skinnerGear.setId(UUID.randomUUID().toString());
+        }
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.SKINNER_GEAR) {
+            // Create new PlaybookUnique for Battlebabe
+            PlaybookUnique playbookUniqueSkinner = PlaybookUnique.builder()
+                    .id(UUID.randomUUID().toString())
+                    .type(UniqueType.SKINNER_GEAR)
+                    .skinnerGear(skinnerGear)
+                    .build();
+
+            character.setPlaybookUnique(playbookUniqueSkinner);
+        } else {
+            // Update existing PlaybookUnique
+            character.getPlaybookUnique().setSkinnerGear(skinnerGear);
+        }
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
     public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
         // Get the GameRole
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();

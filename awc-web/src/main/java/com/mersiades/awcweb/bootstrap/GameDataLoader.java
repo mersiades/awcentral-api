@@ -1724,7 +1724,7 @@ public class GameDataLoader implements CommandLineRunner {
         moveService.saveAll(Flux.just(hocusSpecial, fortunes, frenzy, charismatic, fuckingWacknut, seeingSouls,
                 divineProtection)).blockLast();
 
-        /* ----------------------------- HOCUS MOVES --------------------------------- */
+        /* ----------------------------- SKINNER MOVES --------------------------------- */
         MoveAction skinnerSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
                 .actionType(MoveActionType.SKINNER_SPECIAL)
@@ -1740,7 +1740,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n")
                 .kind(MoveType.DEFAULT_CHARACTER)
                 .moveAction(skinnerSpecialAction)
-                .playbook(PlaybookType.HOCUS).build();
+                .playbook(PlaybookType.SKINNER).build();
 
         StatModifier breathtakingModifier = StatModifier.builder()
                 .id(UUID.randomUUID().toString())
@@ -1838,7 +1838,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(hypnoticAction)
                 .playbook(PlaybookType.SKINNER).build();
 
-        moveService.saveAll(Flux.just(skinnerSpecial, breathtaking, lost, anArrestingSkinner, hypnotic)).blockLast();
+        moveService.saveAll(Flux.just(skinnerSpecial, breathtaking, artful, lost, anArrestingSkinner, hypnotic)).blockLast();
 
     }
 
@@ -2396,7 +2396,7 @@ public class GameDataLoader implements CommandLineRunner {
         Look skinner12 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("sweet face").build();
         Look skinner13 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("strange face").build();
         Look skinner14 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("cute face").build();
-        Look skinner15 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("beautiful").build();
+        Look skinner15 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("beautiful face").build();
         Look skinner16 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("laughing eyes").build();
         Look skinner17 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("mocking eyes").build();
         Look skinner18 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("dark eyes").build();

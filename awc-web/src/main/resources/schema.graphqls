@@ -575,6 +575,7 @@ type PlaybookUnique {
     weapons: Weapons
     holding: Holding
     followers: Followers
+    skinnerGear: SkinnerGear
 }
 
 type BrainerGear {
@@ -643,6 +644,11 @@ type Followers {
     selectedWeaknesses: [FollowersOption]!
 }
 
+type SkinnerGear {
+    id: ID!
+    graciousWeapon: SkinnerGearItem!
+    luxeGear: [SkinnerGearItem]!
+}
 
 type Vehicle {
     id: ID!
@@ -820,6 +826,18 @@ input FollowersInput {
     selectedWeaknesses: [FollowersOptionInput]!
 }
 
+input SkinnerGearItemInput {
+    id: ID!
+    item: String!
+    note: String
+}
+
+input SkinnerGearInput {
+    id: ID
+    graciousWeapon: SkinnerGearItemInput!
+    luxeGear: [SkinnerGearItemInput]!
+}
+
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -915,6 +933,9 @@ type Mutation {
     setWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
+    setSkinnerGear(gameRoleId: String!,
+        characterId: String!,
+        skinnerGear: SkinnerGearInput! ): Character
     setVehicle(gameRoleId: String!,
         characterId: String!,
         vehicleInput: VehicleInput! ): Character
