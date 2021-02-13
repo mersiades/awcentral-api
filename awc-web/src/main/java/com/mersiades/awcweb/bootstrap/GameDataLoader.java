@@ -1477,9 +1477,9 @@ public class GameDataLoader implements CommandLineRunner {
                 .movesToModify(List.of(openBrain))
                 .statToRollWith(HARD).build();
         StatModifier insanoMod = StatModifier.builder()
-                .id(UUID.randomUUID().toString())
                 .statToModify(HARD)
                 .modification(1).build();
+        StatModifier savedInsanoMod = statModifierService.save(insanoMod).block();
         MoveAction gunluggerSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
                 .actionType(MoveActionType.GUNLUGGER_SPECIAL)
@@ -1529,7 +1529,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .description("_**Insano like Drano**_: you get +1hard (hard+3).")
                 .kind(MoveType.CHARACTER)
                 .stat(null)
-                .statModifier(insanoMod)
+                .statModifier(savedInsanoMod)
                 .playbook(PlaybookType.GUNLUGGER).build();
         Move preparedForTheInevitable = Move.builder()
                 .name("PREPARED FOR THE INEVITABLE")
@@ -1610,7 +1610,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a 7-9, you have surplus, but choose 1 want.\n" +
                         "\n" +
-                        "On a miss, or if your hold is compromised or your rule contested, your hold is in want." +
+                        "On a miss, or if your hold is compromised or your rule contested, your hold is in want.\n" +
                         "\n" +
                         "The precise values of your surplus and want depend on your holding."
                 )
@@ -1642,11 +1642,11 @@ public class GameDataLoader implements CommandLineRunner {
                 .name(fortunesName)
                 .description("_**Fortunes**: fortune, surplus and want all depend on your followers._ At the beginning of the session, roll+fortune.\n" +
                         "\n" +
-                        "On a 10+, your followers have surplus." +
+                        "On a 10+, your followers have surplus.\n" +
                         "\n" +
-                        "On a 7-9, they have surplus, but choose one want." +
+                        "On a 7-9, they have surplus, but choose one want.\n" +
                         "\n" +
-                        "On a miss, they are in want." +
+                        "On a miss, they are in want.\n" +
                         "\n" +
                         "If their surplus lists barter, like 1-barter or 2-barter, that's your personal share, to spend on your lifestyle or for what you will.")
                 .kind(MoveType.DEFAULT_CHARACTER)
@@ -1660,13 +1660,13 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         Move frenzy = Move.builder()
                 .name("FRENZY")
-                .description("_**Frenzy**_: When you speak the truth to a mob, roll+weird." +
+                .description("_**Frenzy**_: When you speak the truth to a mob, roll+weird.\n" +
                         "\n" +
-                        "On a 10+, hold 3." +
+                        "On a 10+, hold 3.\n" +
                         "\n" +
-                        "On a 7-9, hold 1. Spend your hold 1 for 1 to make the mob:" +
+                        "On a 7-9, hold 1. Spend your hold 1 for 1 to make the mob:\n" +
                         "\n" +
-                        "Spend your hold 1 for 1 to make the mob:" +
+                        "Spend your hold 1 for 1 to make the mob:\n" +
                         "\n" +
                         "- *Bring people forward and deliver them.*\n" +
                         "- *Bring forward all their precious things.*\n" +
@@ -1689,14 +1689,14 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollModifier(charismaticModifier)
                 .playbook(PlaybookType.HOCUS).build();
         StatModifier wacknutModifier = StatModifier.builder()
-                .id(UUID.randomUUID().toString())
                 .statToModify(WEIRD)
                 .modification(1).build();
+        StatModifier savedWacknutModifier = statModifierService.save(wacknutModifier).block();
         Move fuckingWacknut = Move.builder()
                 .name("FUCKING WACKNUT")
                 .description("_**Fucking wacknut**_: you get +1weird (weird+3)")
                 .kind(MoveType.CHARACTER)
-                .statModifier(wacknutModifier)
+                .statModifier(savedWacknutModifier)
                 .playbook(PlaybookType.HOCUS).build();
         RollModifier seeingSoulsModifier = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
@@ -1723,6 +1723,122 @@ public class GameDataLoader implements CommandLineRunner {
 
         moveService.saveAll(Flux.just(hocusSpecial, fortunes, frenzy, charismatic, fuckingWacknut, seeingSouls,
                 divineProtection)).blockLast();
+
+        /* ----------------------------- SKINNER MOVES --------------------------------- */
+        MoveAction skinnerSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.SKINNER_SPECIAL)
+                .build();
+        Move skinnerSpecial = Move.builder()
+                .name(skinnerSpecialName)
+                .description("If you and another character have sex, choose one:\n" +
+                        "\n" +
+                        "- You take +1forward, and so do they.\n" +
+                        "- You take +1forward; they take -1.\n" +
+                        "- They must give you a gift worth at least 1-barter.\n" +
+                        "- You can _**hypnotize**_ as though you'd rolled a 10+, even if you haven't chosen to get the move.\n" +
+                        "\n")
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(skinnerSpecialAction)
+                .playbook(PlaybookType.SKINNER).build();
+
+        StatModifier breathtakingModifier = StatModifier.builder()
+                .statToModify(HOT)
+                .modification(1).build();
+        StatModifier savedBreathtakingModifier = statModifierService.save(breathtakingModifier).block();
+        Move breathtaking = Move.builder()
+                .name("BREATHTAKING")
+                .description("_**Breathtaking**_: you get +1hot (hot+3).")
+                .kind(MoveType.CHARACTER)
+                .statModifier(savedBreathtakingModifier)
+                .playbook(PlaybookType.SKINNER).build();
+        MoveAction lostAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(WEIRD)
+                .build();
+        Move lost = Move.builder()
+                .name(lostName)
+                .description("_**Lost**_: when you whisper someone's name to the world's psychic maelstrom, roll+weird.\n" +
+                        "\n" +
+                        "On a hit, they come to you, with or without any clear explanation why.\n" +
+                        "\n" +
+                        "On a 10+, take +1forward against them.\n" +
+                        "\n" +
+                        "On a miss, the MC will ask you 3 questions; answer them truthfully."
+                )
+                .kind(MoveType.CHARACTER)
+                .moveAction(lostAction)
+                .playbook(PlaybookType.SKINNER).build();
+        MoveAction artfulAction= MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HOT)
+                .build();
+        Move artful = Move.builder()
+                .name(artfulName)
+                .description("_**Artful & gracious**_: when you perform your chosen art - any act of expression or culture - or when you put its product before an audience, roll+hot.\n" +
+                        "\n" +
+                        "On a hit, spend 3. On a 7-9, spend 1.\n" +
+                        "\n" +
+                        "Spend 1 to name an NPC member of your audience and choose one:\n" +
+                        "\n" +
+                        "- *This person must meet me.*\n" +
+                        "- *This person must have my services.*\n" +
+                        "- *This person loves me.*\n" +
+                        "- *This person must give me a gift.*\n" +
+                        "- *This person admires my patron.*\n" +
+                        "\n" +
+                        "On a miss, you gain no benefit, but suffer ho harm of lost opportunity. You simply perform very well.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(artfulAction)
+                .playbook(PlaybookType.SKINNER).build();
+        MoveAction arrestingSkinnerAction= MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .rollType(null)
+                .statToRollWith(null)
+                .build();
+        Move anArrestingSkinner = Move.builder()
+                .name("AN ARRESTING SKINNER")
+                .description("_**An arresting skinner**_: when you remove a piece of clothing, your own or someone else's, no one who can see you can do anything but watch.\n" +
+                        "\n" +
+                        "You command their absolute attention. If you choose, you can exempt individual people, by name.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(arrestingSkinnerAction)
+                .playbook(PlaybookType.SKINNER).build();
+        MoveAction hypnoticAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HOT)
+                .build();
+        Move hypnotic = Move.builder()
+                .name(hypnoticName)
+                .description("_**Hypnotic**_: when you have time and solitude with someone, they become fixated upon you. Roll+hot.\n" +
+                        "\n" +
+                        "On a 10+, hold 3. On a 7-9, hold 2.\n" +
+                        "\n" +
+                        "They can spend your hold, 1 for 1, by:\n" +
+                        "\n" +
+                        "- *Giving you something you want.*\n" +
+                        "- *Acting as your eyes and ears.*\n" +
+                        "- *Fighting to protect you.*\n" +
+                        "- *Doing something you tell them to.*\n" +
+                        "\n" +
+                        "For NPCs, while you have a hold over them they can't act against you. For PCs, instead, any time you like you can spend your hold, 1 for 1:\n" +
+                        "\n" +
+                        "- *They distract themselves with the thought of you. They're acting under fire.*\n" +
+                        "- *They inspire themselves with the thought of you. They take +1forward now.*\n" +
+                        "\n" +
+                        "On a miss, they hold two over you, on the exact same terms.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(hypnoticAction)
+                .playbook(PlaybookType.SKINNER).build();
+
+        moveService.saveAll(Flux.just(skinnerSpecial, breathtaking, artful, lost, anArrestingSkinner, hypnotic)).blockLast();
 
     }
 
@@ -1967,6 +2083,37 @@ public class GameDataLoader implements CommandLineRunner {
         nameService.saveAll(Flux.just(hocus, hocus1, hocus2, hocus3, hocus4, hocus5, hocus6, hocus7,
                 hocus8, hocus9, hocus10, hocus11, hocus12, hocus13, hocus14, hocus15, hocus16,
                 hocus17, hocus18, hocus19, hocus20, hocus21)).blockLast();
+
+        /* ----------------------------- SKINNER NAMES --------------------------------- */
+        Name skinner1 = Name.builder().playbookType(PlaybookType.SKINNER).name("October").build();
+        Name skinner2 = Name.builder().playbookType(PlaybookType.SKINNER).name("Venus").build();
+        Name skinner3 = Name.builder().playbookType(PlaybookType.SKINNER).name("Mercury").build();
+        Name skinner4 = Name.builder().playbookType(PlaybookType.SKINNER).name("Dune").build();
+        Name skinner5 = Name.builder().playbookType(PlaybookType.SKINNER).name("Shade").build();
+        Name skinner6 = Name.builder().playbookType(PlaybookType.SKINNER).name("Heron").build();
+        Name skinner7 = Name.builder().playbookType(PlaybookType.SKINNER).name("Plum").build();
+        Name skinner8 = Name.builder().playbookType(PlaybookType.SKINNER).name("Orchid").build();
+        Name skinner9 = Name.builder().playbookType(PlaybookType.SKINNER).name("Storm").build();
+        Name skinner10 = Name.builder().playbookType(PlaybookType.SKINNER).name("Dusk").build();
+        Name skinner11 = Name.builder().playbookType(PlaybookType.SKINNER).name("Sword").build();
+        Name skinner12 = Name.builder().playbookType(PlaybookType.SKINNER).name("Midnight").build();
+        Name skinner13 = Name.builder().playbookType(PlaybookType.SKINNER).name("Hide").build();
+        Name skinner14 = Name.builder().playbookType(PlaybookType.SKINNER).name("Frost").build();
+        Name skinner15 = Name.builder().playbookType(PlaybookType.SKINNER).name("Lawn").build();
+        Name skinner16 = Name.builder().playbookType(PlaybookType.SKINNER).name("June").build();
+        Name skinner17 = Name.builder().playbookType(PlaybookType.SKINNER).name("Icicle").build();
+        Name skinner18 = Name.builder().playbookType(PlaybookType.SKINNER).name("Tern").build();
+        Name skinner19 = Name.builder().playbookType(PlaybookType.SKINNER).name("Lavender").build();
+        Name skinner20 = Name.builder().playbookType(PlaybookType.SKINNER).name("Spice").build();
+        Name skinner21 = Name.builder().playbookType(PlaybookType.SKINNER).name("Gazelle").build();
+        Name skinner22 = Name.builder().playbookType(PlaybookType.SKINNER).name("Lion").build();
+        Name skinner23 = Name.builder().playbookType(PlaybookType.SKINNER).name("Peacock").build();
+        Name skinner24 = Name.builder().playbookType(PlaybookType.SKINNER).name("Grace").build();
+
+        nameService.saveAll(Flux.just(skinner1, skinner2, skinner3, skinner4, skinner5, skinner6,
+                skinner7, skinner8, skinner9, skinner10, skinner11, skinner12, skinner13,
+                skinner14, skinner15, skinner16, skinner17, skinner18, skinner19, skinner20,
+                skinner21, skinner22, skinner23, skinner24)).blockLast();
     }
 
     private void loadLooks() {
@@ -2233,6 +2380,42 @@ public class GameDataLoader implements CommandLineRunner {
         lookService.saveAll(Flux.just(hocus1, hocus2, hocus3, hocus4, hocus5, hocus6, hocus7, hocus8, hocus9, hocus10,
                 hocus11, hocus12, hocus13, hocus14, hocus15, hocus16, hocus17, hocus18, hocus19, hocus20, hocus21,
                 hocus22, hocus23, hocus24, hocus25, hocus26, hocus27, hocus28)).blockLast();
+
+        /* ----------------------------- SKINNER LOOKS --------------------------------- */
+        Look skinner1 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("man").build();
+        Look skinner2 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("woman").build();
+        Look skinner3 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("ambiguous").build();
+        Look skinner4 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("transgressing").build();
+        Look skinner5 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("androgyne").build();
+        Look skinner6 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("display wear").build();
+        Look skinner7 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("showy scrounge wear").build();
+        Look skinner8 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("luxe wear").build();
+        Look skinner9 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("fetish wear").build();
+        Look skinner10 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("casual wear").build();
+        Look skinner11 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("striking face").build();
+        Look skinner12 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("sweet face").build();
+        Look skinner13 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("strange face").build();
+        Look skinner14 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("cute face").build();
+        Look skinner15 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("beautiful face").build();
+        Look skinner16 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("laughing eyes").build();
+        Look skinner17 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("mocking eyes").build();
+        Look skinner18 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("dark eyes").build();
+        Look skinner19 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("shadowed eyes").build();
+        Look skinner20 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("troubled eyes").build();
+        Look skinner21 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("arresting eyes").build();
+        Look skinner22 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("bright eyes").build();
+        Look skinner23 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("cool eyes").build();
+        Look skinner24 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("slim body").build();
+        Look skinner25 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("toned body").build();
+        Look skinner26 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("fat body").build();
+        Look skinner27 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("unnatural body").build();
+        Look skinner28 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("young body").build();
+        Look skinner29 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("lush body").build();
+
+        lookService.saveAll(Flux.just(skinner1, skinner2, skinner3, skinner4, skinner5, skinner6, skinner7, skinner8,
+                skinner9, skinner10, skinner11, skinner12, skinner13, skinner14, skinner15, skinner16, skinner17,
+                skinner18, skinner19, skinner20, skinner21, skinner22, skinner23, skinner24, skinner25, skinner26,
+                skinner27, skinner28, skinner29)).blockLast();
     }
 
     public void loadStatsOptions() {
@@ -2294,6 +2477,14 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption hocus4 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(1).HARD(0).HOT(1).SHARP(-1).WEIRD(2).build(); // 3
 
         statsOptionService.saveAll(Flux.just(hocus1, hocus2, hocus3, hocus4)).blockLast();
+
+        /* ----------------------------- SKINNER STATS OPTIONS --------------------------------- */
+        StatsOption skinner1 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(1).HARD(-1).HOT(2).SHARP(1).WEIRD(0).build(); // 3
+        StatsOption skinner2 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(0).HARD(0).HOT(2).SHARP(0).WEIRD(1).build(); // 3
+        StatsOption skinner3 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(-1).HARD(0).HOT(2).SHARP(2).WEIRD(-1).build(); // 2
+        StatsOption skinner4 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(1).HARD(1).HOT(2).SHARP(1).WEIRD(-2).build(); // 3
+
+        statsOptionService.saveAll(Flux.just(skinner1, skinner2, skinner3, skinner4)).blockLast();
     }
 
     public void loadPlaybookCreators() {
@@ -3332,6 +3523,109 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultMoveCount(2)
                 .build();
 
+        /* ----------------------------- SKINNER PLAYBOOK CREATOR --------------------------------- */
+        List<Move> skinnerOptionalMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.CHARACTER)
+                .collectList().block();
+
+        List<Move> skinnerDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
+
+        GearInstructions gearInstructionsSkinner = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .gearIntro("You get:")
+                .youGetItems(List.of("fashion suitable to your look (you detail)"))
+                .startingBarter(2)
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .build();
+
+        SkinnerGearItem item1 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("sleeve pistol (2-harm close reload loud)")
+                .build();
+        SkinnerGearItem item2 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("ornate dagger (2-harm hand valuable)")
+                .build();
+        SkinnerGearItem item3 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("hidden knives (2-harm hand infinite)")
+                .build();
+        SkinnerGearItem item4 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("ornate sword (3-harm hand valuable)")
+                .build();
+        SkinnerGearItem item5 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("antique handgun (2-harm close reload loud valuable)")
+                .build();
+        SkinnerGearItem item6 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("antique coins (worn valuable)")
+                .note("Drilled with holes for jewelry")
+                .build();
+        SkinnerGearItem item7 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("eyeglasses (worn valuable)")
+                .note("You may use these for +1sharp when your eyesight matters, but if you do, without them you get -1sharp when your eyesight matters.")
+                .build();
+        SkinnerGearItem item8 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("long gorgeous coat (worn valuable)")
+                .build();
+        SkinnerGearItem item9 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("spectacular tattoos (implanted)")
+                .build();
+        SkinnerGearItem item10 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("skin & hair kit (applied valuable)")
+                .note("Soaps, ochres, paints, creams, salves. Using it lets you take +1hot forward.")
+                .build();
+        SkinnerGearItem item11 = SkinnerGearItem.builder()
+                .id(UUID.randomUUID().toString())
+                .item("a pet (valuable alive")
+                .note("Your choice and yours to detail.")
+                .build();
+
+        SkinnerGearCreator skinnerGearCreator = SkinnerGearCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .graciousWeaponCount(1)
+                .luxeGearCount(2)
+                .graciousWeaponChoices(List.of(item1, item2, item3, item4, item5))
+                .luxeGearChoices(List.of(item6, item7, item8, item9, item10, item11))
+                .build();
+
+        PlaybookUniqueCreator playbookUniqueCreatorSkinner = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.SKINNER_GEAR)
+                .skinnerGearCreator(skinnerGearCreator)
+                .build();
+
+        PlaybookCreator playbookCreatorSkinner = PlaybookCreator.builder()
+                .playbookType(PlaybookType.SKINNER)
+                .gearInstructions(gearInstructionsSkinner)
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+                .movesInstructions("You get all the basic moves. Choose 2 skinner moves.\n" +
+                        "You can use all the battle moves, but when you get the chance, look up _**standing overwatch**_, _**keeping an eye out**_, _**baiting a trap**_, and _**turning the tables**_.")
+                .hxInstructions(HX_INSTRUCTIONS_START +
+                        "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                        "\n" +
+                        "- *Which one of you is my friend?* For that character, write Hx+2.\n" +
+                        "- *Which one of you is my lover?* For that character, write Hx+1.\n" +
+                        "- *Which one of you is in love with me?* For that character, write Hx-1.\n" +
+                        "\n" +
+                        "For everyone else, write Hx+1 or HX-1, as you choose.\n" +
+                        HX_INSTRUCTIONS_END)
+                .playbookUniqueCreator(playbookUniqueCreatorSkinner)
+                .defaultVehicleCount(0)
+                .defaultMoves(skinnerDefaultMoves)
+                .optionalMoves(skinnerOptionalMoves)
+                .moveChoiceCount(2)
+                .defaultMoveCount(1)
+                .build();
+
         playbookCreatorService.saveAll(Flux.just(angelCreator,
                 battlebabePlaybookCreator,
                 playbookCreatorBrainer,
@@ -3339,7 +3633,8 @@ public class GameDataLoader implements CommandLineRunner {
                 playbookCreatorDriver,
                 playbookCreatorGunlugger,
                 playbookCreatorHardHolder,
-                playbookCreatorHocus
+                playbookCreatorHocus,
+                playbookCreatorSkinner
         )).blockLast();
     }
 
@@ -3712,6 +4007,7 @@ public class GameDataLoader implements CommandLineRunner {
         fleshOutPlaybookAndSave(PlaybookType.GUNLUGGER);
         fleshOutPlaybookAndSave(PlaybookType.HARDHOLDER);
         fleshOutPlaybookAndSave(PlaybookType.HOCUS);
+        fleshOutPlaybookAndSave(PlaybookType.SKINNER);
     }
 
     private void loadThreatCreator() {

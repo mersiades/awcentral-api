@@ -8,6 +8,7 @@ import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.Followers;
 import com.mersiades.awcdata.models.uniques.Gang;
 import com.mersiades.awcdata.models.uniques.Holding;
+import com.mersiades.awcdata.models.uniques.SkinnerGear;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -166,6 +167,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setWeapons(gameRoleId, characterId, weapons);
     }
 
+    public Character setSkinnerGear(String gameRoleId, String characterId, SkinnerGear skinnerGear) {
+        System.out.println("Setting SkinnerGear for Character: " + characterId);
+        return gameRoleService.setSkinnerGear(gameRoleId, characterId, skinnerGear);
+    }
+
     public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
         System.out.println("Setting Moves for Character: " + characterId);
         return gameRoleService.setCharacterMoves(gameRoleId, characterId, moveIds);
@@ -264,6 +270,17 @@ public class Mutation implements GraphQLMutationResolver {
     public Game performHocusSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId) {
         System.out.println("Performing HOCUS SPECIAL move for Character: " + characterId);
         return gameService.performHocusSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId).block();
+    }
+
+    public Game performSkinnerSpecialMove(String gameId,
+                                          String gameroleId,
+                                          String otherGameroleId,
+                                          String characterId,
+                                          String otherCharacterId,
+                                          boolean plus1ForUser,
+                                          boolean plus1ForOther) {
+        System.out.println("Performing SKINNER SPECIAL move for Character: " + characterId);
+        return gameService.performSkinnerSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, plus1ForUser, plus1ForOther).block();
     }
 
     public Game performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm) {

@@ -8,6 +8,7 @@ import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.Followers;
 import com.mersiades.awcdata.models.uniques.Gang;
 import com.mersiades.awcdata.models.uniques.Holding;
+import com.mersiades.awcdata.models.uniques.SkinnerGear;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -44,6 +45,8 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character setWeapons(String gameRoleId, String characterId, List<String> weapons);
 
+    Character setSkinnerGear(String gameRoleId, String characterId, SkinnerGear skinnerGear);
+
     Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats);
 
     Character adjustCharacterHx(String gameRoleId, String characterId, String hxId, int value);
@@ -67,6 +70,4 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Mono<GameRole> addThreat(String gameRoleId, Threat threat);
 
     Mono<GameRole> addNpc(String gameRoleId, Npc npc);
-
-
 }

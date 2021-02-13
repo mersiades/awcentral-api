@@ -10,6 +10,7 @@ enum MessageType {
     ROLL_STOCK_MOVE
     STOCK_MOVE
 }
+
 enum RoleType {
     MC
     PLAYER
@@ -41,7 +42,8 @@ enum MoveActionType {
     ADJUST_HX,
     STOCK,
     GUNLUGGER_SPECIAL,
-    HOCUS_SPECIAL
+    HOCUS_SPECIAL,
+    SKINNER_SPECIAL
 }
 
 enum RollType {
@@ -262,6 +264,7 @@ type PlaybookUniqueCreator {
     weaponsCreator: WeaponsCreator
     holdingCreator: HoldingCreator
     followersCreator: FollowersCreator
+    skinnerGearCreator: SkinnerGearCreator
 }
 
 type GangCreator {
@@ -360,6 +363,20 @@ type FollowersCreator {
     defaultWants: [String]!
     strengthOptions: [FollowersOption]!
     weaknessOptions: [FollowersOption]!
+}
+
+type SkinnerGearItem {
+    id: ID!
+    item: String!
+    note: String
+}
+
+type SkinnerGearCreator {
+    id: ID!
+    graciousWeaponCount: Int!
+    luxeGearCount: Int!
+    graciousWeaponChoices: [SkinnerGearItem]!
+    luxeGearChoices: [SkinnerGearItem]!
 }
 
 type WeaponsCreator {
@@ -558,6 +575,7 @@ type PlaybookUnique {
     weapons: Weapons
     holding: Holding
     followers: Followers
+    skinnerGear: SkinnerGear
 }
 
 type BrainerGear {
@@ -626,6 +644,11 @@ type Followers {
     selectedWeaknesses: [FollowersOption]!
 }
 
+type SkinnerGear {
+    id: ID!
+    graciousWeapon: SkinnerGearItem!
+    luxeGear: [SkinnerGearItem]!
+}
 
 type Vehicle {
     id: ID!
@@ -803,6 +826,18 @@ input FollowersInput {
     selectedWeaknesses: [FollowersOptionInput]!
 }
 
+input SkinnerGearItemInput {
+    id: ID!
+    item: String!
+    note: String
+}
+
+input SkinnerGearInput {
+    id: ID
+    graciousWeapon: SkinnerGearItemInput!
+    luxeGear: [SkinnerGearItemInput]!
+}
+
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -898,6 +933,9 @@ type Mutation {
     setWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
+    setSkinnerGear(gameRoleId: String!,
+        characterId: String!,
+        skinnerGear: SkinnerGearInput! ): Character
     setVehicle(gameRoleId: String!,
         characterId: String!,
         vehicleInput: VehicleInput! ): Character
@@ -982,6 +1020,13 @@ type Mutation {
         otherGameroleId: String!,
         characterId: String!,
         otherCharacterId: String!): Game
+    performSkinnerSpecialMove(gameId: String!,
+        gameroleId: String!,
+        otherGameroleId: String!,
+        characterId: String!,
+        otherCharacterId: String!,
+        plus1ForUser: Boolean!,
+        plus1ForOther: Boolean!,): Game
     performStabilizeAndHealMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
 
     # Other

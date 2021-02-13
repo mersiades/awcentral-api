@@ -420,7 +420,7 @@ public class GameServiceImpl implements GameService {
         }
 
         // Handles one pattern for awarding holds
-        if (List.of(readPersonName, brainScanName, puppetStringsName).contains(moveName)) {
+        if (List.of(readPersonName, brainScanName, puppetStringsName, artfulName).contains(moveName)) {
             if (gameMessage.getRollResult() >= 10) {
                 character.setHolds(3);
             } else if (gameMessage.getRollResult() >= 7) {
@@ -429,7 +429,7 @@ public class GameServiceImpl implements GameService {
         }
 
         // Handles second pattern for awarding holds
-        if (moveName.equals(keepEyeOutName)) {
+        if (List.of(keepEyeOutName, hypnoticName).contains(moveName)) {
             if (gameMessage.getRollResult() >= 10) {
                 character.setHolds(3);
             } else if (gameMessage.getRollResult() >= 7) {
@@ -449,7 +449,7 @@ public class GameServiceImpl implements GameService {
         }
 
         // Awards +1forward on high rolls for particular moves
-        if (gameMessage.getRollResult() >= 10 && List.of(catOrMouseName, reputationName, leadershipName).contains(moveName)) {
+        if (gameMessage.getRollResult() >= 10 && List.of(catOrMouseName, reputationName, leadershipName, lostName).contains(moveName)) {
             character.setHasPlusOneForward(true);
         }
 
@@ -1139,7 +1139,59 @@ public class GameServiceImpl implements GameService {
         content += hocusSpecialMove.getDescription();
 
         gameMessage.setContent(content);
-        gameMessage.setTitle(String.format("%s: %s", characterUser.getName().toUpperCase(), "HOCUS SPECIAL"));
+        gameMessage.setTitle(String.format("%s: %s", characterUser.getName().toUpperCase(), hocusSpecialMove.getName()));
+
+        characterService.saveAll(Flux.just(characterUser, characterOther)).blockLast();
+        gameRoleService.saveAll(Flux.just(gameRoleUser, gameRoleOther)).blockLast();
+
+        return gameRepository.findById(gameId)
+                .flatMap(game -> {
+                    game.getGameMessages().add(gameMessage);
+                    return Mono.just(game);
+                })
+                .flatMap(gameRepository::save).log();
+    }
+
+    @Override
+    public Mono<Game> performSkinnerSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, boolean plus1ForUser, boolean plus1ForOther) {
+        GameRole gameRoleUser =  gameRoleService.findById(gameroleId).block();
+        assert gameRoleUser != null;
+        GameRole gameRoleOther = gameRoleService.findById(otherGameroleId).block();
+        assert gameRoleOther != null;
+        Character characterUser = gameRoleUser.getCharacters().stream()
+                .filter(character -> character.getId().equals(characterId)).findFirst().orElseThrow();
+        assert characterUser != null;
+        Character characterOther = gameRoleOther.getCharacters().stream()
+                .filter(character -> character.getId().equals(otherCharacterId)).findFirst().orElseThrow();
+        assert  characterOther != null;
+        CharacterMove skinnerSpecialMove = characterUser.getCharacterMoves()
+                .stream().filter(characterMove -> characterMove.getName().equals(skinnerSpecialName))
+                .findFirst().orElseThrow();
+        assert skinnerSpecialMove != null;
+
+        String content = skinnerSpecialMove.getDescription();
+
+        if (plus1ForUser) {
+            characterUser.setHasPlusOneForward(true);
+            content += String.format("\n" +
+                    "+1forward has been added to %s.", characterUser.getName());
+        }
+
+        if (plus1ForOther) {
+            characterOther.setHasPlusOneForward(true);
+            content += String.format("\n" +
+                    "+1forward has been added to %s, also.", characterOther.getName());
+        }
+
+        GameMessage gameMessage = GameMessage.builder()
+                .id(UUID.randomUUID().toString())
+                .gameId(gameId)
+                .gameroleId(gameroleId)
+                .messageType(MessageType.PRINT_MOVE)
+                .sentOn(Instant.now().toString()).build();
+
+        gameMessage.setContent(content);
+        gameMessage.setTitle(String.format("%s: %s", characterUser.getName().toUpperCase(), skinnerSpecialMove.getName()));
 
         characterService.saveAll(Flux.just(characterUser, characterOther)).blockLast();
         gameRoleService.saveAll(Flux.just(gameRoleUser, gameRoleOther)).blockLast();
