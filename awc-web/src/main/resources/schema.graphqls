@@ -1020,6 +1020,13 @@ type Mutation {
         otherGameroleId: String!,
         characterId: String!,
         otherCharacterId: String!): Game
+    performSkinnerSpecialMove(gameId: String!,
+        gameroleId: String!,
+        otherGameroleId: String!,
+        characterId: String!,
+        otherCharacterId: String!,
+        plus1ForUser: Boolean!,
+        plus1ForOther: Boolean!,): Game
     performStabilizeAndHealMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
 
     # Other

@@ -272,6 +272,17 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.performHocusSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId).block();
     }
 
+    public Game performSkinnerSpecialMove(String gameId,
+                                          String gameroleId,
+                                          String otherGameroleId,
+                                          String characterId,
+                                          String otherCharacterId,
+                                          boolean plus1ForUser,
+                                          boolean plus1ForOther) {
+        System.out.println("Performing SKINNER SPECIAL move for Character: " + characterId);
+        return gameService.performSkinnerSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, plus1ForUser, plus1ForOther).block();
+    }
+
     public Game performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm) {
         System.out.println("Performing SUFFER HARM move for Character: " + characterId);
         return gameService.performSufferHarmMove(gameId, gameroleId, characterId, moveId, harm).block();
