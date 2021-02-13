@@ -420,7 +420,7 @@ public class GameServiceImpl implements GameService {
         }
 
         // Handles one pattern for awarding holds
-        if (List.of(readPersonName, brainScanName, puppetStringsName).contains(moveName)) {
+        if (List.of(readPersonName, brainScanName, puppetStringsName, artfulName).contains(moveName)) {
             if (gameMessage.getRollResult() >= 10) {
                 character.setHolds(3);
             } else if (gameMessage.getRollResult() >= 7) {
@@ -429,7 +429,7 @@ public class GameServiceImpl implements GameService {
         }
 
         // Handles second pattern for awarding holds
-        if (moveName.equals(keepEyeOutName)) {
+        if (List.of(keepEyeOutName, hypnoticName).contains(moveName)) {
             if (gameMessage.getRollResult() >= 10) {
                 character.setHolds(3);
             } else if (gameMessage.getRollResult() >= 7) {
@@ -449,7 +449,7 @@ public class GameServiceImpl implements GameService {
         }
 
         // Awards +1forward on high rolls for particular moves
-        if (gameMessage.getRollResult() >= 10 && List.of(catOrMouseName, reputationName, leadershipName).contains(moveName)) {
+        if (gameMessage.getRollResult() >= 10 && List.of(catOrMouseName, reputationName, leadershipName, lostName).contains(moveName)) {
             character.setHasPlusOneForward(true);
         }
 

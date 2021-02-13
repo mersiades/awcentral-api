@@ -33,6 +33,9 @@ public class MoveNames {
     public static final String wealthName = "WEALTH";
     public static final String manipulateName = "SEDUCE OR MANIPULATE SOMEONE";
     public static final String fortunesName = "FORTUNES";
+    public static final String lostName = "LOST";
+    public static final String artfulName = "ARTFUL & GRACIOUS";
+    public static final String hypnoticName = "HYPNOTIC";
 
     // Moves that can earn holds
     public static final String readPersonName = "READ A PERSON";

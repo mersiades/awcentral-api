@@ -1477,9 +1477,9 @@ public class GameDataLoader implements CommandLineRunner {
                 .movesToModify(List.of(openBrain))
                 .statToRollWith(HARD).build();
         StatModifier insanoMod = StatModifier.builder()
-                .id(UUID.randomUUID().toString())
                 .statToModify(HARD)
                 .modification(1).build();
+        StatModifier savedInsanoMod = statModifierService.save(insanoMod).block();
         MoveAction gunluggerSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
                 .actionType(MoveActionType.GUNLUGGER_SPECIAL)
@@ -1529,7 +1529,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .description("_**Insano like Drano**_: you get +1hard (hard+3).")
                 .kind(MoveType.CHARACTER)
                 .stat(null)
-                .statModifier(insanoMod)
+                .statModifier(savedInsanoMod)
                 .playbook(PlaybookType.GUNLUGGER).build();
         Move preparedForTheInevitable = Move.builder()
                 .name("PREPARED FOR THE INEVITABLE")
@@ -1610,7 +1610,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "\n" +
                         "On a 7-9, you have surplus, but choose 1 want.\n" +
                         "\n" +
-                        "On a miss, or if your hold is compromised or your rule contested, your hold is in want." +
+                        "On a miss, or if your hold is compromised or your rule contested, your hold is in want.\n" +
                         "\n" +
                         "The precise values of your surplus and want depend on your holding."
                 )
@@ -1642,11 +1642,11 @@ public class GameDataLoader implements CommandLineRunner {
                 .name(fortunesName)
                 .description("_**Fortunes**: fortune, surplus and want all depend on your followers._ At the beginning of the session, roll+fortune.\n" +
                         "\n" +
-                        "On a 10+, your followers have surplus." +
+                        "On a 10+, your followers have surplus.\n" +
                         "\n" +
-                        "On a 7-9, they have surplus, but choose one want." +
+                        "On a 7-9, they have surplus, but choose one want.\n" +
                         "\n" +
-                        "On a miss, they are in want." +
+                        "On a miss, they are in want.\n" +
                         "\n" +
                         "If their surplus lists barter, like 1-barter or 2-barter, that's your personal share, to spend on your lifestyle or for what you will.")
                 .kind(MoveType.DEFAULT_CHARACTER)
@@ -1660,13 +1660,13 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         Move frenzy = Move.builder()
                 .name("FRENZY")
-                .description("_**Frenzy**_: When you speak the truth to a mob, roll+weird." +
+                .description("_**Frenzy**_: When you speak the truth to a mob, roll+weird.\n" +
                         "\n" +
-                        "On a 10+, hold 3." +
+                        "On a 10+, hold 3.\n" +
                         "\n" +
-                        "On a 7-9, hold 1. Spend your hold 1 for 1 to make the mob:" +
+                        "On a 7-9, hold 1. Spend your hold 1 for 1 to make the mob:\n" +
                         "\n" +
-                        "Spend your hold 1 for 1 to make the mob:" +
+                        "Spend your hold 1 for 1 to make the mob:\n" +
                         "\n" +
                         "- *Bring people forward and deliver them.*\n" +
                         "- *Bring forward all their precious things.*\n" +
@@ -1689,14 +1689,14 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollModifier(charismaticModifier)
                 .playbook(PlaybookType.HOCUS).build();
         StatModifier wacknutModifier = StatModifier.builder()
-                .id(UUID.randomUUID().toString())
                 .statToModify(WEIRD)
                 .modification(1).build();
+        StatModifier savedWacknutModifier = statModifierService.save(wacknutModifier).block();
         Move fuckingWacknut = Move.builder()
                 .name("FUCKING WACKNUT")
                 .description("_**Fucking wacknut**_: you get +1weird (weird+3)")
                 .kind(MoveType.CHARACTER)
-                .statModifier(wacknutModifier)
+                .statModifier(savedWacknutModifier)
                 .playbook(PlaybookType.HOCUS).build();
         RollModifier seeingSoulsModifier = RollModifier.builder()
                 .id(UUID.randomUUID().toString())
@@ -1743,14 +1743,14 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(PlaybookType.SKINNER).build();
 
         StatModifier breathtakingModifier = StatModifier.builder()
-                .id(UUID.randomUUID().toString())
                 .statToModify(HOT)
                 .modification(1).build();
+        StatModifier savedBreathtakingModifier = statModifierService.save(breathtakingModifier).block();
         Move breathtaking = Move.builder()
                 .name("BREATHTAKING")
                 .description("_**Breathtaking**_: you get +1hot (hot+3).")
                 .kind(MoveType.CHARACTER)
-                .statModifier(breathtakingModifier)
+                .statModifier(savedBreathtakingModifier)
                 .playbook(PlaybookType.SKINNER).build();
         MoveAction lostAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
@@ -1759,12 +1759,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(WEIRD)
                 .build();
         Move lost = Move.builder()
-                .name("LOST")
+                .name(lostName)
                 .description("_**Lost**_: when you whisper someone's name to the world's psychic maelstrom, roll+weird.\n" +
                         "\n" +
                         "On a hit, they come to you, with or without any clear explanation why.\n" +
                         "\n" +
-                        "On a 10+, take +1forward against them." +
+                        "On a 10+, take +1forward against them.\n" +
                         "\n" +
                         "On a miss, the MC will ask you 3 questions; answer them truthfully."
                 )
@@ -1778,12 +1778,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(HOT)
                 .build();
         Move artful = Move.builder()
-                .name("ARTFUL & GRACIOUS")
+                .name(artfulName)
                 .description("_**Artful & gracious**_: when you perform your chosen art - any act of expression or culture - or when you put its product before an audience, roll+hot.\n" +
                         "\n" +
                         "On a hit, spend 3. On a 7-9, spend 1.\n" +
                         "\n" +
-                        "Spend 1 to name an NPC member of your audience and choose one:" +
+                        "Spend 1 to name an NPC member of your audience and choose one:\n" +
                         "\n" +
                         "- *This person must meet me.*\n" +
                         "- *This person must have my services.*\n" +
@@ -1816,19 +1816,19 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(HOT)
                 .build();
         Move hypnotic = Move.builder()
-                .name("HYPNOTIC")
+                .name(hypnoticName)
                 .description("_**Hypnotic**_: when you have time and solitude with someone, they become fixated upon you. Roll+hot.\n" +
                         "\n" +
                         "On a 10+, hold 3. On a 7-9, hold 2.\n" +
                         "\n" +
-                        "They can spend your hold, 1 for 1, by:" +
+                        "They can spend your hold, 1 for 1, by:\n" +
                         "\n" +
                         "- *Giving you something you want.*\n" +
                         "- *Acting as your eyes and ears.*\n" +
                         "- *Fighting to protect you.*\n" +
                         "- *Doing something you tell them to.*\n" +
                         "\n" +
-                        "For NPCs, while you have a hold over them they can't act against you. For PCs, instead, any time you like you can spend your hold, 1 for 1:" +
+                        "For NPCs, while you have a hold over them they can't act against you. For PCs, instead, any time you like you can spend your hold, 1 for 1:\n" +
                         "\n" +
                         "- *They distract themselves with the thought of you. They're acting under fire.*\n" +
                         "- *They inspire themselves with the thought of you. They take +1forward now.*\n" +
