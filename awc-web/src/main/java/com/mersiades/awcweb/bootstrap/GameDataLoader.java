@@ -1838,7 +1838,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(hypnoticAction)
                 .playbook(PlaybookType.SKINNER).build();
 
-        moveService.saveAll(Flux.just()).blockLast();
+        moveService.saveAll(Flux.just(skinnerSpecial, breathtaking, lost, anArrestingSkinner, hypnotic)).blockLast();
 
     }
 
@@ -2083,6 +2083,37 @@ public class GameDataLoader implements CommandLineRunner {
         nameService.saveAll(Flux.just(hocus, hocus1, hocus2, hocus3, hocus4, hocus5, hocus6, hocus7,
                 hocus8, hocus9, hocus10, hocus11, hocus12, hocus13, hocus14, hocus15, hocus16,
                 hocus17, hocus18, hocus19, hocus20, hocus21)).blockLast();
+
+        /* ----------------------------- SKINNER NAMES --------------------------------- */
+        Name skinner1 = Name.builder().playbookType(PlaybookType.SKINNER).name("October").build();
+        Name skinner2 = Name.builder().playbookType(PlaybookType.SKINNER).name("Venus").build();
+        Name skinner3 = Name.builder().playbookType(PlaybookType.SKINNER).name("Mercury").build();
+        Name skinner4 = Name.builder().playbookType(PlaybookType.SKINNER).name("Dune").build();
+        Name skinner5 = Name.builder().playbookType(PlaybookType.SKINNER).name("Shade").build();
+        Name skinner6 = Name.builder().playbookType(PlaybookType.SKINNER).name("Heron").build();
+        Name skinner7 = Name.builder().playbookType(PlaybookType.SKINNER).name("Plum").build();
+        Name skinner8 = Name.builder().playbookType(PlaybookType.SKINNER).name("Orchid").build();
+        Name skinner9 = Name.builder().playbookType(PlaybookType.SKINNER).name("Storm").build();
+        Name skinner10 = Name.builder().playbookType(PlaybookType.SKINNER).name("Dusk").build();
+        Name skinner11 = Name.builder().playbookType(PlaybookType.SKINNER).name("Sword").build();
+        Name skinner12 = Name.builder().playbookType(PlaybookType.SKINNER).name("Midnight").build();
+        Name skinner13 = Name.builder().playbookType(PlaybookType.SKINNER).name("Hide").build();
+        Name skinner14 = Name.builder().playbookType(PlaybookType.SKINNER).name("Frost").build();
+        Name skinner15 = Name.builder().playbookType(PlaybookType.SKINNER).name("Lawn").build();
+        Name skinner16 = Name.builder().playbookType(PlaybookType.SKINNER).name("June").build();
+        Name skinner17 = Name.builder().playbookType(PlaybookType.SKINNER).name("Icicle").build();
+        Name skinner18 = Name.builder().playbookType(PlaybookType.SKINNER).name("Tern").build();
+        Name skinner19 = Name.builder().playbookType(PlaybookType.SKINNER).name("Lavender").build();
+        Name skinner20 = Name.builder().playbookType(PlaybookType.SKINNER).name("Spice").build();
+        Name skinner21 = Name.builder().playbookType(PlaybookType.SKINNER).name("Gazelle").build();
+        Name skinner22 = Name.builder().playbookType(PlaybookType.SKINNER).name("Lion").build();
+        Name skinner23 = Name.builder().playbookType(PlaybookType.SKINNER).name("Peacock").build();
+        Name skinner24 = Name.builder().playbookType(PlaybookType.SKINNER).name("Grace").build();
+
+        nameService.saveAll(Flux.just(skinner1, skinner2, skinner3, skinner4, skinner5, skinner6,
+                skinner7, skinner8, skinner9, skinner10, skinner11, skinner12, skinner13,
+                skinner14, skinner15, skinner16, skinner17, skinner18, skinner19, skinner20,
+                skinner21, skinner22, skinner23, skinner24)).blockLast();
     }
 
     private void loadLooks() {
@@ -2349,6 +2380,42 @@ public class GameDataLoader implements CommandLineRunner {
         lookService.saveAll(Flux.just(hocus1, hocus2, hocus3, hocus4, hocus5, hocus6, hocus7, hocus8, hocus9, hocus10,
                 hocus11, hocus12, hocus13, hocus14, hocus15, hocus16, hocus17, hocus18, hocus19, hocus20, hocus21,
                 hocus22, hocus23, hocus24, hocus25, hocus26, hocus27, hocus28)).blockLast();
+
+        /* ----------------------------- SKINNER LOOKS --------------------------------- */
+        Look skinner1 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("man").build();
+        Look skinner2 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("woman").build();
+        Look skinner3 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("ambiguous").build();
+        Look skinner4 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("transgressing").build();
+        Look skinner5 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("androgyne").build();
+        Look skinner6 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("display wear").build();
+        Look skinner7 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("showy scrounge wear").build();
+        Look skinner8 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("luxe wear").build();
+        Look skinner9 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("fetish wear").build();
+        Look skinner10 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("casual wear").build();
+        Look skinner11 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("striking face").build();
+        Look skinner12 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("sweet face").build();
+        Look skinner13 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("strange face").build();
+        Look skinner14 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("cute face").build();
+        Look skinner15 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("beautiful").build();
+        Look skinner16 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("laughing eyes").build();
+        Look skinner17 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("mocking eyes").build();
+        Look skinner18 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("dark eyes").build();
+        Look skinner19 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("shadowed eyes").build();
+        Look skinner20 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("troubled eyes").build();
+        Look skinner21 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("arresting eyes").build();
+        Look skinner22 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("bright eyes").build();
+        Look skinner23 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("cool eyes").build();
+        Look skinner24 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("slim body").build();
+        Look skinner25 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("toned body").build();
+        Look skinner26 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("fat body").build();
+        Look skinner27 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("unnatural body").build();
+        Look skinner28 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("young body").build();
+        Look skinner29 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("lush body").build();
+
+        lookService.saveAll(Flux.just(skinner1, skinner2, skinner3, skinner4, skinner5, skinner6, skinner7, skinner8,
+                skinner9, skinner10, skinner11, skinner12, skinner13, skinner14, skinner15, skinner16, skinner17,
+                skinner18, skinner19, skinner20, skinner21, skinner22, skinner23, skinner24, skinner25, skinner26,
+                skinner27, skinner28, skinner29)).blockLast();
     }
 
     public void loadStatsOptions() {
@@ -2410,6 +2477,14 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption hocus4 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(1).HARD(0).HOT(1).SHARP(-1).WEIRD(2).build(); // 3
 
         statsOptionService.saveAll(Flux.just(hocus1, hocus2, hocus3, hocus4)).blockLast();
+
+        /* ----------------------------- SKINNER STATS OPTIONS --------------------------------- */
+        StatsOption skinner1 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(1).HARD(-1).HOT(2).SHARP(1).WEIRD(0).build(); // 3
+        StatsOption skinner2 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(0).HARD(0).HOT(2).SHARP(0).WEIRD(1).build(); // 3
+        StatsOption skinner3 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(-1).HARD(0).HOT(2).SHARP(2).WEIRD(-1).build(); // 2
+        StatsOption skinner4 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(1).HARD(1).HOT(2).SHARP(1).WEIRD(-2).build(); // 3
+
+        statsOptionService.saveAll(Flux.just(skinner1, skinner2, skinner3, skinner4)).blockLast();
     }
 
     public void loadPlaybookCreators() {
