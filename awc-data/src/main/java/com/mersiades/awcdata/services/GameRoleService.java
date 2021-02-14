@@ -65,6 +65,8 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character setVehicleCount(String gameRoleId, String characterId, int vehicleCount);
 
+    Character setBattleVehicleCount(String gameRoleId, String characterId, int battleVehicleCount);
+
     Character setVehicle(String gameRoleId, String characterId, Vehicle vehicle);
 
     Character setGang(String gameRoleId, String characterId, Gang gang);

@@ -558,6 +558,8 @@ type Character {
     harm: CharacterHarm
     vehicleCount: Int
     vehicles: [Vehicle]
+    battleVehicleCount: Int
+    battleVehicles: [BattleVehicle]
 }
 
 type GameRole {
@@ -681,6 +683,23 @@ type Vehicle {
     weaknesses: [String]
     looks: [String]
     battleOptions: [VehicleBattleOption]
+}
+
+type BattleVehicle {
+    id: ID!
+    vehicleType: VehicleType
+    name: String
+    vehicleFrame: VehicleFrame
+    speed: Int
+    handling: Int
+    armor: Int
+    massive: Int
+    strengths: [String]
+    weaknesses: [String]
+    looks: [String]
+    weapons: [String]
+    battleOptions: [VehicleBattleOption]
+    battleVehicleOptions: [VehicleBattleOption]
 }
 
 # ----------------------------------------------- OTHER ---------------------------------------------- #
@@ -958,6 +977,9 @@ type Mutation {
     setVehicleCount(gameRoleId: String!,
         characterId: String!,
         vehicleCount: Int! ): Character
+    setBattleVehicleCount(gameRoleId: String!,
+        characterId: String!,
+        battleVehicleCount: Int! ): Character
     setVehicle(gameRoleId: String!,
         characterId: String!,
         vehicleInput: VehicleInput! ): Character

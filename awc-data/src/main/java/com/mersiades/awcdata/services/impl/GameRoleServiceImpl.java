@@ -394,6 +394,25 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
+    public Character setBattleVehicleCount(String gameRoleId, String characterId, int battleVehicleCount) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+
+        character.setBattleVehicleCount(battleVehicleCount);
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+        return character;
+    }
+
+    @Override
     public Character setVehicle(String gameRoleId, String characterId, Vehicle vehicle) {
         // If it's a new Vehicle, add id
         if (vehicle.getId() == null) {

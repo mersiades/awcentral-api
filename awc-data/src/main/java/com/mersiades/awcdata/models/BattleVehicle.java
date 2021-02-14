@@ -45,9 +45,14 @@ public class BattleVehicle {
     private List<String> looks = new ArrayList<>();
 
     @Builder.Default
+    private List<String> weapons = new ArrayList<>();
+
+    @Builder.Default
     private List<VehicleBattleOption> battleOptions = new ArrayList<>();
 
     @Builder.Default
-    private List<String> weapons = new ArrayList<>();
+    private List<VehicleBattleOption> battleVehicleOptions = new ArrayList<>();
+
+
 
 }
