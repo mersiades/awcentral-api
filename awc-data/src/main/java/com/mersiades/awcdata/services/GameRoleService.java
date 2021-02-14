@@ -39,7 +39,7 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons);
 
-    Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount);
+    Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount, int battleVehicleCount);
 
     Character setFollowers(String gameRoleId, String characterId, Followers followers);
 

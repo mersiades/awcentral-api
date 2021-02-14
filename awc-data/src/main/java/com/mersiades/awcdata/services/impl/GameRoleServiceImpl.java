@@ -564,7 +564,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
-    public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount) {
+    public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount, int battleVehicleCount) {
         // Get the GameRole
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
         assert gameRole != null;
@@ -591,8 +591,16 @@ public class GameRoleServiceImpl implements GameRoleService {
             character.getPlaybookUnique().setHolding(holding);
         }
         character.setVehicleCount(vehicleCount);
+        character.setBattleVehicleCount(battleVehicleCount);
+
         // Remove any extra vehicles
-        character.setVehicles(character.getVehicles().subList(0, vehicleCount));
+        if (character.getVehicles().size() > vehicleCount) {
+            character.setVehicles(character.getVehicles().subList(0, vehicleCount));
+        }
+
+        if (character.getBattleVehicles().size() > battleVehicleCount) {
+            character.setBattleVehicles(character.getBattleVehicles().subList(0, battleVehicleCount));
+        }
 
         // Save to db
         characterService.save(character).block();

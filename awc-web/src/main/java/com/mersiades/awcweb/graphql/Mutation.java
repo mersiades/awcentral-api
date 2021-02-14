@@ -157,9 +157,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCustomWeapons(gameRoleId, characterId, weapons);
     }
 
-    public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount) {
+    public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount, int battleVehicleCount) {
         System.out.println("Setting Holding for Character: " + characterId);
-        return gameRoleService.setHolding(gameRoleId, characterId, holding, vehicleCount);
+        return gameRoleService.setHolding(gameRoleId, characterId, holding, vehicleCount, battleVehicleCount);
     }
 
     public Character setFollowers(String gameRoleId, String characterId, Followers followers) {

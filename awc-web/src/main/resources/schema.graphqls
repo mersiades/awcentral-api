@@ -942,7 +942,8 @@ type Mutation {
     setHolding(gameRoleId: String!,
         characterId: String!,
         holding: HoldingInput!,
-        vehicleCount: Int!
+        vehicleCount: Int!,
+        battleVehicleCount: Int!
     ): Character
     setFollowers(gameRoleId: String!,
         characterId: String!,
