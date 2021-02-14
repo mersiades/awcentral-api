@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CombatVehicleCreator {
+public class BattleVehicleCreator {
 
     @Id
     private String id;
@@ -24,6 +24,18 @@ public class CombatVehicleCreator {
     private String introInstructions;
 
     private List<VehicleFrame> frames;
+
+    @Builder.Default
+    private List<String> bikeStrengths = new ArrayList<>();
+
+    @Builder.Default
+    private List<String> bikeLooks = new ArrayList<>();
+
+    @Builder.Default
+    private List<String> bikeWeaknesses = new ArrayList<>();
+
+    @Builder.Default
+    private List<VehicleBattleOption> bikeBattleOptions = new ArrayList<>();
 
     @Builder.Default
     private List<String> strengths = new ArrayList<>();
@@ -36,4 +48,7 @@ public class CombatVehicleCreator {
 
     @Builder.Default
     private List<VehicleBattleOption> battleOptions = new ArrayList<>();
+
+    @Builder.Default
+    private List<VehicleBattleOption> battleVehicleOptions = new ArrayList<>();
 }

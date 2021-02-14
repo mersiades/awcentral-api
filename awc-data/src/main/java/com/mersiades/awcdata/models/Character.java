@@ -48,7 +48,8 @@ public class Character {
 
     private int battleVehicleCount;
 
-    // TODO: add battleVehicleCount
+    @Builder.Default
+    private List<BattleVehicle> battleVehicles = new ArrayList<>();
 
     @Builder.Default
     private List<Vehicle> vehicles = new ArrayList<>();

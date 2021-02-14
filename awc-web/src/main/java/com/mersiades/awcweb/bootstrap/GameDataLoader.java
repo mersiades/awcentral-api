@@ -3695,83 +3695,140 @@ public class GameDataLoader implements CommandLineRunner {
                 .name("+1armor")
                 .build();
 
+        List<String> bikeStrengths = List.of("fast",
+                "rugged",
+                "aggressive",
+                "tight",
+                "huge",
+                "responsive");
+        List<String> bikeLooks = List.of(
+                "sleek",
+                "vintage",
+                "massively-chopped",
+                "muscular",
+                "flashy",
+                "luxe",
+                "roaring",
+                "fat-ass");
+        List<String> bikeWeaknesses = List.of("slow",
+                "sloppy",
+                "guzzler",
+                "lazy",
+                "unreliable",
+                "cramped",
+                "loud",
+                "picky",
+                "rabbity");
+
         BikeCreator bikeCreator = BikeCreator.builder()
                 .id(UUID.randomUUID().toString())
                 .vehicleType(VehicleType.BIKE)
                 .introInstructions("By default, your bike has speed=0, handling=0, 0-armor and the massive rating of its frame.")
                 .frame(bikeFrame)
-                .strengths(List.of("fast",
-                        "rugged",
-                        "aggressive",
-                        "tight",
-                        "huge",
-                        "responsive"))
-                .looks(List.of(
-                        "sleek",
-                        "vintage",
-                        "massively-chopped",
-                        "muscular",
-                        "flashy",
-                        "luxe",
-                        "roaring",
-                        "fat-ass"))
-                .weaknesses(List.of("slow",
-                        "sloppy",
-                        "guzzler",
-                        "lazy",
-                        "unreliable",
-                        "cramped",
-                        "loud",
-                        "picky",
-                        "rabbity"))
+                .strengths(bikeStrengths)
+                .looks(bikeLooks)
+                .weaknesses(bikeWeaknesses)
                 .battleOptions(List.of(battleOption1, battleOption2))
                 .build();
+
+        List<String> carStrengths = List.of("fast",
+                "rugged",
+                "aggressive",
+                "tight",
+                "huge",
+                "responsive",
+                "off-road",
+                "uncomplaining",
+                "capacious",
+                "workhorse",
+                "easily repaired");
+
+        List<String> carLooks = List.of(
+                "sleek",
+                "vintage",
+                "muscular",
+                "flashy",
+                "luxe",
+                "pristine",
+                "powerful",
+                "quirky",
+                "pretty",
+                "handcrafted",
+                "spikes & plates",
+                "garish");
+
+        List<String> carWeaknesses = List.of("slow",
+                "sloppy",
+                "guzzler",
+                "lazy",
+                "unreliable",
+                "cramped",
+                "loud",
+                "picky",
+                "rabbity");
 
         CarCreator carCreator = CarCreator.builder()
                 .id(UUID.randomUUID().toString())
                 .vehicleType(VehicleType.CAR)
                 .introInstructions("By default, your vehicle has speed=0, handling=0, 0-armor and the massive rating of its frame.")
                 .frames(List.of(bikeFrame, smallFrame, mediumFrame, largeFrame))
-                .strengths(List.of("fast",
-                        "rugged",
-                        "aggressive",
-                        "tight",
-                        "huge",
-                        "responsive",
-                        "off-road",
-                        "uncomplaining",
-                        "capacious",
-                        "workhorse",
-                        "easily repaired"))
-                .looks(List.of(
-                        "sleek",
-                        "vintage",
-                        "muscular",
-                        "flashy",
-                        "luxe",
-                        "pristine",
-                        "powerful",
-                        "quirky",
-                        "pretty",
-                        "handcrafted",
-                        "spikes & plates",
-                        "garish"))
-                .weaknesses(List.of("slow",
-                        "sloppy",
-                        "guzzler",
-                        "lazy",
-                        "unreliable",
-                        "cramped",
-                        "loud",
-                        "picky",
-                        "rabbity"))
+                .strengths(carStrengths)
+                .looks(carLooks)
+                .weaknesses(carWeaknesses)
                 .battleOptions(List.of(battleOption1, battleOption2, battleOption3, battleOption4))
+                .build();
+
+        VehicleBattleOption battleOption5 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.WEAPON)
+                .name("Mounted machine guns (3-harm close/far area messy)")
+                .build();
+
+        VehicleBattleOption battleOption6 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.WEAPON)
+                .name("Mounted grenade launcher (4-harm close area messy)")
+                .build();
+
+        VehicleBattleOption battleOption7 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.WEAPON)
+                .name("Ram or ramming spikes (as a weapon, vehicle inflicts +1harm)")
+                .build();
+
+        VehicleBattleOption battleOption8 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.WEAPON)
+                .name("Mounted 50cal mg (5-harm far area messy)")
+                .build();
+
+        VehicleBattleOption battleOption9 = VehicleBattleOption.builder()
+                .id(UUID.randomUUID().toString())
+                .battleOptionType(BattleOptionType.WEAPON)
+                .name("Mounted boarding platform or harness (+1 to attempts to board another vehicle from this one)")
+                .build();
+
+        BattleVehicleCreator battleVehicleCreator = BattleVehicleCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .vehicleType(VehicleType.BATTLE)
+                .introInstructions("By default, your vehicle has speed=0, handling=0, 0-armor and the massive rating of its frame.")
+                .frames(List.of(bikeFrame, smallFrame, mediumFrame, largeFrame))
+                .strengths(carStrengths)
+                .looks(carLooks)
+                .weaknesses(carWeaknesses)
+                .bikeStrengths(bikeStrengths)
+                .bikeLooks(bikeLooks)
+                .bikeWeaknesses(bikeWeaknesses)
+                .bikeBattleOptions(List.of(battleOption1, battleOption2))
+                .battleOptions(List.of(battleOption1, battleOption2, battleOption3, battleOption4))
+                .battleVehicleOptions(List.of(battleOption1, battleOption2, battleOption3, battleOption4, battleOption5,
+                        battleOption6, battleOption7, battleOption8, battleOption9))
                 .build();
 
         VehicleCreator vehicleCreator = VehicleCreator.builder()
                 .carCreator(carCreator)
                 .bikeCreator(bikeCreator)
-                // TODO: Add combat vehicle creator
+                .battleVehicleCreator(battleVehicleCreator)
                 .build();
 
         vehicleCreatorService.save(vehicleCreator).block();

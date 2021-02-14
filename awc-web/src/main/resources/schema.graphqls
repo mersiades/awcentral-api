@@ -113,13 +113,14 @@ enum BattleOptionType {
     SPEED,
     HANDLING,
     MASSIVE,
-    ARMOR
+    ARMOR,
+    WEAPON
 }
 
 enum VehicleType {
     BIKE,
     CAR,
-    COMBAT
+    BATTLE
 }
 
 enum GangSize {
@@ -400,6 +401,22 @@ type CarCreator {
     battleOptions: [VehicleBattleOption]
 }
 
+type BattleVehicleCreator {
+    id: ID!
+    vehicleType: VehicleType
+    introInstructions: String
+    frames: [VehicleFrame]
+    strengths: [String]
+    looks: [String]
+    weaknesses: [String]
+    battleOptions: [VehicleBattleOption]
+    bikeStrengths: [String]
+    bikeLooks: [String]
+    bikeWeaknesses: [String]
+    bikeBattleOptions: [VehicleBattleOption]
+    battleVehicleOptions: [VehicleBattleOption]
+}
+
 type BikeCreator {
     id: ID!
     vehicleType: VehicleType
@@ -415,6 +432,7 @@ type VehicleCreator {
     id: ID!
     bikeCreator: BikeCreator
     carCreator: CarCreator
+    battleVehicleCreator: BattleVehicleCreator
 }
 
 type ThreatCreatorContent {
@@ -938,7 +956,7 @@ type Mutation {
         skinnerGear: SkinnerGearInput! ): Character
     setVehicleCount(gameRoleId: String!,
         characterId: String!,
-        vechicleCount: Int! ): Character
+        vehicleCount: Int! ): Character
     setVehicle(gameRoleId: String!,
         characterId: String!,
         vehicleInput: VehicleInput! ): Character

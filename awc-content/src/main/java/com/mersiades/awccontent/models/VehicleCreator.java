@@ -18,5 +18,5 @@ public class VehicleCreator {
 
     private BikeCreator bikeCreator;
 
-    private CombatVehicleCreator combatVehicleCreator;
+    private BattleVehicleCreator battleVehicleCreator;
 }

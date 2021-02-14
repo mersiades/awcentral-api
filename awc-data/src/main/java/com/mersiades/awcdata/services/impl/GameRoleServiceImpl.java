@@ -591,6 +591,8 @@ public class GameRoleServiceImpl implements GameRoleService {
             character.getPlaybookUnique().setHolding(holding);
         }
         character.setVehicleCount(vehicleCount);
+        // Remove any extra vehicles
+        character.setVehicles(character.getVehicles().subList(0, vehicleCount));
 
         // Save to db
         characterService.save(character).block();
@@ -767,13 +769,18 @@ public class GameRoleServiceImpl implements GameRoleService {
             if (newCharacterMoveNames.contains(collectorName) && !previousCharacterMoveNames.contains(collectorName)) {
                 character.setVehicleCount(character.getVehicleCount() + 2);
             } else if (!newCharacterMoveNames.contains(collectorName) && previousCharacterMoveNames.contains(collectorName)) {
-                character.setVehicleCount(character.getVehicleCount() - 2);
+                int newCount = character.getVehicleCount() - 2;
+                character.setVehicleCount(newCount);
+                character.setVehicles(character.getVehicles().subList(0, newCount));
             }
 
             if (newCharacterMoveNames.contains(otherCarTankName) && !previousCharacterMoveNames.contains(otherCarTankName)) {
                 character.setBattleVehicleCount(character.getBattleVehicleCount() + 1);
             } else if (!newCharacterMoveNames.contains(otherCarTankName) && previousCharacterMoveNames.contains(otherCarTankName)) {
-                character.setBattleVehicleCount(character.getBattleVehicleCount() - 1);
+                int newCount = character.getBattleVehicleCount() - 1;
+                character.setBattleVehicleCount(newCount);
+                // TODO: uncomment this after battleVehicles field has been added
+//                character.setBattleVehicles(character.getBattleVehicles.subList(0, newCount));
             }
         }
 
