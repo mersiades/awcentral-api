@@ -1458,7 +1458,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .playbook(PlaybookType.DRIVER).build();
         Move myOtherCarIsATank = Move.builder()
-                .name("MY OTHER CAR IS A TANK")
+                .name(otherCarTankName)
                 .description("_**My other car is a tank**_: you get a specialized battle vehicle (detail with the MC).")
                 .kind(MoveType.CHARACTER)
                 .stat(null)

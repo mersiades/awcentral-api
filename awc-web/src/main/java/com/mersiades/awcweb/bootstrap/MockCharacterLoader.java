@@ -337,6 +337,8 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .characterMoves(characterMoves)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(true)
+                .vehicleCount(0)
+                .battleVehicleCount(0)
                 .build();
 
         // -------------------------------- Create John's Battlebabe ----------------------------------- //
@@ -351,6 +353,8 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .characterMoves(characterMoves2)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(false)
+                .vehicleCount(0)
+                .battleVehicleCount(0)
                 .build();
 
         // -------------------------------- Create Maya's Brainer ----------------------------------- //
@@ -365,6 +369,8 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .characterMoves(characterMoves3)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(false)
+                .vehicleCount(0)
+                .battleVehicleCount(0)
                 .build();
 
         // -------------------------------- Create Takeshi's Chopper ----------------------------------- //
@@ -380,6 +386,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(false)
                 .vehicleCount(1)
+                .battleVehicleCount(0)
                 .vehicles(List.of(chopperBike))
                 .build();
 
@@ -395,6 +402,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(false)
                 .vehicleCount(3)
+                .battleVehicleCount(0)
                 .vehicles(List.of(car1, car2, bike))
                 .build();
 

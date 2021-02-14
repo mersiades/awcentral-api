@@ -936,6 +936,9 @@ type Mutation {
     setSkinnerGear(gameRoleId: String!,
         characterId: String!,
         skinnerGear: SkinnerGearInput! ): Character
+    setVehicleCount(gameRoleId: String!,
+        characterId: String!,
+        vechicleCount: Int! ): Character
     setVehicle(gameRoleId: String!,
         characterId: String!,
         vehicleInput: VehicleInput! ): Character

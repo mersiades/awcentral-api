@@ -9,7 +9,6 @@ import com.mersiades.awccontent.services.StatsOptionService;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.*;
-import com.mersiades.awcdata.models.Vehicle;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
@@ -19,6 +18,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.mersiades.awccontent.constants.MoveNames.collectorName;
+import static com.mersiades.awccontent.constants.MoveNames.otherCarTankName;
 
 @Service
 public class GameRoleServiceImpl implements GameRoleService {
@@ -123,9 +125,20 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setCharacterMoves(null);
         character.setVehicles(new ArrayList<>());
 
+        // Set default Vehicle and BattleVehicle counts by PlaybookType
+        if (List.of(PlaybookType.DRIVER, PlaybookType.CHOPPER).contains(playbookType)) {
+            character.setVehicleCount(1);
+            character.setBattleVehicleCount(0);
+        } else if (playbookType.equals(PlaybookType.HARDHOLDER)) {
+            character.setVehicleCount(4);
+            character.setBattleVehicleCount(4);
+        } else {
+            character.setVehicleCount(0);
+            character.setBattleVehicleCount(0);
+        }
+
         // Set new playbook
         character.setPlaybook(playbookType);
-        character.setVehicleCount(0);
         characterService.save(character).block();
         gameRoleRepository.save(gameRole).block();
         return character;
@@ -358,6 +371,25 @@ public class GameRoleServiceImpl implements GameRoleService {
         characterService.save(character).block();
         gameRoleRepository.save(gameRole).block();
 
+        return character;
+    }
+
+    @Override
+    public Character setVehicleCount(String gameRoleId, String characterId, int vehicleCount) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+
+        character.setVehicleCount(vehicleCount);
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
         return character;
     }
 
@@ -681,6 +713,9 @@ public class GameRoleServiceImpl implements GameRoleService {
         Character character = gameRole.getCharacters().stream()
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
+        List<String> previousCharacterMoveNames = character.getCharacterMoves()
+                .stream().map(Move::getName).collect(Collectors.toList());
+
         PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(character.getPlaybook()).block();
         assert playbookCreator != null;
 
@@ -723,6 +758,25 @@ public class GameRoleServiceImpl implements GameRoleService {
             // Give CharacterMove an id
             characterMove.setId(UUID.randomUUID().toString());
         });
+
+        List<String> newCharacterMoveNames = characterMoves
+                .stream().map(Move::getName).collect(Collectors.toList());
+
+        // Adjust vehicleCount and battleVehicleCount move for Driver
+        if (character.getPlaybook().equals(PlaybookType.DRIVER)) {
+            if (newCharacterMoveNames.contains(collectorName) && !previousCharacterMoveNames.contains(collectorName)) {
+                character.setVehicleCount(character.getVehicleCount() + 2);
+            } else if (!newCharacterMoveNames.contains(collectorName) && previousCharacterMoveNames.contains(collectorName)) {
+                character.setVehicleCount(character.getVehicleCount() - 2);
+            }
+
+            if (newCharacterMoveNames.contains(otherCarTankName) && !previousCharacterMoveNames.contains(otherCarTankName)) {
+                character.setBattleVehicleCount(character.getBattleVehicleCount() + 1);
+            } else if (!newCharacterMoveNames.contains(otherCarTankName) && previousCharacterMoveNames.contains(otherCarTankName)) {
+                character.setBattleVehicleCount(character.getBattleVehicleCount() - 1);
+            }
+        }
+
 
 
         // This will also overwrite an existing set of CharacterMoves

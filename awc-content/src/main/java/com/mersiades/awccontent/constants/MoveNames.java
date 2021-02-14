@@ -21,6 +21,7 @@ public class MoveNames {
     public static final String reviveSomeoneName = "REVIVE SOMEONE";
     public static final String treatNpcName = "TREAT AN NPC";
     public static final String collectorName = "COLLECTOR";
+    public static final String otherCarTankName = "MY OTHER CAR IS A TANK";
     public static final String goAggroName = "GO AGGRO ON SOMEONE";
     public static final String suckerSomeoneName = "SUCKER SOMEONE";
     public static final String catOrMouseName = "CAT OR MOUSE";

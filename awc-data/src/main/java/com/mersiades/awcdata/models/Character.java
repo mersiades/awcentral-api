@@ -46,6 +46,8 @@ public class Character {
 
     private int vehicleCount;
 
+    private int battleVehicleCount;
+
     // TODO: add battleVehicleCount
 
     @Builder.Default
