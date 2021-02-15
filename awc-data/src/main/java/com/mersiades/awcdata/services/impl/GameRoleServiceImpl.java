@@ -124,6 +124,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setPlaybookUnique(null);
         character.setCharacterMoves(null);
         character.setVehicles(new ArrayList<>());
+        character.setBattleVehicles(new ArrayList<>());
 
         // Set default Vehicle and BattleVehicle counts by PlaybookType
         if (List.of(PlaybookType.DRIVER, PlaybookType.CHOPPER).contains(playbookType)) {
