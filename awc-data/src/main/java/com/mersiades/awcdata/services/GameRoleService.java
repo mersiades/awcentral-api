@@ -69,6 +69,8 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character setVehicle(String gameRoleId, String characterId, Vehicle vehicle);
 
+    Character setBattleVehicle(String gameRoleId, String characterId, BattleVehicle battleVehicle);
+
     Character setGang(String gameRoleId, String characterId, Gang gang);
 
     Mono<GameRole> addThreat(String gameRoleId, Threat threat);

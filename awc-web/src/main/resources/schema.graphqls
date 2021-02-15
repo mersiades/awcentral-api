@@ -759,6 +759,7 @@ input VehicleBattleOptionInput {
     battleOptionType: BattleOptionType
     name: String
 }
+
 input VehicleInput {
     id: ID
     vehicleType: VehicleType
@@ -772,6 +773,23 @@ input VehicleInput {
     weaknesses: [String]
     looks: [String]
     battleOptions: [VehicleBattleOptionInput]
+}
+
+input BattleVehicleInput {
+    id: ID
+    vehicleType: VehicleType!
+    name: String!
+    vehicleFrame: VehicleFrameInput!
+    speed: Int!
+    handling: Int!
+    armor: Int!
+    massive: Int!
+    strengths: [String]!
+    weaknesses: [String]!
+    looks: [String]!
+    weapons: [String]!
+    battleOptions: [VehicleBattleOptionInput]!
+    battleVehicleOptions: [VehicleBattleOptionInput]!
 }
 
 input GangOptionInput {
@@ -983,6 +1001,9 @@ type Mutation {
     setVehicle(gameRoleId: String!,
         characterId: String!,
         vehicleInput: VehicleInput! ): Character
+    setBattleVehicle(gameRoleId: String!,
+        characterId: String!,
+        battleVehicle: BattleVehicleInput! ): Character
     setCharacterMoves(gameRoleId: String!,
         characterId: String!,
         moveIds: [String]!): Character

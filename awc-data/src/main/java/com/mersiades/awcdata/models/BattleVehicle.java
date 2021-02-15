@@ -21,9 +21,9 @@ public class BattleVehicle {
     @Id
     private String id;
 
-    private String name;
-
     private VehicleType vehicleType;
+
+    private String name;
 
     private VehicleFrame vehicleFrame;
 

@@ -457,6 +457,50 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
+    public Character setBattleVehicle(String gameRoleId, String characterId, BattleVehicle battleVehicle) {
+        // If it's a new BattleVehicle, add id
+        if (battleVehicle.getId() == null) {
+            battleVehicle.setId(UUID.randomUUID().toString());
+        }
+
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+
+        if (character.getVehicles().size() == 0) {
+            // Add first Vehicle
+            character.getBattleVehicles().add(battleVehicle);
+        } else {
+            // Replace Vehicle with updated data, if it already exists
+            ListIterator<BattleVehicle> iterator = character.getBattleVehicles().listIterator();
+            boolean hasReplaced = false;
+            while (iterator.hasNext()) {
+                BattleVehicle nextVehicle = iterator.next();
+                if (nextVehicle.getId().equals(battleVehicle.getId())) {
+                    iterator.set(battleVehicle);
+                    hasReplaced = true;
+                }
+            }
+
+            if (!hasReplaced) {
+                // Add a new Vehicle to the existing Vehicles List
+                character.getBattleVehicles().add(battleVehicle);
+            }
+        }
+
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+        return character;
+    }
+
+    @Override
     public Character setGang(String gameRoleId, String characterId, Gang gang) {
         // Get the GameRole
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();

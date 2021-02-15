@@ -157,6 +157,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setVehicle(gameRoleId, characterId, vehicle);
     }
 
+    public Character setBattleVehicle(String gameRoleId, String characterId, BattleVehicle battleVehicle) {
+        System.out.println("Setting BattleVehicle for Character: " + characterId);
+        return gameRoleService.setBattleVehicle(gameRoleId, characterId, battleVehicle);
+    }
+
     public Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons) {
         System.out.println("Setting CustomWeapons for Character: " + characterId);
         return gameRoleService.setCustomWeapons(gameRoleId, characterId, weapons);
