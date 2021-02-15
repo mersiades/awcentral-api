@@ -3811,16 +3811,6 @@ public class GameDataLoader implements CommandLineRunner {
         BattleVehicleCreator battleVehicleCreator = BattleVehicleCreator.builder()
                 .id(UUID.randomUUID().toString())
                 .vehicleType(VehicleType.BATTLE)
-                .introInstructions("By default, your vehicle has speed=0, handling=0, 0-armor and the massive rating of its frame.")
-                .frames(List.of(bikeFrame, smallFrame, mediumFrame, largeFrame))
-                .strengths(carStrengths)
-                .looks(carLooks)
-                .weaknesses(carWeaknesses)
-                .bikeStrengths(bikeStrengths)
-                .bikeLooks(bikeLooks)
-                .bikeWeaknesses(bikeWeaknesses)
-                .bikeBattleOptions(List.of(battleOption1, battleOption2))
-                .battleOptions(List.of(battleOption1, battleOption2, battleOption3, battleOption4))
                 .battleVehicleOptions(List.of(battleOption1, battleOption2, battleOption3, battleOption4, battleOption5,
                         battleOption6, battleOption7, battleOption8, battleOption9))
                 .build();

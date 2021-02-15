@@ -404,16 +404,6 @@ type CarCreator {
 type BattleVehicleCreator {
     id: ID!
     vehicleType: VehicleType
-    introInstructions: String
-    frames: [VehicleFrame]
-    strengths: [String]
-    looks: [String]
-    weaknesses: [String]
-    battleOptions: [VehicleBattleOption]
-    bikeStrengths: [String]
-    bikeLooks: [String]
-    bikeWeaknesses: [String]
-    bikeBattleOptions: [VehicleBattleOption]
     battleVehicleOptions: [VehicleBattleOption]
 }
 

@@ -21,34 +21,6 @@ public class BattleVehicleCreator {
 
     private VehicleType vehicleType;
 
-    private String introInstructions;
-
-    private List<VehicleFrame> frames;
-
-    @Builder.Default
-    private List<String> bikeStrengths = new ArrayList<>();
-
-    @Builder.Default
-    private List<String> bikeLooks = new ArrayList<>();
-
-    @Builder.Default
-    private List<String> bikeWeaknesses = new ArrayList<>();
-
-    @Builder.Default
-    private List<VehicleBattleOption> bikeBattleOptions = new ArrayList<>();
-
-    @Builder.Default
-    private List<String> strengths = new ArrayList<>();
-
-    @Builder.Default
-    private List<String> looks = new ArrayList<>();
-
-    @Builder.Default
-    private List<String> weaknesses = new ArrayList<>();
-
-    @Builder.Default
-    private List<VehicleBattleOption> battleOptions = new ArrayList<>();
-
     @Builder.Default
     private List<VehicleBattleOption> battleVehicleOptions = new ArrayList<>();
 }
