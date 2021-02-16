@@ -4,5 +4,6 @@ public enum BattleOptionType {
     SPEED,
     HANDLING,
     MASSIVE,
-    ARMOR
+    ARMOR,
+    WEAPON
 }

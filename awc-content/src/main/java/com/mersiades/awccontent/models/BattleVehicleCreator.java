@@ -1,22 +1,26 @@
 package com.mersiades.awccontent.models;
 
+import com.mersiades.awccontent.enums.VehicleType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VehicleCreator {
+public class BattleVehicleCreator {
+
     @Id
     private String id;
 
-    private CarCreator carCreator;
+    private VehicleType vehicleType;
 
-    private BikeCreator bikeCreator;
-
-    private BattleVehicleCreator battleVehicleCreator;
+    @Builder.Default
+    private List<VehicleBattleOption> battleVehicleOptions = new ArrayList<>();
 }

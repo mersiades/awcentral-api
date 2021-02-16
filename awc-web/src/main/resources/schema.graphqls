@@ -113,13 +113,14 @@ enum BattleOptionType {
     SPEED,
     HANDLING,
     MASSIVE,
-    ARMOR
+    ARMOR,
+    WEAPON
 }
 
 enum VehicleType {
     BIKE,
     CAR,
-    COMBAT
+    BATTLE
 }
 
 enum GangSize {
@@ -400,6 +401,12 @@ type CarCreator {
     battleOptions: [VehicleBattleOption]
 }
 
+type BattleVehicleCreator {
+    id: ID!
+    vehicleType: VehicleType
+    battleVehicleOptions: [VehicleBattleOption]
+}
+
 type BikeCreator {
     id: ID!
     vehicleType: VehicleType
@@ -415,6 +422,7 @@ type VehicleCreator {
     id: ID!
     bikeCreator: BikeCreator
     carCreator: CarCreator
+    battleVehicleCreator: BattleVehicleCreator
 }
 
 type ThreatCreatorContent {
@@ -540,6 +548,8 @@ type Character {
     harm: CharacterHarm
     vehicleCount: Int
     vehicles: [Vehicle]
+    battleVehicleCount: Int
+    battleVehicles: [BattleVehicle]
 }
 
 type GameRole {
@@ -665,6 +675,23 @@ type Vehicle {
     battleOptions: [VehicleBattleOption]
 }
 
+type BattleVehicle {
+    id: ID!
+    vehicleType: VehicleType
+    name: String
+    vehicleFrame: VehicleFrame
+    speed: Int
+    handling: Int
+    armor: Int
+    massive: Int
+    strengths: [String]
+    weaknesses: [String]
+    looks: [String]
+    weapons: [String]
+    battleOptions: [VehicleBattleOption]
+    battleVehicleOptions: [VehicleBattleOption]
+}
+
 # ----------------------------------------------- OTHER ---------------------------------------------- #
 
 type TaggedItem {
@@ -722,6 +749,7 @@ input VehicleBattleOptionInput {
     battleOptionType: BattleOptionType
     name: String
 }
+
 input VehicleInput {
     id: ID
     vehicleType: VehicleType
@@ -735,6 +763,23 @@ input VehicleInput {
     weaknesses: [String]
     looks: [String]
     battleOptions: [VehicleBattleOptionInput]
+}
+
+input BattleVehicleInput {
+    id: ID
+    vehicleType: VehicleType!
+    name: String!
+    vehicleFrame: VehicleFrameInput!
+    speed: Int!
+    handling: Int!
+    armor: Int!
+    massive: Int!
+    strengths: [String]!
+    weaknesses: [String]!
+    looks: [String]!
+    weapons: [String]!
+    battleOptions: [VehicleBattleOptionInput]!
+    battleVehicleOptions: [VehicleBattleOptionInput]!
 }
 
 input GangOptionInput {
@@ -924,7 +969,8 @@ type Mutation {
     setHolding(gameRoleId: String!,
         characterId: String!,
         holding: HoldingInput!,
-        vehicleCount: Int!
+        vehicleCount: Int!,
+        battleVehicleCount: Int!
     ): Character
     setFollowers(gameRoleId: String!,
         characterId: String!,
@@ -936,9 +982,18 @@ type Mutation {
     setSkinnerGear(gameRoleId: String!,
         characterId: String!,
         skinnerGear: SkinnerGearInput! ): Character
+    setVehicleCount(gameRoleId: String!,
+        characterId: String!,
+        vehicleCount: Int! ): Character
+    setBattleVehicleCount(gameRoleId: String!,
+        characterId: String!,
+        battleVehicleCount: Int! ): Character
     setVehicle(gameRoleId: String!,
         characterId: String!,
         vehicleInput: VehicleInput! ): Character
+    setBattleVehicle(gameRoleId: String!,
+        characterId: String!,
+        battleVehicle: BattleVehicleInput! ): Character
     setCharacterMoves(gameRoleId: String!,
         characterId: String!,
         moveIds: [String]!): Character

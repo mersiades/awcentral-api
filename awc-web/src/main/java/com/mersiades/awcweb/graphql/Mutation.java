@@ -142,9 +142,24 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setGang(gameRoleId, characterId, gang);
     }
 
+    public Character setVehicleCount(String gameRoleId, String characterId, int vehicleCount) {
+        System.out.println("Setting vehicleCount for Character: " + characterId);
+        return gameRoleService.setVehicleCount(gameRoleId, characterId, vehicleCount);
+    }
+
+    public Character setBattleVehicleCount(String gameRoleId, String characterId, int battleVehicleCount) {
+        System.out.println("Setting battleVehicleCount for Character: " + characterId);
+        return gameRoleService.setBattleVehicleCount(gameRoleId, characterId, battleVehicleCount);
+    }
+
     public Character setVehicle(String gameRoleId, String characterId, Vehicle vehicle) {
         System.out.println("Setting Vehicle for Character: " + characterId);
         return gameRoleService.setVehicle(gameRoleId, characterId, vehicle);
+    }
+
+    public Character setBattleVehicle(String gameRoleId, String characterId, BattleVehicle battleVehicle) {
+        System.out.println("Setting BattleVehicle for Character: " + characterId);
+        return gameRoleService.setBattleVehicle(gameRoleId, characterId, battleVehicle);
     }
 
     public Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons) {
@@ -152,9 +167,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCustomWeapons(gameRoleId, characterId, weapons);
     }
 
-    public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount) {
+    public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount, int battleVehicleCount) {
         System.out.println("Setting Holding for Character: " + characterId);
-        return gameRoleService.setHolding(gameRoleId, characterId, holding, vehicleCount);
+        return gameRoleService.setHolding(gameRoleId, characterId, holding, vehicleCount, battleVehicleCount);
     }
 
     public Character setFollowers(String gameRoleId, String characterId, Followers followers) {
