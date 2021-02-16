@@ -136,7 +136,7 @@ enum HoldingSize {
     LARGE
 }
 
-# ---------------------------------------- STATIC GAME DATA TYPES -------------------------------------- #
+# ---------------------------------------- STATIC GAME CONTENT TYPES -------------------------------------- #
 
 type HoldConditions {
     id: ID!
@@ -206,27 +206,6 @@ type StatsOption {
     WEIRD: Int
 }
 
-type VehicleFrame {
-    id: ID!
-    frameType: VehicleFrameType
-    massive: Int
-    examples: String
-    battleOptionCount: Int
-}
-
-type VehicleBattleOption {
-    id: ID!
-    battleOptionType: BattleOptionType
-    name: String
-}
-
-type GangOption {
-    id: ID!
-    description: String!
-    modifier: String
-    tag: String
-}
-
 type GearInstructions {
     id: ID!
     gearIntro: String
@@ -256,6 +235,8 @@ type PlaybookCreator {
     defaultVehicleCount: Int
 }
 
+    ### ------------- Playbook Unique Creators ------------- ###
+
 type PlaybookUniqueCreator {
     id: ID!
     type: UniqueType!
@@ -267,19 +248,7 @@ type PlaybookUniqueCreator {
     holdingCreator: HoldingCreator
     followersCreator: FollowersCreator
     skinnerGearCreator: SkinnerGearCreator
-}
-
-type GangCreator {
-    id: ID!
-    intro: String!
-    defaultSize: GangSize!
-    defaultHarm: Int!
-    defaultArmor: Int!
-    strengthChoiceCount: Int!
-    weaknessChoiceCount: Int!
-    defaultTags: [String]!
-    strengths: [GangOption]!
-    weaknesses: [GangOption]!
+    establishmentCreator: EstablishmentCreator
 }
 
 type AngelKitCreator {
@@ -305,6 +274,81 @@ type CustomWeaponsCreator {
 type BrainerGearCreator {
     id: ID!
     gear: [String]!
+}
+
+type WeaponsCreator {
+    id: ID!
+    bfoGunOptionCount: Int!
+    seriousGunOptionCount: Int!
+    backupWeaponsOptionCount: Int!
+    bigFuckOffGuns: [String]!
+    seriousGuns: [String]!
+    backupWeapons: [String]!
+}
+
+type SecurityOption {
+    id: ID!
+    description: String!
+    value: Int!
+}
+
+type EstablishmentCreator {
+    id: ID!
+    mainAttractionCount: Int!
+    sideAttractionCount: Int!
+    attractions: [String]!
+    atmospheres: [String]!
+    atmosphereCount: [Int]!
+    regularsNames: [String]!
+    regularsQuestions: [String]!
+    interestedPartyNames: [String]!
+    interestedPartyQuestions: [String]!
+    securityOptions: [SecurityOption]!
+}
+
+type FollowersOption {
+    id: ID!
+    description: String!
+    newNumberOfFollowers: Int!
+    surplusBarterChange: Int!
+    fortuneChange: Int!
+    surplusChange: String
+    wantChange: [String]
+}
+
+type FollowersCreator {
+    id: ID!
+    instructions: String!
+    defaultNumberOfFollowers: Int!
+    defaultSurplusBarter: Int!
+    defaultFortune: Int!
+    strengthCount: Int!
+    weaknessCount: Int!
+    travelOptions: [String]!
+    characterizationOptions: [String]!
+    defaultWants: [String]!
+    strengthOptions: [FollowersOption]!
+    weaknessOptions: [FollowersOption]!
+}
+
+type GangOption {
+    id: ID!
+    description: String!
+    modifier: String
+    tag: String
+}
+
+type GangCreator {
+    id: ID!
+    intro: String!
+    defaultSize: GangSize!
+    defaultHarm: Int!
+    defaultArmor: Int!
+    strengthChoiceCount: Int!
+    weaknessChoiceCount: Int!
+    defaultTags: [String]!
+    strengths: [GangOption]!
+    weaknesses: [GangOption]!
 }
 
 type HoldingOption {
@@ -342,31 +386,6 @@ type HoldingCreator {
     weaknessOptions: [HoldingOption]!
 }
 
-type FollowersOption {
-    id: ID!
-    description: String!
-    newNumberOfFollowers: Int!
-    surplusBarterChange: Int!
-    fortuneChange: Int!
-    surplusChange: String
-    wantChange: [String]
-}
-
-type FollowersCreator {
-    id: ID!
-    instructions: String!
-    defaultNumberOfFollowers: Int!
-    defaultSurplusBarter: Int!
-    defaultFortune: Int!
-    strengthCount: Int!
-    weaknessCount: Int!
-    travelOptions: [String]!
-    characterizationOptions: [String]!
-    defaultWants: [String]!
-    strengthOptions: [FollowersOption]!
-    weaknessOptions: [FollowersOption]!
-}
-
 type SkinnerGearItem {
     id: ID!
     item: String!
@@ -381,14 +400,20 @@ type SkinnerGearCreator {
     luxeGearChoices: [SkinnerGearItem]!
 }
 
-type WeaponsCreator {
+     ### ------------- Vehicle Creators ------------- ###
+
+type VehicleFrame {
     id: ID!
-    bfoGunOptionCount: Int!
-    seriousGunOptionCount: Int!
-    backupWeaponsOptionCount: Int!
-    bigFuckOffGuns: [String]!
-    seriousGuns: [String]!
-    backupWeapons: [String]!
+    frameType: VehicleFrameType
+    massive: Int
+    examples: String
+    battleOptionCount: Int
+}
+
+type VehicleBattleOption {
+    id: ID!
+    battleOptionType: BattleOptionType
+    name: String
 }
 
 type CarCreator {
@@ -425,6 +450,8 @@ type VehicleCreator {
     carCreator: CarCreator
     battleVehicleCreator: BattleVehicleCreator
 }
+
+     ### ------------- Threat Creator ------------- ###
 
 type ThreatCreatorContent {
     id: ID!
@@ -576,6 +603,8 @@ type CharacterMove {
     moveAction: MoveAction
 }
 
+     ### ------------- Playbook Uniques ------------- ###
+
 type PlaybookUnique {
     id: ID!
     type: UniqueType
@@ -589,11 +618,6 @@ type PlaybookUnique {
     skinnerGear: SkinnerGear
 }
 
-type BrainerGear {
-    id:ID!
-    brainerGear: [String]
-}
-
 type AngelKit {
     id: ID!
     description: String!
@@ -603,14 +627,48 @@ type AngelKit {
     supplierText: String!
 }
 
+type BrainerGear {
+    id:ID!
+    brainerGear: [String]
+}
+
 type CustomWeapons {
     id: ID!
     weapons: [String]!
 }
 
-type Weapons {
+type CastCrew {
     id: ID!
-    weapons: [String]!
+    name: String!
+    description: String
+}
+
+type Establishment {
+    id: ID!
+    mainAttraction: String!
+    sideAttractions: [String]!
+    atmospheres: [String]!
+    regulars: [String]!
+    highlightedRegulars: [String]!
+    interestedParties: [String]!
+    highlightedInterestedParties: [String]!
+    securityOptions: [SecurityOption]!
+    castAndCrew: [CastCrew]!
+}
+
+type Followers {
+    id: ID!
+    description: String!
+    travelOption: String!
+    characterization: String!
+    followers: Int!
+    fortune: Int!
+    barter: Int!
+    surplusBarter: Int!
+    surplus: [String]!
+    wants: [String]!
+    selectedStrengths: [FollowersOption]!
+    selectedWeaknesses: [FollowersOption]!
 }
 
 type Gang {
@@ -640,26 +698,18 @@ type Holding {
     selectedWeaknesses: [HoldingOption]!
 }
 
-type Followers {
-    id: ID!
-    description: String!
-    travelOption: String!
-    characterization: String!
-    followers: Int!
-    fortune: Int!
-    barter: Int!
-    surplusBarter: Int!
-    surplus: [String]!
-    wants: [String]!
-    selectedStrengths: [FollowersOption]!
-    selectedWeaknesses: [FollowersOption]!
-}
-
 type SkinnerGear {
     id: ID!
     graciousWeapon: SkinnerGearItem!
     luxeGear: [SkinnerGearItem]!
 }
+
+type Weapons {
+    id: ID!
+    weapons: [String]!
+}
+
+     ### ------------- Vehicles ------------- ###
 
 type Vehicle {
     id: ID!
