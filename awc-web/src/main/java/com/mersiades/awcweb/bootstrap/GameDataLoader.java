@@ -1724,6 +1724,100 @@ public class GameDataLoader implements CommandLineRunner {
         moveService.saveAll(Flux.just(hocusSpecial, fortunes, frenzy, charismatic, fuckingWacknut, seeingSouls,
                 divineProtection)).blockLast();
 
+        /* ----------------------------- MAESTRO'D MOVES --------------------------------- */
+        MoveAction maestroSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .build();
+        Move maestroSpecial = Move.builder()
+                .name(maestroDSpecialName)
+                .description("If you hook up another character up - with sex, with food, with somethin somethin, whatever - it counts as having sex with them.")
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(maestroSpecialAction)
+                .playbook(PlaybookType.MAESTRO_D).build();
+        RollModifier callThisHotModifier = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(List.of(doSomethingUnderFire))
+                .statToRollWith(HOT).build();
+        Move callThisHot = Move.builder()
+                .name("YOU CALL THIS HOT?")
+                .description("_**You call this hot?**_: when you do something under fire, roll+hot instead of roll+cool.")
+                .kind(MoveType.CHARACTER)
+                .rollModifier(callThisHotModifier)
+                .playbook(PlaybookType.MAESTRO_D).build();
+        RollModifier devilWithBladeModifier = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(List.of(goAggro))
+                .statToRollWith(HOT).build();
+        Move devilWithBlade = Move.builder()
+                .name("A DEVIL WITH A BLADE")
+                .description("_**A devil with a blade**_: when you use a blade to go aggro, roll+hot instead of roll+hard.")
+                .kind(MoveType.CHARACTER)
+                .rollModifier(devilWithBladeModifier)
+                .playbook(PlaybookType.MAESTRO_D).build();
+        MoveAction fingersInPieAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HOT)
+                .build();
+        Move fingersInPie = Move.builder()
+                .name("FINGERS IN EVERY PIE")
+                .description("_**Fingers in every pie**_: put out the word that you want a thing - could be a person, could be somethin somethin, could even be just a thing - and roll+hot.\n" +
+                        "\n" +
+                        "On a 10+, it shows up in your establishment for you, like magic.\n" +
+                        "\n" +
+                        "On a 7-9, well, your people made an effort and everybody wants to please you and close is close, right?\n" +
+                        "\n" +
+                        "On a miss, it shows up in your establishment for you with wicked strings attached.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(fingersInPieAction)
+                .playbook(PlaybookType.MAESTRO_D).build();
+        MoveAction everybodyEatsAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HOT)
+                .build();
+        Move everyBodyEats = Move.builder()
+                .name("EVERYBODY EATS, EVEN THAT GUY")
+                .description("_**Everybody eats, even that guy**_: when you want to know something about someone important (your call), roll+hot.\n" +
+                        "\n" +
+                        "On a hit, you can ask the MC questions.\n" +
+                        "\n" +
+                        "On a 10+, ask 3. On a 7-9, ask 1:\n" +
+                        "\n" +
+                        "- *How are they doing? What's up with them?.*\n" +
+                        "- *Who do they know, like and/or trust?.*\n" +
+                        "- *How could I get to them, physically or emotionally?.*\n" +
+                        "- *What or who do they love best?*\n" +
+                        "- *When next should I expect to see them?.*\n" +
+                        "\n" +
+                        "On a miss, ask 1 anyway, but they hear about your interest in them.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(everybodyEatsAction)
+                .playbook(PlaybookType.MAESTRO_D).build();
+        MoveAction justGiveMotiveAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.CHOICE)
+                .build();
+        Move justGiveMotive = Move.builder()
+                .name("JUST GIVE ME A MOTIVE")
+                .description("_**Just give me a motive**_: name somebody who might conceivably eat, drink, or otherwise ingest something you've touched. If it's an NPC, roll+hard; a PC, roll+Hx.\n" +
+                        "\n" +
+                        "On a 10+, they do, and suffer 4-harm (ap) sometime during the next 24 hours.\n" +
+                        "\n" +
+                        "On a 7-9, it's 2-harm (ap)\n" +
+                        "\n" +
+                        "On a miss, some several people of the MC's choice, maybe including your guy, maybe not, get it, and all suffer 3-harm (ap).")
+                .kind(MoveType.CHARACTER)
+                .moveAction(justGiveMotiveAction)
+                .playbook(PlaybookType.MAESTRO_D).build();
+
+        moveService.saveAll(Flux.just(maestroSpecial, callThisHot, devilWithBlade, fingersInPie, everyBodyEats, justGiveMotive)).blockLast();
+
+
         /* ----------------------------- SKINNER MOVES --------------------------------- */
         MoveAction skinnerSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
