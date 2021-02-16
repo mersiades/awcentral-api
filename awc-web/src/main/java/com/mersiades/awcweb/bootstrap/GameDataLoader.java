@@ -2178,6 +2178,37 @@ public class GameDataLoader implements CommandLineRunner {
                 hocus8, hocus9, hocus10, hocus11, hocus12, hocus13, hocus14, hocus15, hocus16,
                 hocus17, hocus18, hocus19, hocus20, hocus21)).blockLast();
 
+        /* ----------------------------- HOCUS NAMES --------------------------------- */
+        Name maestroD1 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Cookie").build();
+        Name maestroD2 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Silver").build();
+        Name maestroD3 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Smoky").build();
+        Name maestroD4 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Slops").build();
+        Name maestroD5 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Chief").build();
+        Name maestroD6 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Rose").build();
+        Name maestroD7 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Anika").build();
+        Name maestroD8 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("JD").build();
+        Name maestroD9 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Chairman").build();
+        Name maestroD10 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Grave").build();
+        Name maestroD11 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Saffron").build();
+        Name maestroD12 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Life").build();
+        Name maestroD13 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Yen").build();
+        Name maestroD14 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Emmy").build();
+        Name maestroD15 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Julia").build();
+        Name maestroD16 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Jackbird").build();
+        Name maestroD17 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Francois").build();
+        Name maestroD18 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Esco").build();
+        Name maestroD19 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Boiardi").build();
+        Name maestroD20 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Mari").build();
+        Name maestroD21 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Nan").build();
+        Name maestroD22 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Rache").build();
+        Name maestroD23 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Proper").build();
+        Name maestroD24 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Fall").build();
+
+        nameService.saveAll(Flux.just(maestroD1, maestroD2, maestroD3, maestroD4, maestroD5, maestroD6, maestroD7,
+                maestroD8, maestroD9, maestroD10, maestroD11, maestroD12, maestroD13, maestroD14, maestroD15,
+                maestroD16, maestroD17, maestroD18, maestroD19, maestroD20, maestroD21, maestroD22, maestroD23,
+                maestroD24)).blockLast();
+
         /* ----------------------------- SKINNER NAMES --------------------------------- */
         Name skinner1 = Name.builder().playbookType(PlaybookType.SKINNER).name("October").build();
         Name skinner2 = Name.builder().playbookType(PlaybookType.SKINNER).name("Venus").build();
@@ -2475,6 +2506,43 @@ public class GameDataLoader implements CommandLineRunner {
                 hocus11, hocus12, hocus13, hocus14, hocus15, hocus16, hocus17, hocus18, hocus19, hocus20, hocus21,
                 hocus22, hocus23, hocus24, hocus25, hocus26, hocus27, hocus28)).blockLast();
 
+        /* ----------------------------- MAESTRO D' LOOKS --------------------------------- */
+        Look maestroD1 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("man").build();
+        Look maestroD2 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("woman").build();
+        Look maestroD3 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("ambiguous").build();
+        Look maestroD4 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("transgressing").build();
+        Look maestroD5 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("casual wear").build();
+        Look maestroD30 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("display wear").build();
+        Look maestroD6 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("vintage wear").build();
+        Look maestroD7 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("butcher wear").build();
+        Look maestroD8 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("fetish wear").build();
+        Look maestroD9 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("immaculate whites").build();
+        Look maestroD10 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("pinched face").build();
+        Look maestroD11 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("boyish face").build();
+        Look maestroD12 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("pretty face").build();
+        Look maestroD13 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("expressive face").build();
+        Look maestroD14 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("full face").build();
+        Look maestroD15 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("tattooed face").build();
+        Look maestroD16 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("porcelain face").build();
+        Look maestroD17 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("scarred face").build();
+        Look maestroD18 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("cool eyes").build();
+        Look maestroD19 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("bright eyes").build();
+        Look maestroD20 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("inquisitive eyes").build();
+        Look maestroD21 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("frank eyes").build();
+        Look maestroD22 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("mischievous eyes").build();
+        Look maestroD23 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("one eye").build();
+        Look maestroD24 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("fat body").build();
+        Look maestroD25 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("restless body").build();
+        Look maestroD26 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("stubby body").build();
+        Look maestroD27 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("curvy body").build();
+        Look maestroD28 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("unusual body").build();
+        Look maestroD29 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("lean body").build();
+
+        lookService.saveAll(Flux.just(maestroD1, maestroD2, maestroD3, maestroD4, maestroD5, maestroD6, maestroD7,
+                maestroD8, maestroD9, maestroD10, maestroD11, maestroD12, maestroD13, maestroD14, maestroD15,
+                maestroD16, maestroD17, maestroD18, maestroD19, maestroD20, maestroD21, maestroD22, maestroD23,
+                maestroD24, maestroD25, maestroD26, maestroD27, maestroD28, maestroD29, maestroD30)).blockLast();
+
         /* ----------------------------- SKINNER LOOKS --------------------------------- */
         Look skinner1 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("man").build();
         Look skinner2 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("woman").build();
@@ -2571,6 +2639,14 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption hocus4 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(1).HARD(0).HOT(1).SHARP(-1).WEIRD(2).build(); // 3
 
         statsOptionService.saveAll(Flux.just(hocus1, hocus2, hocus3, hocus4)).blockLast();
+
+        /* ----------------------------- MAESTRO D' STATS OPTIONS --------------------------------- */
+        StatsOption maestroD1 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(1).HARD(-1).HOT(2).SHARP(0).WEIRD(1).build(); // 3
+        StatsOption maestroD2 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(0).HARD(1).HOT(2).SHARP(1).WEIRD(-1).build(); // 3
+        StatsOption maestroD3 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(-1).HARD(2).HOT(2).SHARP(0).WEIRD(-1).build(); // 2
+        StatsOption maestroD4 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(0).HARD(0).HOT(2).SHARP(1).WEIRD(0).build(); // 3
+
+        statsOptionService.saveAll(Flux.just(maestroD1, maestroD2, maestroD3, maestroD4)).blockLast();
 
         /* ----------------------------- SKINNER STATS OPTIONS --------------------------------- */
         StatsOption skinner1 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(1).HARD(-1).HOT(2).SHARP(1).WEIRD(0).build(); // 3
