@@ -220,19 +220,19 @@ type GearInstructions {
 type PlaybookCreator {
     id: ID!
     playbookType: PlaybookType
-    gearInstructions: GearInstructions
+    defaultMoveCount: Int
+    moveChoiceCount: Int
+    defaultVehicleCount: Int
     improvementInstructions: String
     movesInstructions: String
     hxInstructions: String
     names: [Name]
     looks: [Look]
     statsOptions: [StatsOption]
-    playbookUniqueCreator: PlaybookUniqueCreator
     optionalMoves: [Move]
     defaultMoves: [Move]
-    defaultMoveCount: Int
-    moveChoiceCount: Int
-    defaultVehicleCount: Int
+    gearInstructions: GearInstructions
+    playbookUniqueCreator: PlaybookUniqueCreator
 }
 
     ### ------------- Playbook Unique Creators ------------- ###
@@ -241,20 +241,25 @@ type PlaybookUniqueCreator {
     id: ID!
     type: UniqueType!
     angelKitCreator: AngelKitCreator
-    customWeaponsCreator: CustomWeaponsCreator
     brainerGearCreator: BrainerGearCreator
-    gangCreator: GangCreator
-    weaponsCreator: WeaponsCreator
-    holdingCreator: HoldingCreator
-    followersCreator: FollowersCreator
-    skinnerGearCreator: SkinnerGearCreator
+    customWeaponsCreator: CustomWeaponsCreator
     establishmentCreator: EstablishmentCreator
+    followersCreator: FollowersCreator
+    gangCreator: GangCreator
+    holdingCreator: HoldingCreator
+    skinnerGearCreator: SkinnerGearCreator
+    weaponsCreator: WeaponsCreator
 }
 
 type AngelKitCreator {
     id: ID!
     angelKitInstructions: String!
     startingStock: Int!
+}
+
+type BrainerGearCreator {
+    id: ID!
+    gear: [String]!
 }
 
 type CustomWeaponsCreator {
@@ -269,21 +274,6 @@ type CustomWeaponsCreator {
     handBaseOptions: [TaggedItem]
     handOptionsInstructions: String!
     handOptionsOptions: [ItemCharacteristic]
-}
-
-type BrainerGearCreator {
-    id: ID!
-    gear: [String]!
-}
-
-type WeaponsCreator {
-    id: ID!
-    bfoGunOptionCount: Int!
-    seriousGunOptionCount: Int!
-    backupWeaponsOptionCount: Int!
-    bigFuckOffGuns: [String]!
-    seriousGuns: [String]!
-    backupWeapons: [String]!
 }
 
 type SecurityOption {
@@ -398,6 +388,16 @@ type SkinnerGearCreator {
     luxeGearCount: Int!
     graciousWeaponChoices: [SkinnerGearItem]!
     luxeGearChoices: [SkinnerGearItem]!
+}
+
+type WeaponsCreator {
+    id: ID!
+    bfoGunOptionCount: Int!
+    seriousGunOptionCount: Int!
+    backupWeaponsOptionCount: Int!
+    bigFuckOffGuns: [String]!
+    seriousGuns: [String]!
+    backupWeapons: [String]!
 }
 
      ### ------------- Vehicle Creators ------------- ###
@@ -616,6 +616,7 @@ type PlaybookUnique {
     holding: Holding
     followers: Followers
     skinnerGear: SkinnerGear
+    establishment: Establishment
 }
 
 type AngelKit {

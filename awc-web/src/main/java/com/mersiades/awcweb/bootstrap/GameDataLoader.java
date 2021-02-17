@@ -3693,6 +3693,124 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultMoveCount(2)
                 .build();
 
+        /* ----------------------------- MAESTRO D' PLAYBOOK CREATOR --------------------------------- */
+        List<Move> maestroDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.MAESTRO_D, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
+
+        List<Move> maestroMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.MAESTRO_D, MoveType.CHARACTER)
+                .collectList().block();
+
+        GearInstructions gearInstructionsMaestro = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .gearIntro("In addition to your establishment, you get:")
+                .youGetItems(List.of(
+                        "a wicked blade, like a kitchen knife or 12\" razor-sharp scissors (2-harm hand)",
+                        "fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
+                .startingBarter(2)
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .build();
+
+        SecurityOption securityOption1 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("a real gang (3-harm gang small 1-armor")
+                .value(2)
+                .build();
+
+        SecurityOption securityOption2 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("a convenient shotgun (3-harm close reload messy")
+                .value(1)
+                .build();
+
+        SecurityOption securityOption3 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("a bouncer who knows his biz (2-harm 1-armor")
+                .value(1)
+                .build();
+
+        SecurityOption securityOption4 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("plywood & chickenwire (1-armor)")
+                .value(1)
+                .build();
+
+        SecurityOption securityOption5 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("secrecy, passwords, codes & signals, invites-only, vouching etc.")
+                .value(1)
+                .build();
+
+        SecurityOption securityOption6 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("everybody's packing: your cast & crew are a gang (2-harm gang small 0-armor)")
+                .value(1)
+                .build();
+
+        SecurityOption securityOption7 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("a warren of dead-ends, hideaways and boltholes")
+                .value(1)
+                .build();
+
+        SecurityOption securityOption8 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("no fixed location, always new venues")
+                .value(1)
+                .build();
+
+        EstablishmentCreator establishmentCreator = EstablishmentCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .mainAttractionCount(1)
+                .sideAttractionCount(2)
+                .attractions(List.of("luxury food", "music", "fashion", "lots of food", "sex", "spectacle", "easy food",
+                        "games", "art", "drinks", "coffee", "drugs", "sports", "fights", "scene (see and be)"))
+                .atmospheres(List.of("bustle", "intimacy", "smoke", "shadows", "perfume", "slime", "velvet", "fantasy",
+                        "brass", "lights", "acoustics", "anonymity", "meat", "eavesdropping", "blood", "intrigue",
+                        "violence", "nostalgia", "spice", "quiet", "luxury", "nudity", "restraint", "forgetting",
+                        "pain", "kink", "candy", "protection", "grime", "noise", "dancing", "chill", "masks",
+                        "fresh fruit", "a cage"))
+                .atmosphereCount(List.of(3, 4))
+                .regularsNames(List.of("Lamprey", "Ba", "Camo", "Toyota", "Lits"))
+                .regularsQuestions(List.of(
+                        "Who's your best regular?",
+                        "Who's your worst regular?"
+                        ))
+                .interestedPartyNames(List.of("Been", "Rolfball", "Gams"))
+                .interestedPartyQuestions(List.of("Who wants in on it?", "Who do you owe for it?", "Who wants it gone?"))
+                .securityOptions(List.of(securityOption1, securityOption2, securityOption3, securityOption4, securityOption5,
+                        securityOption6, securityOption7, securityOption8))
+                .build();
+
+        PlaybookUniqueCreator playbookUniqueCreatorMaestro = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.ESTABLISHMENT)
+                .establishmentCreator(establishmentCreator)
+                .build();
+
+        PlaybookCreator playbookCreatorMaestro = PlaybookCreator.builder()
+                .playbookType(PlaybookType.MAESTRO_D)
+                .gearInstructions(gearInstructionsMaestro)
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+                .movesInstructions("You get all the basic moves. Choose 2 maestro d' moves.\n" +
+                        "You can use all the battle moves, but when you get the chance, look up _**seize by force**_, _**baiting a trap**_ and _**turning the tables**_.")
+                .hxInstructions(HX_INSTRUCTIONS_START +
+                        "Go around again for Hx. On your turn, ask either or both:\n" +
+                        "\n" +
+                        "- *Which of you do I find most attractive?* For that character, write Hx+2.\n" +
+                        "- *Which of you is my favorite?* For that character, write Hx+3.\n" +
+                        "\n" +
+                        "For everyone else, write Hx+1. It's your business to see people clearly.\n" +
+                        HX_INSTRUCTIONS_END)
+                .playbookUniqueCreator(playbookUniqueCreatorMaestro)
+                .defaultVehicleCount(0)
+                .defaultMoves(maestroDefaultMoves)
+                .optionalMoves(maestroMoves)
+                .moveChoiceCount(2)
+                .defaultMoveCount(1)
+                .build();
+
         /* ----------------------------- SKINNER PLAYBOOK CREATOR --------------------------------- */
         List<Move> skinnerOptionalMoves = moveRepository
                 .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.CHARACTER)
@@ -3804,6 +3922,7 @@ public class GameDataLoader implements CommandLineRunner {
                 playbookCreatorGunlugger,
                 playbookCreatorHardHolder,
                 playbookCreatorHocus,
+                playbookCreatorMaestro,
                 playbookCreatorSkinner
         )).blockLast();
     }
@@ -4224,6 +4343,7 @@ public class GameDataLoader implements CommandLineRunner {
         fleshOutPlaybookAndSave(PlaybookType.GUNLUGGER);
         fleshOutPlaybookAndSave(PlaybookType.HARDHOLDER);
         fleshOutPlaybookAndSave(PlaybookType.HOCUS);
+        fleshOutPlaybookAndSave(PlaybookType.MAESTRO_D);
         fleshOutPlaybookAndSave(PlaybookType.SKINNER);
     }
 
