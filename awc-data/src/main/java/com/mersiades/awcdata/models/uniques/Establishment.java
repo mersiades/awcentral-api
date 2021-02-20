@@ -23,6 +23,11 @@ public class Establishment {
     private String id;
 
     private String mainAttraction;
+    private String bestRegular;
+    private String worstRegular;
+    private String wantsInOnIt;
+    private String oweForIt;
+    private String wantsItGone;
 
     @Builder.Default
     List<String> sideAttractions = new ArrayList<>();
@@ -34,13 +39,7 @@ public class Establishment {
     List<String> regulars = new ArrayList<>();
 
     @Builder.Default
-    List<String> highlightedRegulars = new ArrayList<>();
-
-    @Builder.Default
     List<String> interestedParties = new ArrayList<>();
-
-    @Builder.Default
-    List<String> highlightedInterestedParties = new ArrayList<>();
 
     @Builder.Default
     List<SecurityOption> securityOptions = new ArrayList<>();

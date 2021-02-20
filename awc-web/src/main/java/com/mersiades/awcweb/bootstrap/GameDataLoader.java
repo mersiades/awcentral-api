@@ -3714,19 +3714,19 @@ public class GameDataLoader implements CommandLineRunner {
 
         SecurityOption securityOption1 = SecurityOption.builder()
                 .id(UUID.randomUUID().toString())
-                .description("a real gang (3-harm gang small 1-armor")
+                .description("a real gang (3-harm gang small 1-armor)")
                 .value(2)
                 .build();
 
         SecurityOption securityOption2 = SecurityOption.builder()
                 .id(UUID.randomUUID().toString())
-                .description("a convenient shotgun (3-harm close reload messy")
+                .description("a convenient shotgun (3-harm close reload messy)")
                 .value(1)
                 .build();
 
         SecurityOption securityOption3 = SecurityOption.builder()
                 .id(UUID.randomUUID().toString())
-                .description("a bouncer who knows his biz (2-harm 1-armor")
+                .description("a bouncer who knows his biz (2-harm 1-armor)")
                 .value(1)
                 .build();
 

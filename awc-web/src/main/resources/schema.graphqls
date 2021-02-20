@@ -647,12 +647,15 @@ type CastCrew {
 type Establishment {
     id: ID!
     mainAttraction: String!
+    bestRegular: String!
+    worstRegular: String!
+    wantsInOnIt: String!
+    oweForIt: String!
+    wantsItGone: String!
     sideAttractions: [String]!
     atmospheres: [String]!
     regulars: [String]!
-    highlightedRegulars: [String]!
     interestedParties: [String]!
-    highlightedInterestedParties: [String]!
     securityOptions: [SecurityOption]!
     castAndCrew: [CastCrew]!
 }
@@ -935,6 +938,34 @@ input SkinnerGearInput {
     luxeGear: [SkinnerGearItemInput]!
 }
 
+input CastCrewInput {
+    id: ID!
+    name: String!
+    description: String
+}
+
+input SecurityOptionInput {
+    id: ID!
+    description: String!
+    value: Int!
+}
+
+input EstablishmentInput {
+    id: ID
+    mainAttraction: String!
+    bestRegular: String!
+    worstRegular: String!
+    wantsInOnIt: String!
+    oweForIt: String!
+    wantsItGone: String!
+    sideAttractions: [String]!
+    atmospheres: [String]!
+    regulars: [String]!
+    interestedParties: [String]!
+    securityOptions: [SecurityOptionInput]!
+    castAndCrew: [CastCrewInput]!
+}
+
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -993,47 +1024,50 @@ type Mutation {
     setCharacterGear(gameRoleId: String!,
         characterId: String!,
         gear: [String]! ): Character
-    setCharacterBarter(gameRoleId: String!,
+    setCharacterMoves(gameRoleId: String!,
         characterId: String!,
-        amount: Int! ): Character
-    setHoldingBarter(gameRoleId: String!,
+        moveIds: [String]!): Character
+    setCharacterHx(gameRoleId: String!,
         characterId: String!,
-        amount: Int! ): Character
-    updateFollowers(gameRoleId: String!,
-        characterId: String!,
-        barter: Int!,
-        followers: Int!,
-        description: String!
-    ): Character
-    setBrainerGear(gameRoleId: String!,
-        characterId: String!,
-        brainerGear: [String]! ): Character
+        hxStats: [HxInput]!): Character
+    finishCharacterCreation(gameRoleId: String!,
+        characterId: String!): Character
+
+    ### Setting PlayBookUniques
     setAngelKit(gameRoleId: String!,
         characterId: String!,
         stock: Int!,
         hasSupplier: Boolean! ): Character
-    setGang(gameRoleId: String!,
+    setBrainerGear(gameRoleId: String!,
         characterId: String!,
-        gang: GangInput! ): Character
+        brainerGear: [String]! ): Character
     setCustomWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
+    setEstablishment(gameRoleId: String!,
+        characterId: String!,
+        establishment: EstablishmentInput! ): Character
+    setFollowers(gameRoleId: String!,
+        characterId: String!,
+        followers: FollowersInput!
+    ): Character
+    setGang(gameRoleId: String!,
+        characterId: String!,
+        gang: GangInput! ): Character
     setHolding(gameRoleId: String!,
         characterId: String!,
         holding: HoldingInput!,
         vehicleCount: Int!,
         battleVehicleCount: Int!
     ): Character
-    setFollowers(gameRoleId: String!,
-        characterId: String!,
-        followers: FollowersInput!
-    ): Character
-    setWeapons(gameRoleId: String!,
-        characterId: String!,
-        weapons: [String]! ): Character
     setSkinnerGear(gameRoleId: String!,
         characterId: String!,
         skinnerGear: SkinnerGearInput! ): Character
+    setWeapons(gameRoleId: String!,
+        characterId: String!,
+        weapons: [String]! ): Character
+
+    ### Setting Vehicles
     setVehicleCount(gameRoleId: String!,
         characterId: String!,
         vehicleCount: Int! ): Character
@@ -1046,20 +1080,26 @@ type Mutation {
     setBattleVehicle(gameRoleId: String!,
         characterId: String!,
         battleVehicle: BattleVehicleInput! ): Character
-    setCharacterMoves(gameRoleId: String!,
-        characterId: String!,
-        moveIds: [String]!): Character
-    setCharacterHx(gameRoleId: String!,
-        characterId: String!,
-        hxStats: [HxInput]!): Character
+
+    ### Adjusting from PlaybookPanel
     adjustCharacterHx(gameRoleId: String!,
         characterId: String!, hxId: String!, value: Int!): Character
     setCharacterHarm(gameRoleId: String!,
         characterId: String!, harm: HarmInput!): Character
     toggleStatHighlight(gameRoleId: String!,
         characterId: String!, stat: StatType): Character
-    finishCharacterCreation(gameRoleId: String!,
-        characterId: String!): Character
+    setCharacterBarter(gameRoleId: String!,
+        characterId: String!,
+        amount: Int! ): Character
+    setHoldingBarter(gameRoleId: String!,
+        characterId: String!,
+        amount: Int! ): Character
+    updateFollowers(gameRoleId: String!,
+        characterId: String!,
+        barter: Int!,
+        followers: Int!,
+        description: String!
+    ): Character
 
     #    Move categories
     performPrintMove(gameId: String!,
