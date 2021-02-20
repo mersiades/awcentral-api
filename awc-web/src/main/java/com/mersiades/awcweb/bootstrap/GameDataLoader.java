@@ -1803,7 +1803,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollType(RollType.CHOICE)
                 .build();
         Move justGiveMotive = Move.builder()
-                .name("JUST GIVE ME A MOTIVE")
+                .name(justGiveMotiveName)
                 .description("_**Just give me a motive**_: name somebody who might conceivably eat, drink, or otherwise ingest something you've touched. If it's an NPC, roll+hard; a PC, roll+Hx.\n" +
                         "\n" +
                         "On a 10+, they do, and suffer 4-harm (ap) sometime during the next 24 hours.\n" +

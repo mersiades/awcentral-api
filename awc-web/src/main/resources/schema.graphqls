@@ -1175,6 +1175,7 @@ type Mutation {
         plus1ForUser: Boolean!,
         plus1ForOther: Boolean!,): Game
     performStabilizeAndHealMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
+    performJustGiveMotivationMove(gameId: String!, gameroleId: String!, characterId: String!, targetId: String): Game
 
     # Other
     spendHold(gameId: String!, gameroleId: String!, characterId: String!): Game

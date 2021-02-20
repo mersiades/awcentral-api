@@ -310,6 +310,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.performStabilizeAndHealMove(gameId, gameroleId, characterId, stockSpent).block();
     }
 
+    public Game performJustGiveMotivationMove(String gameId, String gameroleId, String characterId, String targetId) {
+        System.out.println("Performing SUFFER HARM move for Character: " + characterId);
+        return gameService.performJustGiveMotivationMove(gameId, gameroleId, characterId, targetId).block();
+    }
+
     public Game performStockMove(String gameId, String gameroleId, String characterId, String moveName, int stockSpent) {
         System.out.println("Performing SPEED RECOVERY OF SOMEONE move for Character: " + characterId);
         return gameService.performStockMove(gameId, gameroleId, characterId, moveName, stockSpent).block();
