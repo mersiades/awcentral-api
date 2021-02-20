@@ -54,7 +54,8 @@ enum RollType {
     SPEED,
     HANDLING,
     STOCK,
-    FORTUNE
+    FORTUNE,
+    CHOICE
 }
 
 enum PlaybookType {
@@ -135,7 +136,7 @@ enum HoldingSize {
     LARGE
 }
 
-# ---------------------------------------- STATIC GAME DATA TYPES -------------------------------------- #
+# ---------------------------------------- STATIC GAME CONTENT TYPES -------------------------------------- #
 
 type HoldConditions {
     id: ID!
@@ -205,27 +206,6 @@ type StatsOption {
     WEIRD: Int
 }
 
-type VehicleFrame {
-    id: ID!
-    frameType: VehicleFrameType
-    massive: Int
-    examples: String
-    battleOptionCount: Int
-}
-
-type VehicleBattleOption {
-    id: ID!
-    battleOptionType: BattleOptionType
-    name: String
-}
-
-type GangOption {
-    id: ID!
-    description: String!
-    modifier: String
-    tag: String
-}
-
 type GearInstructions {
     id: ID!
     gearIntro: String
@@ -240,51 +220,46 @@ type GearInstructions {
 type PlaybookCreator {
     id: ID!
     playbookType: PlaybookType
-    gearInstructions: GearInstructions
+    defaultMoveCount: Int
+    moveChoiceCount: Int
+    defaultVehicleCount: Int
     improvementInstructions: String
     movesInstructions: String
     hxInstructions: String
     names: [Name]
     looks: [Look]
     statsOptions: [StatsOption]
-    playbookUniqueCreator: PlaybookUniqueCreator
     optionalMoves: [Move]
     defaultMoves: [Move]
-    defaultMoveCount: Int
-    moveChoiceCount: Int
-    defaultVehicleCount: Int
+    gearInstructions: GearInstructions
+    playbookUniqueCreator: PlaybookUniqueCreator
 }
+
+    ### ------------- Playbook Unique Creators ------------- ###
 
 type PlaybookUniqueCreator {
     id: ID!
     type: UniqueType!
     angelKitCreator: AngelKitCreator
-    customWeaponsCreator: CustomWeaponsCreator
     brainerGearCreator: BrainerGearCreator
-    gangCreator: GangCreator
-    weaponsCreator: WeaponsCreator
-    holdingCreator: HoldingCreator
+    customWeaponsCreator: CustomWeaponsCreator
+    establishmentCreator: EstablishmentCreator
     followersCreator: FollowersCreator
+    gangCreator: GangCreator
+    holdingCreator: HoldingCreator
     skinnerGearCreator: SkinnerGearCreator
-}
-
-type GangCreator {
-    id: ID!
-    intro: String!
-    defaultSize: GangSize!
-    defaultHarm: Int!
-    defaultArmor: Int!
-    strengthChoiceCount: Int!
-    weaknessChoiceCount: Int!
-    defaultTags: [String]!
-    strengths: [GangOption]!
-    weaknesses: [GangOption]!
+    weaponsCreator: WeaponsCreator
 }
 
 type AngelKitCreator {
     id: ID!
     angelKitInstructions: String!
     startingStock: Int!
+}
+
+type BrainerGearCreator {
+    id: ID!
+    gear: [String]!
 }
 
 type CustomWeaponsCreator {
@@ -301,9 +276,69 @@ type CustomWeaponsCreator {
     handOptionsOptions: [ItemCharacteristic]
 }
 
-type BrainerGearCreator {
+type SecurityOption {
     id: ID!
-    gear: [String]!
+    description: String!
+    value: Int!
+}
+
+type EstablishmentCreator {
+    id: ID!
+    mainAttractionCount: Int!
+    sideAttractionCount: Int!
+    attractions: [String]!
+    atmospheres: [String]!
+    atmosphereCount: [Int]!
+    regularsNames: [String]!
+    regularsQuestions: [String]!
+    interestedPartyNames: [String]!
+    interestedPartyQuestions: [String]!
+    securityOptions: [SecurityOption]!
+}
+
+type FollowersOption {
+    id: ID!
+    description: String!
+    newNumberOfFollowers: Int!
+    surplusBarterChange: Int!
+    fortuneChange: Int!
+    surplusChange: String
+    wantChange: [String]
+}
+
+type FollowersCreator {
+    id: ID!
+    instructions: String!
+    defaultNumberOfFollowers: Int!
+    defaultSurplusBarter: Int!
+    defaultFortune: Int!
+    strengthCount: Int!
+    weaknessCount: Int!
+    travelOptions: [String]!
+    characterizationOptions: [String]!
+    defaultWants: [String]!
+    strengthOptions: [FollowersOption]!
+    weaknessOptions: [FollowersOption]!
+}
+
+type GangOption {
+    id: ID!
+    description: String!
+    modifier: String
+    tag: String
+}
+
+type GangCreator {
+    id: ID!
+    intro: String!
+    defaultSize: GangSize!
+    defaultHarm: Int!
+    defaultArmor: Int!
+    strengthChoiceCount: Int!
+    weaknessChoiceCount: Int!
+    defaultTags: [String]!
+    strengths: [GangOption]!
+    weaknesses: [GangOption]!
 }
 
 type HoldingOption {
@@ -341,31 +376,6 @@ type HoldingCreator {
     weaknessOptions: [HoldingOption]!
 }
 
-type FollowersOption {
-    id: ID!
-    description: String!
-    newNumberOfFollowers: Int!
-    surplusBarterChange: Int!
-    fortuneChange: Int!
-    surplusChange: String
-    wantChange: [String]
-}
-
-type FollowersCreator {
-    id: ID!
-    instructions: String!
-    defaultNumberOfFollowers: Int!
-    defaultSurplusBarter: Int!
-    defaultFortune: Int!
-    strengthCount: Int!
-    weaknessCount: Int!
-    travelOptions: [String]!
-    characterizationOptions: [String]!
-    defaultWants: [String]!
-    strengthOptions: [FollowersOption]!
-    weaknessOptions: [FollowersOption]!
-}
-
 type SkinnerGearItem {
     id: ID!
     item: String!
@@ -388,6 +398,22 @@ type WeaponsCreator {
     bigFuckOffGuns: [String]!
     seriousGuns: [String]!
     backupWeapons: [String]!
+}
+
+     ### ------------- Vehicle Creators ------------- ###
+
+type VehicleFrame {
+    id: ID!
+    frameType: VehicleFrameType
+    massive: Int
+    examples: String
+    battleOptionCount: Int
+}
+
+type VehicleBattleOption {
+    id: ID!
+    battleOptionType: BattleOptionType
+    name: String
 }
 
 type CarCreator {
@@ -424,6 +450,8 @@ type VehicleCreator {
     carCreator: CarCreator
     battleVehicleCreator: BattleVehicleCreator
 }
+
+     ### ------------- Threat Creator ------------- ###
 
 type ThreatCreatorContent {
     id: ID!
@@ -575,6 +603,8 @@ type CharacterMove {
     moveAction: MoveAction
 }
 
+     ### ------------- Playbook Uniques ------------- ###
+
 type PlaybookUnique {
     id: ID!
     type: UniqueType
@@ -586,11 +616,7 @@ type PlaybookUnique {
     holding: Holding
     followers: Followers
     skinnerGear: SkinnerGear
-}
-
-type BrainerGear {
-    id:ID!
-    brainerGear: [String]
+    establishment: Establishment
 }
 
 type AngelKit {
@@ -602,14 +628,51 @@ type AngelKit {
     supplierText: String!
 }
 
+type BrainerGear {
+    id:ID!
+    brainerGear: [String]
+}
+
 type CustomWeapons {
     id: ID!
     weapons: [String]!
 }
 
-type Weapons {
+type CastCrew {
     id: ID!
-    weapons: [String]!
+    name: String!
+    description: String
+}
+
+type Establishment {
+    id: ID!
+    mainAttraction: String!
+    bestRegular: String!
+    worstRegular: String!
+    wantsInOnIt: String!
+    oweForIt: String!
+    wantsItGone: String!
+    sideAttractions: [String]!
+    atmospheres: [String]!
+    regulars: [String]!
+    interestedParties: [String]!
+    securityOptions: [SecurityOption]!
+    castAndCrew: [CastCrew]!
+}
+
+type Followers {
+    id: ID!
+    description: String!
+    travelOption: String!
+    characterization: String!
+    followers: Int!
+    fortune: Int!
+    barter: Int!
+    surplusBarter: Int!
+    surplus: [String]!
+    wants: [String]!
+    selectedStrengths: [FollowersOption]!
+    selectedWeaknesses: [FollowersOption]!
 }
 
 type Gang {
@@ -639,26 +702,18 @@ type Holding {
     selectedWeaknesses: [HoldingOption]!
 }
 
-type Followers {
-    id: ID!
-    description: String!
-    travelOption: String!
-    characterization: String!
-    followers: Int!
-    fortune: Int!
-    barter: Int!
-    surplusBarter: Int!
-    surplus: [String]!
-    wants: [String]!
-    selectedStrengths: [FollowersOption]!
-    selectedWeaknesses: [FollowersOption]!
-}
-
 type SkinnerGear {
     id: ID!
     graciousWeapon: SkinnerGearItem!
     luxeGear: [SkinnerGearItem]!
 }
+
+type Weapons {
+    id: ID!
+    weapons: [String]!
+}
+
+     ### ------------- Vehicles ------------- ###
 
 type Vehicle {
     id: ID!
@@ -883,6 +938,34 @@ input SkinnerGearInput {
     luxeGear: [SkinnerGearItemInput]!
 }
 
+input CastCrewInput {
+    id: ID!
+    name: String!
+    description: String
+}
+
+input SecurityOptionInput {
+    id: ID!
+    description: String!
+    value: Int!
+}
+
+input EstablishmentInput {
+    id: ID
+    mainAttraction: String!
+    bestRegular: String!
+    worstRegular: String!
+    wantsInOnIt: String!
+    oweForIt: String!
+    wantsItGone: String!
+    sideAttractions: [String]!
+    atmospheres: [String]!
+    regulars: [String]!
+    interestedParties: [String]!
+    securityOptions: [SecurityOptionInput]!
+    castAndCrew: [CastCrewInput]!
+}
+
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -941,47 +1024,50 @@ type Mutation {
     setCharacterGear(gameRoleId: String!,
         characterId: String!,
         gear: [String]! ): Character
-    setCharacterBarter(gameRoleId: String!,
+    setCharacterMoves(gameRoleId: String!,
         characterId: String!,
-        amount: Int! ): Character
-    setHoldingBarter(gameRoleId: String!,
+        moveIds: [String]!): Character
+    setCharacterHx(gameRoleId: String!,
         characterId: String!,
-        amount: Int! ): Character
-    updateFollowers(gameRoleId: String!,
-        characterId: String!,
-        barter: Int!,
-        followers: Int!,
-        description: String!
-    ): Character
-    setBrainerGear(gameRoleId: String!,
-        characterId: String!,
-        brainerGear: [String]! ): Character
+        hxStats: [HxInput]!): Character
+    finishCharacterCreation(gameRoleId: String!,
+        characterId: String!): Character
+
+    ### Setting PlayBookUniques
     setAngelKit(gameRoleId: String!,
         characterId: String!,
         stock: Int!,
         hasSupplier: Boolean! ): Character
-    setGang(gameRoleId: String!,
+    setBrainerGear(gameRoleId: String!,
         characterId: String!,
-        gang: GangInput! ): Character
+        brainerGear: [String]! ): Character
     setCustomWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
+    setEstablishment(gameRoleId: String!,
+        characterId: String!,
+        establishment: EstablishmentInput! ): Character
+    setFollowers(gameRoleId: String!,
+        characterId: String!,
+        followers: FollowersInput!
+    ): Character
+    setGang(gameRoleId: String!,
+        characterId: String!,
+        gang: GangInput! ): Character
     setHolding(gameRoleId: String!,
         characterId: String!,
         holding: HoldingInput!,
         vehicleCount: Int!,
         battleVehicleCount: Int!
     ): Character
-    setFollowers(gameRoleId: String!,
-        characterId: String!,
-        followers: FollowersInput!
-    ): Character
-    setWeapons(gameRoleId: String!,
-        characterId: String!,
-        weapons: [String]! ): Character
     setSkinnerGear(gameRoleId: String!,
         characterId: String!,
         skinnerGear: SkinnerGearInput! ): Character
+    setWeapons(gameRoleId: String!,
+        characterId: String!,
+        weapons: [String]! ): Character
+
+    ### Setting Vehicles
     setVehicleCount(gameRoleId: String!,
         characterId: String!,
         vehicleCount: Int! ): Character
@@ -994,20 +1080,26 @@ type Mutation {
     setBattleVehicle(gameRoleId: String!,
         characterId: String!,
         battleVehicle: BattleVehicleInput! ): Character
-    setCharacterMoves(gameRoleId: String!,
-        characterId: String!,
-        moveIds: [String]!): Character
-    setCharacterHx(gameRoleId: String!,
-        characterId: String!,
-        hxStats: [HxInput]!): Character
+
+    ### Adjusting from PlaybookPanel
     adjustCharacterHx(gameRoleId: String!,
         characterId: String!, hxId: String!, value: Int!): Character
     setCharacterHarm(gameRoleId: String!,
         characterId: String!, harm: HarmInput!): Character
     toggleStatHighlight(gameRoleId: String!,
         characterId: String!, stat: StatType): Character
-    finishCharacterCreation(gameRoleId: String!,
-        characterId: String!): Character
+    setCharacterBarter(gameRoleId: String!,
+        characterId: String!,
+        amount: Int! ): Character
+    setHoldingBarter(gameRoleId: String!,
+        characterId: String!,
+        amount: Int! ): Character
+    updateFollowers(gameRoleId: String!,
+        characterId: String!,
+        barter: Int!,
+        followers: Int!,
+        description: String!
+    ): Character
 
     #    Move categories
     performPrintMove(gameId: String!,
@@ -1083,6 +1175,7 @@ type Mutation {
         plus1ForUser: Boolean!,
         plus1ForOther: Boolean!,): Game
     performStabilizeAndHealMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
+    performJustGiveMotivationMove(gameId: String!, gameroleId: String!, characterId: String!, targetId: String): Game
 
     # Other
     spendHold(gameId: String!, gameroleId: String!, characterId: String!): Game

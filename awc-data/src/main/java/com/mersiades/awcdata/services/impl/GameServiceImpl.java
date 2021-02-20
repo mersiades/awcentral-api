@@ -26,6 +26,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.mersiades.awccontent.constants.MoveNames.*;
+import static com.mersiades.awccontent.enums.StatType.HARD;
+import static com.mersiades.awccontent.enums.StatType.HX;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -253,7 +255,7 @@ public class GameServiceImpl implements GameService {
             CharacterStat angelCool = CharacterStat.builder().id(UUID.randomUUID().toString())
                     .stat(StatType.COOL).value(1).isHighlighted(false).build();
             CharacterStat angelHard = CharacterStat.builder().id(UUID.randomUUID().toString())
-                    .stat(StatType.HARD).value(0).isHighlighted(true).build();
+                    .stat(HARD).value(0).isHighlighted(true).build();
             CharacterStat angelHot = CharacterStat.builder().id(UUID.randomUUID().toString())
                     .stat(StatType.HOT).value(1).isHighlighted(true).build();
             CharacterStat angelSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
@@ -288,7 +290,7 @@ public class GameServiceImpl implements GameService {
             CharacterStat brainerCool = CharacterStat.builder().id(UUID.randomUUID().toString())
                     .stat(StatType.COOL).value(1).isHighlighted(false).build();
             CharacterStat brainerHard = CharacterStat.builder().id(UUID.randomUUID().toString())
-                    .stat(StatType.HARD).value(1).isHighlighted(true).build();
+                    .stat(HARD).value(1).isHighlighted(true).build();
             CharacterStat brainerHot = CharacterStat.builder().id(UUID.randomUUID().toString())
                     .stat(StatType.HOT).value(-2).isHighlighted(true).build();
             CharacterStat brainerSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
@@ -1105,7 +1107,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public Mono<Game> performHocusSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId) {
 
-        GameRole gameRoleUser =  gameRoleService.findById(gameroleId).block();
+        GameRole gameRoleUser = gameRoleService.findById(gameroleId).block();
         assert gameRoleUser != null;
         GameRole gameRoleOther = gameRoleService.findById(otherGameroleId).block();
         assert gameRoleOther != null;
@@ -1114,7 +1116,7 @@ public class GameServiceImpl implements GameService {
         assert characterUser != null;
         Character characterOther = gameRoleOther.getCharacters().stream()
                 .filter(character -> character.getId().equals(otherCharacterId)).findFirst().orElseThrow();
-        assert  characterOther != null;
+        assert characterOther != null;
         CharacterMove hocusSpecialMove = characterUser.getCharacterMoves()
                 .stream().filter(characterMove -> characterMove.getName().equals(hocusSpecialName))
                 .findFirst().orElseThrow();
@@ -1154,7 +1156,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Mono<Game> performSkinnerSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, boolean plus1ForUser, boolean plus1ForOther) {
-        GameRole gameRoleUser =  gameRoleService.findById(gameroleId).block();
+        GameRole gameRoleUser = gameRoleService.findById(gameroleId).block();
         assert gameRoleUser != null;
         GameRole gameRoleOther = gameRoleService.findById(otherGameroleId).block();
         assert gameRoleOther != null;
@@ -1163,7 +1165,7 @@ public class GameServiceImpl implements GameService {
         assert characterUser != null;
         Character characterOther = gameRoleOther.getCharacters().stream()
                 .filter(character -> character.getId().equals(otherCharacterId)).findFirst().orElseThrow();
-        assert  characterOther != null;
+        assert characterOther != null;
         CharacterMove skinnerSpecialMove = characterUser.getCharacterMoves()
                 .stream().filter(characterMove -> characterMove.getName().equals(skinnerSpecialName))
                 .findFirst().orElseThrow();
@@ -1322,7 +1324,7 @@ public class GameServiceImpl implements GameService {
         }
 
         String content = "";
-        if (gameMessage.getRollResult() > 6 ) {
+        if (gameMessage.getRollResult() > 6) {
             int sessionBarter = character.getPlaybookUnique().getHolding().getSurplus();
             character.getPlaybookUnique().getHolding().setBarter(sessionBarter);
             content = String.format("The holding's barter for the session is now **%s**\n" +
@@ -1374,7 +1376,7 @@ public class GameServiceImpl implements GameService {
         }
 
         String content;
-        if (gameMessage.getRollResult() > 6 ) {
+        if (gameMessage.getRollResult() > 6) {
             int sessionBarter = character.getPlaybookUnique().getFollowers().getSurplusBarter();
             character.getPlaybookUnique().getFollowers().setBarter(sessionBarter);
             content = String.format("The followers' barter for the session is now **%s**\n" +
@@ -1386,6 +1388,51 @@ public class GameServiceImpl implements GameService {
         }
         content += move.getDescription();
         gameMessage.setContent(content);
+
+        characterService.save(character).block();
+        gameRoleService.findById(gameroleId).map(gameRole -> {
+            gameRole.setCharacters(List.of(character));
+            return gameRole;
+        }).flatMap(gameRoleService::save).block();
+
+        return gameRepository.findById(gameId).map(game -> {
+            game.getGameMessages().add(gameMessage);
+            return game;
+        }).flatMap(gameRepository::save);
+    }
+
+    @Override
+    public Mono<Game> performJustGiveMotivationMove(String gameId, String gameroleId, String characterId, String targetId) {
+        Character character = characterService.findById(characterId).block();
+        assert character != null;
+
+        GameMessage gameMessage = getGameMessageWithDiceRolls(gameId, gameroleId, MessageType.ROLL_STAT_MOVE);
+
+        CharacterMove move = character.getCharacterMoves()
+                .stream().filter(characterMove -> characterMove.getName().equals(justGiveMotiveName)).findFirst().orElseThrow();
+
+        int modifier;
+
+        if (targetId == null) {
+            modifier = character.getStatsBlock().getStats()
+                    .stream().filter(characterStat -> characterStat.getStat().equals(HARD)).findFirst().orElseThrow().getValue();
+        } else {
+            modifier = character.getHxBlock()
+                    .stream().filter(hxStat -> hxStat.getCharacterId().equals(targetId)).findFirst().orElseThrow().getHxValue();
+        }
+
+        gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
+        gameMessage.setContent(move.getDescription());
+        gameMessage.setRollModifier(modifier);
+        gameMessage.setModifierStatName(targetId == null ? HARD : HX);
+        gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifier);
+
+        // Uses a +1forward if the character has one
+        if (character.getHasPlusOneForward()) {
+            gameMessage.setUsedPlusOneForward(true);
+            gameMessage.setRollResult(gameMessage.getRollResult() + 1);
+            character.setHasPlusOneForward(false);
+        }
 
         characterService.save(character).block();
         gameRoleService.findById(gameroleId).map(gameRole -> {
@@ -1416,7 +1463,7 @@ public class GameServiceImpl implements GameService {
                         character.getName(),
                         character.getHolds(),
                         character.getHolds() == 1 ? "hold" : "holds"
-                        ) )
+                ))
                 .build();
 
         characterService.save(character).block();

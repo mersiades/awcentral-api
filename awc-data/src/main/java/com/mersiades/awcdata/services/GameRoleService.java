@@ -5,10 +5,7 @@ import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
-import com.mersiades.awcdata.models.uniques.Followers;
-import com.mersiades.awcdata.models.uniques.Gang;
-import com.mersiades.awcdata.models.uniques.Holding;
-import com.mersiades.awcdata.models.uniques.SkinnerGear;
+import com.mersiades.awcdata.models.uniques.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -73,7 +70,11 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character setGang(String gameRoleId, String characterId, Gang gang);
 
+    Character setEstablishment(String gameRoleId, String characterId, Establishment establishment);
+
     Mono<GameRole> addThreat(String gameRoleId, Threat threat);
 
     Mono<GameRole> addNpc(String gameRoleId, Npc npc);
+
+
 }

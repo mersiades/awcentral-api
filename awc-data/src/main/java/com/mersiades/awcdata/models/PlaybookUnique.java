@@ -34,4 +34,6 @@ public class PlaybookUnique {
     private Followers followers;
 
     private SkinnerGear skinnerGear;
+
+    private Establishment establishment;
 }

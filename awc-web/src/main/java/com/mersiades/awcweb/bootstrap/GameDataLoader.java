@@ -1724,6 +1724,100 @@ public class GameDataLoader implements CommandLineRunner {
         moveService.saveAll(Flux.just(hocusSpecial, fortunes, frenzy, charismatic, fuckingWacknut, seeingSouls,
                 divineProtection)).blockLast();
 
+        /* ----------------------------- MAESTRO'D MOVES --------------------------------- */
+        MoveAction maestroSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .build();
+        Move maestroSpecial = Move.builder()
+                .name(maestroDSpecialName)
+                .description("If you hook up another character up - with sex, with food, with somethin somethin, whatever - it counts as having sex with them.")
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(maestroSpecialAction)
+                .playbook(PlaybookType.MAESTRO_D).build();
+        RollModifier callThisHotModifier = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(List.of(doSomethingUnderFire))
+                .statToRollWith(HOT).build();
+        Move callThisHot = Move.builder()
+                .name("YOU CALL THIS HOT?")
+                .description("_**You call this hot?**_: when you do something under fire, roll+hot instead of roll+cool.")
+                .kind(MoveType.CHARACTER)
+                .rollModifier(callThisHotModifier)
+                .playbook(PlaybookType.MAESTRO_D).build();
+        RollModifier devilWithBladeModifier = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(List.of(goAggro))
+                .statToRollWith(HOT).build();
+        Move devilWithBlade = Move.builder()
+                .name("A DEVIL WITH A BLADE")
+                .description("_**A devil with a blade**_: when you use a blade to go aggro, roll+hot instead of roll+hard.")
+                .kind(MoveType.CHARACTER)
+                .rollModifier(devilWithBladeModifier)
+                .playbook(PlaybookType.MAESTRO_D).build();
+        MoveAction fingersInPieAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HOT)
+                .build();
+        Move fingersInPie = Move.builder()
+                .name("FINGERS IN EVERY PIE")
+                .description("_**Fingers in every pie**_: put out the word that you want a thing - could be a person, could be somethin somethin, could even be just a thing - and roll+hot.\n" +
+                        "\n" +
+                        "On a 10+, it shows up in your establishment for you, like magic.\n" +
+                        "\n" +
+                        "On a 7-9, well, your people made an effort and everybody wants to please you and close is close, right?\n" +
+                        "\n" +
+                        "On a miss, it shows up in your establishment for you with wicked strings attached.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(fingersInPieAction)
+                .playbook(PlaybookType.MAESTRO_D).build();
+        MoveAction everybodyEatsAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HOT)
+                .build();
+        Move everyBodyEats = Move.builder()
+                .name("EVERYBODY EATS, EVEN THAT GUY")
+                .description("_**Everybody eats, even that guy**_: when you want to know something about someone important (your call), roll+hot.\n" +
+                        "\n" +
+                        "On a hit, you can ask the MC questions.\n" +
+                        "\n" +
+                        "On a 10+, ask 3. On a 7-9, ask 1:\n" +
+                        "\n" +
+                        "- *How are they doing? What's up with them?.*\n" +
+                        "- *Who do they know, like and/or trust?.*\n" +
+                        "- *How could I get to them, physically or emotionally?.*\n" +
+                        "- *What or who do they love best?*\n" +
+                        "- *When next should I expect to see them?.*\n" +
+                        "\n" +
+                        "On a miss, ask 1 anyway, but they hear about your interest in them.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(everybodyEatsAction)
+                .playbook(PlaybookType.MAESTRO_D).build();
+        MoveAction justGiveMotiveAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.CHOICE)
+                .build();
+        Move justGiveMotive = Move.builder()
+                .name(justGiveMotiveName)
+                .description("_**Just give me a motive**_: name somebody who might conceivably eat, drink, or otherwise ingest something you've touched. If it's an NPC, roll+hard; a PC, roll+Hx.\n" +
+                        "\n" +
+                        "On a 10+, they do, and suffer 4-harm (ap) sometime during the next 24 hours.\n" +
+                        "\n" +
+                        "On a 7-9, it's 2-harm (ap)\n" +
+                        "\n" +
+                        "On a miss, some several people of the MC's choice, maybe including your guy, maybe not, get it, and all suffer 3-harm (ap).")
+                .kind(MoveType.CHARACTER)
+                .moveAction(justGiveMotiveAction)
+                .playbook(PlaybookType.MAESTRO_D).build();
+
+        moveService.saveAll(Flux.just(maestroSpecial, callThisHot, devilWithBlade, fingersInPie, everyBodyEats, justGiveMotive)).blockLast();
+
+
         /* ----------------------------- SKINNER MOVES --------------------------------- */
         MoveAction skinnerSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
@@ -2084,6 +2178,37 @@ public class GameDataLoader implements CommandLineRunner {
                 hocus8, hocus9, hocus10, hocus11, hocus12, hocus13, hocus14, hocus15, hocus16,
                 hocus17, hocus18, hocus19, hocus20, hocus21)).blockLast();
 
+        /* ----------------------------- HOCUS NAMES --------------------------------- */
+        Name maestroD1 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Cookie").build();
+        Name maestroD2 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Silver").build();
+        Name maestroD3 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Smoky").build();
+        Name maestroD4 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Slops").build();
+        Name maestroD5 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Chief").build();
+        Name maestroD6 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Rose").build();
+        Name maestroD7 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Anika").build();
+        Name maestroD8 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("JD").build();
+        Name maestroD9 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Chairman").build();
+        Name maestroD10 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Grave").build();
+        Name maestroD11 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Saffron").build();
+        Name maestroD12 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Life").build();
+        Name maestroD13 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Yen").build();
+        Name maestroD14 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Emmy").build();
+        Name maestroD15 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Julia").build();
+        Name maestroD16 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Jackbird").build();
+        Name maestroD17 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Francois").build();
+        Name maestroD18 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Esco").build();
+        Name maestroD19 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Boiardi").build();
+        Name maestroD20 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Mari").build();
+        Name maestroD21 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Nan").build();
+        Name maestroD22 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Rache").build();
+        Name maestroD23 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Proper").build();
+        Name maestroD24 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Fall").build();
+
+        nameService.saveAll(Flux.just(maestroD1, maestroD2, maestroD3, maestroD4, maestroD5, maestroD6, maestroD7,
+                maestroD8, maestroD9, maestroD10, maestroD11, maestroD12, maestroD13, maestroD14, maestroD15,
+                maestroD16, maestroD17, maestroD18, maestroD19, maestroD20, maestroD21, maestroD22, maestroD23,
+                maestroD24)).blockLast();
+
         /* ----------------------------- SKINNER NAMES --------------------------------- */
         Name skinner1 = Name.builder().playbookType(PlaybookType.SKINNER).name("October").build();
         Name skinner2 = Name.builder().playbookType(PlaybookType.SKINNER).name("Venus").build();
@@ -2381,6 +2506,43 @@ public class GameDataLoader implements CommandLineRunner {
                 hocus11, hocus12, hocus13, hocus14, hocus15, hocus16, hocus17, hocus18, hocus19, hocus20, hocus21,
                 hocus22, hocus23, hocus24, hocus25, hocus26, hocus27, hocus28)).blockLast();
 
+        /* ----------------------------- MAESTRO D' LOOKS --------------------------------- */
+        Look maestroD1 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("man").build();
+        Look maestroD2 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("woman").build();
+        Look maestroD3 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("ambiguous").build();
+        Look maestroD4 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("transgressing").build();
+        Look maestroD5 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("casual wear").build();
+        Look maestroD30 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("display wear").build();
+        Look maestroD6 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("vintage wear").build();
+        Look maestroD7 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("butcher wear").build();
+        Look maestroD8 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("fetish wear").build();
+        Look maestroD9 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("immaculate whites").build();
+        Look maestroD10 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("pinched face").build();
+        Look maestroD11 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("boyish face").build();
+        Look maestroD12 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("pretty face").build();
+        Look maestroD13 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("expressive face").build();
+        Look maestroD14 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("full face").build();
+        Look maestroD15 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("tattooed face").build();
+        Look maestroD16 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("porcelain face").build();
+        Look maestroD17 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("scarred face").build();
+        Look maestroD18 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("cool eyes").build();
+        Look maestroD19 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("bright eyes").build();
+        Look maestroD20 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("inquisitive eyes").build();
+        Look maestroD21 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("frank eyes").build();
+        Look maestroD22 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("mischievous eyes").build();
+        Look maestroD23 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("one eye").build();
+        Look maestroD24 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("fat body").build();
+        Look maestroD25 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("restless body").build();
+        Look maestroD26 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("stubby body").build();
+        Look maestroD27 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("curvy body").build();
+        Look maestroD28 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("unusual body").build();
+        Look maestroD29 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("lean body").build();
+
+        lookService.saveAll(Flux.just(maestroD1, maestroD2, maestroD3, maestroD4, maestroD5, maestroD6, maestroD7,
+                maestroD8, maestroD9, maestroD10, maestroD11, maestroD12, maestroD13, maestroD14, maestroD15,
+                maestroD16, maestroD17, maestroD18, maestroD19, maestroD20, maestroD21, maestroD22, maestroD23,
+                maestroD24, maestroD25, maestroD26, maestroD27, maestroD28, maestroD29, maestroD30)).blockLast();
+
         /* ----------------------------- SKINNER LOOKS --------------------------------- */
         Look skinner1 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("man").build();
         Look skinner2 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("woman").build();
@@ -2477,6 +2639,14 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption hocus4 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(1).HARD(0).HOT(1).SHARP(-1).WEIRD(2).build(); // 3
 
         statsOptionService.saveAll(Flux.just(hocus1, hocus2, hocus3, hocus4)).blockLast();
+
+        /* ----------------------------- MAESTRO D' STATS OPTIONS --------------------------------- */
+        StatsOption maestroD1 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(1).HARD(-1).HOT(2).SHARP(0).WEIRD(1).build(); // 3
+        StatsOption maestroD2 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(0).HARD(1).HOT(2).SHARP(1).WEIRD(-1).build(); // 3
+        StatsOption maestroD3 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(-1).HARD(2).HOT(2).SHARP(0).WEIRD(-1).build(); // 2
+        StatsOption maestroD4 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(0).HARD(0).HOT(2).SHARP(1).WEIRD(0).build(); // 3
+
+        statsOptionService.saveAll(Flux.just(maestroD1, maestroD2, maestroD3, maestroD4)).blockLast();
 
         /* ----------------------------- SKINNER STATS OPTIONS --------------------------------- */
         StatsOption skinner1 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(1).HARD(-1).HOT(2).SHARP(1).WEIRD(0).build(); // 3
@@ -3523,6 +3693,124 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultMoveCount(2)
                 .build();
 
+        /* ----------------------------- MAESTRO D' PLAYBOOK CREATOR --------------------------------- */
+        List<Move> maestroDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.MAESTRO_D, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
+
+        List<Move> maestroMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.MAESTRO_D, MoveType.CHARACTER)
+                .collectList().block();
+
+        GearInstructions gearInstructionsMaestro = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .gearIntro("In addition to your establishment, you get:")
+                .youGetItems(List.of(
+                        "a wicked blade, like a kitchen knife or 12\" razor-sharp scissors (2-harm hand)",
+                        "fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
+                .startingBarter(2)
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .build();
+
+        SecurityOption securityOption1 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("a real gang (3-harm gang small 1-armor)")
+                .value(2)
+                .build();
+
+        SecurityOption securityOption2 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("a convenient shotgun (3-harm close reload messy)")
+                .value(1)
+                .build();
+
+        SecurityOption securityOption3 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("a bouncer who knows his biz (2-harm 1-armor)")
+                .value(1)
+                .build();
+
+        SecurityOption securityOption4 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("plywood & chickenwire (1-armor)")
+                .value(1)
+                .build();
+
+        SecurityOption securityOption5 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("secrecy, passwords, codes & signals, invites-only, vouching etc.")
+                .value(1)
+                .build();
+
+        SecurityOption securityOption6 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("everybody's packing: your cast & crew are a gang (2-harm gang small 0-armor)")
+                .value(1)
+                .build();
+
+        SecurityOption securityOption7 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("a warren of dead-ends, hideaways and boltholes")
+                .value(1)
+                .build();
+
+        SecurityOption securityOption8 = SecurityOption.builder()
+                .id(UUID.randomUUID().toString())
+                .description("no fixed location, always new venues")
+                .value(1)
+                .build();
+
+        EstablishmentCreator establishmentCreator = EstablishmentCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .mainAttractionCount(1)
+                .sideAttractionCount(2)
+                .attractions(List.of("luxury food", "music", "fashion", "lots of food", "sex", "spectacle", "easy food",
+                        "games", "art", "drinks", "coffee", "drugs", "sports", "fights", "scene (see and be)"))
+                .atmospheres(List.of("bustle", "intimacy", "smoke", "shadows", "perfume", "slime", "velvet", "fantasy",
+                        "brass", "lights", "acoustics", "anonymity", "meat", "eavesdropping", "blood", "intrigue",
+                        "violence", "nostalgia", "spice", "quiet", "luxury", "nudity", "restraint", "forgetting",
+                        "pain", "kink", "candy", "protection", "grime", "noise", "dancing", "chill", "masks",
+                        "fresh fruit", "a cage"))
+                .atmosphereCount(List.of(3, 4))
+                .regularsNames(List.of("Lamprey", "Ba", "Camo", "Toyota", "Lits"))
+                .regularsQuestions(List.of(
+                        "Who's your best regular?",
+                        "Who's your worst regular?"
+                        ))
+                .interestedPartyNames(List.of("Been", "Rolfball", "Gams"))
+                .interestedPartyQuestions(List.of("Who wants in on it?", "Who do you owe for it?", "Who wants it gone?"))
+                .securityOptions(List.of(securityOption1, securityOption2, securityOption3, securityOption4, securityOption5,
+                        securityOption6, securityOption7, securityOption8))
+                .build();
+
+        PlaybookUniqueCreator playbookUniqueCreatorMaestro = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.ESTABLISHMENT)
+                .establishmentCreator(establishmentCreator)
+                .build();
+
+        PlaybookCreator playbookCreatorMaestro = PlaybookCreator.builder()
+                .playbookType(PlaybookType.MAESTRO_D)
+                .gearInstructions(gearInstructionsMaestro)
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+                .movesInstructions("You get all the basic moves. Choose 2 maestro d' moves.\n" +
+                        "You can use all the battle moves, but when you get the chance, look up _**seize by force**_, _**baiting a trap**_ and _**turning the tables**_.")
+                .hxInstructions(HX_INSTRUCTIONS_START +
+                        "Go around again for Hx. On your turn, ask either or both:\n" +
+                        "\n" +
+                        "- *Which of you do I find most attractive?* For that character, write Hx+2.\n" +
+                        "- *Which of you is my favorite?* For that character, write Hx+3.\n" +
+                        "\n" +
+                        "For everyone else, write Hx+1. It's your business to see people clearly.\n" +
+                        HX_INSTRUCTIONS_END)
+                .playbookUniqueCreator(playbookUniqueCreatorMaestro)
+                .defaultVehicleCount(0)
+                .defaultMoves(maestroDefaultMoves)
+                .optionalMoves(maestroMoves)
+                .moveChoiceCount(2)
+                .defaultMoveCount(1)
+                .build();
+
         /* ----------------------------- SKINNER PLAYBOOK CREATOR --------------------------------- */
         List<Move> skinnerOptionalMoves = moveRepository
                 .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.CHARACTER)
@@ -3634,6 +3922,7 @@ public class GameDataLoader implements CommandLineRunner {
                 playbookCreatorGunlugger,
                 playbookCreatorHardHolder,
                 playbookCreatorHocus,
+                playbookCreatorMaestro,
                 playbookCreatorSkinner
         )).blockLast();
     }
@@ -4054,6 +4343,7 @@ public class GameDataLoader implements CommandLineRunner {
         fleshOutPlaybookAndSave(PlaybookType.GUNLUGGER);
         fleshOutPlaybookAndSave(PlaybookType.HARDHOLDER);
         fleshOutPlaybookAndSave(PlaybookType.HOCUS);
+        fleshOutPlaybookAndSave(PlaybookType.MAESTRO_D);
         fleshOutPlaybookAndSave(PlaybookType.SKINNER);
     }
 

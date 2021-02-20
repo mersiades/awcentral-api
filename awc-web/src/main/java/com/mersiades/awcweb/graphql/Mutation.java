@@ -5,10 +5,7 @@ import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
-import com.mersiades.awcdata.models.uniques.Followers;
-import com.mersiades.awcdata.models.uniques.Gang;
-import com.mersiades.awcdata.models.uniques.Holding;
-import com.mersiades.awcdata.models.uniques.SkinnerGear;
+import com.mersiades.awcdata.models.uniques.*;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -140,6 +137,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Character setGang(String gameRoleId, String characterId, Gang gang) {
         System.out.println("Setting Gang for Character: " + characterId);
         return gameRoleService.setGang(gameRoleId, characterId, gang);
+    }
+
+    public Character setEstablishment(String gameRoleId, String characterId, Establishment establishment) {
+        System.out.println("Setting Establishment for Character: " + characterId);
+        return gameRoleService.setEstablishment(gameRoleId, characterId, establishment);
     }
 
     public Character setVehicleCount(String gameRoleId, String characterId, int vehicleCount) {
@@ -306,6 +308,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Game performStabilizeAndHealMove(String gameId, String gameroleId, String characterId, int stockSpent) {
         System.out.println("Performing SUFFER HARM move for Character: " + characterId);
         return gameService.performStabilizeAndHealMove(gameId, gameroleId, characterId, stockSpent).block();
+    }
+
+    public Game performJustGiveMotivationMove(String gameId, String gameroleId, String characterId, String targetId) {
+        System.out.println("Performing SUFFER HARM move for Character: " + characterId);
+        return gameService.performJustGiveMotivationMove(gameId, gameroleId, characterId, targetId).block();
     }
 
     public Game performStockMove(String gameId, String gameroleId, String characterId, String moveName, int stockSpent) {
