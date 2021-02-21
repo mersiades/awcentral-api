@@ -1,5 +1,6 @@
-package com.mersiades.awccontent.models.uniquecreators;
+package com.mersiades.awcdata.models.uniques;
 
+import com.mersiades.awcdata.models.Project;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,12 +14,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkspaceCreator {
+public class Workspace {
 
     @Id
     private String id;
-
-    private int itemsCount;
 
     private String workspaceInstructions;
 
@@ -26,4 +25,7 @@ public class WorkspaceCreator {
 
     @Builder.Default
     List<String> workspaceItems = new ArrayList<>();
+
+    @Builder.Default
+    List<Project> projects = new ArrayList<>();
 }

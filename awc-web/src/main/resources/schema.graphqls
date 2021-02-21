@@ -249,6 +249,7 @@ type PlaybookUniqueCreator {
     holdingCreator: HoldingCreator
     skinnerGearCreator: SkinnerGearCreator
     weaponsCreator: WeaponsCreator
+    workspaceCreator: WorkspaceCreator
 }
 
 type AngelKitCreator {
@@ -625,6 +626,7 @@ type PlaybookUnique {
     followers: Followers
     skinnerGear: SkinnerGear
     establishment: Establishment
+    workspace: Workspace
 }
 
 type AngelKit {
@@ -719,6 +721,20 @@ type SkinnerGear {
 type Weapons {
     id: ID!
     weapons: [String]!
+}
+
+type Project {
+    id: ID!
+    name: String!
+    notes: String
+}
+
+type Workspace {
+    id: ID!
+    workspaceInstructions: String!
+    projectInstructions: String!
+    workspaceItems: [String]!
+    projects: [Project]
 }
 
      ### ------------- Vehicles ------------- ###
