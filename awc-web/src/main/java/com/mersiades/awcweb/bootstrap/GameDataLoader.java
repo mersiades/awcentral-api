@@ -2288,7 +2288,7 @@ public class GameDataLoader implements CommandLineRunner {
                 hocus8, hocus9, hocus10, hocus11, hocus12, hocus13, hocus14, hocus15, hocus16,
                 hocus17, hocus18, hocus19, hocus20, hocus21)).blockLast();
 
-        /* ----------------------------- HOCUS NAMES --------------------------------- */
+        /* ----------------------------- MAESTRO D' NAMES --------------------------------- */
         Name maestroD1 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Cookie").build();
         Name maestroD2 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Silver").build();
         Name maestroD3 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Smoky").build();
@@ -2318,6 +2318,48 @@ public class GameDataLoader implements CommandLineRunner {
                 maestroD8, maestroD9, maestroD10, maestroD11, maestroD12, maestroD13, maestroD14, maestroD15,
                 maestroD16, maestroD17, maestroD18, maestroD19, maestroD20, maestroD21, maestroD22, maestroD23,
                 maestroD24)).blockLast();
+
+        /* ----------------------------- SAVVYHEAD NAMES --------------------------------- */
+        Name savvyhead1 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Leah").build();
+        Name savvyhead2 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Joshua").build();
+        Name savvyhead3 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Tai").build();
+        Name savvyhead4 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Ethan").build();
+        Name savvyhead5 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Bran").build();
+        Name savvyhead6 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Jeremy").build();
+        Name savvyhead7 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Amanuel").build();
+        Name savvyhead8 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Justin").build();
+        Name savvyhead9 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Jessica").build();
+        Name savvyhead10 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Eliza").build();
+        Name savvyhead11 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Dylan").build();
+        Name savvyhead12 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Adnan").build();
+        Name savvyhead13 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Alan").build();
+        Name savvyhead14 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Nils").build();
+        Name savvyhead15 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Ellen").build();
+        Name savvyhead16 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Lee").build();
+        Name savvyhead17 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Kim").build();
+        Name savvyhead18 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Adele").build();
+        Name savvyhead19 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Leone").build();
+        Name savvyhead20 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Burdick").build();
+        Name savvyhead21 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Oliver").build();
+        Name savvyhead22 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Goldman").build();
+        Name savvyhead23 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Whiting").build();
+        Name savvyhead24 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Fauci").build();
+        Name savvyhead25 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Hossfield").build();
+        Name savvyhead26 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Lemma").build();
+        Name savvyhead27 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Morrell").build();
+        Name savvyhead28 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Ozair").build();
+        Name savvyhead29 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Robinson").build();
+        Name savvyhead30 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Lemieux").build();
+        Name savvyhead31 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Whitmont").build();
+        Name savvyhead32 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Cullen").build();
+        Name savvyhead33 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Spector").build();
+
+        nameService.saveAll(Flux.just(savvyhead1, savvyhead2, savvyhead3, savvyhead4, savvyhead5,
+                savvyhead6, savvyhead7, savvyhead8, savvyhead9, savvyhead10, savvyhead11,
+                savvyhead11, savvyhead12, savvyhead13, savvyhead14, savvyhead15, savvyhead16,
+                savvyhead17, savvyhead18, savvyhead19, savvyhead20, savvyhead21, savvyhead22,
+                savvyhead23, savvyhead24, savvyhead25, savvyhead26, savvyhead27, savvyhead28,
+                savvyhead29, savvyhead30, savvyhead31, savvyhead32, savvyhead33)).blockLast();
 
         /* ----------------------------- SKINNER NAMES --------------------------------- */
         Name skinner1 = Name.builder().playbookType(PlaybookType.SKINNER).name("October").build();
@@ -2653,6 +2695,35 @@ public class GameDataLoader implements CommandLineRunner {
                 maestroD16, maestroD17, maestroD18, maestroD19, maestroD20, maestroD21, maestroD22, maestroD23,
                 maestroD24, maestroD25, maestroD26, maestroD27, maestroD28, maestroD29, maestroD30)).blockLast();
 
+        /* ----------------------------- SAVVYHEAD LOOKS --------------------------------- */
+        Look savvyhead1 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.GENDER).look("man").build();
+        Look savvyhead2 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.GENDER).look("woman").build();
+        Look savvyhead3 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.GENDER).look("ambiguous").build();
+        Look savvyhead4 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.GENDER).look("transgressing").build();
+        Look savvyhead5 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.CLOTHES).look("utility wear plus tech").build();
+        Look savvyhead6 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.CLOTHES).look("scrounge wear plus tech").build();
+        Look savvyhead7 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.CLOTHES).look("vintage wear plus tech").build();
+        Look savvyhead8 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.CLOTHES).look("tech wear").build();
+        Look savvyhead9 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.FACE).look("plain face").build();
+        Look savvyhead10 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.FACE).look("pretty face").build();
+        Look savvyhead11 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.FACE).look("open face").build();
+        Look savvyhead12 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.FACE).look("expressive face").build();
+        Look savvyhead13 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.EYES).look("squinty eyes").build();
+        Look savvyhead14 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.EYES).look("calm eyes").build();
+        Look savvyhead15 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.EYES).look("dancing eyes").build();
+        Look savvyhead16 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.EYES).look("quick eyes").build();
+        Look savvyhead17 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.EYES).look("appraising eyes").build();
+        Look savvyhead18 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("fat body").build();
+        Look savvyhead19 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("slight body").build();
+        Look savvyhead20 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("hunched body").build();
+        Look savvyhead21 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("wiry body").build();
+        Look savvyhead22 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("stumpy body").build();
+        Look savvyhead23 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("strange body").build();
+
+        lookService.saveAll(Flux.just(savvyhead1, savvyhead2, savvyhead3, savvyhead4, savvyhead5, savvyhead6, savvyhead7,
+                savvyhead8, savvyhead9, savvyhead10, savvyhead11, savvyhead12, savvyhead13, savvyhead14, savvyhead15,
+                savvyhead16, savvyhead17, savvyhead18, savvyhead19, savvyhead20, savvyhead21, savvyhead22, savvyhead23)).blockLast();
+
         /* ----------------------------- SKINNER LOOKS --------------------------------- */
         Look skinner1 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("man").build();
         Look skinner2 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("woman").build();
@@ -2757,6 +2828,14 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption maestroD4 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(0).HARD(0).HOT(2).SHARP(1).WEIRD(0).build(); // 3
 
         statsOptionService.saveAll(Flux.just(maestroD1, maestroD2, maestroD3, maestroD4)).blockLast();
+
+        /* ----------------------------- SAVVYHEAD STATS OPTIONS --------------------------------- */
+        StatsOption savvyhead1 = StatsOption.builder().playbookType(PlaybookType.SAVVYHEAD).COOL(-1).HARD(0).HOT(1).SHARP(1).WEIRD(2).build(); // 3
+        StatsOption savvyhead2 = StatsOption.builder().playbookType(PlaybookType.SAVVYHEAD).COOL(0).HARD(-1).HOT(-1).SHARP(2).WEIRD(2).build(); // 2
+        StatsOption savvyhead3 = StatsOption.builder().playbookType(PlaybookType.SAVVYHEAD).COOL(1).HARD(-1).HOT(0).SHARP(1).WEIRD(2).build(); // 3
+        StatsOption savvyhead4 = StatsOption.builder().playbookType(PlaybookType.SAVVYHEAD).COOL(1).HARD(1).HOT(-1).SHARP(0).WEIRD(2).build(); // 3
+
+        statsOptionService.saveAll(Flux.just(savvyhead1, savvyhead2, savvyhead3, savvyhead4)).blockLast();
 
         /* ----------------------------- SKINNER STATS OPTIONS --------------------------------- */
         StatsOption skinner1 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(1).HARD(-1).HOT(2).SHARP(1).WEIRD(0).build(); // 3
