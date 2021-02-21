@@ -18,9 +18,13 @@ public class WorkspaceCreator {
     @Id
     private String id;
 
+    private int itemsCount;
+
     private String itemsInstructions;
 
     private String workspaceInstructions;
+
+    private String projectInstructions;
 
     @Builder.Default
     List<String> workspaceItems = new ArrayList<>();

@@ -1907,12 +1907,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .id(UUID.randomUUID().toString())
                 .movesToModify(List.of(doSomethingUnderFire, standOverwatch, beTheBait))
                 .statToRollWith(WEIRD).build();
-        Move spookyIntense= Move.builder()
+        Move spookyIntense = Move.builder()
                 .name("SPOOKY INTENSE")
                 .description("_**Spooky intense**_: when you do something under fire, stand overwatch, or bait a trap, roll+weird instead of roll+cool.")
-                        .kind(MoveType.CHARACTER)
-                        .rollModifier(spookyIntenseModifier)
-                        .playbook(PlaybookType.SAVVYHEAD).build();
+                .kind(MoveType.CHARACTER)
+                .rollModifier(spookyIntenseModifier)
+                .playbook(PlaybookType.SAVVYHEAD).build();
 
         StatModifier deepInsightsModifier = StatModifier.builder()
                 .statToModify(WEIRD)
@@ -1921,9 +1921,9 @@ public class GameDataLoader implements CommandLineRunner {
         Move deepInsights = Move.builder()
                 .name("DEEP INSIGHTS")
                 .description("_**Deep insights**_: you get +1weird (weird+3)")
-                        .kind(MoveType.CHARACTER)
-                        .statModifier(savedDeepInsightsModifier)
-                        .playbook(PlaybookType.SAVVYHEAD).build();
+                .kind(MoveType.CHARACTER)
+                .statModifier(savedDeepInsightsModifier)
+                .playbook(PlaybookType.SAVVYHEAD).build();
 
         moveService.saveAll(Flux.just(savvyheadSpecial, thingsSpeak, bonefeel, oftenerRight, frayingEdge,
                 spookyIntense, deepInsights)).blockLast();
@@ -4000,6 +4000,90 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultMoveCount(1)
                 .build();
 
+        /* ----------------------------- SAVVYHEAD PLAYBOOK CREATOR --------------------------------- */
+        List<Move> savvyheadDefaultMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.SAVVYHEAD, MoveType.DEFAULT_CHARACTER)
+                .collectList().block();
+
+        List<Move> savvyheadMoves = moveRepository
+                .findAllByPlaybookAndKind(PlaybookType.SAVVYHEAD, MoveType.CHARACTER)
+                .collectList().block();
+
+        GearInstructions gearInstructionsSavvyhead = GearInstructions.builder()
+                .id(UUID.randomUUID().toString())
+                .gearIntro("In addition to your workspace, detail your personal fashion, and any personal piece or three of normal gear or weaponry.")
+                .startingBarter(6)
+                .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+                .build();
+
+        WorkspaceCreator workspaceCreator = WorkspaceCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .itemsCount(3)
+                .workspaceInstructions("When you go into your workspace and dedicate yourself to making a thing, or to getting to the bottom of some shit, decide what an tell the MC.\n" +
+                        "\n" +
+                        "The MC will tell you 'sure, no problem, but...' and then 1 to 4 of the following things:\n" +
+                        "\n" +
+                        "- It's going to take hours/days/weeks/months of work.\n" +
+                        "- First you'll have to get/build/fix/figure out _______.\n" +
+                        "- You're going to need _______ to help you with it.\n" +
+                        "- It's going to cost a fuckton of jingle.\n" +
+                        "- The best you'll be able to do is a crap version, weak and unreliable.\n" +
+                        "- It's going to mean exposing yourself (plus colleagues) to serious danger.\n" +
+                        "- You're going to have to add ______ to your workplace first.\n" +
+                        "- It's going to take several/dozens/hundreds of tries.\n" +
+                        "- You're going to have to take ______ apart to do it.\n" +
+                        "\n" +
+                        "The MC might connect them all with 'and', or might throw in a merciful 'or'.\n" +
+                        "\n" +
+                        "Once you've completed the necessaries, you can go ahead and accomplish the thing itself. The MC will stat it up, or spill, or whatever it calls for."
+                )
+                .projectInstructions("During play, it's your job to have your character start and pursue projects. They can be any projects you want, both long term and short-.\n" +
+                        "\n" +
+                        "Begin by thinking up the project you're working this very morning, as play begins."
+                )
+                .workspaceItems(List.of(
+                        "a garage", "a darkroom",
+                        "a controlled growing environment",
+                        "skilled labor (Carna, Thuy, Pamming eg)",
+                        "a junkyard of raw materials",
+                        "a truck or van",
+                        "weird-ass electronica",
+                        "machining tools",
+                        "transmitters & receivers",
+                        "a proving range",
+                        "a relic of the golden age past",
+                        "booby traps"
+                ))
+                .build();
+
+        PlaybookUniqueCreator playbookUniqueCreatorSavvyhead = PlaybookUniqueCreator.builder()
+                .id(UUID.randomUUID().toString())
+                .type(UniqueType.WORKSPACE)
+                .workspaceCreator(workspaceCreator)
+                .build();
+
+        PlaybookCreator playbookCreatorSavvyhead = PlaybookCreator.builder()
+                .playbookType(PlaybookType.SAVVYHEAD)
+                .gearInstructions(gearInstructionsSavvyhead)
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+                .movesInstructions("You get all the basic moves. Choose 2 savvyhead moves.\n" +
+                        "You can use all the battle moves, but when you get the chance, look up _**keep an eye out**_, _**baiting a trap**_ and _**turning the tables**_, as well as the rules for how vehicles suffer harm.")
+                .hxInstructions(HX_INSTRUCTIONS_START +
+                        "Go around again for Hx. On your turn, ask either or both:\n" +
+                        "\n" +
+                        "- *Which of you is most strange?* For that character, write Hx+1.\n" +
+                        "- *Which one of you is the biggest potential problem?* For that character, write Hx+2.\n" +
+                        "\n" +
+                        "For everyone else, write Hx-1. You've got other stuff to do and other stuff to learn.\n" +
+                        HX_INSTRUCTIONS_END)
+                .playbookUniqueCreator(playbookUniqueCreatorSavvyhead)
+                .defaultVehicleCount(0)
+                .defaultMoves(savvyheadDefaultMoves)
+                .optionalMoves(savvyheadMoves)
+                .moveChoiceCount(2)
+                .defaultMoveCount(1)
+                .build();
+
         /* ----------------------------- SKINNER PLAYBOOK CREATOR --------------------------------- */
         List<Move> skinnerOptionalMoves = moveRepository
                 .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.CHARACTER)
@@ -4112,6 +4196,7 @@ public class GameDataLoader implements CommandLineRunner {
                 playbookCreatorHardHolder,
                 playbookCreatorHocus,
                 playbookCreatorMaestro,
+                playbookCreatorSavvyhead,
                 playbookCreatorSkinner
         )).blockLast();
     }
@@ -4533,6 +4618,7 @@ public class GameDataLoader implements CommandLineRunner {
         fleshOutPlaybookAndSave(PlaybookType.HARDHOLDER);
         fleshOutPlaybookAndSave(PlaybookType.HOCUS);
         fleshOutPlaybookAndSave(PlaybookType.MAESTRO_D);
+        fleshOutPlaybookAndSave(PlaybookType.SAVVYHEAD);
         fleshOutPlaybookAndSave(PlaybookType.SKINNER);
     }
 

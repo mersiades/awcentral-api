@@ -21,19 +21,21 @@ public class PlaybookUniqueCreator {
 
     private AngelKitCreator angelKitCreator;
 
-    private CustomWeaponsCreator customWeaponsCreator;
-
     private BrainerGearCreator brainerGearCreator;
 
-    private GangCreator gangCreator;
+    private CustomWeaponsCreator customWeaponsCreator;
 
-    private WeaponsCreator weaponsCreator;
-
-    private HoldingCreator holdingCreator;
+    private EstablishmentCreator establishmentCreator;
 
     private FollowersCreator followersCreator;
 
+    private GangCreator gangCreator;
+
+    private HoldingCreator holdingCreator;
+
     private SkinnerGearCreator skinnerGearCreator;
 
-    private EstablishmentCreator establishmentCreator;
+    private WeaponsCreator weaponsCreator;
+
+    private WorkspaceCreator workspaceCreator;
 }

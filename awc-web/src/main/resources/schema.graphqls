@@ -402,8 +402,9 @@ type WeaponsCreator {
 
 type WorkspaceCreator {
     id: ID!
-    itemsInstructions: String!
+    itemsCount: Int!
     workspaceInstructions: String!
+    projectInstructions: String!
     workspaceItems: [String]!
 }
 
