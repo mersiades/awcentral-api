@@ -570,6 +570,40 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
+    public Character setWorkspace(String gameRoleId, String characterId, Workspace workspace) {
+        // Get the GameRole
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+
+        // GameRoles can have multiple characters, so get the right character
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        if (workspace.getId() == null) {
+            workspace.setId(UUID.randomUUID().toString());
+        }
+
+        if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.WORKSPACE) {
+            PlaybookUnique gangUnique = PlaybookUnique.builder()
+                    .id(UUID.randomUUID().toString())
+                    .type(UniqueType.WORKSPACE)
+                    .workspace(workspace)
+                    .build();
+
+            character.setPlaybookUnique(gangUnique);
+        } else {
+            // Update existing Establishment
+            character.getPlaybookUnique().setWorkspace(workspace);
+        }
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
+    @Override
     public Mono<GameRole> addThreat(String gameRoleId, Threat threat) {
         return gameRoleRepository.findById(gameRoleId).flatMap(gameRole -> {
             if (threat.getId() == null) {

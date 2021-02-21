@@ -72,9 +72,10 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character setEstablishment(String gameRoleId, String characterId, Establishment establishment);
 
+    Character setWorkspace(String gameRoleId, String characterId, Workspace workspace);
+
     Mono<GameRole> addThreat(String gameRoleId, Threat threat);
 
     Mono<GameRole> addNpc(String gameRoleId, Npc npc);
-
 
 }

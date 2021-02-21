@@ -990,6 +990,20 @@ input EstablishmentInput {
     castAndCrew: [CastCrewInput]!
 }
 
+input ProjectInput {
+    id: ID!
+    name: String!
+    notes: String
+}
+
+input WorkspaceInput {
+    id: ID
+    workspaceInstructions: String!
+    projectInstructions: String!
+    workspaceItems: [String]!
+    projects: [ProjectInput]
+}
+
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -1024,9 +1038,9 @@ type Mutation {
         userId: String!,
         displayName: String!,
         email: String!): Game
-    finishPreGame(gameId: String!): Game
 
     # MC stuff
+    finishPreGame(gameId: String!): Game
     addThreat(gameRoleId: String!, threat: ThreatInput): GameRole
     addNpc(gameRoleId: String!, npc: NpcInput): GameRole
 
@@ -1090,6 +1104,9 @@ type Mutation {
     setWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
+    setWorkspace(gameRoleId: String!,
+        characterId: String!,
+        workspace: WorkspaceInput! ): Character
 
     ### Setting Vehicles
     setVehicleCount(gameRoleId: String!,

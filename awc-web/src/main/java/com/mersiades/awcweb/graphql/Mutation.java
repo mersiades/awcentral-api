@@ -24,6 +24,7 @@ public class Mutation implements GraphQLMutationResolver {
         this.gameRoleService = gameRoleService;
     }
 
+    // ---------------------------------------------- Game-related -------------------------------------------- //
     public Game createGame(String userId, String displayName, String email, String name) throws Exception {
         System.out.println("Creating Game for User: " + userId);
         return gameService.createGameWithMC(userId, displayName, email, name);
@@ -39,6 +40,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.addInvitee(gameId, email);
     }
 
+    public Game removeInvitee(String gameId, String email) {
+        System.out.println("Removing invitee from Game: " + gameId);
+        return gameService.removeInvitee(gameId, email);
+    }
+
     public Game addCommsApp(String gameId, String app) {
         System.out.println("Adding comms app to Game: " + gameId);
         return gameService.addCommsApp(gameId, app);
@@ -49,9 +55,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.addCommsUrl(gameId, url);
     }
 
-    public Game removeInvitee(String gameId, String email) {
-        System.out.println("Removing invitee from Game: " + gameId);
-        return gameService.removeInvitee(gameId, email);
+    public Game deleteGame(String gameId) {
+        System.out.println("Deleting Game with id: " + gameId);
+        return gameService.findAndDeleteById(gameId);
     }
 
     public Game addUserToGame(String gameId, String userId, String displayName, String email) throws Exception {
@@ -59,10 +65,7 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.addUserToGame(gameId, userId, displayName, email);
     }
 
-    public Game deleteGame(String gameId) {
-        System.out.println("Deleting Game with id: " + gameId);
-        return gameService.findAndDeleteById(gameId);
-    }
+    // ---------------------------------------------- MC stuff -------------------------------------------- //
 
     public Game finishPreGame(String gameId) {
         System.out.println("Finishing pre-game for Game with id: " + gameId);
@@ -78,6 +81,8 @@ public class Mutation implements GraphQLMutationResolver {
         System.out.println("Adding Npc for GameRole with id: " + gameRoleId);
         return gameRoleService.addNpc(gameRoleId, npc).block();
     }
+
+    // ------------------------------------ Creating and editing characters ---------------------------------- //
 
     public Character createCharacter(String gameRoleId) {
         System.out.println("Creating Character for for GameRole: " + gameRoleId);
@@ -109,19 +114,26 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCharacterGear(gameRoleId, characterId, gear);
     }
 
-    public Character setCharacterBarter(String gameRoleId, String characterId, int amount) {
-        System.out.println("Setting barter for Character: " + characterId);
-        return gameRoleService.setCharacterBarter(gameRoleId, characterId, amount);
+    public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
+        System.out.println("Setting Moves for Character: " + characterId);
+        return gameRoleService.setCharacterMoves(gameRoleId, characterId, moveIds);
     }
 
-    public Character setHoldingBarter(String gameRoleId, String characterId, int amount) {
-        System.out.println("Setting Holding barter for Character: " + characterId);
-        return gameRoleService.setHoldingBarter(gameRoleId, characterId, amount);
+    public Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats) {
+        System.out.println("Setting Hx for Character: " + characterId);
+        return gameRoleService.setCharacterHx(gameRoleId, characterId, hxStats);
     }
 
-    public Character updateFollowers(String gameRoleId, String characterId, int barter, int followers, String description) {
-        System.out.println("Updating Followers for Character: " + characterId);
-        return gameRoleService.updateFollowers(gameRoleId, characterId, barter, followers, description);
+    public Character finishCharacterCreation(String gameRoleId, String characterId) {
+        System.out.println("Finishing character creation for Character: " + characterId);
+        return gameRoleService.finishCharacterCreation(gameRoleId, characterId);
+    }
+
+    // --------------------------------------- Setting Playbook Uniques ------------------------------------- //
+
+    public Character setAngelKit(String gameRoleId, String characterId, int stock, Boolean hasSupplier) {
+        System.out.println("Setting AngelKit for Character: " + characterId);
+        return gameRoleService.setAngelKit(gameRoleId, characterId, stock, hasSupplier);
     }
 
     public Character setBrainerGear(String gameRoleId, String characterId, List<String> brainerGear) {
@@ -129,9 +141,19 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setBrainerGear(gameRoleId, characterId, brainerGear);
     }
 
-    public Character setAngelKit(String gameRoleId, String characterId, int stock, Boolean hasSupplier) {
-        System.out.println("Setting AngelKit for Character: " + characterId);
-        return gameRoleService.setAngelKit(gameRoleId, characterId, stock, hasSupplier);
+    public Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons) {
+        System.out.println("Setting CustomWeapons for Character: " + characterId);
+        return gameRoleService.setCustomWeapons(gameRoleId, characterId, weapons);
+    }
+
+    public Character setEstablishment(String gameRoleId, String characterId, Establishment establishment) {
+        System.out.println("Setting Establishment for Character: " + characterId);
+        return gameRoleService.setEstablishment(gameRoleId, characterId, establishment);
+    }
+
+    public Character setFollowers(String gameRoleId, String characterId, Followers followers) {
+        System.out.println("Setting Holding for Character: " + characterId);
+        return gameRoleService.setFollowers(gameRoleId, characterId, followers);
     }
 
     public Character setGang(String gameRoleId, String characterId, Gang gang) {
@@ -139,10 +161,27 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setGang(gameRoleId, characterId, gang);
     }
 
-    public Character setEstablishment(String gameRoleId, String characterId, Establishment establishment) {
-        System.out.println("Setting Establishment for Character: " + characterId);
-        return gameRoleService.setEstablishment(gameRoleId, characterId, establishment);
+    public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount, int battleVehicleCount) {
+        System.out.println("Setting Holding for Character: " + characterId);
+        return gameRoleService.setHolding(gameRoleId, characterId, holding, vehicleCount, battleVehicleCount);
     }
+
+    public Character setSkinnerGear(String gameRoleId, String characterId, SkinnerGear skinnerGear) {
+        System.out.println("Setting SkinnerGear for Character: " + characterId);
+        return gameRoleService.setSkinnerGear(gameRoleId, characterId, skinnerGear);
+    }
+
+    public Character setWeapons(String gameRoleId, String characterId, List<String> weapons) {
+        System.out.println("Setting Weapons for Character: " + characterId);
+        return gameRoleService.setWeapons(gameRoleId, characterId, weapons);
+    }
+
+    public Character setWorkspace(String gameRoleId, String characterId, Workspace workspace) {
+        System.out.println("Setting Workspace for Character: " + characterId);
+        return gameRoleService.setWorkspace(gameRoleId, characterId, workspace);
+    }
+
+    // ------------------------------------------ Setting Vehicles ---------------------------------------- //
 
     public Character setVehicleCount(String gameRoleId, String characterId, int vehicleCount) {
         System.out.println("Setting vehicleCount for Character: " + characterId);
@@ -164,40 +203,8 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setBattleVehicle(gameRoleId, characterId, battleVehicle);
     }
 
-    public Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons) {
-        System.out.println("Setting CustomWeapons for Character: " + characterId);
-        return gameRoleService.setCustomWeapons(gameRoleId, characterId, weapons);
-    }
 
-    public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount, int battleVehicleCount) {
-        System.out.println("Setting Holding for Character: " + characterId);
-        return gameRoleService.setHolding(gameRoleId, characterId, holding, vehicleCount, battleVehicleCount);
-    }
-
-    public Character setFollowers(String gameRoleId, String characterId, Followers followers) {
-        System.out.println("Setting Holding for Character: " + characterId);
-        return gameRoleService.setFollowers(gameRoleId, characterId, followers);
-    }
-
-    public Character setWeapons(String gameRoleId, String characterId, List<String> weapons) {
-        System.out.println("Setting Weapons for Character: " + characterId);
-        return gameRoleService.setWeapons(gameRoleId, characterId, weapons);
-    }
-
-    public Character setSkinnerGear(String gameRoleId, String characterId, SkinnerGear skinnerGear) {
-        System.out.println("Setting SkinnerGear for Character: " + characterId);
-        return gameRoleService.setSkinnerGear(gameRoleId, characterId, skinnerGear);
-    }
-
-    public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
-        System.out.println("Setting Moves for Character: " + characterId);
-        return gameRoleService.setCharacterMoves(gameRoleId, characterId, moveIds);
-    }
-
-    public Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats) {
-        System.out.println("Setting Hx for Character: " + characterId);
-        return gameRoleService.setCharacterHx(gameRoleId, characterId, hxStats);
-    }
+    // ------------------------------------- Adjusting from PlaybookPanel ----------------------------------- //
 
     public Character adjustCharacterHx(String gameRoleId, String characterId, String hxId, int value) {
         System.out.println("Adjusting Hx for Character: " + characterId);
@@ -214,15 +221,39 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.toggleStatHighlight(gameRoleId, characterId, stat);
     }
 
-    public Character finishCharacterCreation(String gameRoleId, String characterId) {
-        System.out.println("Finishing character creation for Character: " + characterId);
-        return gameRoleService.finishCharacterCreation(gameRoleId, characterId);
+    public Character setCharacterBarter(String gameRoleId, String characterId, int amount) {
+        System.out.println("Setting barter for Character: " + characterId);
+        return gameRoleService.setCharacterBarter(gameRoleId, characterId, amount);
     }
+
+    public Character setHoldingBarter(String gameRoleId, String characterId, int amount) {
+        System.out.println("Setting Holding barter for Character: " + characterId);
+        return gameRoleService.setHoldingBarter(gameRoleId, characterId, amount);
+    }
+
+    public Character updateFollowers(String gameRoleId, String characterId, int barter, int followers, String description) {
+        System.out.println("Updating Followers for Character: " + characterId);
+        return gameRoleService.updateFollowers(gameRoleId, characterId, barter, followers, description);
+    }
+
+    // ------------------------------------------ Move Categories --------------------------------------- //
 
     public Game performPrintMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove) {
         System.out.println("Performing print move for Character: " + characterId);
         return gameService.performPrintMove(gameId, gameroleId, characterId, moveId, isGangMove).block();
     }
+
+    public Game performBarterMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
+        System.out.println("Performing barter move for Character: " + characterId);
+        return gameService.performBarterMove(gameId, gameroleId, characterId, moveId, barter).block();
+    }
+
+    public Game performStockMove(String gameId, String gameroleId, String characterId, String moveName, int stockSpent) {
+        System.out.println("Performing SPEED RECOVERY OF SOMEONE move for Character: " + characterId);
+        return gameService.performStockMove(gameId, gameroleId, characterId, moveName, stockSpent).block();
+    }
+
+    // ------------------------------------------ Roll Move Categories --------------------------------------- //
 
     public Game performStatRollMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove) {
         System.out.println("Performing stat roll move for Character: " + characterId);
@@ -234,20 +265,7 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.performSpeedRollMove(gameId, gameroleId, characterId, moveId, modifier).block();
     }
 
-    public Game performHelpOrInterfereMove(String gameId, String gameroleId, String characterId, String moveId, String targetId) {
-        System.out.println("Performing hx roll move for Character: " + characterId);
-        return gameService.performHelpOrInterfereMove(gameId, gameroleId, characterId, moveId, targetId).block();
-    }
-
-    public Game performBarterMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
-        System.out.println("Performing barter move for Character: " + characterId);
-        return gameService.performBarterMove(gameId, gameroleId, characterId, moveId, barter).block();
-    }
-
-    public Game performMakeWantKnownMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
-        System.out.println("Performing barter roll move for Character: " + characterId);
-        return gameService.performMakeWantKnownMove(gameId, gameroleId, characterId, moveId, barter).block();
-    }
+    // ------------------------------------------ Specific Moves --------------------------------------- //
 
     public Game performWealthMove(String gameId, String gameroleId, String characterId) {
         System.out.println("Performing Wealth roll move for Character: " + characterId);
@@ -257,6 +275,21 @@ public class Mutation implements GraphQLMutationResolver {
     public Game performFortunesMove(String gameId, String gameroleId, String characterId) {
         System.out.println("Performing Fortunes roll move for Character: " + characterId);
         return gameService.performFortunesMove(gameId, gameroleId, characterId).block();
+    }
+
+    public Game performHelpOrInterfereMove(String gameId, String gameroleId, String characterId, String moveId, String targetId) {
+        System.out.println("Performing hx roll move for Character: " + characterId);
+        return gameService.performHelpOrInterfereMove(gameId, gameroleId, characterId, moveId, targetId).block();
+    }
+
+    public Game performMakeWantKnownMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
+        System.out.println("Performing barter roll move for Character: " + characterId);
+        return gameService.performMakeWantKnownMove(gameId, gameroleId, characterId, moveId, barter).block();
+    }
+
+    public Game performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm) {
+        System.out.println("Performing SUFFER HARM move for Character: " + characterId);
+        return gameService.performSufferHarmMove(gameId, gameroleId, characterId, moveId, harm).block();
     }
 
     public Game performInflictHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm) {
@@ -300,10 +333,7 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.performSkinnerSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, plus1ForUser, plus1ForOther).block();
     }
 
-    public Game performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm) {
-        System.out.println("Performing SUFFER HARM move for Character: " + characterId);
-        return gameService.performSufferHarmMove(gameId, gameroleId, characterId, moveId, harm).block();
-    }
+
 
     public Game performStabilizeAndHealMove(String gameId, String gameroleId, String characterId, int stockSpent) {
         System.out.println("Performing SUFFER HARM move for Character: " + characterId);
@@ -315,10 +345,7 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.performJustGiveMotivationMove(gameId, gameroleId, characterId, targetId).block();
     }
 
-    public Game performStockMove(String gameId, String gameroleId, String characterId, String moveName, int stockSpent) {
-        System.out.println("Performing SPEED RECOVERY OF SOMEONE move for Character: " + characterId);
-        return gameService.performStockMove(gameId, gameroleId, characterId, moveName, stockSpent).block();
-    }
+    // ------------------------------------------ Other --------------------------------------- //
 
     public Game spendHold(String gameId, String gameroleId, String characterId) {
         System.out.println("Spending hold for Character: " + characterId);
