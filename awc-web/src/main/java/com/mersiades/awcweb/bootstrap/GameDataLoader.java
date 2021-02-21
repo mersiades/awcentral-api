@@ -1817,6 +1817,116 @@ public class GameDataLoader implements CommandLineRunner {
 
         moveService.saveAll(Flux.just(maestroSpecial, callThisHot, devilWithBlade, fingersInPie, everyBodyEats, justGiveMotive)).blockLast();
 
+        /* ----------------------------- SAVVYHEAD MOVES --------------------------------- */
+
+        MoveAction savvyheadSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .build();
+        Move savvyheadSpecial = Move.builder()
+                .name(savvyheadSpecialName)
+                .description("If you and another character have sex, they automatically speak to you, as though they were a thing and you'd rolled a 10+, whether you have the move or not. The other player and the MC will answer your questions between them.\n" +
+                        "\n" +
+                        "Otherwise, that move never works on people, only things."
+                )
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(savvyheadSpecialAction)
+                .playbook(PlaybookType.SAVVYHEAD).build();
+
+        MoveAction thingsSpeakAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(WEIRD)
+                .build();
+        Move thingsSpeak = Move.builder()
+                .name("THINGS SPEAK")
+                .description("_**Things speak**_: whenever you handle or examine something interesting, roll+weird.\n" +
+                        "\n" +
+                        "On a hit, you can ask the MC questions.\n" +
+                        "\n" +
+                        "On a 10+, ask 3. On a 7-9, ask 1:\n" +
+                        "\n" +
+                        "- *Who handled this last before me?.*\n" +
+                        "- *Who made this?.*\n" +
+                        "- *What string emotions have been recently nearby this?.*\n" +
+                        "- *What has been done most recently with this, or to this?*\n" +
+                        "- *What's wrong with this, and how might I fix it?.*\n" +
+                        "\n" +
+                        "Treat a miss as though you've opened your brain to the world's psychic maelstrom and missed the roll.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(thingsSpeakAction)
+                .playbook(PlaybookType.SAVVYHEAD).build();
+
+        MoveAction bonefeelAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(WEIRD)
+                .build();
+        Move bonefeel = Move.builder()
+                .name(bonefeelName)
+                .description("_**Bonefeel**_: at the beginning of the session, roll+weird.\n" +
+                        "\n" +
+                        "On a 10+, hold 1+1. On a 7-9, hold 1.\n" +
+                        "\n" +
+                        "At any time, either you or the MC can spend your hold to have you already be there, with the proper tools and knowledge, with or without any clear explanation why.\n" +
+                        "\n" +
+                        "If your hold was 1+1, take +1forward now.\n" +
+                        "\n" +
+                        "On a miss, the MC holds 1, and can spend it to have you be there already, but somehow pinned, caught or trapped.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(bonefeelAction)
+                .playbook(PlaybookType.SAVVYHEAD).build();
+
+        MoveAction oftenerRightAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .build();
+        Move oftenerRight = Move.builder()
+                .name("")
+                .description("_**Oftener right**_: when a character comes to you for advice, tell them what you honestly think the best course is. If they do it, they take +1 to any rolls they make in the doing, and you mark an experience circle.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(oftenerRightAction)
+                .playbook(PlaybookType.SAVVYHEAD).build();
+
+        MoveAction frayingEdgeAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.PRINT)
+                .build();
+        Move frayingEdge = Move.builder()
+                .name("REALITY'S FRAYING EDGE")
+                .description("_**Reality's fraying edge**_: some component of your workspace, or some arrangement of components, is uniquely receptive to the world's psychic maelstrom (+augury)\n" +
+                        "\n" +
+                        "Choose and name it, or else leave it for the MC to reveal during play.")
+                .kind(MoveType.CHARACTER)
+                .moveAction(frayingEdgeAction)
+                .playbook(PlaybookType.SAVVYHEAD).build();
+
+        RollModifier spookyIntenseModifier = RollModifier.builder()
+                .id(UUID.randomUUID().toString())
+                .movesToModify(List.of(doSomethingUnderFire, standOverwatch, beTheBait))
+                .statToRollWith(WEIRD).build();
+        Move spookyIntense= Move.builder()
+                .name("SPOOKY INTENSE")
+                .description("_**Spooky intense**_: when you do something under fire, stand overwatch, or bait a trap, roll+weird instead of roll+cool.")
+                        .kind(MoveType.CHARACTER)
+                        .rollModifier(spookyIntenseModifier)
+                        .playbook(PlaybookType.SAVVYHEAD).build();
+
+        StatModifier deepInsightsModifier = StatModifier.builder()
+                .statToModify(WEIRD)
+                .modification(1).build();
+        StatModifier savedDeepInsightsModifier = statModifierService.save(deepInsightsModifier).block();
+        Move deepInsights = Move.builder()
+                .name("DEEP INSIGHTS")
+                .description("_**Deep insights**_: you get +1weird (weird+3)")
+                        .kind(MoveType.CHARACTER)
+                        .statModifier(savedDeepInsightsModifier)
+                        .playbook(PlaybookType.SAVVYHEAD).build();
+
+        moveService.saveAll(Flux.just(savvyheadSpecial, thingsSpeak, bonefeel, oftenerRight, frayingEdge,
+                spookyIntense, deepInsights)).blockLast();
 
         /* ----------------------------- SKINNER MOVES --------------------------------- */
         MoveAction skinnerSpecialAction = MoveAction.builder()
@@ -1865,7 +1975,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .kind(MoveType.CHARACTER)
                 .moveAction(lostAction)
                 .playbook(PlaybookType.SKINNER).build();
-        MoveAction artfulAction= MoveAction.builder()
+        MoveAction artfulAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
@@ -1889,7 +1999,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .kind(MoveType.CHARACTER)
                 .moveAction(artfulAction)
                 .playbook(PlaybookType.SKINNER).build();
-        MoveAction arrestingSkinnerAction= MoveAction.builder()
+        MoveAction arrestingSkinnerAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
@@ -3776,7 +3886,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .regularsQuestions(List.of(
                         "Who's your best regular?",
                         "Who's your worst regular?"
-                        ))
+                ))
                 .interestedPartyNames(List.of("Been", "Rolfball", "Gams"))
                 .interestedPartyQuestions(List.of("Who wants in on it?", "Who do you owe for it?", "Who wants it gone?"))
                 .securityOptions(List.of(securityOption1, securityOption2, securityOption3, securityOption4, securityOption5,

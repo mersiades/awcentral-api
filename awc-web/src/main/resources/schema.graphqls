@@ -400,6 +400,13 @@ type WeaponsCreator {
     backupWeapons: [String]!
 }
 
+type WorkspaceCreator {
+    id: ID!
+    itemsInstructions: String!
+    workspaceInstructions: String!
+    workspaceItems: [String]!
+}
+
      ### ------------- Vehicle Creators ------------- ###
 
 type VehicleFrame {
