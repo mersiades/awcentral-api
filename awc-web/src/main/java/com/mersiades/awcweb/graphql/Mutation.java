@@ -236,6 +236,16 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.updateFollowers(gameRoleId, characterId, barter, followers, description);
     }
 
+    public Character addProject(String gameRoleId, String characterId, Project project) {
+        System.out.println("Adding Project for Character: " + characterId);
+        return gameRoleService.addProject(gameRoleId, characterId, project);
+    }
+
+    public Character removeProject(String gameRoleId, String characterId, Project project) {
+        System.out.println("Removing Project for Character: " + characterId);
+        return gameRoleService.removeProject(gameRoleId, characterId, project);
+    }
+
     // ------------------------------------------ Move Categories --------------------------------------- //
 
     public Game performPrintMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove) {

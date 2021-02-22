@@ -991,7 +991,7 @@ input EstablishmentInput {
 }
 
 input ProjectInput {
-    id: ID!
+    id: ID
     name: String!
     notes: String
 }
@@ -1140,6 +1140,14 @@ type Mutation {
         barter: Int!,
         followers: Int!,
         description: String!
+    ): Character
+    addProject(gameRoleId: String!,
+        characterId: String!,
+        project: ProjectInput
+    ): Character
+    removeProject(gameRoleId: String!,
+        characterId: String!,
+        project: ProjectInput
     ): Character
 
     #    Move categories
