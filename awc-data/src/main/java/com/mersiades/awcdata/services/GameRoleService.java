@@ -92,4 +92,6 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
     Character addProject(String gameRoleId, String characterId, Project project);
 
     Character removeProject(String gameRoleId, String characterId, Project project);
+
+    Character removeHold(String gameRoleId, String characterId, Hold hold);
 }

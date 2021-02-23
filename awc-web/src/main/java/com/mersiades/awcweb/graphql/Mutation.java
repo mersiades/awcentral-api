@@ -362,4 +362,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.spendHold(gameId, gameroleId, characterId, hold).block();
     }
 
+    public Character removeHold(String gameRoleId, String characterId, Hold hold) {
+        System.out.println("Removing Hold for Character: " + characterId);
+        return gameRoleService.removeHold(gameRoleId, characterId, hold);
+    }
+
 }

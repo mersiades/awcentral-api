@@ -1242,6 +1242,7 @@ type Mutation {
 
     # Other
     spendHold(gameId: String!, gameroleId: String!, characterId: String!, hold: HoldInput!): Game
+    removeHold(gameroleId: String!, characterId: String!, hold: HoldInput!): Character
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

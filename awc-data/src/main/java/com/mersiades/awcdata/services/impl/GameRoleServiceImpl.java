@@ -1134,6 +1134,25 @@ public class GameRoleServiceImpl implements GameRoleService {
         return character;
     }
 
+    @Override
+    public Character removeHold(String gameRoleId, String characterId, Hold hold) {
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        assert gameRole != null;
+        Character character = getCharacterById(gameRole, characterId);
+
+        List<Hold> filteredHolds = character.getHolds().stream()
+                .filter(hold1 -> !hold1.getId().equals(hold.getId())).collect(Collectors.toList());
+
+        character.setHolds(filteredHolds);
+
+        // Save to db
+        characterService.save(character).block();
+        gameRoleRepository.save(gameRole).block();
+
+        return character;
+    }
+
 
     private void createOrUpdateCharacterStat(Character character, StatsOption statsOption, StatType stat) {
         int value;
@@ -1172,5 +1191,10 @@ public class GameRoleServiceImpl implements GameRoleService {
         } else {
             optionalStat.get().setValue(value);
         }
+    }
+
+    private Character getCharacterById(GameRole gameRole, String characterId) {
+        return gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
     }
 }
