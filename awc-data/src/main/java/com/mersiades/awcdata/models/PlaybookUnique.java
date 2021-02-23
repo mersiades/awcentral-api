@@ -21,19 +21,21 @@ public class PlaybookUnique {
 
     private AngelKit angelKit;
 
-    private CustomWeapons customWeapons;
-
     private BrainerGear brainerGear;
 
-    private Gang gang;
+    private CustomWeapons customWeapons;
 
-    private Weapons weapons;
-
-    private Holding holding;
+    private Establishment establishment;
 
     private Followers followers;
 
+    private Gang gang;
+
+    private Holding holding;
+
     private SkinnerGear skinnerGear;
 
-    private Establishment establishment;
+    private Weapons weapons;
+
+    private Workspace workspace;
 }

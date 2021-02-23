@@ -249,6 +249,7 @@ type PlaybookUniqueCreator {
     holdingCreator: HoldingCreator
     skinnerGearCreator: SkinnerGearCreator
     weaponsCreator: WeaponsCreator
+    workspaceCreator: WorkspaceCreator
 }
 
 type AngelKitCreator {
@@ -398,6 +399,14 @@ type WeaponsCreator {
     bigFuckOffGuns: [String]!
     seriousGuns: [String]!
     backupWeapons: [String]!
+}
+
+type WorkspaceCreator {
+    id: ID!
+    itemsCount: Int!
+    workspaceInstructions: String!
+    projectInstructions: String!
+    workspaceItems: [String]!
 }
 
      ### ------------- Vehicle Creators ------------- ###
@@ -617,6 +626,7 @@ type PlaybookUnique {
     followers: Followers
     skinnerGear: SkinnerGear
     establishment: Establishment
+    workspace: Workspace
 }
 
 type AngelKit {
@@ -711,6 +721,20 @@ type SkinnerGear {
 type Weapons {
     id: ID!
     weapons: [String]!
+}
+
+type Project {
+    id: ID!
+    name: String!
+    notes: String
+}
+
+type Workspace {
+    id: ID!
+    workspaceInstructions: String!
+    projectInstructions: String!
+    workspaceItems: [String]!
+    projects: [Project]
 }
 
      ### ------------- Vehicles ------------- ###
@@ -966,6 +990,20 @@ input EstablishmentInput {
     castAndCrew: [CastCrewInput]!
 }
 
+input ProjectInput {
+    id: ID
+    name: String!
+    notes: String
+}
+
+input WorkspaceInput {
+    id: ID
+    workspaceInstructions: String!
+    projectInstructions: String!
+    workspaceItems: [String]!
+    projects: [ProjectInput]
+}
+
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -1000,9 +1038,9 @@ type Mutation {
         userId: String!,
         displayName: String!,
         email: String!): Game
-    finishPreGame(gameId: String!): Game
 
     # MC stuff
+    finishPreGame(gameId: String!): Game
     addThreat(gameRoleId: String!, threat: ThreatInput): GameRole
     addNpc(gameRoleId: String!, npc: NpcInput): GameRole
 
@@ -1066,6 +1104,9 @@ type Mutation {
     setWeapons(gameRoleId: String!,
         characterId: String!,
         weapons: [String]! ): Character
+    setWorkspace(gameRoleId: String!,
+        characterId: String!,
+        workspace: WorkspaceInput! ): Character
 
     ### Setting Vehicles
     setVehicleCount(gameRoleId: String!,
@@ -1099,6 +1140,14 @@ type Mutation {
         barter: Int!,
         followers: Int!,
         description: String!
+    ): Character
+    addProject(gameRoleId: String!,
+        characterId: String!,
+        project: ProjectInput
+    ): Character
+    removeProject(gameRoleId: String!,
+        characterId: String!,
+        project: ProjectInput
     ): Character
 
     #    Move categories

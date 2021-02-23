@@ -14,6 +14,7 @@ public class MoveNames {
     public static final String hardholderSpecialName = "HARDHOLDER SPECIAL";
     public static final String hocusSpecialName = "HOCUS SPECIAL";
     public static final String maestroDSpecialName = "MAESTRO D' SPECIAL";
+    public static final String savvyheadSpecialName = "SAVVYHEAD SPECIAL";
     public static final String skinnerSpecialName = "SKINNER SPECIAL";
     public static final String makeWantKnownName = "MAKE WANT KNOWN";
     public static final String helpOrInterfereName = "HELP OR INTERFERE WITH SOMEONE";
@@ -46,5 +47,6 @@ public class MoveNames {
     public static final String dangerousAndSexyName = "DANGEROUS & SEXY";
     public static final String brainScanName = "DEEP BRAIN SCAN";
     public static final String puppetStringsName = "IN BRAIN PUPPET STRINGS";
+    public static final String bonefeelName = "BONEFEEL";
 
 }
