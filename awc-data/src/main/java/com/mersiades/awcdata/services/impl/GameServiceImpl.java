@@ -491,12 +491,21 @@ public class GameServiceImpl implements GameService {
                 .stream().filter(characterMove -> characterMove.getId().equals(moveId)).findFirst();
         CharacterStat modifier;
         String moveName;
+        Hold hold1 = Hold.builder().id(UUID.randomUUID().toString()).build();
+        Hold hold2 = Hold.builder().id(UUID.randomUUID().toString()).build();
+        Hold hold3 = Hold.builder().id(UUID.randomUUID().toString()).build();
 
         if (moveOptional.isPresent()) {
             moveName = moveOptional.get().getName();
             modifier = getStatToRoll(character, moveOptional.get());
             gameMessage.setContent(moveOptional.get().getDescription());
             gameMessage.setTitle(String.format("%s: %s", character.getName(), moveOptional.get().getName()).toUpperCase());
+            hold1.setMoveName(moveName);
+            hold1.setMoveDescription(moveOptional.get().getDescription());
+            hold2.setMoveName(moveName);
+            hold2.setMoveDescription(moveOptional.get().getDescription());
+            hold3.setMoveName(moveName);
+            hold3.setMoveDescription(moveOptional.get().getDescription());
         } else {
             Move move = moveService.findById(moveId).block();
             assert move != null;
@@ -504,10 +513,20 @@ public class GameServiceImpl implements GameService {
             modifier = getStatToRoll(character, move);
             gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
             gameMessage.setContent(move.getDescription());
+            hold1.setMoveName(moveName);
+            hold1.setMoveDescription(move.getDescription());
+            hold2.setMoveName(moveName);
+            hold2.setMoveDescription(move.getDescription());
+            hold3.setMoveName(moveName);
+            hold3.setMoveDescription(move.getDescription());
         }
         gameMessage.setRollModifier(modifier.getValue());
         gameMessage.setModifierStatName(modifier.getStat());
         gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifier.getValue());
+        hold1.setRollResult(gameMessage.getRollResult());
+        hold2.setRollResult(gameMessage.getRollResult());
+        hold3.setRollResult(gameMessage.getRollResult());
+
 
         // Uses a +1forward if the character has one
         if (character.getHasPlusOneForward()) {
@@ -519,38 +538,37 @@ public class GameServiceImpl implements GameService {
         // Handles one pattern for awarding holds
         if (List.of(readPersonName, brainScanName, puppetStringsName, artfulName).contains(moveName)) {
             if (gameMessage.getRollResult() >= 10) {
-                character.setHolds(3);
+
+                character.getHolds().addAll(List.of(hold1, hold2, hold3));
             } else if (gameMessage.getRollResult() >= 7) {
-                character.setHolds(1);
+                character.getHolds().add(hold1);
             }
         }
 
         // Handles second pattern for awarding holds
         if (List.of(keepEyeOutName, hypnoticName).contains(moveName)) {
             if (gameMessage.getRollResult() >= 10) {
-                character.setHolds(3);
+                character.getHolds().addAll(List.of(hold1, hold2, hold3));
             } else if (gameMessage.getRollResult() >= 7) {
-                character.setHolds(2);
+                character.getHolds().addAll(List.of(hold1, hold2));
             } else {
-                character.setHolds(1);
+                character.getHolds().add(hold1);
             }
         }
 
         // Handles awarding holds for DANGEROUS & SEXY
         if (moveName.equals(dangerousAndSexyName)) {
             if (gameMessage.getRollResult() >= 10) {
-                character.setHolds(2);
+                character.getHolds().addAll(List.of(hold1, hold2));
             } else if (gameMessage.getRollResult() >= 7) {
-                character.setHolds(1);
+                character.getHolds().add(hold1);
             }
         }
 
         // Handles awarding holds for BONEFEEL
         if (moveName.equals(bonefeelName)) {
-            if (gameMessage.getRollResult() >= 10) {
-                character.setHolds(1);
-            } else if (gameMessage.getRollResult() >= 7) {
-                character.setHolds(1);
+            if (gameMessage.getRollResult() >= 7) {
+                character.getHolds().add(hold1);
             }
         }
 
@@ -1292,8 +1310,22 @@ public class GameServiceImpl implements GameService {
                 .findFirst().orElseThrow();
         assert hocusSpecialMove != null;
 
-        characterUser.setHolds(characterUser.getHolds() + 1);
-        characterOther.setHolds(characterOther.getHolds() + 1);
+        Hold hold1 = Hold.builder()
+                .id(UUID.randomUUID().toString())
+                .moveName(hocusSpecialName)
+                .moveDescription(hocusSpecialMove.getDescription())
+                .rollResult(0)
+                .build();
+
+        Hold hold2 = Hold.builder()
+                .id(UUID.randomUUID().toString())
+                .moveName(hocusSpecialName)
+                .moveDescription(hocusSpecialMove.getDescription())
+                .rollResult(0)
+                .build();
+
+        characterUser.getHolds().add(hold1);
+        characterOther.getHolds().add(hold2);
 
         GameMessage gameMessage = GameMessage.builder()
                 .id(UUID.randomUUID().toString())
@@ -1473,10 +1505,17 @@ public class GameServiceImpl implements GameService {
     // ---------------------------------------------- Other -------------------------------------------- //
 
     @Override
-    public Mono<Game> spendHold(String gameId, String gameroleId, String characterId) {
+    public Mono<Game> spendHold(String gameId, String gameroleId, String characterId, Hold hold) {
         Character character = characterService.findById(characterId).block();
         assert character != null;
-        character.setHolds(character.getHolds() - 1);
+
+        // Remove the Hold from the list
+        character.setHolds(character.getHolds().stream().filter(hold1 -> !hold1.getId().equals(hold.getId())).collect(Collectors.toList()));
+
+        // Add +1forward for BONEFEEL hold
+        if (hold.getMoveName().equals(bonefeelName) && hold.getRollResult() >= 10) {
+            character.setHasPlusOneForward(true);
+        }
 
         GameMessage gameMessage = GameMessage.builder()
                 .id(UUID.randomUUID().toString())
@@ -1485,10 +1524,14 @@ public class GameServiceImpl implements GameService {
                 .messageType(MessageType.PRINT_MOVE)
                 .sentOn(Instant.now().toString())
                 .title(character.getName().toUpperCase() + ": SPENDS A HOLD")
-                .content(String.format("%s has %s %s left.",
+                .content(String.format(
+                                "%s\n" +
+                                "\n" +
+                                "_%s has %s %s left._",
+                        hold.getMoveDescription(),
                         character.getName(),
-                        character.getHolds(),
-                        character.getHolds() == 1 ? "hold" : "holds"
+                        character.getHolds().size(),
+                        character.getHolds().size() == 1 ? "hold" : "holds"
                 ))
                 .build();
 
@@ -1551,5 +1594,6 @@ public class GameServiceImpl implements GameService {
                 .roll2(roll2)
                 .build();
     }
+
 
 }
