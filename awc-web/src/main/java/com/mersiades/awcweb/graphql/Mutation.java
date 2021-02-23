@@ -357,9 +357,9 @@ public class Mutation implements GraphQLMutationResolver {
 
     // ------------------------------------------ Other --------------------------------------- //
 
-    public Game spendHold(String gameId, String gameroleId, String characterId) {
+    public Game spendHold(String gameId, String gameroleId, String characterId, Hold hold) {
         System.out.println("Spending hold for Character: " + characterId);
-        return gameService.spendHold(gameId, gameroleId, characterId).block();
+        return gameService.spendHold(gameId, gameroleId, characterId, hold).block();
     }
 
 }

@@ -2,6 +2,7 @@ package com.mersiades.awcdata.services;
 
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
+import com.mersiades.awcdata.models.Hold;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -80,7 +81,7 @@ public interface GameService extends ReactiveCrudService<Game, String> {
 
     // ---------------------------------------------- Other -------------------------------------------- //
 
-    Mono<Game> spendHold(String gameId, String gameroleId, String characterId);
+    Mono<Game> spendHold(String gameId, String gameroleId, String characterId, Hold hold);
 
 
 }

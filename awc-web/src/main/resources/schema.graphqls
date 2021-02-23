@@ -568,6 +568,13 @@ type CharacterHarm {
     hasDied: Boolean!
 }
 
+type Hold {
+    id: ID!
+    moveName: String!
+    moveDescription: String!
+    rollResult: Int!
+}
+
 type Character {
     id: ID!
     name: String
@@ -575,7 +582,7 @@ type Character {
     playbook: PlaybookType
     hasCompletedCharacterCreation: Boolean
     hasPlusOneForward: Boolean
-    holds: Int
+    holds: [Hold]
     looks: [Look]
     statsBlock: StatsBlock
     hxBlock: [HxStat]
@@ -1004,6 +1011,13 @@ input WorkspaceInput {
     projects: [ProjectInput]
 }
 
+input HoldInput {
+    id: ID!
+    moveName: String!
+    moveDescription: String!
+    rollResult: Int!
+}
+
 # ---------------------------------------------- QUERIES --------------------------------------------- #
 
 type Query {
@@ -1227,7 +1241,7 @@ type Mutation {
     performJustGiveMotivationMove(gameId: String!, gameroleId: String!, characterId: String!, targetId: String): Game
 
     # Other
-    spendHold(gameId: String!, gameroleId: String!, characterId: String!): Game
+    spendHold(gameId: String!, gameroleId: String!, characterId: String!, hold: HoldInput!): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

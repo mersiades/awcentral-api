@@ -36,8 +36,6 @@ public class Character {
 
     private Boolean hasPlusOneForward;
 
-    private int holds;
-
     private int barter;
 
     private CharacterHarm harm;
@@ -65,6 +63,9 @@ public class Character {
 
     @Builder.Default
     private List<CharacterMove> characterMoves = new ArrayList<>();
+
+    @Builder.Default
+    private List<Hold> holds = new ArrayList<>();
 
     public Optional<Look> getLookByCategory(LookType category) {
         return this.looks.stream()
