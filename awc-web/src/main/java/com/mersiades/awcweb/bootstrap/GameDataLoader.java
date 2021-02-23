@@ -1884,7 +1884,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .actionType(MoveActionType.PRINT)
                 .build();
         Move oftenerRight = Move.builder()
-                .name("")
+                .name("OFTENER RIGHT")
                 .description("_**Oftener right**_: when a character comes to you for advice, tell them what you honestly think the best course is. If they do it, they take +1 to any rolls they make in the doing, and you mark an experience circle.")
                 .kind(MoveType.CHARACTER)
                 .moveAction(oftenerRightAction)

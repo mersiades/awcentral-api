@@ -8,37 +8,53 @@ import reactor.core.publisher.Mono;
 public interface GameService extends ReactiveCrudService<Game, String> {
     Mono<Game> findByGameRoles(GameRole gameRole);
 
+    Game findAndDeleteById(String gameId);
+
+    Flux<Game> findAllByInvitee(String email);
+
+    Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit);
+
+    // ---------------------------------------------- Game-related -------------------------------------------- //
+
     Game createGameWithMC(String userId, String displayName, String email, String name) throws Exception;
 
     Mono<Game> setGameName(String gameId, String name);
 
-    Game addUserToGame(String gameId, String userId, String displayName, String email) throws Exception;
-
-    Game findAndDeleteById(String gameId);
-
     Game addInvitee(String gameId, String email);
+
+    Game removeInvitee(String gameId, String email);
 
     Game addCommsApp(String gameId, String app);
 
     Game addCommsUrl(String gameId, String url);
 
-    Game removeInvitee(String gameId, String email);
+    Game addUserToGame(String gameId, String userId, String displayName, String email) throws Exception;
 
-    Flux<Game> findAllByInvitee(String email);
+    // ---------------------------------------------- MC stuff -------------------------------------------- //
 
     Mono<Game> finishPreGame(String gameId);
 
+    // ---------------------------------------------- Move categories -------------------------------------------- //
+
     Mono<Game> performPrintMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove);
 
-    Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit);
+    Mono<Game> performBarterMove(String gameId, String gameroleId, String characterId, String moveId, int barter);
+
+    Mono<Game> performStockMove(String gameId, String gameroleId, String characterId, String moveName, int stockSpent);
+
+    // ---------------------------------------------- Roll move categories -------------------------------------------- //
 
     Mono<Game> performStatRollMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove);
 
     Mono<Game> performSpeedRollMove(String gameId, String gameroleId, String characterId, String moveId, int modifier);
 
-    Mono<Game> performHelpOrInterfereMove(String gameId, String gameroleId, String characterId, String moveId, String targetId);
+    // ---------------------------------------------- Specific moves -------------------------------------------- //
 
-    Mono<Game> performBarterMove(String gameId, String gameroleId, String characterId, String moveId, int barter);
+    Mono<Game> performWealthMove(String gameId, String gameroleId, String characterId);
+
+    Mono<Game> performFortunesMove(String gameId, String gameroleId, String characterId);
+
+    Mono<Game> performHelpOrInterfereMove(String gameId, String gameroleId, String characterId, String moveId, String targetId);
 
     Mono<Game> performMakeWantKnownMove(String gameId, String gameroleId, String characterId, String moveId, int barter);
 
@@ -60,13 +76,9 @@ public interface GameService extends ReactiveCrudService<Game, String> {
 
     Mono<Game> performStabilizeAndHealMove(String gameId, String gameroleId, String characterId, int stockSpent);
 
-    Mono<Game> performStockMove(String gameId, String gameroleId, String characterId, String moveName, int stockSpent);
-
-    Mono<Game> performWealthMove(String gameId, String gameroleId, String characterId);
-
-    Mono<Game> performFortunesMove(String gameId, String gameroleId, String characterId);
-
     Mono<Game> performJustGiveMotivationMove(String gameId, String gameroleId, String characterId, String targetId);
+
+    // ---------------------------------------------- Other -------------------------------------------- //
 
     Mono<Game> spendHold(String gameId, String gameroleId, String characterId);
 
