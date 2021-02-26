@@ -363,7 +363,7 @@ public class GameServiceImpl implements GameService {
         GameMessage gameMessage = GameMessage.builder()
                 .id(UUID.randomUUID().toString())
                 .gameId(gameId)
-                .gameroleId(gameroleId)
+                .gameRoleId(gameroleId)
                 .messageType(MessageType.PRINT_MOVE)
                 .sentOn(Instant.now().toString())
                 .build();
@@ -417,7 +417,7 @@ public class GameServiceImpl implements GameService {
         GameMessage gameMessage = GameMessage.builder()
                 .id(UUID.randomUUID().toString())
                 .gameId(gameId)
-                .gameroleId(gameroleId)
+                .gameRoleId(gameroleId)
                 .messageType(MessageType.BARTER_MOVE)
                 .sentOn(Instant.now().toString())
                 .barterSpent(barter)
@@ -447,7 +447,7 @@ public class GameServiceImpl implements GameService {
                     GameMessage gameMessage = GameMessage.builder()
                             .id(UUID.randomUUID().toString())
                             .gameId(gameId)
-                            .gameroleId(gameroleId)
+                            .gameRoleId(gameroleId)
                             .messageType(MessageType.STOCK_MOVE)
                             .sentOn(Instant.now().toString()).build();
 
@@ -930,7 +930,7 @@ public class GameServiceImpl implements GameService {
                     GameMessage gameMessage = GameMessage.builder()
                             .id(UUID.randomUUID().toString())
                             .gameId(gameId)
-                            .gameroleId(gameroleId)
+                            .gameRoleId(gameroleId)
                             .messageType(MessageType.ADJUST_HX_MOVE)
                             .sentOn(Instant.now().toString()).build();
 
@@ -992,7 +992,7 @@ public class GameServiceImpl implements GameService {
                     GameMessage gameMessage = GameMessage.builder()
                             .id(UUID.randomUUID().toString())
                             .gameId(gameId)
-                            .gameroleId(gameroleId)
+                            .gameRoleId(gameroleId)
                             .messageType(MessageType.ADJUST_HX_MOVE)
                             .sentOn(Instant.now().toString()).build();
 
@@ -1070,7 +1070,7 @@ public class GameServiceImpl implements GameService {
                     GameMessage gameMessage = GameMessage.builder()
                             .id(UUID.randomUUID().toString())
                             .gameId(gameId)
-                            .gameroleId(gameroleId)
+                            .gameRoleId(gameroleId)
                             .messageType(MessageType.ADJUST_HX_MOVE)
                             .sentOn(Instant.now().toString()).build();
 
@@ -1154,7 +1154,7 @@ public class GameServiceImpl implements GameService {
                     GameMessage gameMessage = GameMessage.builder()
                             .id(UUID.randomUUID().toString())
                             .gameId(gameId)
-                            .gameroleId(gameroleId)
+                            .gameRoleId(gameroleId)
                             .messageType(MessageType.ADJUST_HX_MOVE)
                             .sentOn(Instant.now().toString()).build();
 
@@ -1267,7 +1267,7 @@ public class GameServiceImpl implements GameService {
                     GameMessage gameMessage = GameMessage.builder()
                             .id(UUID.randomUUID().toString())
                             .gameId(gameId)
-                            .gameroleId(gameroleId)
+                            .gameRoleId(gameroleId)
                             .messageType(MessageType.ADJUST_HX_MOVE)
                             .sentOn(Instant.now().toString()).build();
 
@@ -1330,7 +1330,7 @@ public class GameServiceImpl implements GameService {
         GameMessage gameMessage = GameMessage.builder()
                 .id(UUID.randomUUID().toString())
                 .gameId(gameId)
-                .gameroleId(gameroleId)
+                .gameRoleId(gameroleId)
                 .messageType(MessageType.PRINT_MOVE)
                 .sentOn(Instant.now().toString()).build();
 
@@ -1390,7 +1390,7 @@ public class GameServiceImpl implements GameService {
         GameMessage gameMessage = GameMessage.builder()
                 .id(UUID.randomUUID().toString())
                 .gameId(gameId)
-                .gameroleId(gameroleId)
+                .gameRoleId(gameroleId)
                 .messageType(MessageType.PRINT_MOVE)
                 .sentOn(Instant.now().toString()).build();
 
@@ -1520,7 +1520,7 @@ public class GameServiceImpl implements GameService {
         GameMessage gameMessage = GameMessage.builder()
                 .id(UUID.randomUUID().toString())
                 .gameId(gameId)
-                .gameroleId(gameroleId)
+                .gameRoleId(gameroleId)
                 .messageType(MessageType.PRINT_MOVE)
                 .sentOn(Instant.now().toString())
                 .title(character.getName().toUpperCase() + ": SPENDS A HOLD")
@@ -1587,7 +1587,7 @@ public class GameServiceImpl implements GameService {
         return GameMessage.builder()
                 .id(UUID.randomUUID().toString())
                 .gameId(gameId)
-                .gameroleId(gameroleId)
+                .gameRoleId(gameroleId)
                 .messageType(messageType)
                 .sentOn(Instant.now().toString())
                 .roll1(roll1)

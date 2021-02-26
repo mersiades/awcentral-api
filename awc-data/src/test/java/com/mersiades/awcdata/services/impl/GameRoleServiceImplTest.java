@@ -257,20 +257,24 @@ class GameRoleServiceImplTest {
     @Test
     void shouldSetNewCharacterLook() {
         // Given
-        String mockLook = "Handsome";
+        Look mockLook = Look.builder()
+                .id("mock-look-id")
+                .look("handsome face")
+                .category(LookType.FACE)
+                .build();
         mockGameRole.getCharacters().add(mockCharacter);
         when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
         when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
         when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
 
         // When
-        Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook, LookType.FACE);
+        Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook);
         Optional<Look> lookOptional = returnedCharacter.getLookByCategory(LookType.FACE);
 
         // Then
         assertTrue(lookOptional.isPresent());
         Look savedLook = lookOptional.get();
-        assertEquals(mockLook, savedLook.getLook());
+        assertEquals(mockLook, savedLook);
         verify(gameRoleRepository, times(1)).findById(anyString());
         verify(characterService, times(1)).save(any(Character.class));
         verify(gameRoleRepository, times(1)).save(any(GameRole.class));
@@ -279,8 +283,12 @@ class GameRoleServiceImplTest {
     @Test
     void shouldUpdateCharacterLook() {
         // Given
-        String mockLook = "Ugly";
-        Look existingLook = Look.builder().id("mock-look-id").category(LookType.FACE).look("Handsome").build();
+        Look mockLook = Look.builder()
+                .id("mock-look-id")
+                .look("ugly face")
+                .category(LookType.FACE)
+                .build();
+        Look existingLook = Look.builder().id("mock-look-id").category(LookType.FACE).look("handsome face").build();
         mockCharacter.getLooks().add(existingLook);
         mockGameRole.getCharacters().add(mockCharacter);
         when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
@@ -288,7 +296,7 @@ class GameRoleServiceImplTest {
         when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
 
         // When
-        Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook, LookType.FACE);
+        Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook);
 
         System.out.println("returnedCharacter = " + returnedCharacter);
         Optional<Look> lookOptional = returnedCharacter.getLookByCategory(LookType.FACE);
@@ -296,7 +304,7 @@ class GameRoleServiceImplTest {
         // Then
         assertTrue(lookOptional.isPresent());
         Look savedLook = lookOptional.get();
-        assertEquals(mockLook, savedLook.getLook());
+        assertEquals(mockLook, savedLook);
         verify(gameRoleRepository, times(1)).findById(anyString());
         verify(characterService, times(1)).save(any(Character.class));
         verify(gameRoleRepository, times(1)).save(any(GameRole.class));
