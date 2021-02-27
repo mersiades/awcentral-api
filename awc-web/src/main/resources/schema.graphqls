@@ -814,6 +814,7 @@ input LookInput {
 }
 
 input HxInput {
+    id: ID
     characterId: String!
     characterName: String!
     hxValue: Int!
@@ -1144,7 +1145,7 @@ type Mutation {
 
     ### Adjusting from PlaybookPanel
     adjustCharacterHx(gameRoleId: String!,
-        characterId: String!, hxId: String!, value: Int!): Character
+        characterId: String!, hxStat: HxInput!): Character
     setCharacterHarm(gameRoleId: String!,
         characterId: String!, harm: HarmInput!): Character
     toggleStatHighlight(gameRoleId: String!,

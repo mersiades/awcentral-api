@@ -206,9 +206,9 @@ public class Mutation implements GraphQLMutationResolver {
 
     // ------------------------------------- Adjusting from PlaybookPanel ----------------------------------- //
 
-    public Character adjustCharacterHx(String gameRoleId, String characterId, String hxId, int value) {
+    public Character adjustCharacterHx(String gameRoleId, String characterId, HxStat hxStat) {
         System.out.println("Adjusting Hx for Character: " + characterId);
-        return gameRoleService.adjustCharacterHx(gameRoleId, characterId, hxId, value);
+        return gameRoleService.adjustCharacterHx(gameRoleId, characterId, hxStat);
     }
 
     public Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm) {

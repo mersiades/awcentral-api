@@ -77,7 +77,7 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     // ------------------------------------- Adjusting from PlaybookPanel ----------------------------------- //
 
-    Character adjustCharacterHx(String gameRoleId, String characterId, String hxId, int value);
+    Character adjustCharacterHx(String gameRoleId, String characterId, HxStat hxStat);
 
     Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm);
 
