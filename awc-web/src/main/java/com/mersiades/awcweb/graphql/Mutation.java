@@ -1,8 +1,8 @@
 package com.mersiades.awcweb.graphql;
 
-import com.mersiades.awccontent.enums.LookType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.StatType;
+import com.mersiades.awccontent.models.Look;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.*;
@@ -99,9 +99,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCharacterName(gameRoleId, characterId, name);
     }
 
-    public Character setCharacterLook(String gameRoleId, String characterId, String look, LookType category) {
+    public Character setCharacterLook(String gameRoleId, String characterId, Look look) {
         System.out.println("Setting a Look for for Character: " + characterId);
-        return gameRoleService.setCharacterLook(gameRoleId, characterId, look, category);
+        return gameRoleService.setCharacterLook(gameRoleId, characterId, look);
     }
 
     public Character setCharacterStats(String gameRoleId, String characterId, String statsOptionId) {
@@ -206,9 +206,9 @@ public class Mutation implements GraphQLMutationResolver {
 
     // ------------------------------------- Adjusting from PlaybookPanel ----------------------------------- //
 
-    public Character adjustCharacterHx(String gameRoleId, String characterId, String hxId, int value) {
+    public Character adjustCharacterHx(String gameRoleId, String characterId, HxStat hxStat) {
         System.out.println("Adjusting Hx for Character: " + characterId);
-        return gameRoleService.adjustCharacterHx(gameRoleId, characterId, hxId, value);
+        return gameRoleService.adjustCharacterHx(gameRoleId, characterId, hxStat);
     }
 
     public Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm) {

@@ -502,7 +502,7 @@ type Game {
 type GameMessage {
     id: ID!
     gameId: String
-    gameroleId: String
+    gameRoleId: String
     messageType: MessageType
     title: String
     sentOn: String
@@ -806,7 +806,15 @@ type StatModifier {
 
 # ---------------------------------------------- INPUTS --------------------------------------------- #
 
+input LookInput {
+    id: ID
+    playbookType: PlaybookType
+    category: LookType
+    look: String
+}
+
 input HxInput {
+    id: ID
     characterId: String!
     characterName: String!
     hxValue: Int!
@@ -1068,8 +1076,7 @@ type Mutation {
         name: String!): Character
     setCharacterLook(gameRoleId: String!,
         characterId: String!,
-        look: String!,
-        category: LookType! ): Character
+        look: LookInput! ): Character
     setCharacterStats(gameRoleId: String!,
         characterId: String!,
         statsOptionId: String! ): Character
@@ -1138,7 +1145,7 @@ type Mutation {
 
     ### Adjusting from PlaybookPanel
     adjustCharacterHx(gameRoleId: String!,
-        characterId: String!, hxId: String!, value: Int!): Character
+        characterId: String!, hxStat: HxInput!): Character
     setCharacterHarm(gameRoleId: String!,
         characterId: String!, harm: HarmInput!): Character
     toggleStatHighlight(gameRoleId: String!,
@@ -1166,83 +1173,83 @@ type Mutation {
 
     #    Move categories
     performPrintMove(gameId: String!,
-        gameroleId: String!,
+        gameRoleId: String!,
         characterId: String!,
         moveId: String!,
         isGangMove: Boolean!
     ): Game
-    performBarterMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
-    performStockMove(gameId: String!, gameroleId: String!, characterId: String!, moveName: String!, stockSpent: Int!): Game
+    performBarterMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
+    performStockMove(gameId: String!, gameRoleId: String!, characterId: String!, moveName: String!, stockSpent: Int!): Game
 
     #    Roll move categories
     performStatRollMove(gameId: String!,
-        gameroleId: String!,
+        gameRoleId: String!,
         characterId: String!,
         moveId: String!,
         isGangMove: Boolean!): Game
     performSpeedRollMove(gameId: String!,
-        gameroleId: String!,
+        gameRoleId: String!,
         characterId: String!,
         moveId: String!,
         modifier: Int!): Game # Modifier can be speed difference, relative speed, or handling
 
     #    Specific moves
     performWealthMove(gameId: String!,
-        gameroleId: String!,
+        gameRoleId: String!,
         characterId: String!): Game
     performFortunesMove(gameId: String!,
-        gameroleId: String!,
+        gameRoleId: String!,
         characterId: String!): Game
-    performHelpOrInterfereMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
-    performMakeWantKnownMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
-    performSufferHarmMove(gameId: String!, gameroleId: String!, characterId: String!, moveId: String!, harm: Int!): Game
+    performHelpOrInterfereMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
+    performMakeWantKnownMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
+    performSufferHarmMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, harm: Int!): Game
     performInflictHarmMove(gameId: String!,
-        gameroleId: String!,
+        gameRoleId: String!,
         otherGameroleId: String!,
         characterId: String!,
         otherCharacterId: String!,
         harm: Int!): Game
     performHealHarmMove(gameId: String!,
-        gameroleId: String!,
+        gameRoleId: String!,
         otherGameroleId: String!,
         characterId: String!,
         otherCharacterId: String!,
         harm: Int!): Game
     performAngelSpecialMove(gameId: String!,
-        gameroleId: String!,
+        gameRoleId: String!,
         otherGameroleId: String!,
         characterId: String!,
         otherCharacterId: String!): Game
     performChopperSpecialMove(gameId: String!,
-        gameroleId: String!,
+        gameRoleId: String!,
         otherGameroleId: String!,
         characterId: String!,
         otherCharacterId: String!,
         hxChange: Int!): Game
     performGunluggerSpecialMove(gameId: String!,
-        gameroleId: String!,
+        gameRoleId: String!,
         otherGameroleId: String!,
         characterId: String!,
         otherCharacterId: String!,
         addPlus1Forward: Boolean!): Game
     performHocusSpecialMove(gameId: String!,
-        gameroleId: String!,
+        gameRoleId: String!,
         otherGameroleId: String!,
         characterId: String!,
         otherCharacterId: String!): Game
     performSkinnerSpecialMove(gameId: String!,
-        gameroleId: String!,
+        gameRoleId: String!,
         otherGameroleId: String!,
         characterId: String!,
         otherCharacterId: String!,
         plus1ForUser: Boolean!,
         plus1ForOther: Boolean!,): Game
-    performStabilizeAndHealMove(gameId: String!, gameroleId: String!, characterId: String!, stockSpent: Int!): Game
-    performJustGiveMotivationMove(gameId: String!, gameroleId: String!, characterId: String!, targetId: String): Game
+    performStabilizeAndHealMove(gameId: String!, gameRoleId: String!, characterId: String!, stockSpent: Int!): Game
+    performJustGiveMotivationMove(gameId: String!, gameRoleId: String!, characterId: String!, targetId: String): Game
 
     # Other
-    spendHold(gameId: String!, gameroleId: String!, characterId: String!, hold: HoldInput!): Game
-    removeHold(gameroleId: String!, characterId: String!, hold: HoldInput!): Character
+    spendHold(gameId: String!, gameRoleId: String!, characterId: String!, hold: HoldInput!): Game
+    removeHold(gameRoleId: String!, characterId: String!, hold: HoldInput!): Character
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

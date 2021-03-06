@@ -21,7 +21,7 @@ public class GameMessage {
 
     private String gameId;
 
-    private String gameroleId;
+    private String gameRoleId;
 
     private MessageType messageType;
 

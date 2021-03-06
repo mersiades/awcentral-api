@@ -1,8 +1,8 @@
 package com.mersiades.awcdata.services;
 
-import com.mersiades.awccontent.enums.LookType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.StatType;
+import com.mersiades.awccontent.models.Look;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.*;
@@ -31,7 +31,7 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     Character setCharacterName(String gameRoleId, String characterId, String name);
 
-    Character setCharacterLook(String gameRoleId, String characterId, String look, LookType category);
+    Character setCharacterLook(String gameRoleId, String characterId, Look look);
 
     Character setCharacterStats(String gameRoleId, String characterId, String statsOptionId);
 
@@ -77,7 +77,7 @@ public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
 
     // ------------------------------------- Adjusting from PlaybookPanel ----------------------------------- //
 
-    Character adjustCharacterHx(String gameRoleId, String characterId, String hxId, int value);
+    Character adjustCharacterHx(String gameRoleId, String characterId, HxStat hxStat);
 
     Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm);
 

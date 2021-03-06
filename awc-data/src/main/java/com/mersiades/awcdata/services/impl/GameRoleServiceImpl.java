@@ -220,25 +220,37 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
-    public Character setCharacterLook(String gameRoleId, String characterId, String look, LookType category) {
+    public Character setCharacterLook(String gameRoleId, String characterId, Look look) {
 
-        // Get the GameRole
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
         assert gameRole != null;
+        Character character = getCharacterById(gameRole, characterId);
 
-        // GameRoles can have multiple characters, so get the right character
-        Character character = gameRole.getCharacters().stream()
-                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+        if (look.getId() == null) {
+            look.setId(UUID.randomUUID().toString());
+        }
 
         // Check to see if the character already has a Look with the given category
-        if (character.getLookByCategory(category).isEmpty()) {
-            // Create new Look
-            Look newLook = Look.builder().id(UUID.randomUUID().toString()).look(look).category(category).build();
-            character.getLooks().add(newLook);
+        if (character.getLookByCategory(look.getCategory()).isEmpty()) {
+            character.getLooks().add(look);
         } else {
+            // Replace old Look if Look with matching category already exists
+            ListIterator<Look> iterator = character.getLooks().listIterator();
+            boolean hasReplaced = false;
+            while (iterator.hasNext()) {
+                Look nextLook = iterator.next();
+                if (nextLook.getCategory().equals(look.getCategory())) {
+                    iterator.set(look);
+                    hasReplaced = true;
+                }
+            }
+
+            if (!hasReplaced) {
+                character.getLooks().add(look);
+            }
             // Update existing Look
-            Look lookToUpdate = character.getLookByCategory(category).get();
-            lookToUpdate.setLook(look);
+            Look lookToUpdate = character.getLookByCategory(look.getCategory()).get();
+            lookToUpdate.setLook(look.getLook());
         }
 
         // Save to db
@@ -947,20 +959,41 @@ public class GameRoleServiceImpl implements GameRoleService {
     // ------------------------------------- Adjusting from PlaybookPanel ----------------------------------- //
 
     @Override
-    public Character adjustCharacterHx(String gameRoleId, String characterId, String hxId, int value) {
+    public Character adjustCharacterHx(String gameRoleId, String characterId, HxStat hxStat) {
         // Get the GameRole
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
-        Character character = gameRole.getCharacters().stream()
-                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+        Character character = getCharacterById(gameRole, characterId);
 
-        character.getHxBlock().forEach(hxStat -> {
-            if (hxStat.getCharacterId().equals(hxId)) {
-                hxStat.setHxValue(value);
+        if (hxStat.getId() == null) {
+            hxStat.setId(UUID.randomUUID().toString());
+        }
+
+        Optional<HxStat> existingHxStatOptional = character.getHxBlock()
+                .stream().filter(hxStat1 -> hxStat1.getId().equals(hxStat.getId())).findFirst();
+
+        if (existingHxStatOptional.isEmpty()) {
+            // Add new HxStat
+            character.getHxBlock().add(hxStat);
+        } else {
+            // Replace HdxStat with updated data, if it already exists
+            ListIterator<HxStat> iterator = character.getHxBlock().listIterator();
+            boolean hasReplaced = false;
+            while (iterator.hasNext()) {
+                HxStat nextHxStat = iterator.next();
+                if (nextHxStat.getId().equals(hxStat.getId())) {
+                    iterator.set(hxStat);
+                    hasReplaced = true;
+                }
             }
-        });
+
+            if (!hasReplaced) {
+                // Add a new HxStat to the existing HxBlock List (just in case)
+                character.getHxBlock().add(hxStat);
+            }
+        }
 
         // Save to db
         characterService.save(character).block();
