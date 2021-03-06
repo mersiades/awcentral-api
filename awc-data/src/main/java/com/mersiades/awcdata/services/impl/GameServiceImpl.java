@@ -157,11 +157,37 @@ public class GameServiceImpl implements GameService {
             User ruth = User.builder().id(UUID.randomUUID().toString())
                     .email("ruth@email.com").displayName("Ruth").gameRoles(List.of(ruthGameRole)).build();
 
-            Look angel2 = new Look(PlaybookType.ANGEL, LookType.GENDER, "woman");
-            Look angel6 = new Look(PlaybookType.ANGEL, LookType.CLOTHES, "utility wear");
-            Look angel10 = new Look(PlaybookType.ANGEL, LookType.FACE, "strong face");
-            Look angel15 = new Look(PlaybookType.ANGEL, LookType.EYES, "quick eyes");
-            Look angel21 = new Look(PlaybookType.ANGEL, LookType.BODY, "compact body");
+            Look angel2 = Look.builder()
+                    .id(UUID.randomUUID().toString())
+                    .playbookType(PlaybookType.ANGEL)
+                    .category(LookType.GENDER)
+                    .look("woman")
+                    .build();
+            Look angel6 = Look.builder()
+                    .id(UUID.randomUUID().toString())
+                    .playbookType(PlaybookType.ANGEL)
+                    .category(LookType.CLOTHES)
+                    .look("utility wear")
+                    .build();
+            Look angel10 = Look.builder()
+                    .id(UUID.randomUUID().toString())
+                    .playbookType(PlaybookType.ANGEL)
+                    .category(LookType.FACE)
+                    .look("strong face")
+                    .build();
+            Look angel15 = Look.builder()
+                    .id(UUID.randomUUID().toString())
+                    .playbookType(PlaybookType.ANGEL)
+                    .category(LookType.EYES)
+                    .look("quick eyes")
+                    .build();
+            Look angel21 = Look.builder()
+                    .id(UUID.randomUUID().toString())
+                    .playbookType(PlaybookType.ANGEL)
+                    .category(LookType.BODY)
+                    .look("compact body")
+                    .build();
+
 
             CharacterStat angelCool = CharacterStat.builder().id(UUID.randomUUID().toString())
                     .stat(StatType.COOL).value(1).isHighlighted(false).build();
@@ -188,15 +214,36 @@ public class GameServiceImpl implements GameService {
                     .harm(harm)
                     .build();
 
-            Look brainer3 = new Look(PlaybookType.BRAINER, LookType.GENDER, "ambiguous");
-            Look brainer6 = Look.builder().playbookType(PlaybookType.BRAINER)
-                    .category(LookType.CLOTHES).look("high formal wear").build();
-            Look brainer12 = Look.builder().playbookType(PlaybookType.BRAINER)
-                    .category(LookType.FACE).look("pale face").build();
-            Look brainer17 = Look.builder().playbookType(PlaybookType.BRAINER)
-                    .category(LookType.EYES).look("dead eyes").build();
-            Look brainer23 = Look.builder().playbookType(PlaybookType.BRAINER)
-                    .category(LookType.BODY).look("awkward angular body").build();
+            Look brainer3 = Look.builder()
+                    .id(UUID.randomUUID().toString())
+                    .playbookType(PlaybookType.BRAINER)
+                    .category(LookType.GENDER)
+                    .look("ambiguous")
+                    .build();
+
+            Look brainer6 = Look.builder()
+                    .id(UUID.randomUUID().toString())
+                    .playbookType(PlaybookType.BRAINER)
+                    .category(LookType.CLOTHES)
+                    .look("high formal wear")
+                    .build();
+            Look brainer12 = Look.builder()
+                    .playbookType(PlaybookType.BRAINER)
+                    .id(UUID.randomUUID().toString())
+                    .category(LookType.FACE)
+                    .look("pale face")
+                    .build();
+            Look brainer17 = Look.builder()
+                    .id(UUID.randomUUID().toString())
+                    .playbookType(PlaybookType.BRAINER)
+                    .category(LookType.EYES)
+                    .look("dead eyes")
+                    .build();
+            Look brainer23 = Look.builder()
+                    .id(UUID.randomUUID().toString())
+                    .playbookType(PlaybookType.BRAINER)
+                    .category(LookType.BODY)
+                    .look("awkward angular body").build();
 
             CharacterStat brainerCool = CharacterStat.builder().id(UUID.randomUUID().toString())
                     .stat(StatType.COOL).value(1).isHighlighted(false).build();
