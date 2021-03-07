@@ -20,15 +20,19 @@ public class PlaybookRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        Playbook angel = new Playbook(PlaybookType.ANGEL, "At the beginning ....",
-                "When you’re lying ...",
-                "Angels are medics. ...",
-                "https://awc-images...");
+        Playbook angel = Playbook.builder()
+                .playbookType(PlaybookType.ANGEL)
+                .barterInstructions("At the beginning ....")
+                .intro("When you’re lying ...")
+                .introComment("Angels are medics. ...")
+                .playbookImageUrl("https://awc-images...").build();
 
-        Playbook battlebabe = new Playbook(PlaybookType.BATTLEBABE, "At the beginning ...",
-                "Even in a place ...",
-                "Dangerous...",
-                "https://awc-i...");
+        Playbook battlebabe = Playbook.builder()
+                .playbookType(PlaybookType.BATTLEBABE)
+                .barterInstructions("At the beginning ....")
+                .intro("Even in a place ...")
+                .introComment("Dangerous...")
+                .playbookImageUrl("https://awc-images...").build();
 
         playbookRepository.deleteAll()
                 .thenMany(Flux.just(angel, battlebabe))

@@ -34,12 +34,4 @@ public class Playbook  {
 
     // one to one
     private PlaybookCreator creator;
-
-    public Playbook(PlaybookType playbookType, String barterInstructions, String intro, String introComment, String playbookImageUrl) {
-        this.playbookType = playbookType;
-        this.barterInstructions = barterInstructions;
-        this.intro = intro;
-        this.introComment = introComment;
-        this.playbookImageUrl = playbookImageUrl;
-    }
 }
