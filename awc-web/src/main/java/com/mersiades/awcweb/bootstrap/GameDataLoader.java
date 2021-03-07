@@ -2396,42 +2396,42 @@ public class GameDataLoader implements CommandLineRunner {
     private void loadLooks() {
         System.out.println("|| --- Loading playbook looks --- ||");
         /* ----------------------------- ANGEL LOOKS --------------------------------- */
-        Look angel1 = new Look(PlaybookType.ANGEL, LookType.GENDER, "man");
-        Look angel2 = new Look(PlaybookType.ANGEL, LookType.GENDER, "woman");
-        Look angel3 = new Look(PlaybookType.ANGEL, LookType.GENDER, "ambiguous");
-        Look angel4 = new Look(PlaybookType.ANGEL, LookType.GENDER, "transgressing");
-        Look angel5 = new Look(PlaybookType.ANGEL, LookType.GENDER, "concealed");
-        Look angel6 = new Look(PlaybookType.ANGEL, LookType.CLOTHES, "utility wear");
-        Look angel7 = new Look(PlaybookType.ANGEL, LookType.CLOTHES, "casual wear plus utility");
-        Look angel8 = new Look(PlaybookType.ANGEL, LookType.CLOTHES, "scrounge wear plus utility");
-        Look angel9 = new Look(PlaybookType.ANGEL, LookType.FACE, "kind face");
-        Look angel10 = new Look(PlaybookType.ANGEL, LookType.FACE, "strong face");
-        Look angel11 = new Look(PlaybookType.ANGEL, LookType.FACE, "rugged face");
-        Look angel12 = new Look(PlaybookType.ANGEL, LookType.FACE, "haggard face");
-        Look angel13 = new Look(PlaybookType.ANGEL, LookType.FACE, "pretty face");
-        Look angel14 = new Look(PlaybookType.ANGEL, LookType.FACE, "lively face");
-        Look angel15 = new Look(PlaybookType.ANGEL, LookType.EYES, "quick eyes");
-        Look angel16 = new Look(PlaybookType.ANGEL, LookType.EYES, "hard eyes");
-        Look angel17 = new Look(PlaybookType.ANGEL, LookType.EYES, "caring eyes");
-        Look angel18 = new Look(PlaybookType.ANGEL, LookType.EYES, "bright eyes");
-        Look angel19 = new Look(PlaybookType.ANGEL, LookType.EYES, "laughing eyes");
-        Look angel20 = new Look(PlaybookType.ANGEL, LookType.EYES, "clear eyes");
-        Look angel21 = new Look(PlaybookType.ANGEL, LookType.BODY, "compact body");
-        Look angel22 = new Look(PlaybookType.ANGEL, LookType.BODY, "stout body");
-        Look angel23 = new Look(PlaybookType.ANGEL, LookType.BODY, "spare body");
-        Look angel24 = new Look(PlaybookType.ANGEL, LookType.BODY, "big body");
-        Look angel25 = new Look(PlaybookType.ANGEL, LookType.BODY, "rangy body");
-        Look angel26 = new Look(PlaybookType.ANGEL, LookType.BODY, "sturdy body");
+        Look angel1 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.GENDER).look("man").build();
+        Look angel2 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.GENDER).look("woman").build();
+        Look angel3 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.GENDER).look("ambiguous").build();
+        Look angel4 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.GENDER).look("transgressing").build();
+        Look angel5 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.GENDER).look("concealed").build();
+        Look angel6 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.CLOTHES).look("utility wear").build();
+        Look angel7 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.CLOTHES).look("casual wear plus utility").build();
+        Look angel8 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.CLOTHES).look("scrounge wear plus utility").build();
+        Look angel9 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.FACE).look("kind face").build();
+        Look angel10 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.FACE).look("strong face").build();
+        Look angel11 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.FACE).look("rugged face").build();
+        Look angel12 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.FACE).look("haggard face").build();
+        Look angel13 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.FACE).look("pretty face").build();
+        Look angel14 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.FACE).look("lively face").build();
+        Look angel15 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.EYES).look("quick eyes").build();
+        Look angel16 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.EYES).look("hard eyes").build();
+        Look angel17 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.EYES).look("caring eyes").build();
+        Look angel18 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.EYES).look("bright eyes").build();
+        Look angel19 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.EYES).look("laughing eyes").build();
+        Look angel20 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.EYES).look("clear eyes").build();
+        Look angel21 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("compact body").build();
+        Look angel22 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("stout body").build();
+        Look angel23 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("spare body").build();
+        Look angel24 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("big body").build();
+        Look angel25 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("rangy body").build();
+        Look angel26 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("sturdy body").build();
 
         lookService.saveAll(Flux.just(angel1, angel2, angel3, angel4, angel5, angel6, angel7, angel8, angel9,
                 angel10, angel11, angel12, angel13, angel14, angel15, angel16, angel17, angel18, angel19,
                 angel20, angel21, angel22, angel23, angel24, angel25, angel26)).blockLast();
 
         /* ----------------------------- BATTLEBABE LOOKS --------------------------------- */
-        Look battlebabe1 = new Look(PlaybookType.BATTLEBABE, LookType.GENDER, "man");
-        Look battlebabe2 = new Look(PlaybookType.BATTLEBABE, LookType.GENDER, "woman");
-        Look battlebabe3 = new Look(PlaybookType.BATTLEBABE, LookType.GENDER, "ambiguous");
-        Look battlebabe4 = new Look(PlaybookType.BATTLEBABE, LookType.GENDER, "transgressing");
+        Look battlebabe1 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.GENDER).look("man").build();
+        Look battlebabe2 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.GENDER).look("woman").build();
+        Look battlebabe3 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.GENDER).look("ambiguous").build();
+        Look battlebabe4 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.GENDER).look("transgressing").build();
         Look battlebabe5 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.CLOTHES).look("formal wear").build();
         Look battlebabe6 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.CLOTHES).look("display wear").build();
         Look battlebabe7 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.CLOTHES).look("luxe wear").build();
@@ -2461,11 +2461,11 @@ public class GameDataLoader implements CommandLineRunner {
                 battlebabe21, battlebabe22, battlebabe23, battlebabe24, battlebabe25, battlebabe26)).blockLast();
 
         /* ----------------------------- BRAINER LOOKS --------------------------------- */
-        Look brainer1 = new Look(PlaybookType.BRAINER, LookType.GENDER, "man");
-        Look brainer2 = new Look(PlaybookType.BRAINER, LookType.GENDER, "woman");
-        Look brainer3 = new Look(PlaybookType.BRAINER, LookType.GENDER, "ambiguous");
-        Look brainer4 = new Look(PlaybookType.BRAINER, LookType.GENDER, "transgressing");
-        Look brainer5 = new Look(PlaybookType.BRAINER, LookType.GENDER, "concealed");
+        Look brainer1 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.GENDER).look("man").build();
+        Look brainer2 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.GENDER).look("woman").build();
+        Look brainer3 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.GENDER).look("ambiguous").build();
+        Look brainer4 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.GENDER).look("transgressing").build();
+        Look brainer5 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.GENDER).look("concealed").build();
         Look brainer6 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.CLOTHES).look("high formal wear").build();
         Look brainer7 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.CLOTHES).look("clinical wear").build();
         Look brainer8 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.CLOTHES).look("fetish-bondage wear").build();
