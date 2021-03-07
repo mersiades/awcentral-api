@@ -51,12 +51,4 @@ public class PlaybookCreator {
 
     @Builder.Default
     private List<StatsOption> statsOptions = new ArrayList<>();
-
-    public PlaybookCreator(PlaybookType playbookType, GearInstructions gearInstructions, String improvementInstructions, String movesInstructions, String hxInstructions) {
-        this.playbookType = playbookType;
-        this.gearInstructions = gearInstructions;
-        this.improvementInstructions = improvementInstructions;
-        this.movesInstructions = movesInstructions;
-        this.hxInstructions = hxInstructions;
-    }
 }

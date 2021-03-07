@@ -33,7 +33,12 @@ class LookServiceImplTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        mockLook1 = new Look(MOCK_LOOK_ID_1, PlaybookType.BATTLEBABE, LookType.CLOTHES, "Sexy leatherwear");
+        mockLook1 = Look.builder()
+                .id(MOCK_LOOK_ID_1)
+                .category(LookType.CLOTHES)
+                .playbookType(PlaybookType.BATTLEBABE)
+                .look("Sexy leatherwear")
+                .build();
 
         lookService = new LookServiceImpl(lookRepository);
     }
@@ -41,7 +46,11 @@ class LookServiceImplTest {
     @Test
     void shouldFindAllLooks() {
         // Given
-        Look mockLook2 = new Look(PlaybookType.SKINNER, LookType.EYES, "askance");
+        Look mockLook2 = Look.builder()
+                .playbookType(PlaybookType.SKINNER)
+                .category(LookType.EYES)
+                .look("askance").build();
+
         when(lookRepository.findAll()).thenReturn(Flux.just(mockLook1, mockLook2));
 
         // When
@@ -117,7 +126,10 @@ class LookServiceImplTest {
     @Test
     void findAllByPlaybookType() {
         // Given
-        Look mockLook3 = new Look(PlaybookType.BATTLEBABE, LookType.EYES, "almond");
+        Look mockLook3 = Look.builder()
+                .playbookType(PlaybookType.BATTLEBABE)
+                .category(LookType.EYES)
+                .look("almond").build();
         when(lookService.findAllByPlaybookType(any())).thenReturn(Flux.just(mockLook1, mockLook3));
 
         // When

@@ -3,7 +3,6 @@ package com.mersiades.awccontent.repositories;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Name;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-//@DataMongoTest
-@Disabled
 @ExtendWith({SpringExtension.class})
 @SpringBootApplication
 public class NameRepositoryTest {
@@ -23,8 +20,8 @@ public class NameRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        Name dou = new Name(PlaybookType.ANGEL, "Dou");
-        Name bon = new Name(PlaybookType.ANGEL, "Bon");
+        Name dou = Name.builder().playbookType(PlaybookType.ANGEL).name("Dou").build();
+        Name bon = Name.builder().playbookType(PlaybookType.ANGEL).name("Bon").build();
         Name snow = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Snow").build();
         Name crimson = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Crimson").build();
         Name smith2 = Name.builder().playbookType(PlaybookType.BRAINER).name("Smith").build();

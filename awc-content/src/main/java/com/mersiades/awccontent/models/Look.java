@@ -25,16 +25,4 @@ public class Look {
 
     private PlaybookCreator playbookCreator;
 
-    public Look(PlaybookType playbookType, LookType category, String look) {
-        this.playbookType = playbookType;
-        this.category = category;
-        this.look = look;
-    }
-
-    public Look(String id, PlaybookType playbookType, LookType category, String look) {
-        this.id = id;
-        this.playbookType = playbookType;
-        this.category = category;
-        this.look = look;
-    }
 }

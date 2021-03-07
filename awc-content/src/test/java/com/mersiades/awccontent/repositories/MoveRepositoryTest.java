@@ -4,7 +4,6 @@ import com.mersiades.awccontent.enums.MoveType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Move;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-//@DataMongoTest
-@Disabled
 @ExtendWith({SpringExtension.class})
 @SpringBootApplication
 public class MoveRepositoryTest {
@@ -27,7 +24,7 @@ public class MoveRepositoryTest {
         Move iceCold = Move.builder().name("ICE COLD").description("_**Ice cold**_: when ...").kind(MoveType.CHARACTER).playbook(PlaybookType.BATTLEBABE).build();
         Move merciless = Move.builder().name("MERCILESS").description("_**Merciless**_: when ...").kind(MoveType.CHARACTER).playbook(PlaybookType.BATTLEBABE).build();
         Move profCompassion = Move.builder().name("PROFESSIONAL COMPASSION").description("_**Professional compassion**_: you can ...").kind(MoveType.CHARACTER).playbook(PlaybookType.ANGEL).build();
-        Move battlefieldGrace = new Move("BATTLEFIELD GRACE", "_**Battlefield grace**_: while you ...", null, MoveType.CHARACTER, PlaybookType.ANGEL);
+        Move battlefieldGrace = Move.builder().name("BATTLEFIELD GRACE").description("_**Battlefield grace**_: while you ...").kind(MoveType.CHARACTER).playbook(PlaybookType.ANGEL).build();
 
         moveRepository.deleteAll()
                 .thenMany(Flux.just(iceCold,merciless, profCompassion, battlefieldGrace))
@@ -41,6 +38,14 @@ public class MoveRepositoryTest {
         StepVerifier.create(moveRepository.findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.CHARACTER))
                 .expectSubscription()
                 .expectNextCount(2)
+                .verifyComplete();
+    }
+
+    @Test
+    public void shouldFindMoveByMoveName() {
+        StepVerifier.create(moveRepository.findByName("MERCILESS"))
+                .expectSubscription()
+                .expectNextMatches(move -> move.getDescription().equals("_**Merciless**_: when ..."))
                 .verifyComplete();
     }
 
