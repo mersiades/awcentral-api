@@ -1,7 +1,10 @@
 package com.mersiades.awccontent.services;
 
 import com.mersiades.awccontent.enums.MoveType;
+import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Move;
+import com.mersiades.awccontent.repositories.MoveRepository;
+import com.mersiades.awccontent.services.impl.MoveServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -9,8 +12,6 @@ import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.mersiades.awccontent.repositories.MoveRepository;
-import com.mersiades.awccontent.services.impl.MoveServiceImpl;
 
 import java.util.List;
 
@@ -117,5 +118,38 @@ class MoveServiceImplTest {
 
         // Then
         verify(moveRepository, times(1)).deleteById(anyString());
+    }
+
+    @Test
+    void shouldFindAllMovesByPlaybookAndKind() {
+        // Given
+        Move iceCold = Move.builder().name("ICE COLD").description("_**Ice cold**_: when ...").kind(MoveType.CHARACTER).playbook(PlaybookType.BATTLEBABE).build();
+        Move merciless = Move.builder().name("MERCILESS").description("_**Merciless**_: when ...").kind(MoveType.CHARACTER).playbook(PlaybookType.BATTLEBABE).build();
+        when(moveRepository.findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.CHARACTER)).thenReturn(Flux.just(iceCold, merciless));
+
+        // When
+        List<Move> returnedMoves = moveService.findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.CHARACTER).collectList().block();
+
+        // Then
+        assert returnedMoves != null;
+        returnedMoves.forEach(move -> {
+            assertEquals(move.getPlaybook(), PlaybookType.BATTLEBABE);
+            assertEquals(move.getKind(), MoveType.CHARACTER);
+        });
+        verify(moveRepository, times(1)).findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.CHARACTER);
+    }
+
+    @Test
+    void shouldFindMoveByName() {
+        // Given
+        when(moveRepository.findByName(anyString())).thenReturn(Mono.just(mockMove1));
+
+        // When
+        Move returnedMove = moveService.findByName(mockMove1.getName()).block();
+
+        // Then
+        assert returnedMove != null;
+        assertEquals(returnedMove.getName(), mockMove1.getName());
+        verify(moveRepository, times(1)).findByName(mockMove1.getName());
     }
 }
