@@ -2049,34 +2049,34 @@ public class GameDataLoader implements CommandLineRunner {
     private void loadNames() {
         System.out.println("|| --- Loading playbook names --- ||");
         /* ----------------------------- ANGEL NAMES --------------------------------- */
-        Name dou = new Name(PlaybookType.ANGEL, "Dou");
-        Name bon = new Name(PlaybookType.ANGEL, "Bon");
-        Name abe = new Name(PlaybookType.ANGEL, "Abe");
-        Name boo = new Name(PlaybookType.ANGEL, "Boo");
-        Name t = new Name(PlaybookType.ANGEL, "T");
-        Name kal = new Name(PlaybookType.ANGEL, "Kal");
-        Name charName = new Name(PlaybookType.ANGEL, "Char");
-        Name jav = new Name(PlaybookType.ANGEL, "Jav");
-        Name ruth = new Name(PlaybookType.ANGEL, "Ruth");
-        Name wei = new Name(PlaybookType.ANGEL, "Wei");
-        Name jay = new Name(PlaybookType.ANGEL, "Jay");
-        Name nee = new Name(PlaybookType.ANGEL, "Nee");
-        Name kim = new Name(PlaybookType.ANGEL, "Kim");
-        Name lan = new Name(PlaybookType.ANGEL, "Lan");
-        Name di = new Name(PlaybookType.ANGEL, "Di");
-        Name dez = new Name(PlaybookType.ANGEL, "Dez");
-        Name doc = new Name(PlaybookType.ANGEL, "Doc");
-        Name core = new Name(PlaybookType.ANGEL, "Core");
-        Name wheels = new Name(PlaybookType.ANGEL, "Wheels");
-        Name buzz = new Name(PlaybookType.ANGEL, "Buzz");
-        Name key = new Name(PlaybookType.ANGEL, "Key");
-        Name line = new Name(PlaybookType.ANGEL, "Line");
-        Name gabe = new Name(PlaybookType.ANGEL, "Gabe");
-        Name biz = new Name(PlaybookType.ANGEL, "Biz");
-        Name bish = new Name(PlaybookType.ANGEL, "Bish");
-        Name inch = new Name(PlaybookType.ANGEL, "Inch");
-        Name grip = new Name(PlaybookType.ANGEL, "Grip");
-        Name setter = new Name(PlaybookType.ANGEL, "Setter");
+        Name dou = Name.builder().playbookType(PlaybookType.ANGEL).name("Dou").build();
+        Name bon = Name.builder().playbookType(PlaybookType.ANGEL).name("Bon").build();
+        Name abe = Name.builder().playbookType(PlaybookType.ANGEL).name("Abe").build();
+        Name boo = Name.builder().playbookType(PlaybookType.ANGEL).name("Boo").build();
+        Name t = Name.builder().playbookType(PlaybookType.ANGEL).name("T").build();
+        Name kal = Name.builder().playbookType(PlaybookType.ANGEL).name("Kal").build();
+        Name charName = Name.builder().playbookType(PlaybookType.ANGEL).name("Char").build();
+        Name jav = Name.builder().playbookType(PlaybookType.ANGEL).name("Jav").build();
+        Name ruth = Name.builder().playbookType(PlaybookType.ANGEL).name("Ruth").build();
+        Name wei = Name.builder().playbookType(PlaybookType.ANGEL).name("Wei").build();
+        Name jay = Name.builder().playbookType(PlaybookType.ANGEL).name("Jay").build();
+        Name nee = Name.builder().playbookType(PlaybookType.ANGEL).name("Nee").build();
+        Name kim = Name.builder().playbookType(PlaybookType.ANGEL).name("Kim").build();
+        Name lan = Name.builder().playbookType(PlaybookType.ANGEL).name("Lan").build();
+        Name di = Name.builder().playbookType(PlaybookType.ANGEL).name("Di").build();
+        Name dez = Name.builder().playbookType(PlaybookType.ANGEL).name("Dez").build();
+        Name doc = Name.builder().playbookType(PlaybookType.ANGEL).name("Doc").build();
+        Name core = Name.builder().playbookType(PlaybookType.ANGEL).name("Core").build();
+        Name wheels = Name.builder().playbookType(PlaybookType.ANGEL).name("Wheels").build();
+        Name buzz = Name.builder().playbookType(PlaybookType.ANGEL).name("Buzz").build();
+        Name key = Name.builder().playbookType(PlaybookType.ANGEL).name("Key").build();
+        Name line = Name.builder().playbookType(PlaybookType.ANGEL).name("Line").build();
+        Name gabe = Name.builder().playbookType(PlaybookType.ANGEL).name("Gabe").build();
+        Name biz = Name.builder().playbookType(PlaybookType.ANGEL).name("Biz").build();
+        Name bish = Name.builder().playbookType(PlaybookType.ANGEL).name("Bish").build();
+        Name inch = Name.builder().playbookType(PlaybookType.ANGEL).name("Inch").build();
+        Name grip = Name.builder().playbookType(PlaybookType.ANGEL).name("Grip").build();
+        Name setter = Name.builder().playbookType(PlaybookType.ANGEL).name("Setter").build();
 
         nameService.saveAll(Flux.just(dou, bon, abe, boo, t, kal, charName, jav, ruth, wei, jay, nee,
                 kim, lan, di, dez, core, wheels, doc, buzz, key, line, gabe, biz, bish, inch, grip, setter))

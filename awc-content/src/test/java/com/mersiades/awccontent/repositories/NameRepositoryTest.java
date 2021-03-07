@@ -20,8 +20,8 @@ public class NameRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        Name dou = new Name(PlaybookType.ANGEL, "Dou");
-        Name bon = new Name(PlaybookType.ANGEL, "Bon");
+        Name dou = Name.builder().playbookType(PlaybookType.ANGEL).name("Dou").build();
+        Name bon = Name.builder().playbookType(PlaybookType.ANGEL).name("Bon").build();
         Name snow = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Snow").build();
         Name crimson = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Crimson").build();
         Name smith2 = Name.builder().playbookType(PlaybookType.BRAINER).name("Smith").build();

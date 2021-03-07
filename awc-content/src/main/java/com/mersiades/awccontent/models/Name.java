@@ -24,8 +24,4 @@ public class Name {
     // Many to one
     private PlaybookCreator playbookCreator;
 
-    public Name(PlaybookType playbookType, String name) {
-        this.playbookType = playbookType;
-        this.name = name;
-    }
 }
