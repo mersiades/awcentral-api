@@ -4,7 +4,6 @@ import com.mersiades.awccontent.enums.LookType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Look;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import reactor.test.StepVerifier;
 
 
 //@DataMongoTest
-@Disabled
 @ExtendWith(SpringExtension.class)
 @SpringBootApplication
 public class LookRepositoryTest {

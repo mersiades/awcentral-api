@@ -4,7 +4,6 @@ import com.mersiades.awccontent.enums.MoveType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Move;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-//@DataMongoTest
-@Disabled
 @ExtendWith({SpringExtension.class})
 @SpringBootApplication
 public class MoveRepositoryTest {
@@ -41,6 +38,14 @@ public class MoveRepositoryTest {
         StepVerifier.create(moveRepository.findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.CHARACTER))
                 .expectSubscription()
                 .expectNextCount(2)
+                .verifyComplete();
+    }
+
+    @Test
+    public void shouldFindMoveByMoveName() {
+        StepVerifier.create(moveRepository.findByName("MERCILESS"))
+                .expectSubscription()
+                .expectNextMatches(move -> move.getDescription().equals("_**Merciless**_: when ..."))
                 .verifyComplete();
     }
 

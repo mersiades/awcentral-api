@@ -3,7 +3,6 @@ package com.mersiades.awccontent.repositories;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.PlaybookCreator;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-//@DataMongoTest
-@Disabled
 @ExtendWith({SpringExtension.class})
 @SpringBootApplication
 class PlaybookCreatorRepositoryTest {
