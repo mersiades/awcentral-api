@@ -162,6 +162,31 @@ class GameServiceImplTest {
     }
 
     @Test
+    void shouldFindAndDeleteById() {
+
+
+    }
+
+    @Test
+    void shouldFindAllGamesForInvitee() {
+        // Given
+        String mockInvitee = "mock@invitee.com";
+        Game mockGame2 = Game.builder().invitees(Collections.singletonList(mockInvitee)).build();
+        mockGame1.getInvitees().add(mockInvitee);
+        when(gameRepository.findAllByInviteesContaining(anyString())).thenReturn(Flux.just(mockGame1, mockGame2));
+
+        // When
+        List<Game> returnedGames = gameService.findAllByInvitee(mockInvitee).collectList().block();
+
+        // Then
+        assert returnedGames != null;
+        assertEquals(2, returnedGames.size());
+        verify(gameRepository, times(1)).findAllByInviteesContaining(anyString());
+    }
+
+    // ---------------------------------------------- Game-related -------------------------------------------- //
+
+    @Test
     void shouldCreateGameForMc() throws Exception {
         // Given
         String mockGameName = "mock-game-name";
@@ -304,22 +329,7 @@ class GameServiceImplTest {
         verify(gameRepository, times(1)).save(any(Game.class));
     }
 
-    @Test
-    void shouldFindAllGamesForInvitee() {
-        // Given
-        String mockInvitee = "mock@invitee.com";
-        Game mockGame2 = Game.builder().invitees(Collections.singletonList(mockInvitee)).build();
-        mockGame1.getInvitees().add(mockInvitee);
-        when(gameRepository.findAllByInviteesContaining(anyString())).thenReturn(Flux.just(mockGame1, mockGame2));
 
-        // When
-        List<Game> returnedGames = gameService.findAllByInvitee(mockInvitee).collectList().block();
-
-        // Then
-        assert returnedGames != null;
-        assertEquals(2, returnedGames.size());
-        verify(gameRepository, times(1)).findAllByInviteesContaining(anyString());
-    }
 
     @Test
     public void shouldFinishPreGame() {

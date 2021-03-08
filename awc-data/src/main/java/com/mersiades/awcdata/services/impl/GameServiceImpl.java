@@ -294,11 +294,6 @@ public class GameServiceImpl implements GameService {
         }
     }
 
-    @Override
-    public Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit) {
-        return gameRepository.findById(gameId, skip, limit);
-    }
-
     // ---------------------------------------------- Game-related -------------------------------------------- //
 
     @Override
