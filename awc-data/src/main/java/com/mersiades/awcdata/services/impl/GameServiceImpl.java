@@ -127,7 +127,7 @@ public class GameServiceImpl implements GameService {
         game.getGameRoles().forEach(gameRoleService::delete);
 
         // Delete Game
-        this.delete(game);
+        this.delete(game); // Maybe use: gameRepository.deleteById(id), or change the deleteById method to delete gameroles also
 
         return game;
     }

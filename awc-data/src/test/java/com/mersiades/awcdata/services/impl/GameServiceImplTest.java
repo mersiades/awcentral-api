@@ -209,6 +209,89 @@ class GameServiceImplTest {
         verify(gameRoleService, times(1)).save(any(GameRole.class));
     }
 
+    @Test
+    void shouldSetGameName() {
+        // Given
+        String newName = "New Game Name";
+        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.setGameName(mockGame1.getId(), newName).block();
+
+        // Then
+        assert returnedGame != null;
+        assertEquals(mockGame1.getName(), returnedGame.getName());
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
+
+    }
+
+    @Test
+    void shouldAddInviteeToGame() {
+        // Given
+        String mockInvitee = "mock@invitee.com";
+        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.addInvitee(mockGame1.getId(), mockInvitee);
+
+        // Then
+        assert returnedGame != null;
+        assertTrue(returnedGame.getInvitees().contains(mockInvitee));
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldRemoveInviteeFromGame() {
+        // Given
+        String mockInvitee = "mock@invitee.com";
+        mockGame1.getInvitees().add(mockInvitee);
+        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.removeInvitee(mockGame1.getId(), mockInvitee);
+
+        // Then
+        assert returnedGame != null;
+        assertFalse(returnedGame.getInvitees().contains(mockInvitee));
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldAddCommsAppToGame() {
+        // Given
+        String mockCommsApp = "Discord";
+        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.addCommsApp(mockGame1.getId(), mockCommsApp);
+
+        // Then
+        assert returnedGame != null;
+        assertEquals(returnedGame.getCommsApp(), mockCommsApp);
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldAddCommsUrlToGame() {
+        // Given
+        String mockCommsUrl = "https://mock-url.com";
+        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.addCommsUrl(mockGame1.getId(), mockCommsUrl);
+
+        // Then
+        assert returnedGame != null;
+        assertEquals(returnedGame.getCommsUrl(), mockCommsUrl);
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
     // This should be an integration test, not unit
     @Test
     void shouldAddNewUserToGame() throws Exception {
@@ -264,75 +347,10 @@ class GameServiceImplTest {
         System.out.println("returnedGame = " + returnedGame);
     }
 
-    @Test
-    void shouldAddInviteeToGame() {
-        // Given
-        String mockInvitee = "mock@invitee.com";
-        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
-
-        // When
-        Game returnedGame = gameService.addInvitee(mockGame1.getId(), mockInvitee);
-
-        // Then
-        assert returnedGame != null;
-        assertTrue(returnedGame.getInvitees().contains(mockInvitee));
-        verify(gameRepository, times(1)).save(any(Game.class));
-    }
+    // ---------------------------------------------- MC stuff -------------------------------------------- //
 
     @Test
-    void shouldAddCommsAppToGame() {
-        // Given
-        String mockCommsApp = "Discord";
-        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
-
-        // When
-        Game returnedGame = gameService.addCommsApp(mockGame1.getId(), mockCommsApp);
-
-        // Then
-        assert returnedGame != null;
-        assertEquals(returnedGame.getCommsApp(), mockCommsApp);
-        verify(gameRepository, times(1)).save(any(Game.class));
-    }
-
-    @Test
-    void shouldAddCommsUrlToGame() {
-        // Given
-        String mockCommsUrl = "https://mock-url.com";
-        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
-
-        // When
-        Game returnedGame = gameService.addCommsUrl(mockGame1.getId(), mockCommsUrl);
-
-        // Then
-        assert returnedGame != null;
-        assertEquals(returnedGame.getCommsUrl(), mockCommsUrl);
-        verify(gameRepository, times(1)).save(any(Game.class));
-    }
-
-    @Test
-    void shouldRemoveInviteeFromGame() {
-        // Given
-        String mockInvitee = "mock@invitee.com";
-        mockGame1.getInvitees().add(mockInvitee);
-        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
-
-        // When
-        Game returnedGame = gameService.removeInvitee(mockGame1.getId(), mockInvitee);
-
-        // Then
-        assert returnedGame != null;
-        assertFalse(returnedGame.getInvitees().contains(mockInvitee));
-        verify(gameRepository, times(1)).save(any(Game.class));
-    }
-
-
-
-    @Test
-    public void shouldFinishPreGame() {
+    void shouldFinishPreGame() {
         // Given
         when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
         when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
@@ -345,4 +363,73 @@ class GameServiceImplTest {
         assertTrue(returnedGame.getHasFinishedPreGame());
         verify(gameRepository, times(1)).save(any(Game.class));
     }
+
+    // ---------------------------------------------- Move categories -------------------------------------------- //
+
+    @Test
+    void shouldPerformPrintMove() {}
+
+    @Test
+    void shouldPerformBarterMove() {}
+
+    @Test
+    void shouldPerformStockMove() {}
+
+    // ---------------------------------------------- Roll move categories -------------------------------------------- //
+
+    @Test
+    void shouldPerformStatRollMove() {}
+
+    @Test
+    void shouldPerformSpeedRollMove() {}
+
+    // ---------------------------------------------- Specific moves -------------------------------------------- //
+
+    @Test
+    void shouldPerformWealthMove() {}
+
+    @Test
+    void shouldPerformFortunesMove() {}
+
+    @Test
+    void shouldPerformHelpOrInterfereMove() {}
+
+    @Test
+    void shouldPerformMakeWantKnownMove() {}
+
+    @Test
+    void shouldPerformSufferHarmMove() {}
+
+    @Test
+    void shouldPerformInflictHarmMove() {}
+
+    @Test
+    void shouldPerformHealHarmMove() {}
+
+    @Test
+    void shouldPerformAngelSpecialMove() {}
+
+    @Test
+    void shouldPerformChopperSpecialMove() {}
+
+    @Test
+    void shouldPerformGunluggerSpecialMove() {}
+
+    @Test
+    void shouldPerformHocusSpecialMove() {}
+
+    @Test
+    void shouldPerformSkinnerSpecialMove() {}
+
+    @Test
+    void shouldPerformStabilizeAndHealMove() {}
+
+    @Test
+    void shouldPerformJustGiveMotivationMove() {}
+
+    // ---------------------------------------------- Other -------------------------------------------- //
+
+    @Test
+    void shouldSpendHold() {}
+
 }
