@@ -8,6 +8,8 @@ import com.mersiades.awccontent.services.MoveService;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.AngelKit;
+import com.mersiades.awcdata.models.uniques.Followers;
+import com.mersiades.awcdata.models.uniques.Holding;
 import com.mersiades.awcdata.repositories.GameRepository;
 import com.mersiades.awcdata.repositories.UserRepository;
 import com.mersiades.awcdata.services.CharacterService;
@@ -799,18 +801,231 @@ class GameServiceImplTest {
     }
 
     @Test
-    void shouldPerformSpeedRollMove() {}
+    void shouldPerformSpeedRollMove() {
+        // Given
+        int mockModifier = 2;
+        MoveAction outdistanceVehicleAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.SPEED)
+                .statToRollWith(COOL)
+                .build();
+        Move outdistanceAnotherVehicleMove = Move.builder()
+                .id(UUID.randomUUID().toString())
+                .name(outdistanceVehicleName)
+                .description("When you try to outdistance another vehicle, roll+cool, ...")
+                .kind(MoveType.ROAD_WAR)
+                .moveAction(outdistanceVehicleAction)
+                .playbook(null)
+                .build();
+
+        when(characterService.findById(anyString())).thenReturn(Mono.just(mockCharacter));
+        when(moveService.findById(anyString())).thenReturn(Mono.just(outdistanceAnotherVehicleMove));
+        when(characterService.save(any(Character.class))).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleService.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(gameRoleService.save(any(GameRole.class))).thenReturn(Mono.just(mockGameRole));
+        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.performSpeedRollMove(mockGame1.getId(),
+                mockGameRole.getId(),
+                mockCharacter.getId(),
+                outdistanceAnotherVehicleMove.getId(),
+                mockModifier).block();
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+        assertEquals(mockModifier, returnedGameMessage.getAdditionalModifierValue());
+        assertEquals("REL. SPEED", returnedGameMessage.getAdditionalModifierName());
+        verify(characterService, times(1)).findById(anyString());
+        verify(moveService, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleService, times(1)).findById(anyString());
+        verify(gameRoleService, times(1)).save(any(GameRole.class));
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
 
     // ---------------------------------------------- Specific moves -------------------------------------------- //
 
     @Test
-    void shouldPerformWealthMove() {}
+    void shouldPerformWealthMove() {
+        // Given
+        int mockSurplus = 2;
+        MoveAction wealthAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STAT)
+                .statToRollWith(HARD)
+                .build();
+        Move wealth = Move.builder()
+                .name(wealthName)
+                .description("_**Wealth**_: if your hold is secure ..."
+                )
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(wealthAction)
+                .playbook(PlaybookType.HARDHOLDER).build();
+        Holding mockHolding = Holding.builder()
+                .id(UUID.randomUUID().toString())
+                .surplus(mockSurplus)
+                .barter(0)
+                .build();
+        PlaybookUnique mockPlaybookUnique = PlaybookUnique.builder()
+                .id(UUID.randomUUID().toString())
+                .holding(mockHolding)
+                .build();
+        mockCharacter.setPlaybookUnique(mockPlaybookUnique);
+        CharacterMove mockCharacterMove = CharacterMove.createFromMove(wealth);
+        mockCharacter.getCharacterMoves().add(mockCharacterMove);
+        when(characterService.findById(anyString())).thenReturn(Mono.just(mockCharacter));
+        when(characterService.save(any(Character.class))).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleService.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(gameRoleService.save(any(GameRole.class))).thenReturn(Mono.just(mockGameRole));
+        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.performWealthMove(mockGame1.getId(),
+                mockGameRole.getId(),
+                mockCharacter.getId()).block();
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+        Character savedCharacter = returnedGame.getGameRoles().stream()
+                .filter(gameRole -> gameRole.getId().equals(mockGameRole.getId())).findFirst().orElseThrow()
+                .getCharacters().stream().filter(character -> character.getId().equals(mockCharacter.getId())).findFirst().orElseThrow();
+        assertTrue(returnedGameMessage.getContent().contains(wealth.getDescription()));
+        if (returnedGameMessage.getRollResult() > 6) {
+            assertEquals(mockSurplus, savedCharacter.getPlaybookUnique().getHolding().getBarter());
+        } else {
+            assertEquals(0, savedCharacter.getPlaybookUnique().getHolding().getBarter());
+        }
+        verify(characterService, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleService, times(1)).findById(anyString());
+        verify(gameRoleService, times(1)).save(any(GameRole.class));
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
 
     @Test
-    void shouldPerformFortunesMove() {}
+    void shouldPerformFortunesMove() {
+        // Given
+        int mockSurplus = 2;
+        MoveAction fortunesAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.FORTUNE)
+                .build();
+        Move fortunes = Move.builder()
+                .id(UUID.randomUUID().toString())
+                .name(fortunesName)
+                .description("_**Fortunes**: fortune, surplus and want all depend on your followers...")
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(fortunesAction)
+                .playbook(PlaybookType.HOCUS).build();
+        Followers mockFollowers = Followers.builder()
+                .id(UUID.randomUUID().toString())
+                .surplusBarter(mockSurplus)
+                .barter(0)
+                .build();
+        PlaybookUnique mockPlaybookUnique = PlaybookUnique.builder()
+                .id(UUID.randomUUID().toString())
+                .followers(mockFollowers)
+                .build();
+        mockCharacter.setPlaybookUnique(mockPlaybookUnique);
+        CharacterMove mockCharacterMove = CharacterMove.createFromMove(fortunes);
+        mockCharacter.getCharacterMoves().add(mockCharacterMove);
+        when(characterService.findById(anyString())).thenReturn(Mono.just(mockCharacter));
+        when(characterService.save(any(Character.class))).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleService.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(gameRoleService.save(any(GameRole.class))).thenReturn(Mono.just(mockGameRole));
+        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.performFortunesMove(mockGame1.getId(),
+                mockGameRole.getId(),
+                mockCharacter.getId()).block();
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+        Character savedCharacter = returnedGame.getGameRoles().stream()
+                .filter(gameRole -> gameRole.getId().equals(mockGameRole.getId())).findFirst().orElseThrow()
+                .getCharacters().stream().filter(character -> character.getId().equals(mockCharacter.getId())).findFirst().orElseThrow();
+        assertTrue(returnedGameMessage.getContent().contains(fortunes.getDescription()));
+        if (returnedGameMessage.getRollResult() > 6) {
+            assertEquals(mockSurplus, savedCharacter.getPlaybookUnique().getFollowers().getBarter());
+        } else {
+            assertEquals(0, savedCharacter.getPlaybookUnique().getFollowers().getBarter());
+        }
+        verify(characterService, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleService, times(1)).findById(anyString());
+        verify(gameRoleService, times(1)).save(any(GameRole.class));
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
 
     @Test
-    void shouldPerformHelpOrInterfereMove() {}
+    void shouldPerformHelpOrInterfereMove() {
+        // Given
+        String mockCharacter2Id = "mock-character-2-id";
+        int mockHxValue = 2;
+        MoveAction helpOrInterfereAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.HX)
+                .statToRollWith(null)
+                .build();
+        Move helpOrInterfere = Move.builder()
+                .id(UUID.randomUUID().toString())
+                .name(helpOrInterfereName)
+                .description("When you _**help**_ or _**interfere**_ with someone who’s making a roll, roll+Hx...")
+                .kind(MoveType.BASIC)
+                .moveAction(helpOrInterfereAction)
+                .playbook(null)
+                .build();
+        HxStat mockHxStat = HxStat.builder()
+                .id(UUID.randomUUID().toString())
+                .characterId(mockCharacter2Id)
+                .characterName("mock-character-2-name")
+                .hxValue(mockHxValue)
+                .build();
+        mockCharacter.setHxBlock(List.of(mockHxStat));
+        when(characterService.findById(anyString())).thenReturn(Mono.just(mockCharacter));
+        when(moveService.findById(anyString())).thenReturn(Mono.just(helpOrInterfere));
+        when(characterService.save(any(Character.class))).thenReturn(Mono.just(mockCharacter));
+        when(gameRoleService.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(gameRoleService.save(any(GameRole.class))).thenReturn(Mono.just(mockGameRole));
+        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+
+        // When
+        Game returnedGame = gameService.performHelpOrInterfereMove(mockGame1.getId(),
+                mockGameRole.getId(),
+                mockCharacter.getId(),
+                helpOrInterfere.getId(),
+                mockCharacter2Id).block();
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+        assertEquals(mockHxValue, returnedGameMessage.getRollModifier());
+        assertEquals(StatType.HX, returnedGameMessage.getModifierStatName());
+        assertTrue(returnedGameMessage.getContent().contains(helpOrInterfere.getDescription()));
+        verify(characterService, times(1)).findById(anyString());
+        verify(moveService, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleService, times(1)).findById(anyString());
+        verify(gameRoleService, times(1)).save(any(GameRole.class));
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
 
     @Test
     void shouldPerformMakeWantKnownMove() {}
