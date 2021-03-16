@@ -510,7 +510,7 @@ public class GameServiceImpl implements GameService {
                     gameMessage.setContent(move.getDescription());
                     gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), move.getName()).toUpperCase());
                     gameMessage.setStockSpent(stockSpent);
-                    gameMessage.setCurrentStock(userCharacter.getPlaybookUnique().getAngelKit().getStock() - stockSpent);
+                    gameMessage.setCurrentStock(userCharacter.getPlaybookUnique().getAngelKit().getStock());
                     game.getGameMessages().add(gameMessage);
                     return Mono.just(game);
                 })
