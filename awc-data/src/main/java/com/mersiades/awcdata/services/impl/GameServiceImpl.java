@@ -127,7 +127,7 @@ public class GameServiceImpl implements GameService {
         game.getGameRoles().forEach(gameRoleService::delete);
 
         // Delete Game
-        this.delete(game);
+        this.delete(game); // Maybe use: gameRepository.deleteById(id), or change the deleteById method to delete gameroles also
 
         return game;
     }
@@ -292,11 +292,6 @@ public class GameServiceImpl implements GameService {
         } else {
             return gameRepository.findAllByInviteesContaining(email);
         }
-    }
-
-    @Override
-    public Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit) {
-        return gameRepository.findById(gameId, skip, limit);
     }
 
     // ---------------------------------------------- Game-related -------------------------------------------- //
@@ -515,7 +510,7 @@ public class GameServiceImpl implements GameService {
                     gameMessage.setContent(move.getDescription());
                     gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), move.getName()).toUpperCase());
                     gameMessage.setStockSpent(stockSpent);
-                    gameMessage.setCurrentStock(userCharacter.getPlaybookUnique().getAngelKit().getStock() - stockSpent);
+                    gameMessage.setCurrentStock(userCharacter.getPlaybookUnique().getAngelKit().getStock());
                     game.getGameMessages().add(gameMessage);
                     return Mono.just(game);
                 })

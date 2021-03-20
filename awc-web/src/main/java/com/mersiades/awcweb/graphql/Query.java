@@ -52,11 +52,6 @@ public class Query implements GraphQLQueryResolver {
         return gameService.findById(gameId).block();
     }
 
-    public Game gameWithLimit(String gameId, Integer skip, Integer limit) {
-        System.out.println("Fetching Game by id: " + gameId);
-        return gameService.findByIdWithLimit(gameId, skip, limit).block();
-    }
-
     public Game gameForPlayer(String gameId, String userId) {
         System.out.println("Fetching Game for player: " + gameId);
 

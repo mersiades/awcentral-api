@@ -13,8 +13,6 @@ public interface GameService extends ReactiveCrudService<Game, String> {
 
     Flux<Game> findAllByInvitee(String email);
 
-    Mono<Game> findByIdWithLimit(String gameId, Integer skip, Integer limit);
-
     // ---------------------------------------------- Game-related -------------------------------------------- //
 
     Game createGameWithMC(String userId, String displayName, String email, String name) throws Exception;

@@ -2910,11 +2910,11 @@ public class GameDataLoader implements CommandLineRunner {
                 .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask 1, 2, or all 3:\n" +
                         "\n" +
-                        "- *Which one of you do I figure is doomed to self-destruction?* For that character, write Hx-2.\n" +
-                        "- *Which one of you put a hand in when it mattered, and helped me save a life?* For that character, write Hx+2.\n" +
-                        "- *Which one of you has been beside me all along, and has seen everything I’ve seen?* For that character, write Hx+3.\n" +
+                        "- *Which one of you do I figure is doomed to self-destruction?* Give that character -2 for Hx.\n" +
+                        "- *Which one of you put a hand in when it mattered, and helped me save a life?* Give that character +2 for Hx." +
+                        "- *Which one of you has been beside me all along, and has seen everything I’ve seen?* Give that character +3 for Hx.\n" +
                         "\n" +
-                        "For everyone else, write Hx+1. You keep your eyes open.\n" +
+                        "Give everyone else +1 for Hx. You keep your eyes open.\n" +
                         HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(angelUniqueCreator)
                 .optionalMoves(angelOptionalMoves)
@@ -3005,8 +3005,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask the other players which of their characters you can trust.\n" +
                         "\n" +
-                        "- *For the characters you can trust, write Hx-1.*\n" +
-                        "- *For the characters you can’t trust, write Hx+3.*\n" +
+                        "- *Give the characters you can trust -1 Hx.*\n" +
+                        "- *Give the characters you can’t trust +3 Hx.*\n" +
                         "\n" +
                         "You are indifferent to what is safe, and drawn to what is not.\n" +
                         HX_INSTRUCTIONS_END)
@@ -3068,11 +3068,11 @@ public class GameDataLoader implements CommandLineRunner {
                 .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
                         "\n" +
-                        "- *Which one of you has slept in my presence (knowingly or un-)?* For that character, write Hx+2.\n" +
-                        "- *Which one of you have I been watching carefully, in secret?* For that character, write Hx+2.\n" +
-                        "- *Which one of you most evidently dislikes and distrusts me?* For that character, write Hx+3.\n" +
+                        "- *Which one of you has slept in my presence (knowingly or un-)?* Give that character +2 for Hx.\n" +
+                        "- *Which one of you have I been watching carefully, in secret?* Give that character +2 for Hx.\n" +
+                        "- *Which one of you most evidently dislikes and distrusts me?* Give that character +3 for Hx.\n" +
                         "\n" +
-                        "For everyone else, write Hx+1. You have weird insights into everyone.\n" +
+                        "Give everyone else +1 for Hx. You have weird insights into everyone.\n" +
                         HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(brainerUniqueCreator)
                 .optionalMoves(brainerOptionalMoves)
@@ -3203,11 +3203,11 @@ public class GameDataLoader implements CommandLineRunner {
                 .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
                         "\n" +
-                        "- *Which one of you used to ride with my gang?* For that character, write Hx+1.\n" +
-                        "- *Which one of you figures that you could take me out in a fight, if it came to it?* For that character, write Hx+2.\n" +
-                        "- *Which one of you once stood up to me, gang and all?* For that character, write Hx+3.\n" +
+                        "- *Which one of you used to ride with my gang?* Give that character +1 for Hx.\n" +
+                        "- *Which one of you figures that you could take me out in a fight, if it came to it?* Give that character +2 for Hx.\n" +
+                        "- *Which one of you once stood up to me, gang and all?* Give that character +3 for Hx.\n" +
                         "\n" +
-                        "For everyone else, write Hx-1. You don't really care much about, y'know, people.\n" +
+                        "Give everyone else -1 for Hx. You don't really care much about, y'know, people.\n" +
                         HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(chopperUniqueCreator)
                 .optionalMoves(chopperOptionalMoves)
@@ -3256,11 +3256,11 @@ public class GameDataLoader implements CommandLineRunner {
                 .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
                         "\n" +
-                        "- *Which one of you got me out of some serious shit?* For that character, write Hx+1.\n" +
-                        "- *Which one of you has been with me for days on the road?* For that character, write Hx+2.\n" +
-                        "- *Which one of you have I caught sometimes staring out at the horizon?* For that character, write Hx+3.\n" +
+                        "- *Which one of you got me out of some serious shit?* Give that character +1 for Hx.\n" +
+                        "- *Which one of you has been with me for days on the road?* Give that character +2 for Hx.\n" +
+                        "- *Which one of you have I caught sometimes staring out at the horizon?* Give that character +3 for Hx.\n" +
                         "\n" +
-                        "For everyone else, write Hx+1. You aren't naturally inclined to get too close to too many people.\n" +
+                        "Give everyone else +1 for Hx. You aren't naturally inclined to get too close to too many people.\n" +
                         HX_INSTRUCTIONS_END)
                 .optionalMoves(driverOptionalMoves)
                 .defaultMoves(driverDefaultMoves)
@@ -3329,11 +3329,11 @@ public class GameDataLoader implements CommandLineRunner {
                 .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
                         "\n" +
-                        "- *Which one of you left me bleeding, and did nothing for me?* For that character, write Hx-2.\n" +
-                        "- *Which one of you has fought shoulder to shoulder with me?* For that character, write Hx+2.\n" +
-                        "- *Which one of you is prettiest and/or smartest?* For that character, write Hx+3.\n" +
+                        "- *Which one of you left me bleeding, and did nothing for me?* Give that character -2 for Hx.\n" +
+                        "- *Which one of you has fought shoulder to shoulder with me?* Give that character +2 for Hx.\n" +
+                        "- *Which one of you is prettiest and/or smartest?* Give that character +3 for Hx.\n" +
                         "\n" +
-                        "For everyone else, write Hx-1. You find no particular need to understand most people.\n" +
+                        "Give everyone else -1 for Hx. You find no particular need to understand most people.\n" +
                         HX_INSTRUCTIONS_END)
                 .defaultMoves(gunluggerDefaultMoves)
                 .optionalMoves(gunluggerOptionalMoves)
@@ -3682,10 +3682,10 @@ public class GameDataLoader implements CommandLineRunner {
                 .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask either or both:\n" +
                         "\n" +
-                        "- *Which one of you has been with me since before?* For that character, write Hx+2.\n" +
-                        "- *Which one of you has betrayed or stolen from me?* For that character, write Hx+3.\n" +
+                        "- *Which one of you has been with me since before?* Give that character +2 for Hx.\n" +
+                        "- *Which one of you has betrayed or stolen from me?* Give that character +3 for Hx.\n" +
                         "\n" +
-                        "For everyone else, write Hx+1. It's in your interests to know everyone's business.\n" +
+                        "Give everyone else +1 for Hx. It's in your interests to know everyone's business.\n" +
                         HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(playbookUniqueCreatorHardHolder)
                 .defaultVehicleCount(4)
@@ -3869,10 +3869,10 @@ public class GameDataLoader implements CommandLineRunner {
                 .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask either or both:\n" +
                         "\n" +
-                        "- *Which one of you are my followers?* For that character, write Hx+2.\n" +
-                        "- *One of you, I've seen your soul. Which one?* For that character, write Hx+3.\n" +
+                        "- *Which one of you are my followers?* Give that character +2 for Hx.\n" +
+                        "- *One of you, I've seen your soul. Which one?* Give that character +3 for Hx.\n" +
                         "\n" +
-                        "For everyone else, write Hx+1. You're a good and quick judge of others.\n" +
+                        "Give everyone else +1 for Hx. You're a good and quick judge of others.\n" +
                         HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(playbookUniqueCreatorHocus)
                 .defaultVehicleCount(0)
@@ -3987,10 +3987,10 @@ public class GameDataLoader implements CommandLineRunner {
                 .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask either or both:\n" +
                         "\n" +
-                        "- *Which of you do I find most attractive?* For that character, write Hx+2.\n" +
-                        "- *Which of you is my favorite?* For that character, write Hx+3.\n" +
+                        "- *Which of you do I find most attractive?* Give that character +2 for Hx.\n" +
+                        "- *Which of you is my favorite?* Give that character +3 for Hx.\n" +
                         "\n" +
-                        "For everyone else, write Hx+1. It's your business to see people clearly.\n" +
+                        "Give everyone else +1 for Hx. It's your business to see people clearly.\n" +
                         HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(playbookUniqueCreatorMaestro)
                 .defaultVehicleCount(0)
@@ -4071,10 +4071,10 @@ public class GameDataLoader implements CommandLineRunner {
                 .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask either or both:\n" +
                         "\n" +
-                        "- *Which of you is most strange?* For that character, write Hx+1.\n" +
-                        "- *Which one of you is the biggest potential problem?* For that character, write Hx+2.\n" +
+                        "- *Which of you is most strange?* Give that character +1 for Hx.\n" +
+                        "- *Which one of you is the biggest potential problem?* Give that character +2 for Hx.\n" +
                         "\n" +
-                        "For everyone else, write Hx-1. You've got other stuff to do and other stuff to learn.\n" +
+                        "Give everyone else -1 for Hx. You've got other stuff to do and other stuff to learn.\n" +
                         HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(playbookUniqueCreatorSavvyhead)
                 .defaultVehicleCount(0)
@@ -4173,11 +4173,11 @@ public class GameDataLoader implements CommandLineRunner {
                 .hxInstructions(HX_INSTRUCTIONS_START +
                         "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
                         "\n" +
-                        "- *Which one of you is my friend?* For that character, write Hx+2.\n" +
-                        "- *Which one of you is my lover?* For that character, write Hx+1.\n" +
-                        "- *Which one of you is in love with me?* For that character, write Hx-1.\n" +
+                        "- *Which one of you is my friend?* Give that character +2 for Hx.\n" +
+                        "- *Which one of you is my lover?* Give that character +1 for Hx.\n" +
+                        "- *Which one of you is in love with me?* Give that character -1 for Hx.\n" +
                         "\n" +
-                        "For everyone else, write Hx+1 or HX-1, as you choose.\n" +
+                        "Give everyone else +1 or -1 for Hx, as you choose.\n" +
                         HX_INSTRUCTIONS_END)
                 .playbookUniqueCreator(playbookUniqueCreatorSkinner)
                 .defaultVehicleCount(0)
