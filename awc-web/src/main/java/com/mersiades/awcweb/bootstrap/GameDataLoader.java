@@ -4387,6 +4387,10 @@ public class GameDataLoader implements CommandLineRunner {
         vehicleCreatorService.save(vehicleCreator).block();
     }
 
+    public void loadMcContent() {
+
+    }
+
     public void loadPlaybooks() {
         System.out.println("|| --- Loading playbooks --- ||");
         /* ----------------------------- ANGEL PLAYBOOK --------------------------------- */
