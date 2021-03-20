@@ -13,21 +13,13 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class McContent {
+public class TickerList {
 
     @Id
     private String id;
 
-    private FirstSessionContent firstSessionContent;
-
-    private ContentItem decisionMaking;
+    private String title;
 
     @Builder.Default
-    private List<TickerList> core = new ArrayList<>();
-
-    @Builder.Default
-    private List<ContentItem> harm = new ArrayList<>();
-
-    @Builder.Default
-    private List<ContentItem> selected = new ArrayList<>();
+    private List<String> items = new ArrayList<>();
 }

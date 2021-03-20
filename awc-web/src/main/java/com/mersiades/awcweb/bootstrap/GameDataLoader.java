@@ -32,6 +32,7 @@ public class GameDataLoader implements CommandLineRunner {
     private final StatModifierService statModifierService;
     private final VehicleCreatorService vehicleCreatorService;
     private final ThreatCreatorService threatCreatorService;
+    private final McContentService mcContentService;
 
     @Autowired
     LookRepository lookRepository;
@@ -57,6 +58,9 @@ public class GameDataLoader implements CommandLineRunner {
     @Autowired
     ThreatCreatorRepository threatCreatorRepository;
 
+    @Autowired
+    McContentRepository mcContentRepository;
+
 
     public GameDataLoader(PlaybookCreatorService playbookCreatorService,
                           PlaybookService playbookService,
@@ -66,7 +70,8 @@ public class GameDataLoader implements CommandLineRunner {
                           MoveService moveService,
                           StatModifierService statModifierService,
                           VehicleCreatorService vehicleCreatorService,
-                          ThreatCreatorService threatCreatorService) {
+                          ThreatCreatorService threatCreatorService,
+                          McContentService mcContentService) {
         this.playbookCreatorService = playbookCreatorService;
         this.playbookService = playbookService;
         this.nameService = nameService;
@@ -76,6 +81,7 @@ public class GameDataLoader implements CommandLineRunner {
         this.statModifierService = statModifierService;
         this.vehicleCreatorService = vehicleCreatorService;
         this.threatCreatorService = threatCreatorService;
+        this.mcContentService = mcContentService;
     }
 
     @Override
@@ -126,6 +132,11 @@ public class GameDataLoader implements CommandLineRunner {
         ThreatCreator threatCreator = threatCreatorRepository.findAll().take(1).blockFirst();
         if (threatCreator == null) {
             loadThreatCreator();
+        }
+
+        McContent mcContent = mcContentRepository.findAll().take(1).blockFirst();
+        if (mcContent == null) {
+            loadMcContent();
         }
 
         // 'Create if empty' conditionality is embedded in the createPlaybooks() method
@@ -4389,6 +4400,347 @@ public class GameDataLoader implements CommandLineRunner {
 
     public void loadMcContent() {
 
+        /**
+         * .description("When you _**go aggro on someone**_, make it clear what you want them to do and what you’ll do to them. Roll+hard.\n" +
+         *                         "\n" +
+         *                         "On a 10+, they have to choose:\n" +
+         *                         "\n" +
+         *                         "- *Force your hand and suck it up.*\n" +
+         *                         "- *Cave and do what you want.*\n" +
+         *                         "\n" +
+         *                         "On a 7–9, they can choose 1 of the above, or 1 of the following:\n" +
+         *                         "\n" +
+         *                         "- *Get the hell out of your way.*\n" +
+         *                         "- *Barricade themselves securely in.*\n" +
+         *                         "- *Give you something they think you want, or tell you what you want to hear.*\n" +
+         *                         "- *Back off calmly, hands where you can see.*\n" +
+         *                         "\n" +
+         *                         "On a miss, be prepared for the worst.")
+         */
+        TickerList agenda = TickerList.builder()
+                .id(UUID.randomUUID().toString())
+                .title("Agenda")
+                .items(List.of("Make Apocalypse World seem real.",
+                        "Make the player's characters' lives not boring.",
+                        "Play to find out what happens."))
+                .build();
+        TickerList alwaysSay = TickerList.builder()
+                .id(UUID.randomUUID().toString())
+                .title("Always say")
+                .items(List.of("What the principles demand.",
+                        "Always say what the rules demand.",
+                        "Always say what your prep demands.",
+                        "Always say what honesty demands.")
+                ).build();
+
+        TickerList principles = TickerList.builder()
+                .id(UUID.randomUUID().toString())
+                .title("The principles")
+                .items(List.of(
+                        "Barf forth apocalyptica.",
+                        "Address yourself to the characters, not the players.",
+                        "Make your move, but misdirect.",
+                        "Make your move, but never speak its name.",
+                        "Look through crosshairs.",
+                        "Name everyone, make everyone human.",
+                        "Ask provocative questions and build on the answers.",
+                        "Respond with fuckery and intermittent rewards.",
+                        "Be a fan of the characters.",
+                        "Think offscreen, too.",
+                        "Sometimes, disclaim decision-making."
+                ))
+                .build();
+        TickerList moves = TickerList.builder()
+                .id(UUID.randomUUID().toString())
+                .title("Your moves")
+                .items(List.of("Separate them.",
+                        "Capture someone.",
+                        "Put someone in a spot.",
+                        "Trade harm for harm (_as established_).",
+                        "Announce off-screen badness.",
+                        "Announce future badness.",
+                        "Inflict harm (_as established_).",
+                        "Take away their stuff.",
+                        "Make them buy.",
+                        "Activate their stuff's downside.",
+                        "Tell them the possible consequences and ask.",
+                        "Offer an opportunity, with ot without a cost.",
+                        "Turn their move back on them.",
+                        "Make a threat move (_from one of your threats_).",
+                        "After every move: \"what do you do?\""))
+                .build();
+        TickerList essentialThreats = TickerList.builder()
+                .id(UUID.randomUUID().toString())
+                .title("Essential threats")
+                .items(List.of("Where the PCs are, create as a landscape.",
+                        "For any PC's gang, create as brutes.",
+                        "For any PC's other NPCs, create as brutes, plus a grotesque and/or a wannabe warlord.",
+                        "For any PC's vehicles, create as vehicles.",
+                        "In any local populations, create an affliction"
+                ))
+                .build();
+        TickerList moreThings = TickerList.builder()
+                .id(UUID.randomUUID().toString())
+                .title("A few more things to do")
+                .items(List.of(
+                        "Make maps.",
+                        "Turn questions back on the asker or over to the group at large.",
+                        "Digress occasionally.",
+                        "Elide the action sometimes, and zoom in on its details other times.",
+                        "Go around the table.",
+                        "Take breaks and take your time"
+                ))
+                .build();
+        ContentItem decisionMaking = ContentItem.builder()
+                .id(UUID.randomUUID().toString())
+                .title("Decision-making")
+                .content("In order to play to find out what happens, you'll need to pass decision-making off sometimes.\n" +
+                        "\n" +
+                        "Whenever something comes up that you'd prefer not to decide by personal whim and will, _don't_.\n" +
+                        "\n" +
+                        "The game gives your four key tools you can use to disclaim responsibility. You can:\n" +
+                        "\n" +
+                        "- Put it in your NPCs' hands.\n" +
+                        "- Put it in the players' hands.\n" +
+                        "- Create a countdown.\n" +
+                        "- Make it a stakes question.\n")
+                .build();
+        ContentItem duringCharacterCreation = ContentItem.builder()
+                .id(UUID.randomUUID().toString())
+                .title("During character creation")
+                .content("While the players are making their characters, there are some things to get out up-front:\n" +
+                        "\n" +
+                        "- Your characters don't have to be friends, but they should definitely be allies.\n" +
+                        "- Your characters are unique in Apocalypse World.\n" +
+                        "- 1-armor can be armor or clothing. 2-armor is armor.\n" +
+                        "- Is _barter_ a medium of exchange? What do you use?\n" +
+                        "- I'm not out to get you. I'm here to find out what's going to happen. Same as you!\n")
+                .build();
+        TickerList duringFirstSession = TickerList.builder()
+                .id(UUID.randomUUID().toString())
+                .title("During the first session")
+                .items(List.of(
+                        "MC the game. Bring it.",
+                        "Describe. Barf forth apocalyptica.",
+                        "Springboard off character creation.",
+                        "Ask questions all the time.",
+                        "Leave yourself things to wonder about. Note them on the threat map.",
+                        "Look for where they're not in control.",
+                        "Push there.",
+                        "Nudge the players to have their characters make their moves.",
+                        "Give every character good screen time with other characters.",
+                        "Leap forward with named, human NPCs.",
+                        "Hell, have a fight.",
+                        "Work on your threat map and essential threats."
+                        )
+                )
+                .build();
+        ContentItem threatMapInstructions = ContentItem.builder()
+                .id(UUID.randomUUID().toString())
+                .title("The threat map")
+                .content("During play, keep notes on the threats in the world by noting them on your threat map.\n" +
+                        "\n" +
+                        "The innermost circle is for the PCs and their resources. There, list the PCs' gangs, followers, crews, vehicles, and everything else they won that you'll be responsible to play. Most of your essential threats go here.\n" +
+                        "\n" +
+                        "In the next circle out, \"closer\", is for the NPCs that surround them and their immediate landscape.\n" +
+                        "\n" +
+                        "The third circle, \"farther\", is for things that they would have to travel in order to encounter.\n" +
+                        "\n" +
+                        "Things that they have only heard rumors of, or ideas you have that have not yet introduced, you can write in the outside circle, as \"notional\"." +
+                        "\n" +
+                        "North, south, east and west are for geography. Up and down are for above and below.\n" +
+                        "\n" +
+                        "In is for threats within the local or surrounding landscape or population, out is for threats originating in the world's psychic maelstrom or even elsewhere."
+                )
+                .build();
+        TickerList afterFirstSession = TickerList.builder()
+                .id(UUID.randomUUID().toString())
+                .title("After the first session")
+                .items(List.of("Go back over the threat map. Pull it apart into individual threats.",
+                        "Consider the resources that are available to each of them, and the resources that aren't.",
+                        "Create them as threats, using the threat creation rules.",
+                        "Before the second session, be sure you've created your essential threats.")
+                )
+                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+//        ContentItem = ContentItem.builder()
+//                .id(UUID.randomUUID().toString())
+//                .title("")
+//                .content("- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +
+//                        "- \n" +)
+//                .build();
+        FirstSessionContent firstSessionContent = FirstSessionContent.builder()
+                .id(UUID.randomUUID().toString())
+                .intro("The players have it easy. They have these fun little procedures to go through and then they're ready to play.\n" +
+                        "\n" +
+                        "Your job is harder, you have a lot more to set up then they do.\n" +
+                        "\n" +
+                        "They each have one character to create, you have the whole bedamned world, so you get the whole first session to create it in."
+                )
+                .duringCharacterCreation(duringCharacterCreation)
+                .duringFirstSession(duringFirstSession)
+                .threatMapInstructions(threatMapInstructions)
+                .afterFirstSession(afterFirstSession)
+                .build();
+
+        McContent mcContent = McContent.builder()
+                .firstSessionContent(firstSessionContent)
+                .decisionMaking(decisionMaking)
+                .core(List.of(agenda, alwaysSay, principles, moves, essentialThreats, moreThings))
+                .build();
+
+        mcContentService.save(mcContent).block();
+        // build and save
     }
 
     public void loadPlaybooks() {

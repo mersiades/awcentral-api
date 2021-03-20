@@ -3,9 +3,11 @@ package com.mersiades.awccontent.services.impl;
 import com.mersiades.awccontent.models.McContent;
 import com.mersiades.awccontent.repositories.McContentRepository;
 import com.mersiades.awccontent.services.McContentService;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Service
 public class McContentServiceImpl implements McContentService {
 
     private final McContentRepository mcContentRepository;
