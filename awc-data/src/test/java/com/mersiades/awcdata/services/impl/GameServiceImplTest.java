@@ -113,6 +113,32 @@ class GameServiceImplTest {
             .playbook(null)
             .build();
 
+    MoveAction gunluggerSpecialAction = MoveAction.builder()
+            .id(UUID.randomUUID().toString())
+            .actionType(MoveActionType.GUNLUGGER_SPECIAL)
+            .rollType(null)
+            .statToRollWith(null)
+            .build();
+    Move gunluggerSpecial = Move.builder()
+            .id(UUID.randomUUID().toString())
+            .name(gunluggerSpecialName)
+            .description("If you and another character have sex, you take +1 forward. At your option, ...")
+            .kind(MoveType.DEFAULT_CHARACTER)
+            .moveAction(gunluggerSpecialAction)
+            .stat(null)
+            .playbook(PlaybookType.GUNLUGGER).build();
+    MoveAction justGiveMotiveAction = MoveAction.builder()
+            .id(UUID.randomUUID().toString())
+            .actionType(MoveActionType.ROLL)
+            .rollType(RollType.CHOICE)
+            .build();
+    Move justGiveMotive = Move.builder()
+            .name(justGiveMotiveName)
+            .description("_**Just give me a motive**_: name somebody who might conceivably eat, ...")
+            .kind(MoveType.CHARACTER)
+            .moveAction(justGiveMotiveAction)
+            .playbook(PlaybookType.MAESTRO_D).build();
+
     @BeforeEach
     public void setUp()  {
         MockitoAnnotations.initMocks(this);
@@ -157,6 +183,7 @@ class GameServiceImplTest {
 
         mockCharacter = Character.builder()
                 .id("mock-character-id-1")
+                .name("mock-character-name-1")
                 .statsBlock(mockStatsBlock)
                 .hasPlusOneForward(false)
                 .harm(mockHarm)
@@ -1185,27 +1212,238 @@ class GameServiceImplTest {
     }
 
     @Test
-    void shouldPerformChopperSpecialMove() {}
+    void shouldPerformChopperSpecialMove() {
+        // Given
+        int mockHxChange = 1;
+        MoveAction chopperSpecialAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ADJUST_HX)
+                .build();
+        Move chopperSpecial = Move.builder()
+                .id(UUID.randomUUID().toString())
+                .name(chopperSpecialName)
+                .description("If you and another character have sex, they immediately...")
+                .kind(MoveType.DEFAULT_CHARACTER)
+                .moveAction(chopperSpecialAction)
+                .playbook(PlaybookType.CHOPPER).build();
+
+        CharacterMove mockCharacterMove = CharacterMove.createFromMove(chopperSpecial);
+        mockCharacter.getCharacterMoves().add(mockCharacterMove);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServicesWithOtherCharacter(mockGameRole2, mockCharacter2);
+
+        // When
+        Game returnedGame = gameService.performChopperSpecialMove(mockGame1.getId(),
+                mockGameRole.getId(),
+                mockGameRole2.getId(),
+                mockCharacter.getId(),
+                mockCharacter2.getId(),
+                mockHxChange).block();
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+        Character savedCharacter1 = getSavedCharacter(returnedGame, mockGameRole.getId(), mockCharacter.getId());
+        Character savedCharacter2 = getSavedCharacter(returnedGame, mockGameRole2.getId(), mockCharacter2.getId());
+        HxStat character1HxStat = getMatchingHxStat(savedCharacter1, savedCharacter2.getId());
+        HxStat character2HxStat = getMatchingHxStat(savedCharacter2, savedCharacter1.getId());
+
+        assertNotNull(returnedGameMessage);
+        assertEquals(1 + mockHxChange, character1HxStat.getHxValue());
+        assertEquals(3, character2HxStat.getHxValue());
+        verifyMockServicesWithOtherCharacter();
+    }
 
     @Test
-    void shouldPerformGunluggerSpecialMove() {}
+    void shouldPerformGunluggerSpecialMove() {
+        // Given
+        CharacterMove mockCharacterMove = CharacterMove.createFromMove(gunluggerSpecial);
+        mockCharacter.getCharacterMoves().add(mockCharacterMove);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServicesWithOtherCharacter(mockGameRole2, mockCharacter2);
+
+        // When
+        Game returnedGame = gameService.performGunluggerSpecialMove(mockGame1.getId(),
+                mockGameRole.getId(),
+                mockGameRole2.getId(),
+                mockCharacter.getId(),
+                mockCharacter2.getId(),
+                true).block();
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+        Character savedCharacter1 = getSavedCharacter(returnedGame, mockGameRole.getId(), mockCharacter.getId());
+        Character savedCharacter2 = getSavedCharacter(returnedGame, mockGameRole2.getId(), mockCharacter2.getId());
+
+        assertNotNull(returnedGameMessage);
+        assertTrue(savedCharacter1.getHasPlusOneForward());
+        assertTrue(savedCharacter2.getHasPlusOneForward());
+        verifyMockServicesWithOtherCharacter();
+    }
 
     @Test
-    void shouldPerformHocusSpecialMove() {}
+    void shouldPerformGunluggerSpecialMoveButNotAddPlus1Forward() {
+        // Given
+        CharacterMove mockCharacterMove = CharacterMove.createFromMove(gunluggerSpecial);
+        mockCharacter.getCharacterMoves().add(mockCharacterMove);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServicesWithOtherCharacter(mockGameRole2, mockCharacter2);
+
+        // When
+        Game returnedGame = gameService.performGunluggerSpecialMove(mockGame1.getId(),
+                mockGameRole.getId(),
+                mockGameRole2.getId(),
+                mockCharacter.getId(),
+                mockCharacter2.getId(),
+                false).block();
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+        Character savedCharacter1 = getSavedCharacter(returnedGame, mockGameRole.getId(), mockCharacter.getId());
+        Character savedCharacter2 = getSavedCharacter(returnedGame, mockGameRole2.getId(), mockCharacter2.getId());
+
+        assertNotNull(returnedGameMessage);
+        assertTrue(savedCharacter1.getHasPlusOneForward());
+        assertNull(savedCharacter2.getHasPlusOneForward());
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(characterService, times(2)).findById(anyString());
+        verify(gameRoleService, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleService, times(1)).save(any(GameRole.class));
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
 
     @Test
-    void shouldPerformSkinnerSpecialMove() {}
+    void shouldPerformHocusSpecialMove() {
+        // Unable to mock saveAll()
+    }
 
     @Test
-    void shouldPerformStabilizeAndHealMove() {}
+    void shouldPerformSkinnerSpecialMove() {
+        // Unable to mock saveAll()
+    }
 
     @Test
-    void shouldPerformJustGiveMotivationMove() {}
+    void shouldPerformStabilizeAndHealMove() {
+        // Given
+        int mockStockSpent = 2;
+        int startingStock = 6;
+        MoveAction stabilizeAndHealAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.STOCK)
+                .statToRollWith(null)
+                .build();
+        Move stabilizeAndHeal = Move.builder()
+                .id(UUID.randomUUID().toString())
+                .name(stabilizeAndHealName)
+                .description("_**stabilize and heal someone at 9:00 or past**_: roll+stock spent...")
+                .kind(MoveType.UNIQUE)
+                .moveAction(stabilizeAndHealAction)
+                .playbook(PlaybookType.ANGEL).build();
+        AngelKit mockAngelKit = AngelKit.builder()
+                .id(UUID.randomUUID().toString())
+                .stock(startingStock)
+                .build();
+        PlaybookUnique mockPlaybookUnique = PlaybookUnique.builder()
+                .id(UUID.randomUUID().toString())
+                .angelKit(mockAngelKit)
+                .build();
+        mockCharacter.setPlaybookUnique(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        when(moveService.findByName(anyString())).thenReturn(Mono.just(stabilizeAndHeal));
+        setUpMockServices();
+
+        // When
+        Game returnedGame = gameService.performStabilizeAndHealMove(mockGame1.getId(),
+                mockGameRole.getId(),
+                mockCharacter.getId(),
+                mockStockSpent).block();
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+        Character savedCharacter = getSavedCharacter(returnedGame, mockGameRole.getId(), mockCharacter.getId());
+
+        assertTrue(returnedGameMessage.getContent().contains(stabilizeAndHeal.getDescription()));
+        assertEquals(startingStock - mockStockSpent, savedCharacter.getPlaybookUnique().getAngelKit().getStock());
+        verify(moveService, times(1)).findByName(anyString());
+        verifyMockServices();
+    }
+
+    @Test
+    void shouldPerformJustGiveMotivationMoveOnNPC() {
+        // Given
+        CharacterMove mockCharacterMove = CharacterMove.createFromMove(justGiveMotive);
+        mockCharacter.getCharacterMoves().add(mockCharacterMove);
+        setUpMockServices();
+
+        // When
+        Game returnedGame = gameService.performJustGiveMotivationMove(mockGame1.getId(),
+                mockGameRole.getId(),
+                mockCharacter.getId(), null).block();
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+
+        assertTrue(returnedGameMessage.getContent().contains(justGiveMotive.getDescription()));
+        assertEquals(HARD, returnedGameMessage.getModifierStatName());
+        verifyMockServices();
+    }
+
+    @Test
+    void shouldPerformJustGiveMotivationMoveOnPC() {
+        // Given
+        CharacterMove mockCharacterMove = CharacterMove.createFromMove(justGiveMotive);
+        mockCharacter.getCharacterMoves().add(mockCharacterMove);
+        setUpMockServices();
+
+        // When
+        Game returnedGame = gameService.performJustGiveMotivationMove(mockGame1.getId(),
+                mockGameRole.getId(),
+                mockCharacter.getId(), mockCharacter2.getId()).block();
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+
+        assertTrue(returnedGameMessage.getContent().contains(justGiveMotive.getDescription()));
+        assertEquals(HX, returnedGameMessage.getModifierStatName());
+        verifyMockServices();
+    }
 
     // ---------------------------------------------- Other -------------------------------------------- //
 
     @Test
-    void shouldSpendHold() {}
+    void shouldSpendHold() {
+        // Given
+        Hold mockHold = Hold.builder()
+                .id("mock-hold-id")
+                .moveName("MOCK MOVE")
+                .moveDescription("Mock move description")
+                .build();
+        mockCharacter.getHolds().add(mockHold);
+        CharacterMove mockCharacterMove = CharacterMove.createFromMove(justGiveMotive);
+        mockCharacter.getCharacterMoves().add(mockCharacterMove);
+        setUpMockServices();
+
+        // When
+        Game returnedGame = gameService.spendHold(mockGame1.getId(),
+                mockGameRole.getId(),
+                mockCharacter.getId(), mockHold).block();
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+        Character savedCharacter = getSavedCharacter(returnedGame, mockGameRole.getId(), mockCharacter.getId());
+
+        assertTrue(returnedGameMessage.getTitle().contains("SPENDS A HOLD"));
+        assertEquals(0, savedCharacter.getHolds().size());
+        verifyMockServices();
+    }
 
     private Character getSavedCharacter(Game game, String gameRoleId, String characterId) {
         return game.getGameRoles().stream()
