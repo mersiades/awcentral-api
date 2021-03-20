@@ -163,6 +163,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         Character newCharacter = Character.builder()
                 .hasCompletedCharacterCreation(false)
                 .hasPlusOneForward(false)
+                .barter(-1)
                 .harm(harm).build();
         characterService.save(newCharacter).block();
         assert gameRole != null;
@@ -187,6 +188,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setCharacterMoves(null);
         character.setVehicles(new ArrayList<>());
         character.setBattleVehicles(new ArrayList<>());
+        character.setHasCompletedCharacterCreation(false);
 
         // Set default Vehicle and BattleVehicle counts by PlaybookType
         if (List.of(PlaybookType.DRIVER, PlaybookType.CHOPPER).contains(playbookType)) {
@@ -1046,6 +1048,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     @Override
     public Character setCharacterBarter(String gameRoleId, String characterId, int amount) {
+
         // Get the GameRole
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
         assert gameRole != null;
@@ -1053,6 +1056,9 @@ public class GameRoleServiceImpl implements GameRoleService {
         // GameRoles can have multiple characters, so get the right character
         Character character = gameRole.getCharacters().stream()
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+        if (amount < 0) {
+            return character;
+        }
 
         character.setBarter(amount);
 
