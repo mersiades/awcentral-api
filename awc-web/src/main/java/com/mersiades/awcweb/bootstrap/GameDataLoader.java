@@ -4409,7 +4409,7 @@ public class GameDataLoader implements CommandLineRunner {
         TickerList alwaysSay = TickerList.builder()
                 .id(UUID.randomUUID().toString())
                 .title("Always say")
-                .items(List.of("What the principles demand.",
+                .items(List.of("Always say what the principles demand.",
                         "Always say what the rules demand.",
                         "Always say what your prep demands.",
                         "Always say what honesty demands.")
@@ -4668,7 +4668,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         ContentItem vehicleHarm = ContentItem.builder()
                 .id(UUID.randomUUID().toString())
-                .title("")
+                .title("When a vehicle suffers harm")
                 .content("Vehicles can suffer regular harm, from bullets, explosions and direct hits from other vehicles, or v-harm, from glancing hits.\n" +
                         "\n" +
                         "When a vehicle suffers regular harm, there are two considerations: how much damage the vehicle itself suffers, and how much blows through to the people inside.\n" +
@@ -4837,7 +4837,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .title("Creating a vehicle")
                 .content("_These are rules for a wider range of vehicles than is usually available to the PCs._\n" +
                         "\n" +
-                        "BY default, any vehicle has speed=0, handling=0, 0-armor, and the massive rating of its frame.\n" +
+                        "By default, any vehicle has speed=0, handling=0, 0-armor, and the massive rating of its frame.\n" +
                         "\n" +
                         "Name its frame and assign it a massive from 0 up. Use these examples to guide you:\n" +
                         "\n" +

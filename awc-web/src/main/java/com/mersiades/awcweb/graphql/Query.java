@@ -23,15 +23,17 @@ public class Query implements GraphQLQueryResolver {
     private final PlaybookCreatorService playbookCreatorService;
     private final VehicleCreatorService vehicleCreatorService;
     private final ThreatCreatorService threatCreatorService;
+    private final McContentService mcContentService;
 
     public Query(
-                 GameRoleService gameRoleService,
-                 GameService gameService,
-                 MoveService moveService,
-                 PlaybookService playbookService,
-                 PlaybookCreatorService playbookCreatorService,
-                 VehicleCreatorService vehicleCreatorService,
-                 ThreatCreatorService threatCreatorService) {
+            GameRoleService gameRoleService,
+            GameService gameService,
+            MoveService moveService,
+            PlaybookService playbookService,
+            PlaybookCreatorService playbookCreatorService,
+            VehicleCreatorService vehicleCreatorService,
+            ThreatCreatorService threatCreatorService,
+            McContentService mcContentService) {
         this.gameRoleService = gameRoleService;
         this.gameService = gameService;
         this.moveService = moveService;
@@ -39,6 +41,7 @@ public class Query implements GraphQLQueryResolver {
         this.playbookCreatorService = playbookCreatorService;
         this.vehicleCreatorService = vehicleCreatorService;
         this.threatCreatorService = threatCreatorService;
+        this.mcContentService = mcContentService;
     }
 
     @CrossOrigin
@@ -99,5 +102,9 @@ public class Query implements GraphQLQueryResolver {
 
     public ThreatCreator threatCreator() {
         return threatCreatorService.findAll().take(1).blockFirst();
+    }
+
+    public McContent mcContent() {
+        return mcContentService.findAll().take(1).blockFirst();
     }
 }
