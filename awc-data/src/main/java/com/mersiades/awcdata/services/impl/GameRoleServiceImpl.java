@@ -13,8 +13,6 @@ import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,29 +42,29 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
-    public Flux<GameRole> findAll() {
+    public List<GameRole> findAll() {
         return gameRoleRepository.findAll();
     }
 
     @Override
-    public Mono<GameRole> findById(String id) {
-        return gameRoleRepository.findById(id);
+    public GameRole findById(String id) {
+        return gameRoleRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Mono<GameRole> save(GameRole gameRole) {
+    public GameRole save(GameRole gameRole) {
         return gameRoleRepository.save(gameRole);
     }
 
     @Override
-    public Flux<GameRole> saveAll(Flux<GameRole> gameRoles) {
+    public List<GameRole> saveAll(List<GameRole> gameRoles) {
         return gameRoleRepository.saveAll(gameRoles);
     }
 
     @Override
     public void delete(GameRole gameRole) {
         gameRole.getCharacters().forEach(characterService::delete);
-        gameRoleRepository.delete(gameRole).log().block();
+        gameRoleRepository.delete(gameRole);
     }
 
     @Override
@@ -77,78 +75,80 @@ public class GameRoleServiceImpl implements GameRoleService {
     // ---------------------------------------------- Game-related -------------------------------------------- //
 
     @Override
-    public Flux<GameRole> findAllByUser(User user) {
+    public List<GameRole> findAllByUser(User user) {
         return gameRoleRepository.findAllByUser(user);
     }
 
     @Override
-    public Flux<GameRole> findAllByUserId(String userId) {
-        return gameRoleRepository.findAllByUserId(userId).log();
+    public List<GameRole> findAllByUserId(String userId) {
+        return gameRoleRepository.findAllByUserId(userId);
     }
 
     // ---------------------------------------------- MC stuff -------------------------------------------- //
 
     @Override
-    public Mono<GameRole> addThreat(String gameRoleId, Threat threat) {
-        return gameRoleRepository.findById(gameRoleId).flatMap(gameRole -> {
-            if (threat.getId() == null) {
-                threat.setId(UUID.randomUUID().toString());
+    public GameRole addThreat(String gameRoleId, Threat threat) {
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow();
+
+        if (threat.getId() == null) {
+            threat.setId(UUID.randomUUID().toString());
+        }
+        if (gameRole.getThreats().size() == 0) {
+            gameRole.getThreats().add(threat);
+
+        } else {
+            ListIterator<Threat> iterator = gameRole.getThreats().listIterator();
+            boolean hasReplaced = false;
+            while (iterator.hasNext()) {
+                Threat nextThreat = iterator.next();
+                if (nextThreat.getId().equals(threat.getId())) {
+                    iterator.set(threat);
+                    hasReplaced = true;
+                }
             }
-            if (gameRole.getThreats().size() == 0) {
+
+            if (!hasReplaced) {
                 gameRole.getThreats().add(threat);
-
-            } else {
-                ListIterator<Threat> iterator = gameRole.getThreats().listIterator();
-                boolean hasReplaced = false;
-                while (iterator.hasNext()) {
-                    Threat nextThreat = iterator.next();
-                    if (nextThreat.getId().equals(threat.getId())) {
-                        iterator.set(threat);
-                        hasReplaced = true;
-                    }
-                }
-
-                if (!hasReplaced) {
-                    gameRole.getThreats().add(threat);
-                }
             }
-            return Mono.just(gameRole);
-        }).flatMap(gameRoleRepository::save);
+        }
+
+        return gameRoleRepository.save(gameRole);
     }
 
     @Override
-    public Mono<GameRole> addNpc(String gameRoleId, Npc npc) {
-        return gameRoleRepository.findById(gameRoleId).map(gameRole -> {
-            if (npc.getId() == null) {
-                npc.setId(UUID.randomUUID().toString());
+    public GameRole addNpc(String gameRoleId, Npc npc) {
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
+
+        if (npc.getId() == null) {
+            npc.setId(UUID.randomUUID().toString());
+        }
+        if (gameRole.getNpcs().size() == 0) {
+            gameRole.getNpcs().add(npc);
+
+        } else {
+            ListIterator<Npc> iterator = gameRole.getNpcs().listIterator();
+            boolean hasReplaced = false;
+            while (iterator.hasNext()) {
+                Npc nextNpc = iterator.next();
+                if (nextNpc.getId().equals(npc.getId())) {
+                    iterator.set(npc);
+                    hasReplaced = true;
+                }
             }
-            if (gameRole.getNpcs().size() == 0) {
+
+            if (!hasReplaced) {
                 gameRole.getNpcs().add(npc);
-
-            } else {
-                ListIterator<Npc> iterator = gameRole.getNpcs().listIterator();
-                boolean hasReplaced = false;
-                while (iterator.hasNext()) {
-                    Npc nextNpc = iterator.next();
-                    if (nextNpc.getId().equals(npc.getId())) {
-                        iterator.set(npc);
-                        hasReplaced = true;
-                    }
-                }
-
-                if (!hasReplaced) {
-                    gameRole.getNpcs().add(npc);
-                }
             }
-            return gameRole;
-        }).flatMap(gameRoleRepository::save);
+        }
+
+        return gameRoleRepository.save(gameRole);
     }
 
     // ------------------------------------ Creating and editing characters ---------------------------------- //
 
     @Override
     public Character addNewCharacter(String gameRoleId) {
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
 
         CharacterHarm harm = CharacterHarm.builder()
                 .id(UUID.randomUUID().toString())
@@ -165,16 +165,16 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .hasPlusOneForward(false)
                 .barter(-1)
                 .harm(harm).build();
-        characterService.save(newCharacter).block();
+        characterService.save(newCharacter);
         assert gameRole != null;
         gameRole.getCharacters().add(newCharacter);
-        gameRoleRepository.save(gameRole).block();
+        gameRoleRepository.save(gameRole);
         return newCharacter;
     }
 
     @Override
     public Character setCharacterPlaybook(String gameRoleId, String characterId, PlaybookType playbookType) {
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
         Character character = gameRole.getCharacters().stream()
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
@@ -204,27 +204,27 @@ public class GameRoleServiceImpl implements GameRoleService {
 
         // Set new playbook
         character.setPlaybook(playbookType);
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
         return character;
     }
 
     @Override
     public Character setCharacterName(String gameRoleId, String characterId, String name) {
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
         Character character = gameRole.getCharacters().stream()
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
         character.setName(name);
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
         return character;
     }
 
     @Override
     public Character setCharacterLook(String gameRoleId, String characterId, Look look) {
 
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
         Character character = getCharacterById(gameRole, characterId);
 
@@ -256,16 +256,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setCharacterStats(String gameRoleId, String characterId, String statsOptionId) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -273,7 +273,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
         // Get statsOption from db
-        StatsOption statsOption = statsOptionService.findById(statsOptionId).block();
+        StatsOption statsOption = statsOptionService.findById(statsOptionId);
         assert statsOption != null;
 
         StatsBlock statsBlock = StatsBlock.builder()
@@ -305,16 +305,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setCharacterGear(String gameRoleId, String characterId, List<String> gear) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -324,16 +324,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setGear(gear);
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -343,7 +343,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         List<String> previousCharacterMoveNames = character.getCharacterMoves()
                 .stream().map(Move::getName).collect(Collectors.toList());
 
-        PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(character.getPlaybook()).block();
+        PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(character.getPlaybook());
         assert playbookCreator != null;
 
         List<Move> playbookMoves = playbookCreator.getOptionalMoves()
@@ -360,7 +360,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         // Preemptively remove moved-based stat modifications
         character.getStatsBlock().getStats().forEach(characterStat -> {
             if (characterStat.getModifier() != null) {
-                StatModifier statModifier = statModifierService.findById(characterStat.getModifier()).block();
+                StatModifier statModifier = statModifierService.findById(characterStat.getModifier());
                 assert statModifier != null;
                 characterStat.setValue(characterStat.getValue() - statModifier.getModification());
                 characterStat.setModifier(null);
@@ -410,21 +410,20 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
 
-
         // This will also overwrite an existing set of CharacterMoves
         character.setCharacterMoves(characterMoves);
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -436,16 +435,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setHxBlock(hxStats);
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character finishCharacterCreation(String gameRoleId, String characterId) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -455,20 +454,19 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setHasCompletedCharacterCreation(true);
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
-
 
 
     // --------------------------------------- Setting Playbook Uniques ------------------------------------- //
 
     @Override
     public Character setAngelKit(String gameRoleId, String characterId, int stock, Boolean hasSupplier) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -478,8 +476,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.ANGEL_KIT) {
             // Make new AngelKit & set
             List<Move> angelKitMoves = moveService
-                    .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.UNIQUE)
-                    .collectList().block();
+                    .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.UNIQUE);
             assert angelKitMoves != null;
 
             AngelKit angelKit = AngelKit.builder().id(UUID.randomUUID().toString())
@@ -501,16 +498,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setBrainerGear(String gameRoleId, String characterId, List<String> brainerGear) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -536,8 +533,8 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
@@ -545,8 +542,8 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character setCustomWeapons(String gameRoleId, String characterId, List<String> weapons) {
 
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -572,16 +569,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setEstablishment(String gameRoleId, String characterId, Establishment establishment) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -606,16 +603,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setFollowers(String gameRoleId, String characterId, Followers followers) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -641,16 +638,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setGang(String gameRoleId, String characterId, Gang gang) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -675,16 +672,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount, int battleVehicleCount) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -721,15 +718,15 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setSkinnerGear(String gameRoleId, String characterId, SkinnerGear skinnerGear) {
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         if (skinnerGear.getId() == null) {
@@ -755,15 +752,15 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setWeapons(String gameRoleId, String characterId, List<String> weapons) {
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -790,16 +787,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setWorkspace(String gameRoleId, String characterId, Workspace workspace) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -824,8 +821,8 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
@@ -834,8 +831,8 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     @Override
     public Character setVehicleCount(String gameRoleId, String characterId, int vehicleCount) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -846,15 +843,15 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setVehicleCount(vehicleCount);
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
         return character;
     }
 
     @Override
     public Character setBattleVehicleCount(String gameRoleId, String characterId, int battleVehicleCount) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -865,8 +862,8 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setBattleVehicleCount(battleVehicleCount);
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
         return character;
     }
 
@@ -877,8 +874,8 @@ public class GameRoleServiceImpl implements GameRoleService {
             vehicle.setId(UUID.randomUUID().toString());
         }
 
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -909,8 +906,8 @@ public class GameRoleServiceImpl implements GameRoleService {
 
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
         return character;
     }
 
@@ -921,8 +918,8 @@ public class GameRoleServiceImpl implements GameRoleService {
             battleVehicle.setId(UUID.randomUUID().toString());
         }
 
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -953,8 +950,8 @@ public class GameRoleServiceImpl implements GameRoleService {
 
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
         return character;
     }
 
@@ -962,8 +959,8 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     @Override
     public Character adjustCharacterHx(String gameRoleId, String characterId, HxStat hxStat) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -998,16 +995,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setCharacterHarm(String gameRoleId, String characterId, CharacterHarm harm) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -1017,16 +1014,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setHarm(harm);
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character toggleStatHighlight(String gameRoleId, String characterId, StatType stat) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -1040,8 +1037,8 @@ public class GameRoleServiceImpl implements GameRoleService {
         });
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
@@ -1049,8 +1046,8 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character setCharacterBarter(String gameRoleId, String characterId, int amount) {
 
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -1063,16 +1060,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setBarter(amount);
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character setHoldingBarter(String gameRoleId, String characterId, int amount) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -1082,16 +1079,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.getPlaybookUnique().getHolding().setBarter(amount);
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character updateFollowers(String gameRoleId, String characterId, int barter, int followers, String description) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -1103,16 +1100,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.getPlaybookUnique().getFollowers().setDescription(description);
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character addProject(String gameRoleId, String characterId, Project project) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -1145,16 +1142,16 @@ public class GameRoleServiceImpl implements GameRoleService {
         }
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
 
     @Override
     public Character removeProject(String gameRoleId, String characterId, Project project) {
-        // Get the GameRole
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
 
         // GameRoles can have multiple characters, so get the right character
@@ -1167,8 +1164,8 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.getPlaybookUnique().getWorkspace().setProjects(filteredProjects);
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }
@@ -1176,7 +1173,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character removeHold(String gameRoleId, String characterId, Hold hold) {
 
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).block();
+        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
         Character character = getCharacterById(gameRole, characterId);
 
@@ -1186,8 +1183,8 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setHolds(filteredHolds);
 
         // Save to db
-        characterService.save(character).block();
-        gameRoleRepository.save(gameRole).block();
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
 
         return character;
     }

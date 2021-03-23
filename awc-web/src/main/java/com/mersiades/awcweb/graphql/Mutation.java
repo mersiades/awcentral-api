@@ -32,7 +32,7 @@ public class Mutation implements GraphQLMutationResolver {
 
     public Game setGameName(String gameId, String name) throws Exception {
         System.out.println("Setting name for Game: " + gameId);
-        return gameService.setGameName(gameId, name).block();
+        return gameService.setGameName(gameId, name);
     }
 
     public Game addInvitee(String gameId, String email) {
@@ -69,17 +69,17 @@ public class Mutation implements GraphQLMutationResolver {
 
     public Game finishPreGame(String gameId) {
         System.out.println("Finishing pre-game for Game with id: " + gameId);
-        return gameService.finishPreGame(gameId).block();
+        return gameService.finishPreGame(gameId);
     }
 
     public GameRole addThreat(String gameRoleId, Threat threat) {
         System.out.println("Adding Threat for GameRole with id: " + gameRoleId);
-        return gameRoleService.addThreat(gameRoleId, threat).block();
+        return gameRoleService.addThreat(gameRoleId, threat);
     }
 
     public GameRole addNpc(String gameRoleId, Npc npc) {
         System.out.println("Adding Npc for GameRole with id: " + gameRoleId);
-        return gameRoleService.addNpc(gameRoleId, npc).block();
+        return gameRoleService.addNpc(gameRoleId, npc);
     }
 
     // ------------------------------------ Creating and editing characters ---------------------------------- //
@@ -250,86 +250,86 @@ public class Mutation implements GraphQLMutationResolver {
 
     public Game performPrintMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove) {
         System.out.println("Performing print move for Character: " + characterId);
-        return gameService.performPrintMove(gameId, gameroleId, characterId, moveId, isGangMove).block();
+        return gameService.performPrintMove(gameId, gameroleId, characterId, moveId, isGangMove);
     }
 
     public Game performBarterMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
         System.out.println("Performing barter move for Character: " + characterId);
-        return gameService.performBarterMove(gameId, gameroleId, characterId, moveId, barter).block();
+        return gameService.performBarterMove(gameId, gameroleId, characterId, moveId, barter);
     }
 
     public Game performStockMove(String gameId, String gameroleId, String characterId, String moveName, int stockSpent) {
         System.out.println("Performing SPEED RECOVERY OF SOMEONE move for Character: " + characterId);
-        return gameService.performStockMove(gameId, gameroleId, characterId, moveName, stockSpent).block();
+        return gameService.performStockMove(gameId, gameroleId, characterId, moveName, stockSpent);
     }
 
     // ------------------------------------------ Roll Move Categories --------------------------------------- //
 
     public Game performStatRollMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove) {
         System.out.println("Performing stat roll move for Character: " + characterId);
-        return gameService.performStatRollMove(gameId, gameroleId, characterId, moveId, isGangMove).block();
+        return gameService.performStatRollMove(gameId, gameroleId, characterId, moveId, isGangMove);
     }
 
     public Game performSpeedRollMove(String gameId, String gameroleId, String characterId, String moveId, int modifier) {
         System.out.println("Performing stat roll move for Character: " + characterId);
-        return gameService.performSpeedRollMove(gameId, gameroleId, characterId, moveId, modifier).block();
+        return gameService.performSpeedRollMove(gameId, gameroleId, characterId, moveId, modifier);
     }
 
     // ------------------------------------------ Specific Moves --------------------------------------- //
 
     public Game performWealthMove(String gameId, String gameroleId, String characterId) {
         System.out.println("Performing Wealth roll move for Character: " + characterId);
-        return gameService.performWealthMove(gameId, gameroleId, characterId).block();
+        return gameService.performWealthMove(gameId, gameroleId, characterId);
     }
 
     public Game performFortunesMove(String gameId, String gameroleId, String characterId) {
         System.out.println("Performing Fortunes roll move for Character: " + characterId);
-        return gameService.performFortunesMove(gameId, gameroleId, characterId).block();
+        return gameService.performFortunesMove(gameId, gameroleId, characterId);
     }
 
     public Game performHelpOrInterfereMove(String gameId, String gameroleId, String characterId, String moveId, String targetId) {
         System.out.println("Performing hx roll move for Character: " + characterId);
-        return gameService.performHelpOrInterfereMove(gameId, gameroleId, characterId, moveId, targetId).block();
+        return gameService.performHelpOrInterfereMove(gameId, gameroleId, characterId, moveId, targetId);
     }
 
     public Game performMakeWantKnownMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
         System.out.println("Performing barter roll move for Character: " + characterId);
-        return gameService.performMakeWantKnownMove(gameId, gameroleId, characterId, moveId, barter).block();
+        return gameService.performMakeWantKnownMove(gameId, gameroleId, characterId, moveId, barter);
     }
 
     public Game performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm) {
         System.out.println("Performing SUFFER HARM move for Character: " + characterId);
-        return gameService.performSufferHarmMove(gameId, gameroleId, characterId, moveId, harm).block();
+        return gameService.performSufferHarmMove(gameId, gameroleId, characterId, moveId, harm);
     }
 
     public Game performInflictHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm) {
         System.out.println("Performing INFLICT HARM ON PC move for Character: " + characterId);
-        return gameService.performInflictHarmMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, harm).block();
+        return gameService.performInflictHarmMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, harm);
     }
 
     public Game performHealHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm) {
         System.out.println("Performing HEAL PC HARM move for Character: " + characterId);
-        return gameService.performHealHarmMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, harm).block();
+        return gameService.performHealHarmMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, harm);
     }
 
     public Game performAngelSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId) {
         System.out.println("Performing ANGEL SPECIAL move for Character: " + characterId);
-        return gameService.performAngelSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId).block();
+        return gameService.performAngelSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId);
     }
 
     public Game performChopperSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int hxChange) {
         System.out.println("Performing CHOPPER SPECIAL move for Character: " + characterId);
-        return gameService.performChopperSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, hxChange).block();
+        return gameService.performChopperSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, hxChange);
     }
 
     public Game performGunluggerSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, boolean addPlus1Forward) {
         System.out.println("Performing GUNLUGGER SPECIAL move for Character: " + characterId);
-        return gameService.performGunluggerSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, addPlus1Forward).block();
+        return gameService.performGunluggerSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, addPlus1Forward);
     }
 
     public Game performHocusSpecialMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId) {
         System.out.println("Performing HOCUS SPECIAL move for Character: " + characterId);
-        return gameService.performHocusSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId).block();
+        return gameService.performHocusSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId);
     }
 
     public Game performSkinnerSpecialMove(String gameId,
@@ -340,26 +340,26 @@ public class Mutation implements GraphQLMutationResolver {
                                           boolean plus1ForUser,
                                           boolean plus1ForOther) {
         System.out.println("Performing SKINNER SPECIAL move for Character: " + characterId);
-        return gameService.performSkinnerSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, plus1ForUser, plus1ForOther).block();
+        return gameService.performSkinnerSpecialMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, plus1ForUser, plus1ForOther);
     }
 
 
 
     public Game performStabilizeAndHealMove(String gameId, String gameroleId, String characterId, int stockSpent) {
         System.out.println("Performing SUFFER HARM move for Character: " + characterId);
-        return gameService.performStabilizeAndHealMove(gameId, gameroleId, characterId, stockSpent).block();
+        return gameService.performStabilizeAndHealMove(gameId, gameroleId, characterId, stockSpent);
     }
 
     public Game performJustGiveMotivationMove(String gameId, String gameroleId, String characterId, String targetId) {
         System.out.println("Performing SUFFER HARM move for Character: " + characterId);
-        return gameService.performJustGiveMotivationMove(gameId, gameroleId, characterId, targetId).block();
+        return gameService.performJustGiveMotivationMove(gameId, gameroleId, characterId, targetId);
     }
 
     // ------------------------------------------ Other --------------------------------------- //
 
     public Game spendHold(String gameId, String gameroleId, String characterId, Hold hold) {
         System.out.println("Spending hold for Character: " + characterId);
-        return gameService.spendHold(gameId, gameroleId, characterId, hold).block();
+        return gameService.spendHold(gameId, gameroleId, characterId, hold);
     }
 
     public Character removeHold(String gameRoleId, String characterId, Hold hold) {

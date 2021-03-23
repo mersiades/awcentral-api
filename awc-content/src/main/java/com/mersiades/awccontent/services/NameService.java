@@ -2,9 +2,10 @@ package com.mersiades.awccontent.services;
 
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Name;
-import reactor.core.publisher.Flux;
 
-public interface NameService extends ReactiveCrudService<Name, String>{
+import java.util.List;
 
-    Flux<Name> findAllByPlaybookType(PlaybookType playbookType);
+public interface NameService extends CrudService<Name, String>{
+
+    List<Name> findAllByPlaybookType(PlaybookType playbookType);
 }

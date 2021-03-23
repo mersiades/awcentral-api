@@ -2,11 +2,11 @@ package com.mersiades.awccontent.services.impl;
 
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Name;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import com.mersiades.awccontent.repositories.NameRepository;
 import com.mersiades.awccontent.services.NameService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class NameServiceImpl implements NameService {
@@ -18,22 +18,22 @@ public class NameServiceImpl implements NameService {
     }
 
     @Override
-    public Flux<Name> findAll() {
+    public List<Name> findAll() {
         return nameRepository.findAll();
     }
 
     @Override
-    public Mono<Name> findById(String id) {
-        return nameRepository.findById(id);
+    public Name findById(String id) {
+        return nameRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Mono<Name> save(Name name) {
+    public Name save(Name name) {
         return nameRepository.save(name);
     }
 
     @Override
-    public Flux<Name> saveAll(Flux<Name> moves) {
+    public List<Name> saveAll(List<Name> moves) {
         return nameRepository.saveAll(moves);
     }
 
@@ -48,7 +48,7 @@ public class NameServiceImpl implements NameService {
     }
 
     @Override
-    public Flux<Name> findAllByPlaybookType(PlaybookType playbookType) {
+    public List<Name> findAllByPlaybookType(PlaybookType playbookType) {
         return nameRepository.findAllByPlaybookType(playbookType);
     }
 }

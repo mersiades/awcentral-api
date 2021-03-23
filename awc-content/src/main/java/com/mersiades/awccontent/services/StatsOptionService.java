@@ -2,9 +2,10 @@ package com.mersiades.awccontent.services;
 
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.StatsOption;
-import reactor.core.publisher.Flux;
 
-public interface StatsOptionService extends ReactiveCrudService<StatsOption, String> {
+import java.util.List;
 
-    Flux<StatsOption> findAllByPlaybookType(PlaybookType playbookType);
+public interface StatsOptionService extends CrudService<StatsOption, String> {
+
+    List<StatsOption> findAllByPlaybookType(PlaybookType playbookType);
 }

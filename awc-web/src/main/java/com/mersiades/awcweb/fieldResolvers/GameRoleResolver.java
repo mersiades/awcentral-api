@@ -16,7 +16,7 @@ public class GameRoleResolver implements GraphQLResolver<GameRole> {
     }
 
     public Game getGame(GameRole gameRole) {
-        return gameService.findByGameRoles(gameRole).block();
+        return gameService.findByGameRoles(gameRole);
     }
 
     public String getUserId(GameRole gameRole) {

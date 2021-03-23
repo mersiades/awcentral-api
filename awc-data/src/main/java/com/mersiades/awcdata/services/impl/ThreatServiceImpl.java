@@ -4,8 +4,9 @@ import com.mersiades.awcdata.models.Threat;
 import com.mersiades.awcdata.repositories.ThreatRepository;
 import com.mersiades.awcdata.services.ThreatService;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ThreatServiceImpl implements ThreatService {
@@ -17,22 +18,22 @@ public class ThreatServiceImpl implements ThreatService {
     }
 
     @Override
-    public Flux<Threat> findAll() {
+    public List<Threat> findAll() {
         return threatRepository.findAll();
     }
 
     @Override
-    public Mono<Threat> findById(String id) {
-        return threatRepository.findById(id);
+    public Threat findById(String id) {
+        return threatRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public Mono<Threat> save(Threat threat) {
+    public Threat save(Threat threat) {
         return threatRepository.save(threat);
     }
 
     @Override
-    public Flux<Threat> saveAll(Flux<Threat> threats) {
+    public List<Threat> saveAll(List<Threat> threats) {
         return threatRepository.saveAll(threats);
     }
 

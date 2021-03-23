@@ -7,11 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -44,10 +42,10 @@ class VehicleCreatorServiceImplTest {
     @Test
     void shouldFindAllVehicleCreators() {
         // Given
-        when(vehicleCreatorRepository.findAll()).thenReturn(Flux.just(mockVehicleCreator1, mockVehicleCreator2));
+        when(vehicleCreatorRepository.findAll()).thenReturn(List.of(mockVehicleCreator1, mockVehicleCreator2));
 
         // When
-        List<VehicleCreator> returnedVehicleCreators = vehicleCreatorService.findAll().collectList().block();
+        List<VehicleCreator> returnedVehicleCreators = vehicleCreatorService.findAll();
 
         // Then
         assert returnedVehicleCreators != null;
@@ -58,10 +56,10 @@ class VehicleCreatorServiceImplTest {
     @Test
     void shouldFindVehicleCreatorById() {
         // Given
-        when(vehicleCreatorRepository.findById(anyString())).thenReturn(Mono.just(mockVehicleCreator1));
+        when(vehicleCreatorRepository.findById(anyString())).thenReturn(Optional.of(mockVehicleCreator1));
 
         // When
-        VehicleCreator returnedVehicleCreator = vehicleCreatorService.findById(MOCK_VEHICLE_CREATOR_ID_1).block();
+        VehicleCreator returnedVehicleCreator = vehicleCreatorService.findById(MOCK_VEHICLE_CREATOR_ID_1);
 
         // Then
         assert returnedVehicleCreator != null;
@@ -72,10 +70,10 @@ class VehicleCreatorServiceImplTest {
     @Test
     void shouldSaveVehicleCreator() {
         // Given
-        when(vehicleCreatorService.save(any(VehicleCreator.class))).thenReturn(Mono.just(mockVehicleCreator1));
+        when(vehicleCreatorService.save(any(VehicleCreator.class))).thenReturn(mockVehicleCreator1);
 
         // When
-        VehicleCreator savedVehicleCreator = vehicleCreatorService.save(mockVehicleCreator1).block();
+        VehicleCreator savedVehicleCreator = vehicleCreatorService.save(mockVehicleCreator1);
 
         // Then
         assert savedVehicleCreator != null;
@@ -86,15 +84,15 @@ class VehicleCreatorServiceImplTest {
     @Test
     void shouldSaveAllVehicleCreators() {
         // Given
-        when(vehicleCreatorRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockVehicleCreator1, mockVehicleCreator2));
+        when(vehicleCreatorRepository.saveAll(anyIterable())).thenReturn(List.of(mockVehicleCreator1, mockVehicleCreator2));
 
         // When
-        List<VehicleCreator> savedVehicleCreators = vehicleCreatorService.saveAll(Flux.just(mockVehicleCreator1, mockVehicleCreator2)).collectList().block();
+        List<VehicleCreator> savedVehicleCreators = vehicleCreatorService.saveAll(List.of(mockVehicleCreator1, mockVehicleCreator2));
 
         // Then
         assert savedVehicleCreators != null;
         assertEquals(2, savedVehicleCreators.size());
-        verify(vehicleCreatorRepository, times(1)).saveAll(any(Publisher.class));
+        verify(vehicleCreatorRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test

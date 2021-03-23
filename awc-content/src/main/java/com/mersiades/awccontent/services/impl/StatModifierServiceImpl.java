@@ -2,11 +2,11 @@ package com.mersiades.awccontent.services.impl;
 
 
 import com.mersiades.awccontent.models.StatModifier;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import com.mersiades.awccontent.repositories.StatModifierRepository;
 import com.mersiades.awccontent.services.StatModifierService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class StatModifierServiceImpl implements StatModifierService {
@@ -18,23 +18,23 @@ public class StatModifierServiceImpl implements StatModifierService {
     }
 
     @Override
-    public Flux<StatModifier> findAll() {
+    public List<StatModifier> findAll() {
         return statModifierRepository.findAll();
     }
 
     @Override
-    public Mono<StatModifier> findById(String id) {
-        return statModifierRepository.findById(id);
+    public StatModifier findById(String id) {
+        return statModifierRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Mono<StatModifier> save(StatModifier statModifier) {
+    public StatModifier save(StatModifier statModifier) {
         return statModifierRepository.save(statModifier);
     }
 
     @Override
-    public Flux<StatModifier> saveAll(Flux<StatModifier> statModifierFlux) {
-        return statModifierRepository.saveAll(statModifierFlux);
+    public List<StatModifier> saveAll(List<StatModifier> statModifierList) {
+        return statModifierRepository.saveAll(statModifierList);
     }
 
     @Override

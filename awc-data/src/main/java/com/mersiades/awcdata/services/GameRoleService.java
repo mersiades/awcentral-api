@@ -6,23 +6,21 @@ import com.mersiades.awccontent.models.Look;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.*;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface GameRoleService extends ReactiveCrudService<GameRole, String> {
+public interface GameRoleService extends CrudService<GameRole, String> {
 
     // ---------------------------------------------- Game-related -------------------------------------------- //
-    Flux<GameRole> findAllByUser(User user);
+    List<GameRole> findAllByUser(User user);
 
-    Flux<GameRole> findAllByUserId(String userId);
+    List<GameRole> findAllByUserId(String userId);
 
     // ---------------------------------------------- MC stuff -------------------------------------------- //
 
-    Mono<GameRole> addThreat(String gameRoleId, Threat threat);
+    GameRole addThreat(String gameRoleId, Threat threat);
 
-    Mono<GameRole> addNpc(String gameRoleId, Npc npc);
+    GameRole addNpc(String gameRoleId, Npc npc);
 
     // ------------------------------------ Creating and editing characters ---------------------------------- //
     Character addNewCharacter(String gameRoleId);

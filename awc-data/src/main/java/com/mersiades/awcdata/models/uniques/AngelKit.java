@@ -31,6 +31,7 @@ public class AngelKit {
     @Builder.Default
     private List<Move> angelKitMoves = new ArrayList<>();
 
+    @Builder.Default
     private boolean hasSupplier = false;
 
     @Builder.Default

@@ -2,11 +2,11 @@ package com.mersiades.awccontent.services.impl;
 
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.PlaybookCreator;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import com.mersiades.awccontent.repositories.PlaybookCreatorRepository;
 import com.mersiades.awccontent.services.PlaybookCreatorService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PlaybookCreatorServiceImpl implements PlaybookCreatorService {
@@ -18,22 +18,22 @@ public class PlaybookCreatorServiceImpl implements PlaybookCreatorService {
     }
 
     @Override
-    public Flux<PlaybookCreator> findAll() {
+    public List<PlaybookCreator> findAll() {
         return playbookCreatorRepository.findAll();
     }
 
     @Override
-    public Mono<PlaybookCreator> findById(String id) {
-        return playbookCreatorRepository.findById(id);
+    public PlaybookCreator findById(String id) {
+        return playbookCreatorRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Mono<PlaybookCreator> save(PlaybookCreator playbookCreator) {
+    public PlaybookCreator save(PlaybookCreator playbookCreator) {
         return playbookCreatorRepository.save(playbookCreator);
     }
 
     @Override
-    public Flux<PlaybookCreator> saveAll(Flux<PlaybookCreator> playbookCreators) {
+    public List<PlaybookCreator> saveAll(List<PlaybookCreator> playbookCreators) {
         return playbookCreatorRepository.saveAll(playbookCreators);
     }
 
@@ -48,7 +48,7 @@ public class PlaybookCreatorServiceImpl implements PlaybookCreatorService {
     }
 
     @Override
-    public Mono<PlaybookCreator> findByPlaybookType(PlaybookType playbookType) {
+    public PlaybookCreator findByPlaybookType(PlaybookType playbookType) {
         return playbookCreatorRepository.findByPlaybookType(playbookType);
     }
 }

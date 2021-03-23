@@ -44,19 +44,19 @@ public class Query implements GraphQLQueryResolver {
     @CrossOrigin
     public List<GameRole> gameRolesByUserId(String id) {
         System.out.println("Fetching GameRoles for user: " + id);
-        return gameRoleService.findAllByUserId(id).collectList().block();
+        return gameRoleService.findAllByUserId(id);
     }
 
     public Game game(String gameId) {
         System.out.println("Fetching Game by id: " + gameId);
-        return gameService.findById(gameId).block();
+        return gameService.findById(gameId);
     }
 
     public Game gameForPlayer(String gameId, String userId) {
         System.out.println("Fetching Game for player: " + gameId);
 
         // Get the Game
-        Game game = gameService.findById(gameId).block();
+        Game game = gameService.findById(gameId);
 
         // Get the User's GameRole from the Game
         assert game != null;
@@ -74,30 +74,30 @@ public class Query implements GraphQLQueryResolver {
 
     public List<Game> gamesForInvitee(String email) {
         System.out.println("Fetching Games for invitee: " + email);
-        return gameService.findAllByInvitee(email).collectList().block();
+        return gameService.findAllByInvitee(email);
     }
 
     public List<Move> allMoves() {
-        return moveService.findAll().collectList().block();
+        return moveService.findAll();
     }
 
     public List<Playbook> playbooks() {
-        return playbookService.findAll().collectList().block();
+        return playbookService.findAll();
     }
 
     public Playbook playbook(PlaybookType playbookType) {
-        return playbookService.findByPlaybookType(playbookType).block();
+        return playbookService.findByPlaybookType(playbookType);
     }
 
     public PlaybookCreator playbookCreator(PlaybookType playbookType) {
-        return playbookCreatorService.findByPlaybookType(playbookType).block();
+        return playbookCreatorService.findByPlaybookType(playbookType);
     }
 
     public VehicleCreator vehicleCreator() {
-        return vehicleCreatorService.findAll().take(1).blockFirst();
+        return vehicleCreatorService.findAll().get(0);
     }
 
     public ThreatCreator threatCreator() {
-        return threatCreatorService.findAll().take(1).blockFirst();
+        return threatCreatorService.findAll().get(0);
     }
 }

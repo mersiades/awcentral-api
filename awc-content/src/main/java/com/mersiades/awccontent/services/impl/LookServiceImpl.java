@@ -2,11 +2,11 @@ package com.mersiades.awccontent.services.impl;
 
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Look;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import com.mersiades.awccontent.repositories.LookRepository;
 import com.mersiades.awccontent.services.LookService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class LookServiceImpl implements LookService {
@@ -18,22 +18,22 @@ public class LookServiceImpl implements LookService {
     }
 
     @Override
-    public Flux<Look> findAll() {
+    public List<Look> findAll() {
         return lookRepository.findAll();
     }
 
     @Override
-    public Mono<Look> findById(String id) {
-        return lookRepository.findById(id);
+    public Look findById(String id) {
+        return lookRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Mono<Look> save(Look look) {
+    public Look save(Look look) {
         return lookRepository.save(look);
     }
 
     @Override
-    public Flux<Look> saveAll(Flux<Look> looks) {
+    public List<Look> saveAll(List<Look> looks) {
         return lookRepository.saveAll(looks);
     }
 
@@ -48,7 +48,7 @@ public class LookServiceImpl implements LookService {
     }
 
     @Override
-    public Flux<Look> findAllByPlaybookType(PlaybookType playbookType) {
+    public List<Look> findAllByPlaybookType(PlaybookType playbookType) {
         return lookRepository.findAllByPlaybookType(playbookType);
     }
 }

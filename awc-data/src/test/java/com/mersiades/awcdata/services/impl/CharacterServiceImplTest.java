@@ -1,20 +1,17 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
-import com.mersiades.awccontent.enums.PlaybookType;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -54,10 +51,10 @@ class CharacterServiceImplTest {
     void shouldFindAllCharacters() {
         // Given
         Character mockCharacter2 = Character.builder().build();
-        when(characterRepository.findAll()).thenReturn(Flux.just(mockCharacter1, mockCharacter2));
+        when(characterRepository.findAll()).thenReturn(List.of(mockCharacter1, mockCharacter2));
 
         // When
-        List<Character> returnedCharacters = characterService.findAll().collectList().block();
+        List<Character> returnedCharacters = characterService.findAll();
 
         // Then
         assert returnedCharacters != null;
@@ -68,10 +65,10 @@ class CharacterServiceImplTest {
     @Test
     void shouldFindCharacterById() {
         // Given
-        when(characterRepository.findById(anyString())).thenReturn(Mono.just(mockCharacter1));
+        when(characterRepository.findById(anyString())).thenReturn(Optional.of(mockCharacter1));
 
         // When
-        Character returnedCharacter = characterService.findById(MOCK_CHARACTER_ID_1).block();
+        Character returnedCharacter = characterService.findById(MOCK_CHARACTER_ID_1);
 
         // Then
         assert returnedCharacter != null;
@@ -82,10 +79,10 @@ class CharacterServiceImplTest {
     @Test
     void shouldSaveCharacter() {
         // Given
-        when(characterRepository.save(any(Character.class))).thenReturn(Mono.just(mockCharacter1));
+        when(characterRepository.save(any(Character.class))).thenReturn(mockCharacter1);
 
         // When
-        Character savedCharacter = characterService.save(mockCharacter1).block();
+        Character savedCharacter = characterService.save(mockCharacter1);
 
         // Then
         assert savedCharacter != null;
@@ -97,19 +94,18 @@ class CharacterServiceImplTest {
     void shouldSaveAllCharacters() {
         // Given
         Character mockCharacter2 = Character.builder().build();
-        when(characterRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockCharacter1, mockCharacter2));
+        when(characterRepository.saveAll(anyIterable())).thenReturn(List.of(mockCharacter1, mockCharacter2));
 
         // When
-        List<Character> savedLooks = characterService.saveAll(Flux.just(mockCharacter1,mockCharacter2)).collectList().block();
+        List<Character> savedLooks = characterService.saveAll(List.of(mockCharacter1,mockCharacter2));
 
         // Then
         assert savedLooks != null;
         assertEquals(2, savedLooks.size());
-        verify(characterRepository, times(1)).saveAll(any(Publisher.class));
+        verify(characterRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test
-    @Disabled
     void shouldDeleteCharacter() {
         // When
         characterService.delete(mockCharacter1);

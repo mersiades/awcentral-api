@@ -5,9 +5,8 @@ import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.repositories.UserRepository;
 import com.mersiades.awcdata.services.UserService;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -21,22 +20,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Flux<User> findAll() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
     @Override
-    public Mono<User> findById(String id) {
-        return userRepository.findById(id);
+    public User findById(String id) {
+        return userRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public Mono<User> save(User user) {
+    public User save(User user) {
         return userRepository.save(user);
     }
 
     @Override
-    public Flux<User> saveAll(Flux<User> users) {
+    public List<User> saveAll(List<User> users) {
         return userRepository.saveAll(users);
     }
 
@@ -51,21 +50,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addGameroleToUser(String userId, GameRole gameRole) throws Exception {
-        User user = userRepository.findById(userId).blockOptional().orElseThrow(NoSuchElementException::new);
+    public User addGameroleToUser(String userId, GameRole gameRole) {
+        User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
         System.out.println("Adding gamerole to user");
         user.getGameRoles().add(gameRole);
-        return userRepository.save(user).block();
+        return userRepository.save(user);
     }
 
     @Override
     public User findOrCreateUser(String userId, String displayName, String email) {
-        Optional<User> userOptional = userRepository.findById(userId).blockOptional();
+        Optional<User> userOptional = userRepository.findById(userId);
 
         User user;
         if (userOptional.isEmpty()) {
             User newUser = User.builder().id(userId).displayName(displayName).email(email).build();
-            user = userRepository.save(newUser).block();
+            user = userRepository.save(newUser);
         } else {
             user = userOptional.get();
         }
@@ -74,13 +73,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeGameroleFromUser(String userId, String gameId) {
-        User user = userRepository.findById(userId).block();
+        User user = userRepository.findById(userId).orElseThrow();
         assert user != null;
         Optional<GameRole> gameRoleOptional = user.getGameRoles().stream()
                 .filter(gameRole -> gameRole.getGame().getId().equals(gameId))
                 .findFirst();
 
         gameRoleOptional.ifPresent(gameRole -> user.getGameRoles().remove(gameRole));
-        userRepository.save(user).block();
+        userRepository.save(user);
     }
 }

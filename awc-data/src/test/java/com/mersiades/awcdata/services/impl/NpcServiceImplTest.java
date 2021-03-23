@@ -8,11 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -50,10 +48,10 @@ class NpcServiceImplTest {
     void shouldFindAllNpcs() {
         // Given
         Npc mockNpc2 = Npc.builder().build();
-        when(npcRepository.findAll()).thenReturn(Flux.just(mockNpc1, mockNpc2));
+        when(npcRepository.findAll()).thenReturn(List.of(mockNpc1, mockNpc2));
 
         // When
-        List<Npc> returnedNpcs = npcService.findAll().collectList().block();
+        List<Npc> returnedNpcs = npcService.findAll();
 
         // Then
         assert returnedNpcs != null;
@@ -64,10 +62,10 @@ class NpcServiceImplTest {
     @Test
     void shouldFindNpcById() {
         // Given
-        when(npcRepository.findById(anyString())).thenReturn(Mono.just(mockNpc1));
+        when(npcRepository.findById(anyString())).thenReturn(Optional.of(mockNpc1));
 
         // When
-        Npc returnedNpc = npcService.findById(MOCK_NPC_ID_1).block();
+        Npc returnedNpc = npcService.findById(MOCK_NPC_ID_1);
 
         // Then
         assert returnedNpc != null;
@@ -78,10 +76,10 @@ class NpcServiceImplTest {
     @Test
     void shouldSaveNpc() {
         // Given
-        when(npcRepository.save(any(Npc.class))).thenReturn(Mono.just(mockNpc1));
+        when(npcRepository.save(any(Npc.class))).thenReturn(mockNpc1);
 
         // When
-        Npc savedNpc = npcService.save(mockNpc1).block();
+        Npc savedNpc = npcService.save(mockNpc1);
 
         // Then
         assert savedNpc != null;
@@ -93,15 +91,15 @@ class NpcServiceImplTest {
     void shouldSaveAllNpcs() {
         // Given
         Npc mockNpc2 = Npc.builder().build();
-        when(npcRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockNpc1, mockNpc2));
+        when(npcRepository.saveAll(anyIterable())).thenReturn(List.of(mockNpc1, mockNpc2));
 
         // When
-        List<Npc> savedNpcs = npcService.saveAll(Flux.just(mockNpc1,mockNpc2)).collectList().block();
+        List<Npc> savedNpcs = npcService.saveAll(List.of(mockNpc1,mockNpc2));
 
         // Then
         assert savedNpcs != null;
         assertEquals(2, savedNpcs.size());
-        verify(npcRepository, times(1)).saveAll(any(Publisher.class));
+        verify(npcRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test

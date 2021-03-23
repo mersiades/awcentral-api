@@ -32,6 +32,7 @@ public class Gang {
     @Builder.Default
     private List<GangOption> weaknesses = new ArrayList<>();
 
+    @Builder.Default
     private List<String> tags = new ArrayList<>();
 
 }

@@ -16,18 +16,11 @@ import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static com.mersiades.awccontent.constants.MoveNames.*;
 import static com.mersiades.awccontent.enums.StatType.*;
@@ -71,7 +64,7 @@ class GameServiceImplTest {
     HxStat mockHxStat2;
 
     CharacterHarm mockHarm;
-    
+
     Character mockCharacter;
 
     Character mockCharacter2;
@@ -230,10 +223,10 @@ class GameServiceImplTest {
     void shouldFindAllGames() {
         // Given
         Game mockGame2 = new Game();
-        when(gameRepository.findAll()).thenReturn(Flux.just(mockGame1, mockGame2));
+        when(gameRepository.findAll()).thenReturn(List.of(mockGame1, mockGame2));
 
         // When
-        List<Game> returnedGames = gameService.findAll().collectList().block();
+        List<Game> returnedGames = gameService.findAll();
 
         // Then
         assert returnedGames != null;
@@ -244,10 +237,10 @@ class GameServiceImplTest {
     @Test
     void shouldFindGameById() {
         // Given
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
 
         // When
-        Game returnedGame = gameService.findById(MOCK_GAME_ID_1).block();
+        Game returnedGame = gameService.findById(MOCK_GAME_ID_1);
 
         // Then
         assertNotNull(returnedGame, "Null Game returned");
@@ -258,10 +251,10 @@ class GameServiceImplTest {
     @Test
     void shouldSaveGame() {
         // Given
-        when(gameRepository.save(any())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any())).thenReturn(mockGame1);
 
         // When
-        Game returnedGame = gameService.save(mockGame1).block();
+        Game returnedGame = gameService.save(mockGame1);
 
         // Then
         assert returnedGame != null;
@@ -273,20 +266,18 @@ class GameServiceImplTest {
     void shouldSaveAllGames() {
         // Given
         Game mockGame2 = new Game();
-        when(gameRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockGame1, mockGame2));
+        when(gameRepository.saveAll(anyIterable())).thenReturn(List.of(mockGame1, mockGame2));
 
         // When
-        List<Game> savedGames = gameService.saveAll(Flux.just(mockGame1, mockGame2)).collectList().block();
+        List<Game> savedGames = gameService.saveAll(List.of(mockGame1, mockGame2));
 
         // Then
         assert savedGames != null;
         assertEquals(2, savedGames.size());
-        verify(gameRepository, times(1)).saveAll(any(Publisher.class));
+        verify(gameRepository, times(1)).saveAll(anyIterable());
     }
 
-     // This test stopped working after I added .block() to gameRepository.delete()
     @Test
-    @Disabled
     void shouldDeleteGame() {
         // When
         gameService.delete(mockGame1);
@@ -307,10 +298,10 @@ class GameServiceImplTest {
     @Test
     void shouldFindGameByGameRoles() {
         // Given
-        when(gameRepository.findByGameRoles(any())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.findByGameRoles(any())).thenReturn(mockGame1);
 
         // When
-        Game returnedGame = gameService.findByGameRoles(mockGameRole).block();
+        Game returnedGame = gameService.findByGameRoles(mockGameRole);
 
         // Then
         assert returnedGame != null;
@@ -330,10 +321,10 @@ class GameServiceImplTest {
         String mockInvitee = "mock@invitee.com";
         Game mockGame2 = Game.builder().invitees(Collections.singletonList(mockInvitee)).build();
         mockGame1.getInvitees().add(mockInvitee);
-        when(gameRepository.findAllByInviteesContaining(anyString())).thenReturn(Flux.just(mockGame1, mockGame2));
+        when(gameRepository.findAllByInviteesContaining(anyString())).thenReturn(List.of(mockGame1, mockGame2));
 
         // When
-        List<Game> returnedGames = gameService.findAllByInvitee(mockInvitee).collectList().block();
+        List<Game> returnedGames = gameService.findAllByInvitee(mockInvitee);
 
         // Then
         assert returnedGames != null;
@@ -348,8 +339,8 @@ class GameServiceImplTest {
         // Given
         String mockGameName = "mock-game-name";
         when(userService.findOrCreateUser(anyString(), anyString(), anyString())).thenReturn(mockMc);
-        when(gameRepository.save(any())).thenReturn(Mono.just(mockGame1));
-        when(gameRoleService.save(any())).thenReturn(Mono.just(mockGameRole));
+        when(gameRepository.save(any())).thenReturn(mockGame1);
+        when(gameRoleService.save(any())).thenReturn(mockGameRole);
 
         // When
         Game returnedGame = gameService.createGameWithMC(mockMc.getId(),
@@ -370,11 +361,11 @@ class GameServiceImplTest {
     void shouldSetGameName() {
         // Given
         String newName = "New Game Name";
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
 
         // When
-        Game returnedGame = gameService.setGameName(mockGame1.getId(), newName).block();
+        Game returnedGame = gameService.setGameName(mockGame1.getId(), newName);
 
         // Then
         assert returnedGame != null;
@@ -388,8 +379,8 @@ class GameServiceImplTest {
     void shouldAddInviteeToGame() {
         // Given
         String mockInvitee = "mock@invitee.com";
-        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
 
         // When
         Game returnedGame = gameService.addInvitee(mockGame1.getId(), mockInvitee);
@@ -405,8 +396,8 @@ class GameServiceImplTest {
         // Given
         String mockInvitee = "mock@invitee.com";
         mockGame1.getInvitees().add(mockInvitee);
-        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
 
         // When
         Game returnedGame = gameService.removeInvitee(mockGame1.getId(), mockInvitee);
@@ -421,8 +412,8 @@ class GameServiceImplTest {
     void shouldAddCommsAppToGame() {
         // Given
         String mockCommsApp = "Discord";
-        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
 
         // When
         Game returnedGame = gameService.addCommsApp(mockGame1.getId(), mockCommsApp);
@@ -437,8 +428,8 @@ class GameServiceImplTest {
     void shouldAddCommsUrlToGame() {
         // Given
         String mockCommsUrl = "https://mock-url.com";
-        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
 
         // When
         Game returnedGame = gameService.addCommsUrl(mockGame1.getId(), mockCommsUrl);
@@ -456,9 +447,9 @@ class GameServiceImplTest {
         User mockNewUser = User.builder().id("mock-new-user-id").displayName("new-displayname").email("new-email").build();
         mockGame1.getInvitees().add("mock-invitee-email");
         when(userService.findOrCreateUser(anyString(), anyString(), anyString())).thenReturn(mockNewUser);
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
-        when(gameRoleService.save(any())).thenReturn(Mono.just(mockGameRole));
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
+        when(gameRoleService.save(any())).thenReturn(mockGameRole);
 
         // When
         Game returnedGame = gameService.addUserToGame(mockGame1.getId(),
@@ -476,10 +467,7 @@ class GameServiceImplTest {
         verify(gameRoleService, times(1)).save(any(GameRole.class));
     }
 
-    // I'm having trouble mocking the void methods
-    // This should be an integration test, not unit
     @Test
-    @Disabled
     void shouldFindGameByIdAndDelete() {
         // Given
         User mockPlayer = User.builder().id("mock-player-user-id").displayName("player-displayname").email("player-email").build();
@@ -490,7 +478,7 @@ class GameServiceImplTest {
                 .game(mockGame1).build();
         mockGame1.getPlayers().add(mockPlayer);
         mockGame1.getGameRoles().add(mockPlayerGameRole);
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
         doNothing().when(userService).removeGameroleFromUser(anyString(), anyString());
         doNothing().when(gameRoleService).delete(any(GameRole.class));
         doNothing().when(gameRepository).delete(any(Game.class));
@@ -508,11 +496,11 @@ class GameServiceImplTest {
     @Test
     void shouldFinishPreGame() {
         // Given
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
-        when(gameService.findById(anyString())).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
 
         // When
-        Game returnedGame = gameService.finishPreGame(mockGame1.getId()).block();
+        Game returnedGame = gameService.finishPreGame(mockGame1.getId());
 
         // Then
         assert returnedGame != null;
@@ -525,17 +513,17 @@ class GameServiceImplTest {
     @Test
     void shouldPerformPrintMoveWithMove() {
         // Given
-        when(moveService.findById(anyString())).thenReturn(Mono.just(sucker));
-        when(characterService.findById(anyString())).thenReturn(Mono.just(mockCharacter));
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(moveService.findById(anyString())).thenReturn(sucker);
+        when(characterService.findById(anyString())).thenReturn(mockCharacter);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
 
         // When
         Game returnedGame = gameService.performPrintMove(mockGame1.getId(),
                 mockGameRole.getId(),
                 mockCharacter.getId(),
                 sucker.getId(),
-                false).block();
+                false);
 
         // Then
         assert returnedGame != null;
@@ -565,16 +553,16 @@ class GameServiceImplTest {
                 .playbook(PlaybookType.DRIVER).build();
         CharacterMove mockCharacterMove = CharacterMove.createFromMove(combatDriver);
         mockCharacter.getCharacterMoves().add(mockCharacterMove);
-        when(characterService.findById(anyString())).thenReturn(Mono.just(mockCharacter));
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(characterService.findById(anyString())).thenReturn(mockCharacter);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
 
         // When
         Game returnedGame = gameService.performPrintMove(mockGame1.getId(),
                 mockGameRole.getId(),
                 mockCharacter.getId(),
                 mockCharacterMove.getId(),
-                false).block();
+                false);
 
         // Then
         assert returnedGame != null;
@@ -589,17 +577,17 @@ class GameServiceImplTest {
     void shouldPerformPrintMoveWithGangMove() {
         // Given
 
-        when(moveService.findById(anyString())).thenReturn(Mono.just(sucker));
-        when(characterService.findById(anyString())).thenReturn(Mono.just(mockCharacter));
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(moveService.findById(anyString())).thenReturn(sucker);
+        when(characterService.findById(anyString())).thenReturn(mockCharacter);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
 
         // When
         Game returnedGame = gameService.performPrintMove(mockGame1.getId(),
                 mockGameRole.getId(),
                 mockCharacter.getId(),
                 sucker.getId(),
-                true).block();
+                true);
 
         // Then
         assert returnedGame != null;
@@ -638,7 +626,7 @@ class GameServiceImplTest {
         Game returnedGame = gameService.performBarterMove(mockGame1.getId(),
                 mockGameRole.getId(),
                 mockCharacter.getId(),
-                lifestyleAndGigs.getId(), mockBarterSpent).block();
+                lifestyleAndGigs.getId(), mockBarterSpent);
 
         // Then
         assert returnedGame != null;
@@ -678,14 +666,14 @@ class GameServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         int mockStockSpent = 2;
         setUpMockServices();
-        when(moveService.findByName(anyString())).thenReturn(Mono.just(reviveSomeone));
+        when(moveService.findByName(anyString())).thenReturn(reviveSomeone);
 
 
         // When
         Game returnedGame = gameService.performStockMove(mockGame1.getId(),
                 mockGameRole.getId(),
                 mockCharacter.getId(),
-                reviveSomeone.getName(), mockStockSpent).block();
+                reviveSomeone.getName(), mockStockSpent);
 
         // Then
         assert returnedGame != null;
@@ -710,7 +698,7 @@ class GameServiceImplTest {
                 mockGameRole.getId(),
                 mockCharacter.getId(),
                 goAggro.getId(),
-                false).block();
+                false);
 
         // Then
         assert returnedGame != null;
@@ -749,7 +737,7 @@ class GameServiceImplTest {
                 mockGameRole.getId(),
                 mockCharacter.getId(),
                 mockCharacterMove.getId(),
-                false).block();
+                false);
 
         // Then
         assert returnedGame != null;
@@ -768,7 +756,7 @@ class GameServiceImplTest {
                 mockGameRole.getId(),
                 mockCharacter.getId(),
                 goAggro.getId(),
-                true).block();
+                true);
 
         // Then
         assert returnedGame != null;
@@ -790,7 +778,7 @@ class GameServiceImplTest {
                 mockGameRole.getId(),
                 mockCharacter.getId(),
                 goAggro.getId(),
-                false).block();
+                false);
 
         // Then
         assert returnedGame != null;
@@ -827,7 +815,7 @@ class GameServiceImplTest {
                 mockGameRole.getId(),
                 mockCharacter.getId(),
                 outdistanceAnotherVehicleMove.getId(),
-                mockModifier).block();
+                mockModifier);
 
         // Then
         assert returnedGame != null;
@@ -874,7 +862,7 @@ class GameServiceImplTest {
         // When
         Game returnedGame = gameService.performWealthMove(mockGame1.getId(),
                 mockGameRole.getId(),
-                mockCharacter.getId()).block();
+                mockCharacter.getId());
 
         // Then
         assert returnedGame != null;
@@ -922,7 +910,7 @@ class GameServiceImplTest {
         // When
         Game returnedGame = gameService.performFortunesMove(mockGame1.getId(),
                 mockGameRole.getId(),
-                mockCharacter.getId()).block();
+                mockCharacter.getId());
 
         // Then
         assert returnedGame != null;
@@ -971,7 +959,7 @@ class GameServiceImplTest {
                 mockGameRole.getId(),
                 mockCharacter.getId(),
                 helpOrInterfere.getId(),
-                mockCharacter2Id).block();
+                mockCharacter2Id);
 
         // Then
         assert returnedGame != null;
@@ -1001,20 +989,20 @@ class GameServiceImplTest {
                 .playbook(null)
                 .build();
         mockCharacter.setBarter(3);
-        when(characterService.findById(anyString())).thenReturn(Mono.just(mockCharacter));
-        when(moveService.findById(anyString())).thenReturn(Mono.just(makeWantKnown));
-        when(characterService.save(any(Character.class))).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleService.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(gameRoleService.save(any(GameRole.class))).thenReturn(Mono.just(mockGameRole));
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(characterService.findById(anyString())).thenReturn(mockCharacter);
+        when(moveService.findById(anyString())).thenReturn(makeWantKnown);
+        when(characterService.save(any(Character.class))).thenReturn(mockCharacter);
+        when(gameRoleService.findById(anyString())).thenReturn(mockGameRole);
+        when(gameRoleService.save(any(GameRole.class))).thenReturn(mockGameRole);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
 
         // When
         Game returnedGame = gameService.performMakeWantKnownMove(mockGame1.getId(),
                 mockGameRole.getId(),
                 mockCharacter.getId(),
                 makeWantKnown.getId(),
-                mockBarterSpent).block();
+                mockBarterSpent);
 
         // Then
         assert returnedGame != null;
@@ -1058,7 +1046,7 @@ class GameServiceImplTest {
                 mockGameRole.getId(),
                 mockCharacter.getId(),
                 sufferHarm.getId(),
-                mockHarmSuffered).block();
+                mockHarmSuffered);
 
         // Then
         assert returnedGame != null;
@@ -1087,14 +1075,14 @@ class GameServiceImplTest {
                 .moveAction(inflictHarmAction)
                 .playbook(null)
                 .build();
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(characterService.findById(mockCharacter.getId())).thenReturn(Mono.just(mockCharacter));
-        when(characterService.findById(mockCharacter2.getId())).thenReturn(Mono.just(mockCharacter2));
-        when(moveService.findByName(anyString())).thenReturn(Mono.just(inflictHarmMove));
-        when(gameRoleService.findById(mockGameRole2.getId())).thenReturn(Mono.just(mockGameRole2));
-        when(characterService.save(mockCharacter2)).thenReturn(Mono.just(mockCharacter2));
-        when(gameRoleService.save(mockGameRole2)).thenReturn(Mono.just(mockGameRole2));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(characterService.findById(mockCharacter.getId())).thenReturn(mockCharacter);
+        when(characterService.findById(mockCharacter2.getId())).thenReturn(mockCharacter2);
+        when(moveService.findByName(anyString())).thenReturn(inflictHarmMove);
+        when(gameRoleService.findById(mockGameRole2.getId())).thenReturn(mockGameRole2);
+        when(characterService.save(mockCharacter2)).thenReturn(mockCharacter2);
+        when(gameRoleService.save(mockGameRole2)).thenReturn(mockGameRole2);
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
 
         // When
         Game returnedGame = gameService.performInflictHarmMove(mockGame1.getId(),
@@ -1102,7 +1090,7 @@ class GameServiceImplTest {
                 mockGameRole2.getId(),
                 mockCharacter.getId(),
                 mockCharacter2.getId(),
-                mockHarmInflicted).block();
+                mockHarmInflicted);
 
         // Then
         assert returnedGame != null;
@@ -1142,7 +1130,7 @@ class GameServiceImplTest {
                 .build();
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServicesWithOtherCharacter(mockGameRole2, mockCharacter2);
-        when(moveService.findByName(anyString())).thenReturn(Mono.just(healPcHarm));
+        when(moveService.findByName(anyString())).thenReturn(healPcHarm);
 
         // When
         Game returnedGame = gameService.performHealHarmMove(mockGame1.getId(),
@@ -1150,7 +1138,7 @@ class GameServiceImplTest {
                 mockGameRole2.getId(),
                 mockCharacter.getId(),
                 mockCharacter2.getId(),
-                mockHarmHealed).block();
+                mockHarmHealed);
 
         // Then
         assert returnedGame != null;
@@ -1194,7 +1182,7 @@ class GameServiceImplTest {
                 mockGameRole.getId(),
                 mockGameRole2.getId(),
                 mockCharacter.getId(),
-                mockCharacter2.getId()).block();
+                mockCharacter2.getId());
 
         // Then
         assert returnedGame != null;
@@ -1238,7 +1226,7 @@ class GameServiceImplTest {
                 mockGameRole2.getId(),
                 mockCharacter.getId(),
                 mockCharacter2.getId(),
-                mockHxChange).block();
+                mockHxChange);
 
         // Then
         assert returnedGame != null;
@@ -1268,7 +1256,7 @@ class GameServiceImplTest {
                 mockGameRole2.getId(),
                 mockCharacter.getId(),
                 mockCharacter2.getId(),
-                true).block();
+                true);
 
         // Then
         assert returnedGame != null;
@@ -1296,7 +1284,7 @@ class GameServiceImplTest {
                 mockGameRole2.getId(),
                 mockCharacter.getId(),
                 mockCharacter2.getId(),
-                false).block();
+                false);
 
         // Then
         assert returnedGame != null;
@@ -1309,7 +1297,7 @@ class GameServiceImplTest {
         assertNull(savedCharacter2.getHasPlusOneForward());
         verify(gameRepository, times(1)).findById(anyString());
         verify(characterService, times(2)).findById(anyString());
-        verify(gameRoleService, times(1)).findById(anyString());
+        verify(gameRoleService, times(2)).findById(anyString());
         verify(characterService, times(1)).save(any(Character.class));
         verify(gameRoleService, times(1)).save(any(GameRole.class));
         verify(gameRepository, times(1)).save(any(Game.class));
@@ -1353,14 +1341,14 @@ class GameServiceImplTest {
                 .build();
         mockCharacter.setPlaybookUnique(mockPlaybookUnique);
         mockGameRole.getCharacters().add(mockCharacter);
-        when(moveService.findByName(anyString())).thenReturn(Mono.just(stabilizeAndHeal));
+        when(moveService.findByName(anyString())).thenReturn(stabilizeAndHeal);
         setUpMockServices();
 
         // When
         Game returnedGame = gameService.performStabilizeAndHealMove(mockGame1.getId(),
                 mockGameRole.getId(),
                 mockCharacter.getId(),
-                mockStockSpent).block();
+                mockStockSpent);
 
         // Then
         assert returnedGame != null;
@@ -1383,7 +1371,7 @@ class GameServiceImplTest {
         // When
         Game returnedGame = gameService.performJustGiveMotivationMove(mockGame1.getId(),
                 mockGameRole.getId(),
-                mockCharacter.getId(), null).block();
+                mockCharacter.getId(), null);
 
         // Then
         assert returnedGame != null;
@@ -1404,7 +1392,7 @@ class GameServiceImplTest {
         // When
         Game returnedGame = gameService.performJustGiveMotivationMove(mockGame1.getId(),
                 mockGameRole.getId(),
-                mockCharacter.getId(), mockCharacter2.getId()).block();
+                mockCharacter.getId(), mockCharacter2.getId());
 
         // Then
         assert returnedGame != null;
@@ -1433,7 +1421,7 @@ class GameServiceImplTest {
         // When
         Game returnedGame = gameService.spendHold(mockGame1.getId(),
                 mockGameRole.getId(),
-                mockCharacter.getId(), mockHold).block();
+                mockCharacter.getId(), mockHold);
 
         // Then
         assert returnedGame != null;
@@ -1453,35 +1441,35 @@ class GameServiceImplTest {
     }
 
     private void setUpMockServicesWithByMoveId(Move move) {
-        when(characterService.findById(anyString())).thenReturn(Mono.just(mockCharacter));
-        when(characterService.save(any(Character.class))).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleService.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(gameRoleService.save(any(GameRole.class))).thenReturn(Mono.just(mockGameRole));
-        when(moveService.findById(anyString())).thenReturn(Mono.just(move));
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(characterService.findById(anyString())).thenReturn(mockCharacter);
+        when(characterService.save(any(Character.class))).thenReturn(mockCharacter);
+        when(gameRoleService.findById(anyString())).thenReturn(mockGameRole);
+        when(gameRoleService.save(any(GameRole.class))).thenReturn(mockGameRole);
+        when(moveService.findById(anyString())).thenReturn(move);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
     }
 
     private void setupMockServicesWithOtherCharacter(GameRole otherGameRole, Character otherCharacter) {
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(characterService.findById(mockCharacter.getId())).thenReturn(Mono.just(mockCharacter));
-        when(characterService.findById(otherCharacter.getId())).thenReturn(Mono.just(otherCharacter));
-        when(gameRoleService.findById(mockGameRole.getId())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(mockCharacter)).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleService.save(mockGameRole)).thenReturn(Mono.just(mockGameRole));
-        when(gameRoleService.findById(otherGameRole.getId())).thenReturn(Mono.just(otherGameRole));
-        when(characterService.save(otherCharacter)).thenReturn(Mono.just(otherCharacter));
-        when(gameRoleService.save(otherGameRole)).thenReturn(Mono.just(otherGameRole));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(characterService.findById(mockCharacter.getId())).thenReturn(mockCharacter);
+        when(characterService.findById(otherCharacter.getId())).thenReturn(otherCharacter);
+        when(gameRoleService.findById(mockGameRole.getId())).thenReturn(mockGameRole);
+        when(characterService.save(mockCharacter)).thenReturn(mockCharacter);
+        when(gameRoleService.save(mockGameRole)).thenReturn(mockGameRole);
+        when(gameRoleService.findById(otherGameRole.getId())).thenReturn(otherGameRole);
+        when(characterService.save(otherCharacter)).thenReturn(otherCharacter);
+        when(gameRoleService.save(otherGameRole)).thenReturn(otherGameRole);
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
     }
 
     private void setUpMockServices() {
-        when(characterService.findById(anyString())).thenReturn(Mono.just(mockCharacter));
-        when(characterService.save(any(Character.class))).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleService.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(gameRoleService.save(any(GameRole.class))).thenReturn(Mono.just(mockGameRole));
-        when(gameRepository.findById(anyString())).thenReturn(Mono.just(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(Mono.just(mockGame1));
+        when(characterService.findById(anyString())).thenReturn(mockCharacter);
+        when(characterService.save(any(Character.class))).thenReturn(mockCharacter);
+        when(gameRoleService.findById(anyString())).thenReturn(mockGameRole);
+        when(gameRoleService.save(any(GameRole.class))).thenReturn(mockGameRole);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
     }
 
     private void verifyMockServices() {

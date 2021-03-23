@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.1.RELEASE</version>
+        <version>2.3.4.RELEASE</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
@@ -25,7 +25,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <reactor-test.version>3.4.0</reactor-test.version>
-        <mongodb-reactive.version>2.3.4.RELEASE</mongodb-reactive.version>
+<!--        <mongodb.version>2.3.9.RELEASE</mongodb.version>-->
         <graphql-starter.version>7.1.0</graphql-starter.version>
         <graphiql-starter.version>5.0.2</graphiql-starter.version>
         <graphql-tools.version>6.2.0</graphql-tools.version>
@@ -43,15 +43,15 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>io.projectreactor</groupId>
-                <artifactId>reactor-test</artifactId>
-                <version>${reactor-test.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>io.projectreactor</groupId>-->
+<!--                <artifactId>reactor-test</artifactId>-->
+<!--                <version>${reactor-test.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
-                <version>${mongodb-reactive.version}</version>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>2.3.9.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>com.graphql-java-kickstart</groupId>
