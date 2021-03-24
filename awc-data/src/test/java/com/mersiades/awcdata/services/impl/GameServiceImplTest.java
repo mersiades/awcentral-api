@@ -1076,10 +1076,9 @@ class GameServiceImplTest {
                 .playbook(null)
                 .build();
         when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
-        when(characterService.findById(mockCharacter.getId())).thenReturn(mockCharacter);
-        when(characterService.findById(mockCharacter2.getId())).thenReturn(mockCharacter2);
-        when(moveService.findByName(anyString())).thenReturn(inflictHarmMove);
         when(gameRoleService.findById(mockGameRole2.getId())).thenReturn(mockGameRole2);
+        when(characterService.findById(mockCharacter.getId())).thenReturn(mockCharacter);
+        when(moveService.findByName(anyString())).thenReturn(inflictHarmMove);
         when(characterService.save(mockCharacter2)).thenReturn(mockCharacter2);
         when(gameRoleService.save(mockGameRole2)).thenReturn(mockGameRole2);
         when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
@@ -1101,7 +1100,7 @@ class GameServiceImplTest {
         assertEquals(1 + mockHarmInflicted, savedCharacter.getHxBlock().stream()
                 .filter(hxStat -> hxStat.getCharacterId().equals(mockCharacter.getId())).findFirst().orElseThrow().getHxValue());
         verify(gameRepository, times(1)).findById(anyString());
-        verify(characterService, times(2)).findById(anyString());
+        verify(characterService, times(1)).findById(anyString());
         verify(moveService, times(1)).findByName(anyString());
         verify(gameRoleService, times(1)).findById(anyString());
         verify(characterService, times(1)).save(any(Character.class));
@@ -1129,7 +1128,7 @@ class GameServiceImplTest {
                 .playbook(null)
                 .build();
         mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServicesWithOtherCharacter(mockGameRole2, mockCharacter2);
+        setupMockServicesWithOtherCharacter();
         when(moveService.findByName(anyString())).thenReturn(healPcHarm);
 
         // When
@@ -1149,7 +1148,6 @@ class GameServiceImplTest {
         assertEquals(3 - mockHarmHealed, savedCharacter2.getHarm().getValue());
         assertEquals(1 + mockHarmHealed, savedCharacter1.getHxBlock().stream()
                 .filter(hxStat -> hxStat.getCharacterId().equals(mockCharacter2.getId())).findFirst().orElseThrow().getHxValue());
-        verify(moveService, times(1)).findByName(anyString());
         verifyMockServicesWithOtherCharacter();
     }
 
@@ -1175,7 +1173,7 @@ class GameServiceImplTest {
         CharacterMove mockCharacterMove = CharacterMove.createFromMove(angelSpecial);
         mockCharacter.getCharacterMoves().add(mockCharacterMove);
         mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServicesWithOtherCharacter(mockGameRole2, mockCharacter2);
+        setupMockServicesWithOtherCharacter();
 
         // When
         Game returnedGame = gameService.performAngelSpecialMove(mockGame1.getId(),
@@ -1218,7 +1216,8 @@ class GameServiceImplTest {
         CharacterMove mockCharacterMove = CharacterMove.createFromMove(chopperSpecial);
         mockCharacter.getCharacterMoves().add(mockCharacterMove);
         mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServicesWithOtherCharacter(mockGameRole2, mockCharacter2);
+        setupMockServicesWithOtherCharacter();
+
 
         // When
         Game returnedGame = gameService.performChopperSpecialMove(mockGame1.getId(),
@@ -1248,7 +1247,7 @@ class GameServiceImplTest {
         CharacterMove mockCharacterMove = CharacterMove.createFromMove(gunluggerSpecial);
         mockCharacter.getCharacterMoves().add(mockCharacterMove);
         mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServicesWithOtherCharacter(mockGameRole2, mockCharacter2);
+        setupMockServicesWithOtherCharacter();
 
         // When
         Game returnedGame = gameService.performGunluggerSpecialMove(mockGame1.getId(),
@@ -1276,7 +1275,7 @@ class GameServiceImplTest {
         CharacterMove mockCharacterMove = CharacterMove.createFromMove(gunluggerSpecial);
         mockCharacter.getCharacterMoves().add(mockCharacterMove);
         mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServicesWithOtherCharacter(mockGameRole2, mockCharacter2);
+        setupMockServicesWithOtherCharacter();
 
         // When
         Game returnedGame = gameService.performGunluggerSpecialMove(mockGame1.getId(),
@@ -1295,12 +1294,7 @@ class GameServiceImplTest {
         assertNotNull(returnedGameMessage);
         assertTrue(savedCharacter1.getHasPlusOneForward());
         assertNull(savedCharacter2.getHasPlusOneForward());
-        verify(gameRepository, times(1)).findById(anyString());
-        verify(characterService, times(2)).findById(anyString());
-        verify(gameRoleService, times(2)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleService, times(1)).save(any(GameRole.class));
-        verify(gameRepository, times(1)).save(any(Game.class));
+        verifyMockServicesWithOtherCharacter();
     }
 
     @Test
@@ -1342,7 +1336,11 @@ class GameServiceImplTest {
         mockCharacter.setPlaybookUnique(mockPlaybookUnique);
         mockGameRole.getCharacters().add(mockCharacter);
         when(moveService.findByName(anyString())).thenReturn(stabilizeAndHeal);
-        setUpMockServices();
+        when(characterService.save(any(Character.class))).thenReturn(mockCharacter);
+        when(gameRoleService.findById(anyString())).thenReturn(mockGameRole);
+        when(gameRoleService.save(any(GameRole.class))).thenReturn(mockGameRole);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
 
         // When
         Game returnedGame = gameService.performStabilizeAndHealMove(mockGame1.getId(),
@@ -1358,7 +1356,11 @@ class GameServiceImplTest {
         assertTrue(returnedGameMessage.getContent().contains(stabilizeAndHeal.getDescription()));
         assertEquals(startingStock - mockStockSpent, savedCharacter.getPlaybookUnique().getAngelKit().getStock());
         verify(moveService, times(1)).findByName(anyString());
-        verifyMockServices();
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleService, times(1)).findById(anyString());
+        verify(gameRoleService, times(1)).save(any(GameRole.class));
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
     }
 
     @Test
@@ -1450,16 +1452,12 @@ class GameServiceImplTest {
         when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
     }
 
-    private void setupMockServicesWithOtherCharacter(GameRole otherGameRole, Character otherCharacter) {
+    private void setupMockServicesWithOtherCharacter() {
         when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
-        when(characterService.findById(mockCharacter.getId())).thenReturn(mockCharacter);
-        when(characterService.findById(otherCharacter.getId())).thenReturn(otherCharacter);
         when(gameRoleService.findById(mockGameRole.getId())).thenReturn(mockGameRole);
-        when(characterService.save(mockCharacter)).thenReturn(mockCharacter);
-        when(gameRoleService.save(mockGameRole)).thenReturn(mockGameRole);
-        when(gameRoleService.findById(otherGameRole.getId())).thenReturn(otherGameRole);
-        when(characterService.save(otherCharacter)).thenReturn(otherCharacter);
-        when(gameRoleService.save(otherGameRole)).thenReturn(otherGameRole);
+        when(characterService.saveAll(List.of(mockCharacter, mockCharacter2))).thenReturn(List.of(mockCharacter, mockCharacter2));
+        when(gameRoleService.saveAll(List.of(mockGameRole, mockGameRole2))).thenReturn(List.of(mockGameRole, mockGameRole2));
+        when(gameRoleService.findById(mockGameRole2.getId())).thenReturn(mockGameRole2);
         when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
     }
 
@@ -1483,10 +1481,9 @@ class GameServiceImplTest {
 
     private void verifyMockServicesWithOtherCharacter() {
         verify(gameRepository, times(1)).findById(anyString());
-        verify(characterService, times(2)).findById(anyString());
         verify(gameRoleService, times(2)).findById(anyString());
-        verify(characterService, times(2)).save(any(Character.class));
-        verify(gameRoleService, times(2)).save(any(GameRole.class));
+        verify(characterService, times(1)).saveAll(List.of(mockCharacter, mockCharacter2));
+        verify(gameRoleService, times(1)).saveAll(List.of(mockGameRole, mockGameRole2));
         verify(gameRepository, times(1)).save(any(Game.class));
     }
 

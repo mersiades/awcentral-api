@@ -404,8 +404,7 @@ public class GameRoleServiceImpl implements GameRoleService {
             } else if (!newCharacterMoveNames.contains(otherCarTankName) && previousCharacterMoveNames.contains(otherCarTankName)) {
                 int newCount = character.getBattleVehicleCount() - 1;
                 character.setBattleVehicleCount(newCount);
-                // TODO: uncomment this after battleVehicles field has been added
-//                character.setBattleVehicles(character.getBattleVehicles.subList(0, newCount));
+                character.setBattleVehicles(character.getBattleVehicles().subList(0, newCount));
             }
         }
 
