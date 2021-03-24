@@ -3,12 +3,12 @@ package com.mersiades.awccontent.services;
 import com.mersiades.awccontent.enums.MoveType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Move;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-public interface MoveService extends ReactiveCrudService<Move, String>{
+import java.util.List;
 
-    Flux<Move> findAllByPlaybookAndKind(PlaybookType playbookType, MoveType kind);
+public interface MoveService extends CrudService<Move, String>{
 
-    Mono<Move> findByName(String moveName);
+    List<Move> findAllByPlaybookAndKind(PlaybookType playbookType, MoveType kind);
+
+    Move findByName(String moveName);
 }

@@ -1,7 +1,7 @@
 package com.mersiades.awccontent.repositories;
 
 import com.mersiades.awccontent.models.ThreatCreator;
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ThreatCreatorRepository extends ReactiveMongoRepository<ThreatCreator, String> {
+public interface ThreatCreatorRepository extends MongoRepository<ThreatCreator, String> {
 }

@@ -4,8 +4,8 @@ import com.mersiades.awccontent.models.ThreatCreator;
 import com.mersiades.awccontent.repositories.ThreatCreatorRepository;
 import com.mersiades.awccontent.services.ThreatCreatorService;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Service
 public class ThreatCreatorServiceImpl implements ThreatCreatorService {
@@ -17,23 +17,23 @@ public class ThreatCreatorServiceImpl implements ThreatCreatorService {
     }
 
     @Override
-    public Flux<ThreatCreator> findAll() {
+    public List<ThreatCreator> findAll() {
         return threatCreatorRepository.findAll();
     }
 
     @Override
-    public Mono<ThreatCreator> findById(String id) {
-        return threatCreatorRepository.findById(id);
+    public ThreatCreator findById(String id) {
+        return threatCreatorRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Mono<ThreatCreator> save(ThreatCreator threatCreator) {
+    public ThreatCreator save(ThreatCreator threatCreator) {
         return threatCreatorRepository.save(threatCreator);
     }
 
     @Override
-    public Flux<ThreatCreator> saveAll(Flux<ThreatCreator> threatCreatorFlux) {
-        return threatCreatorRepository.saveAll(threatCreatorFlux);
+    public List<ThreatCreator> saveAll(List<ThreatCreator> threatCreatorList) {
+        return threatCreatorRepository.saveAll(threatCreatorList);
     }
 
     @Override

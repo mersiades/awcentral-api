@@ -3,8 +3,9 @@ package com.mersiades.awcdata.services.impl;
 import com.mersiades.awcdata.models.Npc;
 import com.mersiades.awcdata.repositories.NpcRepository;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class NpcServiceImpl implements com.mersiades.awcdata.services.NpcService {
@@ -16,22 +17,22 @@ public class NpcServiceImpl implements com.mersiades.awcdata.services.NpcService
     }
 
     @Override
-    public Flux<Npc> findAll() {
+    public List<Npc> findAll() {
         return npcRepository.findAll();
     }
 
     @Override
-    public Mono<Npc> findById(String id) {
-        return npcRepository.findById(id);
+    public Npc findById(String id) {
+        return npcRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public Mono<Npc> save(Npc npc) {
+    public Npc save(Npc npc) {
         return npcRepository.save(npc);
     }
 
     @Override
-    public Flux<Npc> saveAll(Flux<Npc> npcs) {
+    public List<Npc> saveAll(List<Npc> npcs) {
         return npcRepository.saveAll(npcs);
     }
 

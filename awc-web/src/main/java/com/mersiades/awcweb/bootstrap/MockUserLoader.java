@@ -13,10 +13,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Component
@@ -82,14 +80,13 @@ public class MockUserLoader implements CommandLineRunner {
     public void run(String... args) {
         loadMockData();
 
-        System.out.println("Game count: " + Objects.requireNonNull(gameRepository.count().block()).toString());
-        System.out.println("GameRole count: " + Objects.requireNonNull(gameRoleRepository.count().block()).toString());
-        System.out.println("User count: " + Objects.requireNonNull(userRepository.count().block()).toString());
+        System.out.println("Game count: " + gameRepository.count());
+        System.out.println("GameRole count: " + gameRoleRepository.count());
+        System.out.println("User count: " + userRepository.count());
     }
 
     private void loadMockData() {
-        List<User> existingUsers = userRepository.findAll().collectList().block();
-        assert existingUsers != null;
+        List<User> existingUsers = userRepository.findAll();
         if (existingUsers.isEmpty()) {
 
             // -------------------------------------- Set up mock Users -------------------------------------- //
@@ -152,7 +149,7 @@ public class MockUserLoader implements CommandLineRunner {
             mockGame1.getPlayers().add(mockUser4);
             mockGame1.getPlayers().add(mockUser5);
             mockGame1.getPlayers().add(mockUser6);
-            gameService.save(mockGame1).block();
+            gameService.save(mockGame1);
 
             mockUser1.getGameRoles().add(daveAsMC);
 
@@ -174,8 +171,8 @@ public class MockUserLoader implements CommandLineRunner {
             ahmadAsPlayer.setUser(mockUser5);
             takeshiAsPlayer.setGame(mockGame1);
             takeshiAsPlayer.setUser(mockUser6);
-            gameRoleService.saveAll(Flux.just(daveAsMC, sarahAsPlayer, johnAsPlayer,
-                    mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer)).blockLast();
+            gameRoleService.saveAll(List.of(daveAsMC, sarahAsPlayer, johnAsPlayer,
+                    mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer));
 
             // ------------------------------ Set up mock Game 2 with Game RoleType ----------------------------- //
             Game mockGame2 = Game.builder()
@@ -193,18 +190,18 @@ public class MockUserLoader implements CommandLineRunner {
             mockGame2.getGameRoles().add(sarahAsMC);
             mockGame2.setMc(mockUser2);
             mockGame2.getPlayers().add(mockUser1);
-            gameService.save(mockGame2).block();
+            gameService.save(mockGame2);
 
             mockUser1.getGameRoles().add(daveAsPlayer);
             mockUser2.getGameRoles().add(sarahAsMC);
-            userService.saveAll(Flux.just(mockUser1, mockUser2, mockUser3, mockUser4, mockUser5, mockUser6)).blockLast();
+            userService.saveAll(List.of(mockUser1, mockUser2, mockUser3, mockUser4, mockUser5, mockUser6));
 
 
             daveAsPlayer.setUser(mockUser1);
             daveAsPlayer.setGame(mockGame2);
             sarahAsMC.setGame(mockGame2);
             sarahAsMC.setUser(mockUser2);
-            gameRoleService.saveAll(Flux.just(daveAsPlayer, sarahAsMC)).blockLast();
+            gameRoleService.saveAll(List.of(daveAsPlayer, sarahAsMC));
 
         }
 

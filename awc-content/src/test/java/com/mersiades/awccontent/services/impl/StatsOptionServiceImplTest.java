@@ -1,18 +1,16 @@
-package com.mersiades.awccontent.services;
+package com.mersiades.awccontent.services.impl;
 
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.StatsOption;
+import com.mersiades.awccontent.repositories.StatsOptionRepository;
+import com.mersiades.awccontent.services.StatsOptionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import com.mersiades.awccontent.repositories.StatsOptionRepository;
-import com.mersiades.awccontent.services.impl.StatsOptionServiceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -50,10 +48,10 @@ class StatsOptionServiceImplTest {
     @Test
     void shouldFindAllStatsOptions() {
         // Given
-        when(soRepository.findAll()).thenReturn(Flux.just(mockSo1, mockSo2));
+        when(soRepository.findAll()).thenReturn(List.of(mockSo1, mockSo2));
 
         // When
-        List<StatsOption> returnedStatsOptions = soService.findAll().collectList().block();
+        List<StatsOption> returnedStatsOptions = soService.findAll();
 
         // Then
         assert returnedStatsOptions != null;
@@ -64,10 +62,10 @@ class StatsOptionServiceImplTest {
     @Test
     void shouldFindStatsOptionById() {
         // Given
-        when(soRepository.findById(anyString())).thenReturn(Mono.just(mockSo1));
+        when(soRepository.findById(anyString())).thenReturn(Optional.of(mockSo1));
 
         // When
-        StatsOption returnedStatsOption = soService.findById(MOCK_STATS_OPTION_ID_1).block();
+        StatsOption returnedStatsOption = soService.findById(MOCK_STATS_OPTION_ID_1);
 
         // Then
         assert returnedStatsOption != null;
@@ -78,10 +76,10 @@ class StatsOptionServiceImplTest {
     @Test
     void shouldSaveStatsOption() {
         // Given
-        when(soRepository.save(any(StatsOption.class))).thenReturn(Mono.just(mockSo1));
+        when(soRepository.save(any(StatsOption.class))).thenReturn(mockSo1);
 
         // When
-        StatsOption savedStatsOption = soService.save(mockSo1).block();
+        StatsOption savedStatsOption = soService.save(mockSo1);
 
         // Then
         assert savedStatsOption != null;
@@ -93,15 +91,15 @@ class StatsOptionServiceImplTest {
     void shouldSaveAllStatsOptions() {
         // Given
         StatsOption mockSo2 = StatsOption.builder().build();
-        when(soRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockSo1, mockSo2));
+        when(soRepository.saveAll(anyIterable())).thenReturn(List.of(mockSo1, mockSo2));
 
         // When
-        List<StatsOption> savedStatsOptions = soService.saveAll(Flux.just(mockSo1,mockSo2)).collectList().block();
+        List<StatsOption> savedStatsOptions = soService.saveAll(List.of(mockSo1,mockSo2));
 
         // Then
         assert savedStatsOptions != null;
         assertEquals(2, savedStatsOptions.size());
-        verify(soRepository, times(1)).saveAll(any(Publisher.class));
+        verify(soRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test
@@ -125,10 +123,10 @@ class StatsOptionServiceImplTest {
     @Test
     void shouldFindAllStatsOptionsByPlaybookType() {
         // Given
-        when(soRepository.findAllByPlaybookType(any(PlaybookType.class))).thenReturn(Flux.just(mockSo1, mockSo2));
+        when(soRepository.findAllByPlaybookType(any(PlaybookType.class))).thenReturn(List.of(mockSo1, mockSo2));
 
         // When
-        List<StatsOption> returnedStatsOptions = soService.findAllByPlaybookType(PlaybookType.ANGEL).collectList().block();
+        List<StatsOption> returnedStatsOptions = soService.findAllByPlaybookType(PlaybookType.ANGEL);
 
         // Then
         assert returnedStatsOptions != null;

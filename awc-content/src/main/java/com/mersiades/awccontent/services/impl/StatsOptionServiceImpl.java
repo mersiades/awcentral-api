@@ -2,11 +2,11 @@ package com.mersiades.awccontent.services.impl;
 
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.StatsOption;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import com.mersiades.awccontent.repositories.StatsOptionRepository;
 import com.mersiades.awccontent.services.StatsOptionService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class StatsOptionServiceImpl implements StatsOptionService {
@@ -18,22 +18,22 @@ public class StatsOptionServiceImpl implements StatsOptionService {
     }
 
     @Override
-    public Flux<StatsOption> findAll() {
+    public List<StatsOption> findAll() {
         return statsOptionRepository.findAll();
     }
 
     @Override
-    public Mono<StatsOption> findById(String id) {
-        return statsOptionRepository.findById(id);
+    public StatsOption findById(String id) {
+        return statsOptionRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Mono<StatsOption> save(StatsOption statsOption) {
+    public StatsOption save(StatsOption statsOption) {
         return statsOptionRepository.save(statsOption);
     }
 
     @Override
-    public Flux<StatsOption> saveAll(Flux<StatsOption> statsOptions) {
+    public List<StatsOption> saveAll(List<StatsOption> statsOptions) {
         return statsOptionRepository.saveAll(statsOptions);
     }
 
@@ -48,7 +48,7 @@ public class StatsOptionServiceImpl implements StatsOptionService {
     }
 
     @Override
-    public Flux<StatsOption> findAllByPlaybookType(PlaybookType playbookType) {
+    public List<StatsOption> findAllByPlaybookType(PlaybookType playbookType) {
         return statsOptionRepository.findAllByPlaybookType(playbookType);
     }
 }

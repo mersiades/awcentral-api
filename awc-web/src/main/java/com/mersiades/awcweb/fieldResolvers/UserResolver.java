@@ -20,6 +20,6 @@ public class UserResolver implements GraphQLResolver<User> {
     }
 
     public List<GameRole> getGameRoles(User user) {
-        return gameRoleService.findAllByUser(user).collectList().block();
+        return gameRoleService.findAllByUser(user);
     }
 }

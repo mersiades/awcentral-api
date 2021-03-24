@@ -2,11 +2,11 @@ package com.mersiades.awccontent.services.impl;
 
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Playbook;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import com.mersiades.awccontent.repositories.PlaybookRepository;
 import com.mersiades.awccontent.services.PlaybookService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PlaybookServiceImpl implements PlaybookService {
@@ -18,22 +18,22 @@ public class PlaybookServiceImpl implements PlaybookService {
     }
 
     @Override
-    public Flux<Playbook> findAll() {
+    public List<Playbook> findAll() {
         return playbookRepository.findAll();
     }
 
     @Override
-    public Mono<Playbook> findById(String id) {
-        return playbookRepository.findById(id);
+    public Playbook findById(String id) {
+        return playbookRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Mono<Playbook> save(Playbook playbook) {
+    public Playbook save(Playbook playbook) {
         return playbookRepository.save(playbook);
     }
 
     @Override
-    public Flux<Playbook> saveAll(Flux<Playbook> playbooks) {
+    public List<Playbook> saveAll(List<Playbook> playbooks) {
         return playbookRepository.saveAll(playbooks);
     }
 
@@ -48,7 +48,7 @@ public class PlaybookServiceImpl implements PlaybookService {
     }
 
     @Override
-    public Mono<Playbook> findByPlaybookType(PlaybookType playbookType) {
+    public Playbook findByPlaybookType(PlaybookType playbookType) {
         return playbookRepository.findByPlaybookType(playbookType);
     }
 }

@@ -1,19 +1,17 @@
-package com.mersiades.awccontent.services;
+package com.mersiades.awccontent.services.impl;
 
 import com.mersiades.awccontent.enums.LookType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Look;
+import com.mersiades.awccontent.repositories.LookRepository;
+import com.mersiades.awccontent.services.LookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import com.mersiades.awccontent.repositories.LookRepository;
-import com.mersiades.awccontent.services.impl.LookServiceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -51,10 +49,10 @@ class LookServiceImplTest {
                 .category(LookType.EYES)
                 .look("askance").build();
 
-        when(lookRepository.findAll()).thenReturn(Flux.just(mockLook1, mockLook2));
+        when(lookRepository.findAll()).thenReturn(List.of(mockLook1, mockLook2));
 
         // When
-        List<Look> looks = lookService.findAll().collectList().block();
+        List<Look> looks = lookService.findAll();
 
         // Then
         assert looks != null;
@@ -65,10 +63,10 @@ class LookServiceImplTest {
     @Test
     void shouldFindLookById() {
         // Given
-        when(lookRepository.findById(anyString())).thenReturn(Mono.just(mockLook1));
+        when(lookRepository.findById(anyString())).thenReturn(Optional.of(mockLook1));
 
         // When
-        Look returnedLook = lookService.findById(MOCK_LOOK_ID_1).block();
+        Look returnedLook = lookService.findById(MOCK_LOOK_ID_1);
 
         // Then
         assert returnedLook != null;
@@ -79,10 +77,10 @@ class LookServiceImplTest {
     @Test
     void shouldSaveLook() {
         // Given
-        when(lookRepository.save(any())).thenReturn(Mono.just(mockLook1));
+        when(lookRepository.save(any())).thenReturn(mockLook1);
 
         // When
-        Look savedLook = lookService.save(mockLook1).block();
+        Look savedLook = lookService.save(mockLook1);
 
         // Then
         assert savedLook != null;
@@ -94,15 +92,15 @@ class LookServiceImplTest {
     void shouldSaveAllLooks() {
         // Given
         Look mockLook2 = Look.builder().build();
-        when(lookRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockLook1, mockLook2));
+        when(lookRepository.saveAll(anyIterable())).thenReturn(List.of(mockLook1, mockLook2));
 
         // When
-        List<Look> savedLooks = lookService.saveAll(Flux.just(mockLook1,mockLook2)).collectList().block();
+        List<Look> savedLooks = lookService.saveAll(List.of(mockLook1,mockLook2));
 
         // Then
         assert savedLooks != null;
         assertEquals(2, savedLooks.size());
-        verify(lookRepository, times(1)).saveAll(any(Publisher.class));
+        verify(lookRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test
@@ -130,10 +128,10 @@ class LookServiceImplTest {
                 .playbookType(PlaybookType.BATTLEBABE)
                 .category(LookType.EYES)
                 .look("almond").build();
-        when(lookService.findAllByPlaybookType(any())).thenReturn(Flux.just(mockLook1, mockLook3));
+        when(lookService.findAllByPlaybookType(any())).thenReturn(List.of(mockLook1, mockLook3));
 
         // When
-        List<Look> returnedLooks = lookService.findAllByPlaybookType(PlaybookType.BATTLEBABE).collectList().block();
+        List<Look> returnedLooks = lookService.findAllByPlaybookType(PlaybookType.BATTLEBABE);
 
         // Then
         assert returnedLooks != null;

@@ -3,9 +3,10 @@ package com.mersiades.awccontent.repositories;
 
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Name;
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
-import reactor.core.publisher.Flux;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface NameRepository extends ReactiveMongoRepository<Name, String> {
-    Flux<Name> findAllByPlaybookType(PlaybookType playbookType);
+import java.util.List;
+
+public interface NameRepository extends MongoRepository<Name, String> {
+    List<Name> findAllByPlaybookType(PlaybookType playbookType);
 }

@@ -9,11 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -47,10 +45,10 @@ class UserServiceImplTest {
     void shouldFindAllUsers() {
         // Given
         User mockUser2 = User.builder().build();
-        when(userRepository.findAll()).thenReturn(Flux.just(mockUser1, mockUser2));
+        when(userRepository.findAll()).thenReturn(List.of(mockUser1, mockUser2));
 
         // When
-        List<User> returnedUsers = userService.findAll().collectList().block();
+        List<User> returnedUsers = userService.findAll();
 
         // Then
         assert returnedUsers != null;
@@ -61,10 +59,10 @@ class UserServiceImplTest {
     @Test
     void shouldFindUserById() {
         // Given
-        when(userRepository.findById(anyString())).thenReturn(Mono.just(mockUser1));
+        when(userRepository.findById(anyString())).thenReturn(Optional.of(mockUser1));
 
         // When
-        User returnedUser = userService.findById(MOCK_USER_ID_1).block();
+        User returnedUser = userService.findById(MOCK_USER_ID_1);
 
         // Then
         assert returnedUser != null;
@@ -75,10 +73,10 @@ class UserServiceImplTest {
     @Test
     void shouldSaveUser() {
         // Given
-        when(userRepository.save(any(User.class))).thenReturn(Mono.just(mockUser1));
+        when(userRepository.save(any(User.class))).thenReturn(mockUser1);
 
         // When
-        User savedUser = userService.save(mockUser1).block();
+        User savedUser = userService.save(mockUser1);
 
         // Then
         assert savedUser != null;
@@ -90,15 +88,15 @@ class UserServiceImplTest {
     void shouldSaveAllUsers() {
         // Given
         User mockUser2 = User.builder().build();
-        when(userRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockUser1, mockUser2));
+        when(userRepository.saveAll(anyIterable())).thenReturn(List.of(mockUser1, mockUser2));
 
         // When
-        List<User> savedUsers = userService.saveAll(Flux.just(mockUser1,mockUser2)).collectList().block();
+        List<User> savedUsers = userService.saveAll(List.of(mockUser1,mockUser2));
 
         // Then
         assert savedUsers != null;
         assertEquals(2, savedUsers.size());
-        verify(userRepository, times(1)).saveAll(any(Publisher.class));
+        verify(userRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test
@@ -123,8 +121,8 @@ class UserServiceImplTest {
     void shouldAddAGameRoleToUser() throws Exception {
         // Given
         GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id-2").build();
-        when(userRepository.findById(anyString())).thenReturn(Mono.just(mockUser1));
-        when(userRepository.save(any(User.class))).thenReturn(Mono.just(mockUser1));
+        when(userRepository.findById(anyString())).thenReturn(Optional.of(mockUser1));
+        when(userRepository.save(any(User.class))).thenReturn(mockUser1);
 
         // When
         User savedUser = userService.addGameroleToUser(mockUser1.getId(), mockGameRole2);
@@ -139,7 +137,7 @@ class UserServiceImplTest {
     @Test
     void shouldFindExistingUser()  {
         // Given
-        when(userRepository.findById(anyString())).thenReturn(Mono.just(mockUser1));
+        when(userRepository.findById(anyString())).thenReturn(Optional.of(mockUser1));
 //        when(userRepository.save(any(User.class))).thenReturn(Mono.just(mockUser1));
 
         // When
@@ -155,8 +153,8 @@ class UserServiceImplTest {
     @Test
     void shouldCreateNewUser()  {
         // Given
-        when(userRepository.findById(anyString())).thenReturn(Mono.empty());
-        when(userRepository.save(any(User.class))).thenReturn(Mono.just(mockUser1));
+        when(userRepository.findById(anyString())).thenReturn(Optional.empty());
+        when(userRepository.save(any(User.class))).thenReturn(mockUser1);
 
         // When
         User returnedUser = userService.findOrCreateUser(mockUser1.getId(), mockUser1.getDisplayName(), mockUser1.getEmail());
@@ -176,8 +174,8 @@ class UserServiceImplTest {
         mockGame.getGameRoles().add(mockGameRole2);
         mockGameRole2.setGame(mockGame);
         mockUser1.getGameRoles().add(mockGameRole2);
-        when(userRepository.findById(anyString())).thenReturn(Mono.just(mockUser1));
-        when(userRepository.save(any(User.class))).thenReturn(Mono.just(mockUser1));
+        when(userRepository.findById(anyString())).thenReturn(Optional.of(mockUser1));
+        when(userRepository.save(any(User.class))).thenReturn(mockUser1);
 
         // When
         userService.removeGameroleFromUser(mockUser1.getId(), mockGame.getId());

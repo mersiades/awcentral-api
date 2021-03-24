@@ -1,18 +1,16 @@
-package com.mersiades.awccontent.services;
+package com.mersiades.awccontent.services.impl;
 
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Playbook;
+import com.mersiades.awccontent.repositories.PlaybookRepository;
+import com.mersiades.awccontent.services.PlaybookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import com.mersiades.awccontent.repositories.PlaybookRepository;
-import com.mersiades.awccontent.services.impl.PlaybookServiceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -44,10 +42,10 @@ class PlaybookServiceImplTest {
     void shouldFindAllPlaybooks() {
         // Given
         Playbook mockPlaybook2 = Playbook.builder().build();
-        when(playbookRepository.findAll()).thenReturn(Flux.just(mockPlaybook1, mockPlaybook2));
+        when(playbookRepository.findAll()).thenReturn(List.of(mockPlaybook1, mockPlaybook2));
 
         // When
-        List<Playbook> returnedPlaybooks = playbookService.findAll().collectList().block();
+        List<Playbook> returnedPlaybooks = playbookService.findAll();
 
         // Then
         assert returnedPlaybooks != null;
@@ -58,10 +56,10 @@ class PlaybookServiceImplTest {
     @Test
     void shouldFindPlaybookById() {
         // Given
-        when(playbookRepository.findById(anyString())).thenReturn(Mono.just(mockPlaybook1));
+        when(playbookRepository.findById(anyString())).thenReturn(Optional.of(mockPlaybook1));
 
         // When
-        Playbook returnedPlaybook = playbookService.findById(MOCK_PLAYBOOK_ID_1).block();
+        Playbook returnedPlaybook = playbookService.findById(MOCK_PLAYBOOK_ID_1);
 
         // Then
         assert returnedPlaybook != null;
@@ -72,10 +70,10 @@ class PlaybookServiceImplTest {
     @Test
     void shouldSavePlaybook() {
         // Given
-        when(playbookRepository.save(any(Playbook.class))).thenReturn(Mono.just(mockPlaybook1));
+        when(playbookRepository.save(any(Playbook.class))).thenReturn(mockPlaybook1);
 
         // When
-        Playbook savedPlaybook = playbookService.save(mockPlaybook1).block();
+        Playbook savedPlaybook = playbookService.save(mockPlaybook1);
 
         // Then
         assert savedPlaybook != null;
@@ -87,15 +85,15 @@ class PlaybookServiceImplTest {
     void shouldSaveAllPlaybooks() {
         // Given
         Playbook mockPlaybook2 = Playbook.builder().build();
-        when(playbookRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockPlaybook1, mockPlaybook2));
+        when(playbookRepository.saveAll(anyIterable())).thenReturn(List.of(mockPlaybook1, mockPlaybook2));
 
         // When
-        List<Playbook> savedPlaybooks = playbookService.saveAll(Flux.just(mockPlaybook1,mockPlaybook2)).collectList().block();
+        List<Playbook> savedPlaybooks = playbookService.saveAll(List.of(mockPlaybook1,mockPlaybook2));
 
         // Then
         assert savedPlaybooks != null;
         assertEquals(2, savedPlaybooks.size());
-        verify(playbookRepository, times(1)).saveAll(any(Publisher.class));
+        verify(playbookRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test
@@ -119,10 +117,10 @@ class PlaybookServiceImplTest {
     @Test
     void shouldFindPlaybookByPlaybookType() {
         // Given
-        when(playbookRepository.findByPlaybookType(any(PlaybookType.class))).thenReturn(Mono.just(mockPlaybook1));
+        when(playbookRepository.findByPlaybookType(any(PlaybookType.class))).thenReturn(mockPlaybook1);
 
         // When
-        Playbook returnedPlaybook = playbookService.findByPlaybookType(PlaybookType.ANGEL).block();
+        Playbook returnedPlaybook = playbookService.findByPlaybookType(PlaybookType.ANGEL);
 
         // Then
         assert returnedPlaybook != null;
