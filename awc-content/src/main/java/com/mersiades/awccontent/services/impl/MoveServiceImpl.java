@@ -3,11 +3,11 @@ package com.mersiades.awccontent.services.impl;
 import com.mersiades.awccontent.enums.MoveType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Move;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import com.mersiades.awccontent.repositories.MoveRepository;
 import com.mersiades.awccontent.services.MoveService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MoveServiceImpl implements MoveService {
@@ -19,22 +19,22 @@ public class MoveServiceImpl implements MoveService {
     }
 
     @Override
-    public Flux<Move> findAll() {
+    public List<Move> findAll() {
         return moveRepository.findAll();
     }
 
     @Override
-    public Mono<Move> findById(String id) {
-        return moveRepository.findById(id);
+    public Move findById(String id) {
+        return moveRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Mono<Move> save(Move move) {
+    public Move save(Move move) {
         return moveRepository.save(move);
     }
 
     @Override
-    public Flux<Move> saveAll(Flux<Move> moves) {
+    public List<Move> saveAll(List<Move> moves) {
         return moveRepository.saveAll(moves);
     }
 
@@ -49,12 +49,12 @@ public class MoveServiceImpl implements MoveService {
     }
 
     @Override
-    public Flux<Move> findAllByPlaybookAndKind(PlaybookType playbookType, MoveType kind) {
+    public List<Move> findAllByPlaybookAndKind(PlaybookType playbookType, MoveType kind) {
         return moveRepository.findAllByPlaybookAndKind(playbookType, kind);
     }
 
     @Override
-    public Mono<Move> findByName(String moveName) {
+    public Move findByName(String moveName) {
         return moveRepository.findByName(moveName);
     }
 }

@@ -4,8 +4,8 @@ import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Service
 public class CharacterServiceImpl implements CharacterService {
@@ -17,28 +17,28 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public Flux<Character> findAll() {
+    public List<Character> findAll() {
         return characterRepository.findAll();
     }
 
     @Override
-    public Mono<Character> findById(String id) {
-        return characterRepository.findById(id);
+    public Character findById(String id) {
+        return characterRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Mono<Character> save(Character character) {
+    public Character save(Character character) {
         return characterRepository.save(character);
     }
 
     @Override
-    public Flux<Character> saveAll(Flux<Character> characters) {
+    public List<Character> saveAll(List<Character> characters) {
         return characterRepository.saveAll(characters);
     }
 
     @Override
     public void delete(Character character) {
-        characterRepository.delete(character).log().block();
+        characterRepository.delete(character);
     }
 
     @Override

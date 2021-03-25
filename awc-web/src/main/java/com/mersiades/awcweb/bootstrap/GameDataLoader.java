@@ -9,7 +9,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 import com.mersiades.awccontent.repositories.*;
 import com.mersiades.awccontent.services.*;
 
@@ -88,49 +87,43 @@ public class GameDataLoader implements CommandLineRunner {
     public void run(String... args) {
         // Because only checking if empty before loading/creating items,
         // I'll need to drop db whenever adding new game data
-        List<Move> moves = moveRepository.findAll().collectList().block();
-        assert moves != null;
+        List<Move> moves = moveRepository.findAll();
         if (moves.isEmpty()) {
             loadMoves();
         }
 
-        List<Name> names = nameRepository.findAll().collectList().block();
-        assert names != null;
+        List<Name> names = nameRepository.findAll();
         if (names.isEmpty()) {
             loadNames();
         }
 
-        List<Look> looks = lookRepository.findAll().collectList().block();
-        assert looks != null;
+        List<Look> looks = lookRepository.findAll();
         if (looks.isEmpty()) {
             loadLooks();
         }
 
-        List<StatsOption> statsOptions = statsOptionRepository.findAll().collectList().block();
-        assert statsOptions != null;
+        List<StatsOption> statsOptions = statsOptionRepository.findAll();
         if (statsOptions.isEmpty()) {
             loadStatsOptions();
         }
 
-        List<PlaybookCreator> playbookCreators = playbookCreatorRepository.findAll().collectList().block();
-        assert playbookCreators != null;
+        List<PlaybookCreator> playbookCreators = playbookCreatorRepository.findAll();
         if (playbookCreators.isEmpty()) {
             loadPlaybookCreators();
         }
 
-        List<Playbook> playbooks = playbookRepository.findAll().collectList().block();
-        assert playbooks != null;
+        List<Playbook> playbooks = playbookRepository.findAll();
         if (playbooks.isEmpty()) {
             loadPlaybooks();
         }
 
-        VehicleCreator vehicleCreator = vehicleCreatorRepository.findAll().take(1).blockFirst();
-        if (vehicleCreator == null) {
+        List<VehicleCreator> vehicleCreators = vehicleCreatorRepository.findAll();
+        if (vehicleCreators.size() == 0) {
             loadVehicleCreator();
         }
 
-        ThreatCreator threatCreator = threatCreatorRepository.findAll().take(1).blockFirst();
-        if (threatCreator == null) {
+        List<ThreatCreator> threatCreators = threatCreatorRepository.findAll();
+        if (threatCreators.size() == 0) {
             loadThreatCreator();
         }
 
@@ -142,14 +135,14 @@ public class GameDataLoader implements CommandLineRunner {
         // 'Create if empty' conditionality is embedded in the createPlaybooks() method
         createPlaybooks();
 
-        System.out.println("Look count: " + Objects.requireNonNull(lookRepository.count().block()).toString());
-        System.out.println("Move count: " + Objects.requireNonNull(moveRepository.count().block()).toString());
-        System.out.println("Name count: " + Objects.requireNonNull(nameRepository.count().block()).toString());
-        System.out.println("PlaybookCreator count: " + Objects.requireNonNull(playbookCreatorRepository.count().block()).toString());
-        System.out.println("CarCreator count: " + Objects.requireNonNull(vehicleCreatorRepository.count().block()).toString());
-        System.out.println("Playbook count: " + Objects.requireNonNull(playbookRepository.count().block()).toString());
-        System.out.println("VehicleCreator count: " + Objects.requireNonNull(vehicleCreatorRepository.count().block()).toString());
-        System.out.println("ThreatCreator count: " + Objects.requireNonNull(threatCreatorRepository.count().block()).toString());
+        System.out.println("Look count: " + lookRepository.count());
+        System.out.println("Move count: " + moveRepository.count());
+        System.out.println("Name count: " + nameRepository.count());
+        System.out.println("PlaybookCreator count: " + playbookCreatorRepository.count());
+        System.out.println("CarCreator count: " + vehicleCreatorRepository.count());
+        System.out.println("Playbook count: " + playbookRepository.count());
+        System.out.println("VehicleCreator count: " + vehicleCreatorRepository.count());
+        System.out.println("ThreatCreator count: " + threatCreatorRepository.count());
     }
 
     private void loadMoves() {
@@ -369,8 +362,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
 
-        moveService.saveAll(Flux.just(doSomethingUnderFire, goAggro, sucker, doBattle, seduceOrManip, helpOrInterfere,
-                readASitch, readAPerson, openBrain, lifestyleAndGigs, sessionEnd)).blockLast();
+        moveService.saveAll(List.of(doSomethingUnderFire, goAggro, sucker, doBattle, seduceOrManip, helpOrInterfere,
+                readASitch, readAPerson, openBrain, lifestyleAndGigs, sessionEnd));
 
         System.out.println("|| --- Loading peripheral moves --- ||");
         /* ----------------------------- PERIPHERAL MOVES --------------------------------- */
@@ -545,8 +538,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
 
-        moveService.saveAll(Flux.just(sufferHarm, inflictHarmMove, healPcHarm, giveBarter, goToMarket, makeWantKnown,
-                insight, augury, changeHighlightedStats)).blockLast();
+        moveService.saveAll(List.of(sufferHarm, inflictHarmMove, healPcHarm, giveBarter, goToMarket, makeWantKnown,
+                insight, augury, changeHighlightedStats));
 
         System.out.println("|| --- Loading battle moves --- ||");
         /* ----------------------------- BATTLE MOVES --------------------------------- */
@@ -827,9 +820,9 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
 
-        moveService.saveAll(Flux.just(exchangeHarm, seizeByForce, assaultAPosition, keepHoldOfSomething,
+        moveService.saveAll(List.of(exchangeHarm, seizeByForce, assaultAPosition, keepHoldOfSomething,
                 fightFree, defendSomeone, doSingleCombat, layDownFire, standOverwatch, keepAnEyeOut,
-                beTheBait, beTheCat, beTheMouse, catOrMouseMove)).blockLast();
+                beTheBait, beTheCat, beTheMouse, catOrMouseMove));
 
         System.out.println("|| --- Loading road war moves --- ||");
         /* ----------------------------- ROAD WAR MOVES --------------------------------- */
@@ -939,8 +932,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
 
-        moveService.saveAll(Flux.just(boardAMovingVehicleMove, outdistanceAnotherVehicleMove, overtakeAnotherVehicleMove,
-                dealWithBadTerrain, shoulderAnotherVehicle)).blockLast();
+        moveService.saveAll(List.of(boardAMovingVehicleMove, outdistanceAnotherVehicleMove, overtakeAnotherVehicleMove,
+                dealWithBadTerrain, shoulderAnotherVehicle));
 
         /* ----------------------------- ANGEL MOVES --------------------------------- */
         System.out.println("|| --- Loading Angel moves --- ||");
@@ -1038,8 +1031,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(PlaybookType.ANGEL)
                 .build();
 
-        moveService.saveAll(Flux.just(angelSpecial, sixthSense, infirmary, profCompassion,
-                battlefieldGrace, healingTouch, touchedByDeath)).blockLast();
+        moveService.saveAll(List.of(angelSpecial, sixthSense, infirmary, profCompassion,
+                battlefieldGrace, healingTouch, touchedByDeath));
 
         /* ----------------------------- ANGEL KIT MOVES --------------------------------- */
 
@@ -1107,7 +1100,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(treatAnNpcAction)
                 .playbook(PlaybookType.ANGEL).build();
 
-        moveService.saveAll(Flux.just(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc)).blockLast();
+        moveService.saveAll(List.of(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc));
 
         /* ----------------------------- BATTLEBABE MOVES --------------------------------- */
         System.out.println("|| --- Loading Battlebabe moves --- ||");
@@ -1208,7 +1201,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(impossibleReflexesAction)
                 .playbook(PlaybookType.BATTLEBABE).build();
 
-        moveService.saveAll(Flux.just(battlebabeSpecial, dangerousAndSexy, iceCold, merciless, visionsOfDeath, perfectInstincts, impossibleReflexes)).blockLast();
+        moveService.saveAll(List.of(battlebabeSpecial, dangerousAndSexy, iceCold, merciless, visionsOfDeath, perfectInstincts, impossibleReflexes));
 
         /* ----------------------------- BRAINER MOVES --------------------------------- */
         System.out.println("|| --- Loading Brainer moves --- ||");
@@ -1220,7 +1213,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .id(UUID.randomUUID().toString())
                 .statToModify(StatType.WEIRD)
                 .modification(1).build();
-        StatModifier savedAttunementMod = statModifierService.save(attunementMod).block();
+        StatModifier savedAttunementMod = statModifierService.save(attunementMod);
 
         MoveAction brainerSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
@@ -1315,7 +1308,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(puppetStringsAction)
                 .playbook(PlaybookType.BRAINER).build();
 
-        moveService.saveAll(Flux.just(brainerSpecial, unnaturalLust, brainReceptivity, brainAttunement, brainScan, whisperProjection, puppetStrings)).blockLast();
+        moveService.saveAll(List.of(brainerSpecial, unnaturalLust, brainReceptivity, brainAttunement, brainScan, whisperProjection, puppetStrings));
 
         /* ----------------------------- CHOPPER MOVES --------------------------------- */
         System.out.println("|| --- Loading Chopper moves --- ||");
@@ -1370,7 +1363,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(fuckingThievesAction)
                 .playbook(PlaybookType.CHOPPER).build();
 
-        moveService.saveAll(Flux.just(chopperSpecial, packAlpha, fuckingThieves)).blockLast();
+        moveService.saveAll(List.of(chopperSpecial, packAlpha, fuckingThieves));
 
         /* ----------------------------- DRIVER MOVES --------------------------------- */
         System.out.println("|| --- Loading Driver moves --- ||");
@@ -1475,7 +1468,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .playbook(PlaybookType.DRIVER).build();
 
-        moveService.saveAll(Flux.just(driverSpecial, combatDriver, eyeOnTheDoor, weatherEye, reputationMove, daredevil, collectorMove, myOtherCarIsATank)).blockLast();
+        moveService.saveAll(List.of(driverSpecial, combatDriver, eyeOnTheDoor, weatherEye, reputationMove, daredevil, collectorMove, myOtherCarIsATank));
 
         /* ----------------------------- GUNLUGGER MOVES --------------------------------- */
         System.out.println("|| --- Loading Gunlugger moves --- ||");
@@ -1490,7 +1483,7 @@ public class GameDataLoader implements CommandLineRunner {
         StatModifier insanoMod = StatModifier.builder()
                 .statToModify(HARD)
                 .modification(1).build();
-        StatModifier savedInsanoMod = statModifierService.save(insanoMod).block();
+        StatModifier savedInsanoMod = statModifierService.save(insanoMod);
         MoveAction gunluggerSpecialAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
                 .actionType(MoveActionType.GUNLUGGER_SPECIAL)
@@ -1573,7 +1566,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(notToBeFuckedWithAction)
                 .playbook(PlaybookType.GUNLUGGER).build();
 
-        moveService.saveAll(Flux.just(gunluggerSpecial, battleHardened, fuckThisShit, battlefieldInstincts, insanoLikeDrano, preparedForTheInevitable, bloodcrazed, notToBeFuckedWith)).blockLast();
+        moveService.saveAll(List.of(gunluggerSpecial, battleHardened, fuckThisShit, battlefieldInstincts, insanoLikeDrano, preparedForTheInevitable, bloodcrazed, notToBeFuckedWith));
 
         /* ----------------------------- HARDHOLDER MOVES --------------------------------- */
         MoveAction hardholderSpecialAction = MoveAction.builder()
@@ -1629,7 +1622,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(wealthAction)
                 .playbook(PlaybookType.HARDHOLDER).build();
 
-        moveService.saveAll(Flux.just(hardholderSpecial, leadership, wealth)).blockLast();
+        moveService.saveAll(List.of(hardholderSpecial, leadership, wealth));
 
         /* ----------------------------- HOCUS MOVES --------------------------------- */
         MoveAction hocusSpecialAction = MoveAction.builder()
@@ -1702,7 +1695,7 @@ public class GameDataLoader implements CommandLineRunner {
         StatModifier wacknutModifier = StatModifier.builder()
                 .statToModify(WEIRD)
                 .modification(1).build();
-        StatModifier savedWacknutModifier = statModifierService.save(wacknutModifier).block();
+        StatModifier savedWacknutModifier = statModifierService.save(wacknutModifier);
         Move fuckingWacknut = Move.builder()
                 .name("FUCKING WACKNUT")
                 .description("_**Fucking wacknut**_: you get +1weird (weird+3)")
@@ -1732,8 +1725,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(divineProtectionAction)
                 .playbook(PlaybookType.HOCUS).build();
 
-        moveService.saveAll(Flux.just(hocusSpecial, fortunes, frenzy, charismatic, fuckingWacknut, seeingSouls,
-                divineProtection)).blockLast();
+        moveService.saveAll(List.of(hocusSpecial, fortunes, frenzy, charismatic, fuckingWacknut, seeingSouls,
+                divineProtection));
 
         /* ----------------------------- MAESTRO'D MOVES --------------------------------- */
         MoveAction maestroSpecialAction = MoveAction.builder()
@@ -1826,7 +1819,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(justGiveMotiveAction)
                 .playbook(PlaybookType.MAESTRO_D).build();
 
-        moveService.saveAll(Flux.just(maestroSpecial, callThisHot, devilWithBlade, fingersInPie, everyBodyEats, justGiveMotive)).blockLast();
+        moveService.saveAll(List.of(maestroSpecial, callThisHot, devilWithBlade, fingersInPie, everyBodyEats, justGiveMotive));
 
         /* ----------------------------- SAVVYHEAD MOVES --------------------------------- */
 
@@ -1928,7 +1921,7 @@ public class GameDataLoader implements CommandLineRunner {
         StatModifier deepInsightsModifier = StatModifier.builder()
                 .statToModify(WEIRD)
                 .modification(1).build();
-        StatModifier savedDeepInsightsModifier = statModifierService.save(deepInsightsModifier).block();
+        StatModifier savedDeepInsightsModifier = statModifierService.save(deepInsightsModifier);
         Move deepInsights = Move.builder()
                 .name("DEEP INSIGHTS")
                 .description("_**Deep insights**_: you get +1weird (weird+3)")
@@ -1936,8 +1929,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .statModifier(savedDeepInsightsModifier)
                 .playbook(PlaybookType.SAVVYHEAD).build();
 
-        moveService.saveAll(Flux.just(savvyheadSpecial, thingsSpeak, bonefeel, oftenerRight, frayingEdge,
-                spookyIntense, deepInsights)).blockLast();
+        moveService.saveAll(List.of(savvyheadSpecial, thingsSpeak, bonefeel, oftenerRight, frayingEdge,
+                spookyIntense, deepInsights));
 
         /* ----------------------------- SKINNER MOVES --------------------------------- */
         MoveAction skinnerSpecialAction = MoveAction.builder()
@@ -1960,7 +1953,7 @@ public class GameDataLoader implements CommandLineRunner {
         StatModifier breathtakingModifier = StatModifier.builder()
                 .statToModify(HOT)
                 .modification(1).build();
-        StatModifier savedBreathtakingModifier = statModifierService.save(breathtakingModifier).block();
+        StatModifier savedBreathtakingModifier = statModifierService.save(breathtakingModifier);
         Move breathtaking = Move.builder()
                 .name("BREATHTAKING")
                 .description("_**Breathtaking**_: you get +1hot (hot+3).")
@@ -2053,7 +2046,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(hypnoticAction)
                 .playbook(PlaybookType.SKINNER).build();
 
-        moveService.saveAll(Flux.just(skinnerSpecial, breathtaking, artful, lost, anArrestingSkinner, hypnotic)).blockLast();
+        moveService.saveAll(List.of(skinnerSpecial, breathtaking, artful, lost, anArrestingSkinner, hypnotic));
 
     }
 
@@ -2089,9 +2082,9 @@ public class GameDataLoader implements CommandLineRunner {
         Name grip = Name.builder().playbookType(PlaybookType.ANGEL).name("Grip").build();
         Name setter = Name.builder().playbookType(PlaybookType.ANGEL).name("Setter").build();
 
-        nameService.saveAll(Flux.just(dou, bon, abe, boo, t, kal, charName, jav, ruth, wei, jay, nee,
+        nameService.saveAll(List.of(dou, bon, abe, boo, t, kal, charName, jav, ruth, wei, jay, nee,
                 kim, lan, di, dez, core, wheels, doc, buzz, key, line, gabe, biz, bish, inch, grip, setter))
-                .blockLast();
+                ;
 
         /* ----------------------------- BATTLEBABE NAMES --------------------------------- */
         Name snow = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Snow").build();
@@ -2120,9 +2113,9 @@ public class GameDataLoader implements CommandLineRunner {
         Name absinthe = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Absinthe").build();
         Name honeytree = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Honeytree").build();
 
-        nameService.saveAll(Flux.just(snow, crimson, shadow, beastie, azure, midnight, scarlet, violetta, amber, rouge,
+        nameService.saveAll(List.of(snow, crimson, shadow, beastie, azure, midnight, scarlet, violetta, amber, rouge,
                 damson, sunset, emerald, ruby, raksha, kickskirt, kite, monsoon, smith, baaba, melody, mar, tavi,
-                absinthe, honeytree)).blockLast();
+                absinthe, honeytree));
 
         /* ----------------------------- BRAINER NAMES --------------------------------- */
         Name smith2 = Name.builder().playbookType(PlaybookType.BRAINER).name("Smith").build();
@@ -2145,8 +2138,8 @@ public class GameDataLoader implements CommandLineRunner {
         Name brace = Name.builder().playbookType(PlaybookType.BRAINER).name("Brace").build();
         Name sundown = Name.builder().playbookType(PlaybookType.BRAINER).name("Sundown").build();
 
-        nameService.saveAll(Flux.just(smith2, jones, jackson, marsh, lively, burroughs, gritch, joyette, iris, marie,
-                amiette, suselle, cybelle, pallor, sin, charmer, pity, brace, sundown)).blockLast();
+        nameService.saveAll(List.of(smith2, jones, jackson, marsh, lively, burroughs, gritch, joyette, iris, marie,
+                amiette, suselle, cybelle, pallor, sin, charmer, pity, brace, sundown));
 
         /* ----------------------------- CHOPPER NAMES --------------------------------- */
         Name dog = Name.builder().playbookType(PlaybookType.CHOPPER).name("Dog").build();
@@ -2173,8 +2166,8 @@ public class GameDataLoader implements CommandLineRunner {
         Name wire = Name.builder().playbookType(PlaybookType.CHOPPER).name("Wire").build();
         Name blues = Name.builder().playbookType(PlaybookType.CHOPPER).name("Blues").build();
 
-        nameService.saveAll(Flux.just(dog, domino, tBone, stinky, satan, lars, bullet, dice, shitHead, halfPint,
-                shooter, diamond, goldie, tinker, loose, baby, juck, hammer, hooch, snakeEyes, pinkie, wire, blues)).blockLast();
+        nameService.saveAll(List.of(dog, domino, tBone, stinky, satan, lars, bullet, dice, shitHead, halfPint,
+                shooter, diamond, goldie, tinker, loose, baby, juck, hammer, hooch, snakeEyes, pinkie, wire, blues));
 
         /* ----------------------------- DRIVER NAMES --------------------------------- */
         Name lauren = Name.builder().playbookType(PlaybookType.DRIVER).name("Lauren").build();
@@ -2205,9 +2198,9 @@ public class GameDataLoader implements CommandLineRunner {
         Name jag = Name.builder().playbookType(PlaybookType.DRIVER).name("Jag").build();
         Name beemer = Name.builder().playbookType(PlaybookType.DRIVER).name("Beemer").build();
 
-        nameService.saveAll(Flux.just(lauren, audrey, farley, sammy, katherine, marilyn, james, bridget, paul,
+        nameService.saveAll(List.of(lauren, audrey, farley, sammy, katherine, marilyn, james, bridget, paul,
                 annette, marlene, frankie, marlon, kim1, errol, humphrey, phoenix, mustang, impala, suv, cougar,
-                cobra, dart, gremlin, grandCherokee, jag, beemer)).blockLast();
+                cobra, dart, gremlin, grandCherokee, jag, beemer));
 
         /* ----------------------------- GUNLUGGER NAMES --------------------------------- */
         Name vonk = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Vonk the Sculptor").build();
@@ -2241,9 +2234,9 @@ public class GameDataLoader implements CommandLineRunner {
         Name buddy = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Buddy").build();
 
 
-        nameService.saveAll(Flux.just(vonk, batty, jonker, at, rueWakeman, navarre, man, kartak, barbarossa,
+        nameService.saveAll(List.of(vonk, batty, jonker, at, rueWakeman, navarre, man, kartak, barbarossa,
                 keeler, grekkor, crille, doom, chaplain, rex, fido, spot, boxer, doberman, trey, killer, butch,
-                fifi, fluffy, duke, wolf, rover, max, buddy)).blockLast();
+                fifi, fluffy, duke, wolf, rover, max, buddy));
 
         /* ----------------------------- HARDHOLDER NAMES --------------------------------- */
         Name hardholderName1 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Nbeke").build();
@@ -2266,10 +2259,10 @@ public class GameDataLoader implements CommandLineRunner {
         Name hardholderName18 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Colonel").build();
         Name hardholderName19 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Mother Superior").build();
 
-        nameService.saveAll(Flux.just(hardholderName1, hardholderName2, hardholderName3, hardholderName4,
+        nameService.saveAll(List.of(hardholderName1, hardholderName2, hardholderName3, hardholderName4,
                 hardholderName5, hardholderName6, hardholderName7, hardholderName8, hardholderName9,
                 hardholderName10, hardholderName11, hardholderName12, hardholderName13, hardholderName14,
-                hardholderName15, hardholderName16, hardholderName17, hardholderName18, hardholderName19)).blockLast();
+                hardholderName15, hardholderName16, hardholderName17, hardholderName18, hardholderName19));
 
         /* ----------------------------- HOCUS NAMES --------------------------------- */
         Name hocus = Name.builder().playbookType(PlaybookType.HOCUS).name("Vision").build();
@@ -2295,9 +2288,9 @@ public class GameDataLoader implements CommandLineRunner {
         Name hocus20 = Name.builder().playbookType(PlaybookType.HOCUS).name("Weaver Bird").build();
         Name hocus21 = Name.builder().playbookType(PlaybookType.HOCUS).name("Lark").build();
 
-        nameService.saveAll(Flux.just(hocus, hocus1, hocus2, hocus3, hocus4, hocus5, hocus6, hocus7,
+        nameService.saveAll(List.of(hocus, hocus1, hocus2, hocus3, hocus4, hocus5, hocus6, hocus7,
                 hocus8, hocus9, hocus10, hocus11, hocus12, hocus13, hocus14, hocus15, hocus16,
-                hocus17, hocus18, hocus19, hocus20, hocus21)).blockLast();
+                hocus17, hocus18, hocus19, hocus20, hocus21));
 
         /* ----------------------------- MAESTRO D' NAMES --------------------------------- */
         Name maestroD1 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Cookie").build();
@@ -2325,10 +2318,10 @@ public class GameDataLoader implements CommandLineRunner {
         Name maestroD23 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Proper").build();
         Name maestroD24 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Fall").build();
 
-        nameService.saveAll(Flux.just(maestroD1, maestroD2, maestroD3, maestroD4, maestroD5, maestroD6, maestroD7,
+        nameService.saveAll(List.of(maestroD1, maestroD2, maestroD3, maestroD4, maestroD5, maestroD6, maestroD7,
                 maestroD8, maestroD9, maestroD10, maestroD11, maestroD12, maestroD13, maestroD14, maestroD15,
                 maestroD16, maestroD17, maestroD18, maestroD19, maestroD20, maestroD21, maestroD22, maestroD23,
-                maestroD24)).blockLast();
+                maestroD24));
 
         /* ----------------------------- SAVVYHEAD NAMES --------------------------------- */
         Name savvyhead1 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Leah").build();
@@ -2365,12 +2358,12 @@ public class GameDataLoader implements CommandLineRunner {
         Name savvyhead32 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Cullen").build();
         Name savvyhead33 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Spector").build();
 
-        nameService.saveAll(Flux.just(savvyhead1, savvyhead2, savvyhead3, savvyhead4, savvyhead5,
+        nameService.saveAll(List.of(savvyhead1, savvyhead2, savvyhead3, savvyhead4, savvyhead5,
                 savvyhead6, savvyhead7, savvyhead8, savvyhead9, savvyhead10, savvyhead11,
                 savvyhead11, savvyhead12, savvyhead13, savvyhead14, savvyhead15, savvyhead16,
                 savvyhead17, savvyhead18, savvyhead19, savvyhead20, savvyhead21, savvyhead22,
                 savvyhead23, savvyhead24, savvyhead25, savvyhead26, savvyhead27, savvyhead28,
-                savvyhead29, savvyhead30, savvyhead31, savvyhead32, savvyhead33)).blockLast();
+                savvyhead29, savvyhead30, savvyhead31, savvyhead32, savvyhead33));
 
         /* ----------------------------- SKINNER NAMES --------------------------------- */
         Name skinner1 = Name.builder().playbookType(PlaybookType.SKINNER).name("October").build();
@@ -2398,10 +2391,10 @@ public class GameDataLoader implements CommandLineRunner {
         Name skinner23 = Name.builder().playbookType(PlaybookType.SKINNER).name("Peacock").build();
         Name skinner24 = Name.builder().playbookType(PlaybookType.SKINNER).name("Grace").build();
 
-        nameService.saveAll(Flux.just(skinner1, skinner2, skinner3, skinner4, skinner5, skinner6,
+        nameService.saveAll(List.of(skinner1, skinner2, skinner3, skinner4, skinner5, skinner6,
                 skinner7, skinner8, skinner9, skinner10, skinner11, skinner12, skinner13,
                 skinner14, skinner15, skinner16, skinner17, skinner18, skinner19, skinner20,
-                skinner21, skinner22, skinner23, skinner24)).blockLast();
+                skinner21, skinner22, skinner23, skinner24));
     }
 
     private void loadLooks() {
@@ -2434,9 +2427,9 @@ public class GameDataLoader implements CommandLineRunner {
         Look angel25 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("rangy body").build();
         Look angel26 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("sturdy body").build();
 
-        lookService.saveAll(Flux.just(angel1, angel2, angel3, angel4, angel5, angel6, angel7, angel8, angel9,
+        lookService.saveAll(List.of(angel1, angel2, angel3, angel4, angel5, angel6, angel7, angel8, angel9,
                 angel10, angel11, angel12, angel13, angel14, angel15, angel16, angel17, angel18, angel19,
-                angel20, angel21, angel22, angel23, angel24, angel25, angel26)).blockLast();
+                angel20, angel21, angel22, angel23, angel24, angel25, angel26));
 
         /* ----------------------------- BATTLEBABE LOOKS --------------------------------- */
         Look battlebabe1 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.GENDER).look("man").build();
@@ -2466,10 +2459,10 @@ public class GameDataLoader implements CommandLineRunner {
         Look battlebabe25 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.BODY).look("muscular body").build();
         Look battlebabe26 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.BODY).look("angular body").build();
 
-        lookService.saveAll(Flux.just(battlebabe1, battlebabe2, battlebabe3, battlebabe4, battlebabe5, battlebabe6,
+        lookService.saveAll(List.of(battlebabe1, battlebabe2, battlebabe3, battlebabe4, battlebabe5, battlebabe6,
                 battlebabe7, battlebabe8, battlebabe9, battlebabe10, battlebabe11, battlebabe12, battlebabe13,
                 battlebabe14, battlebabe15, battlebabe16, battlebabe17, battlebabe18, battlebabe19, battlebabe20,
-                battlebabe21, battlebabe22, battlebabe23, battlebabe24, battlebabe25, battlebabe26)).blockLast();
+                battlebabe21, battlebabe22, battlebabe23, battlebabe24, battlebabe25, battlebabe26));
 
         /* ----------------------------- BRAINER LOOKS --------------------------------- */
         Look brainer1 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.GENDER).look("man").build();
@@ -2500,10 +2493,10 @@ public class GameDataLoader implements CommandLineRunner {
         Look brainer26 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.BODY).look("crippled body").build();
         Look brainer27 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.BODY).look("fat body").build();
 
-        lookService.saveAll(Flux.just(brainer1, brainer2, brainer3, brainer4, brainer5, brainer6, brainer7, brainer8,
+        lookService.saveAll(List.of(brainer1, brainer2, brainer3, brainer4, brainer5, brainer6, brainer7, brainer8,
                 brainer9, brainer10, brainer11, brainer12, brainer13, brainer14, brainer15, brainer16, brainer17,
                 brainer18, brainer19, brainer20, brainer21, brainer22, brainer23, brainer24, brainer25, brainer26,
-                brainer27)).blockLast();
+                brainer27));
 
         /* ----------------------------- CHOPPER LOOKS --------------------------------- */
         Look chopper1 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("man").build();
@@ -2530,9 +2523,9 @@ public class GameDataLoader implements CommandLineRunner {
         Look chopper22 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("sturdy body").build();
         Look chopper23 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("fat body").build();
 
-        lookService.saveAll(Flux.just(chopper1, chopper2, chopper3, chopper4, chopper5, chopper6, chopper7, chopper8,
+        lookService.saveAll(List.of(chopper1, chopper2, chopper3, chopper4, chopper5, chopper6, chopper7, chopper8,
                 chopper9, chopper10, chopper11, chopper12, chopper13, chopper14, chopper15, chopper16, chopper17,
-                chopper18, chopper19, chopper20, chopper21, chopper22, chopper23)).blockLast();
+                chopper18, chopper19, chopper20, chopper21, chopper22, chopper23));
 
         /* ----------------------------- DRIVER LOOKS --------------------------------- */
         Look driver1 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("man").build();
@@ -2563,9 +2556,9 @@ public class GameDataLoader implements CommandLineRunner {
         Look driver26 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("tall body").build();
         Look driver27 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("strong body").build();
 
-        lookService.saveAll(Flux.just(driver1, driver2, driver3, driver4, driver5, driver6, driver7, driver8, driver9,
+        lookService.saveAll(List.of(driver1, driver2, driver3, driver4, driver5, driver6, driver7, driver8, driver9,
                 driver10, driver11, driver12, driver13, driver14, driver15, driver16, driver17, driver18, driver19,
-                driver20, driver21, driver22, driver23, driver24, driver25, driver26, driver26, driver27)).blockLast();
+                driver20, driver21, driver22, driver23, driver24, driver25, driver26, driver26, driver27));
 
         /* ----------------------------- GUNLUGGER LOOKS --------------------------------- */
         Look gunlugger1 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.GENDER).look("man").build();
@@ -2596,10 +2589,10 @@ public class GameDataLoader implements CommandLineRunner {
         Look gunlugger27 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("compact body").build();
         Look gunlugger9 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("huge body").build();
 
-        lookService.saveAll(Flux.just(gunlugger1, gunlugger2, gunlugger3, gunlugger4, gunlugger5, gunlugger6, gunlugger7,
+        lookService.saveAll(List.of(gunlugger1, gunlugger2, gunlugger3, gunlugger4, gunlugger5, gunlugger6, gunlugger7,
                 gunlugger8, gunlugger9, gunlugger10, gunlugger11, gunlugger12, gunlugger13, gunlugger14, gunlugger15,
                 gunlugger16, gunlugger17, gunlugger18, gunlugger19, gunlugger20, gunlugger21, gunlugger22, gunlugger23,
-                gunlugger24, gunlugger25, gunlugger26, gunlugger27)).blockLast();
+                gunlugger24, gunlugger25, gunlugger26, gunlugger27));
 
         /* ----------------------------- HARDHOLDER LOOKS --------------------------------- */
         Look hardHolder1 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.GENDER).look("man").build();
@@ -2630,10 +2623,10 @@ public class GameDataLoader implements CommandLineRunner {
         Look hardHolder26 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("tall spare body").build();
         Look hardHolder27 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("sensual body").build();
 
-        lookService.saveAll(Flux.just(hardHolder1, hardHolder2, hardHolder3, hardHolder4, hardHolder5, hardHolder6,
+        lookService.saveAll(List.of(hardHolder1, hardHolder2, hardHolder3, hardHolder4, hardHolder5, hardHolder6,
                 hardHolder7, hardHolder8, hardHolder9, hardHolder10, hardHolder11, hardHolder12, hardHolder13,
                 hardHolder14, hardHolder15, hardHolder16, hardHolder17, hardHolder18, hardHolder19, hardHolder20,
-                hardHolder21, hardHolder22, hardHolder23, hardHolder24, hardHolder25, hardHolder26, hardHolder27)).blockLast();
+                hardHolder21, hardHolder22, hardHolder23, hardHolder24, hardHolder25, hardHolder26, hardHolder27));
 
         /* ----------------------------- HOCUS LOOKS --------------------------------- */
         Look hocus1 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.GENDER).look("man").build();
@@ -2665,9 +2658,9 @@ public class GameDataLoader implements CommandLineRunner {
         Look hocus27 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.BODY).look("graceful body").build();
         Look hocus28 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.BODY).look("fat body").build();
 
-        lookService.saveAll(Flux.just(hocus1, hocus2, hocus3, hocus4, hocus5, hocus6, hocus7, hocus8, hocus9, hocus10,
+        lookService.saveAll(List.of(hocus1, hocus2, hocus3, hocus4, hocus5, hocus6, hocus7, hocus8, hocus9, hocus10,
                 hocus11, hocus12, hocus13, hocus14, hocus15, hocus16, hocus17, hocus18, hocus19, hocus20, hocus21,
-                hocus22, hocus23, hocus24, hocus25, hocus26, hocus27, hocus28)).blockLast();
+                hocus22, hocus23, hocus24, hocus25, hocus26, hocus27, hocus28));
 
         /* ----------------------------- MAESTRO D' LOOKS --------------------------------- */
         Look maestroD1 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("man").build();
@@ -2701,10 +2694,10 @@ public class GameDataLoader implements CommandLineRunner {
         Look maestroD28 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("unusual body").build();
         Look maestroD29 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("lean body").build();
 
-        lookService.saveAll(Flux.just(maestroD1, maestroD2, maestroD3, maestroD4, maestroD5, maestroD6, maestroD7,
+        lookService.saveAll(List.of(maestroD1, maestroD2, maestroD3, maestroD4, maestroD5, maestroD6, maestroD7,
                 maestroD8, maestroD9, maestroD10, maestroD11, maestroD12, maestroD13, maestroD14, maestroD15,
                 maestroD16, maestroD17, maestroD18, maestroD19, maestroD20, maestroD21, maestroD22, maestroD23,
-                maestroD24, maestroD25, maestroD26, maestroD27, maestroD28, maestroD29, maestroD30)).blockLast();
+                maestroD24, maestroD25, maestroD26, maestroD27, maestroD28, maestroD29, maestroD30));
 
         /* ----------------------------- SAVVYHEAD LOOKS --------------------------------- */
         Look savvyhead1 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.GENDER).look("man").build();
@@ -2731,9 +2724,9 @@ public class GameDataLoader implements CommandLineRunner {
         Look savvyhead22 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("stumpy body").build();
         Look savvyhead23 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("strange body").build();
 
-        lookService.saveAll(Flux.just(savvyhead1, savvyhead2, savvyhead3, savvyhead4, savvyhead5, savvyhead6, savvyhead7,
+        lookService.saveAll(List.of(savvyhead1, savvyhead2, savvyhead3, savvyhead4, savvyhead5, savvyhead6, savvyhead7,
                 savvyhead8, savvyhead9, savvyhead10, savvyhead11, savvyhead12, savvyhead13, savvyhead14, savvyhead15,
-                savvyhead16, savvyhead17, savvyhead18, savvyhead19, savvyhead20, savvyhead21, savvyhead22, savvyhead23)).blockLast();
+                savvyhead16, savvyhead17, savvyhead18, savvyhead19, savvyhead20, savvyhead21, savvyhead22, savvyhead23));
 
         /* ----------------------------- SKINNER LOOKS --------------------------------- */
         Look skinner1 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("man").build();
@@ -2766,10 +2759,10 @@ public class GameDataLoader implements CommandLineRunner {
         Look skinner28 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("young body").build();
         Look skinner29 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("lush body").build();
 
-        lookService.saveAll(Flux.just(skinner1, skinner2, skinner3, skinner4, skinner5, skinner6, skinner7, skinner8,
+        lookService.saveAll(List.of(skinner1, skinner2, skinner3, skinner4, skinner5, skinner6, skinner7, skinner8,
                 skinner9, skinner10, skinner11, skinner12, skinner13, skinner14, skinner15, skinner16, skinner17,
                 skinner18, skinner19, skinner20, skinner21, skinner22, skinner23, skinner24, skinner25, skinner26,
-                skinner27, skinner28, skinner29)).blockLast();
+                skinner27, skinner28, skinner29));
     }
 
     public void loadStatsOptions() {
@@ -2779,42 +2772,42 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption angel2 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(1).HARD(1).HOT(0).SHARP(2).WEIRD(-1).build(); // 3
         StatsOption angel3 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(-1).HARD(1).HOT(0).SHARP(2).WEIRD(1).build(); // 3
         StatsOption angel4 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(2).HARD(0).HOT(-1).SHARP(2).WEIRD(-1).build(); // 2
-        statsOptionService.saveAll(Flux.just(angel1, angel2, angel3, angel4)).blockLast();
+        statsOptionService.saveAll(List.of(angel1, angel2, angel3, angel4));
 
         /* ----------------------------- BATTLEBABE STATS OPTIONS --------------------------------- */
         StatsOption battlebabe1 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build(); // 4
         StatsOption battlebabe2 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(-1).HOT(2).SHARP(0).WEIRD(-1).build(); // 3
         StatsOption battlebabe3 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(-2).HOT(1).SHARP(1).WEIRD(1).build(); // 4
         StatsOption battlebabe4 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(0).HOT(1).SHARP(1).WEIRD(-1).build(); // 3
-        statsOptionService.saveAll(Flux.just(battlebabe1, battlebabe2, battlebabe3, battlebabe4)).blockLast();
+        statsOptionService.saveAll(List.of(battlebabe1, battlebabe2, battlebabe3, battlebabe4));
 
         /* ----------------------------- BRAINER STATS OPTIONS --------------------------------- */
         StatsOption brainer1 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(1).HARD(1).HOT(-2).SHARP(1).WEIRD(2).build(); // 3
         StatsOption brainer2 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(0).HARD(0).HOT(1).SHARP(0).WEIRD(2).build(); // 3
         StatsOption brainer3 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(1).HARD(-2).HOT(-1).SHARP(2).WEIRD(2).build(); // 2
         StatsOption brainer4 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(2).HARD(-1).HOT(-1).SHARP(0).WEIRD(2).build(); // 2
-        statsOptionService.saveAll(Flux.just(brainer1, brainer2, brainer3, brainer4)).blockLast();
+        statsOptionService.saveAll(List.of(brainer1, brainer2, brainer3, brainer4));
 
         /* ----------------------------- CHOPPER STATS OPTIONS --------------------------------- */
         StatsOption chopper1 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(-1).SHARP(1).WEIRD(0).build(); // 3
         StatsOption chopper2 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(1).SHARP(0).WEIRD(1).build(); // 4
         StatsOption chopper3 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(0).SHARP(1).WEIRD(1).build(); // 5
         StatsOption chopper4 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(2).HARD(2).HOT(-1).SHARP(0).WEIRD(1).build(); // 4
-        statsOptionService.saveAll(Flux.just(chopper1, chopper2, chopper3, chopper4)).blockLast();
+        statsOptionService.saveAll(List.of(chopper1, chopper2, chopper3, chopper4));
 
         /* ----------------------------- DRIVER STATS OPTIONS --------------------------------- */
         StatsOption driver1 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build(); // 3
         StatsOption driver2 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(0).HOT(1).SHARP(1).WEIRD(-1).build(); // 3
         StatsOption driver3 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(1).HOT(-1).SHARP(0).WEIRD(1).build(); // 3
         StatsOption driver4 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-2).HOT(0).SHARP(2).WEIRD(1).build(); // 3
-        statsOptionService.saveAll(Flux.just(driver1, driver2, driver3, driver4)).blockLast();
+        statsOptionService.saveAll(List.of(driver1, driver2, driver3, driver4));
 
         /* ----------------------------- GUNLUGGER STATS OPTIONS --------------------------------- */
         StatsOption gunlugger1 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(1).HARD(2).HOT(-1).SHARP(1).WEIRD(0).build(); // 3
         StatsOption gunlugger2 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(-1).HARD(2).HOT(-2).SHARP(1).WEIRD(2).build(); // 2
         StatsOption gunlugger3 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(1).HARD(2).HOT(-2).SHARP(2).WEIRD(-1).build(); // 2
         StatsOption gunlugger4 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(2).HARD(2).HOT(-2).SHARP(0).WEIRD(0).build(); // 2
-        statsOptionService.saveAll(Flux.just(gunlugger1, gunlugger2, gunlugger3, gunlugger4)).blockLast();
+        statsOptionService.saveAll(List.of(gunlugger1, gunlugger2, gunlugger3, gunlugger4));
 
         /* ----------------------------- HARDHOLDER STATS OPTIONS --------------------------------- */
         StatsOption hardHolder1 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(-1).HARD(2).HOT(1).SHARP(1).WEIRD(0).build(); // 3
@@ -2822,7 +2815,7 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption hardHolder3 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(-2).HARD(2).HOT(0).SHARP(2).WEIRD(0).build(); // 2
         StatsOption hardHolder4 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(0).HARD(2).HOT(1).SHARP(-1).WEIRD(1).build(); // 3
 
-        statsOptionService.saveAll(Flux.just(hardHolder1, hardHolder2, hardHolder3, hardHolder4)).blockLast();
+        statsOptionService.saveAll(List.of(hardHolder1, hardHolder2, hardHolder3, hardHolder4));
 
         /* ----------------------------- HOCUS STATS OPTIONS --------------------------------- */
         StatsOption hocus1 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(0).HARD(1).HOT(-1).SHARP(1).WEIRD(2).build(); // 3
@@ -2830,7 +2823,7 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption hocus3 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(-1).HARD(1).HOT(0).SHARP(1).WEIRD(2).build(); // 3
         StatsOption hocus4 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(1).HARD(0).HOT(1).SHARP(-1).WEIRD(2).build(); // 3
 
-        statsOptionService.saveAll(Flux.just(hocus1, hocus2, hocus3, hocus4)).blockLast();
+        statsOptionService.saveAll(List.of(hocus1, hocus2, hocus3, hocus4));
 
         /* ----------------------------- MAESTRO D' STATS OPTIONS --------------------------------- */
         StatsOption maestroD1 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(1).HARD(-1).HOT(2).SHARP(0).WEIRD(1).build(); // 3
@@ -2838,7 +2831,7 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption maestroD3 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(-1).HARD(2).HOT(2).SHARP(0).WEIRD(-1).build(); // 2
         StatsOption maestroD4 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(0).HARD(0).HOT(2).SHARP(1).WEIRD(0).build(); // 3
 
-        statsOptionService.saveAll(Flux.just(maestroD1, maestroD2, maestroD3, maestroD4)).blockLast();
+        statsOptionService.saveAll(List.of(maestroD1, maestroD2, maestroD3, maestroD4));
 
         /* ----------------------------- SAVVYHEAD STATS OPTIONS --------------------------------- */
         StatsOption savvyhead1 = StatsOption.builder().playbookType(PlaybookType.SAVVYHEAD).COOL(-1).HARD(0).HOT(1).SHARP(1).WEIRD(2).build(); // 3
@@ -2846,7 +2839,7 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption savvyhead3 = StatsOption.builder().playbookType(PlaybookType.SAVVYHEAD).COOL(1).HARD(-1).HOT(0).SHARP(1).WEIRD(2).build(); // 3
         StatsOption savvyhead4 = StatsOption.builder().playbookType(PlaybookType.SAVVYHEAD).COOL(1).HARD(1).HOT(-1).SHARP(0).WEIRD(2).build(); // 3
 
-        statsOptionService.saveAll(Flux.just(savvyhead1, savvyhead2, savvyhead3, savvyhead4)).blockLast();
+        statsOptionService.saveAll(List.of(savvyhead1, savvyhead2, savvyhead3, savvyhead4));
 
         /* ----------------------------- SKINNER STATS OPTIONS --------------------------------- */
         StatsOption skinner1 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(1).HARD(-1).HOT(2).SHARP(1).WEIRD(0).build(); // 3
@@ -2854,7 +2847,7 @@ public class GameDataLoader implements CommandLineRunner {
         StatsOption skinner3 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(-1).HARD(0).HOT(2).SHARP(2).WEIRD(-1).build(); // 2
         StatsOption skinner4 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(1).HARD(1).HOT(2).SHARP(1).WEIRD(-2).build(); // 3
 
-        statsOptionService.saveAll(Flux.just(skinner1, skinner2, skinner3, skinner4)).blockLast();
+        statsOptionService.saveAll(List.of(skinner1, skinner2, skinner3, skinner4));
     }
 
     public void loadPlaybookCreators() {
@@ -2874,12 +2867,10 @@ public class GameDataLoader implements CommandLineRunner {
                 "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.";
         /* ----------------------------- ANGEL PLAYBOOK CREATOR --------------------------------- */
         List<Move> angelOptionalMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.CHARACTER);
 
         List<Move> angelDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.DEFAULT_CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.DEFAULT_CHARACTER);
 
         AngelKitCreator angelKitCreator = AngelKitCreator.builder()
                 .id(UUID.randomUUID().toString())
@@ -2938,12 +2929,10 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- BATTLEBABE PLAYBOOK CREATOR --------------------------------- */
         List<Move> battlebabeOptionalMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.CHARACTER);
 
         List<Move> battlebabeDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.DEFAULT_CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.DEFAULT_CHARACTER);
 
         TaggedItem firearmBase1 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("handgun").tags(List.of("2-harm", "close", "reload", "loud")).build();
         TaggedItem firearmBase2 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("shotgun").tags(List.of("3-harm", "close", "reload", "messy")).build();
@@ -3031,12 +3020,10 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- BRAINER PLAYBOOK CREATOR --------------------------------- */
         List<Move> brainerOptionalMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.CHARACTER);
 
         List<Move> brainerDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.DEFAULT_CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.DEFAULT_CHARACTER);
 
         BrainerGearCreator brainerGearCreator = BrainerGearCreator.builder()
                 .id(UUID.randomUUID().toString())
@@ -3096,12 +3083,10 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- CHOPPER PLAYBOOK CREATOR --------------------------------- */
 
         List<Move> chopperOptionalMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.CHARACTER);
 
         List<Move> chopperDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.DEFAULT_CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.DEFAULT_CHARACTER);
 
         GangOption gangOption1 = GangOption.builder()
                 .id(UUID.randomUUID().toString())
@@ -3233,13 +3218,10 @@ public class GameDataLoader implements CommandLineRunner {
         // Driver has no PlaybookUnique; hav Vehicles instead
 
         List<Move> driverOptionalMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.CHARACTER);
 
         List<Move> driverDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.DEFAULT_CHARACTER)
-                .collectList().block();
-
+                .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.DEFAULT_CHARACTER);
         GearInstructions driverGearInstructions = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
                 .gearIntro("In addition to your car, you get:")
@@ -3283,12 +3265,10 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- GUNLUGGER PLAYBOOK CREATOR --------------------------------- */
 
         List<Move> gunluggerOptionalMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.GUNLUGGER, MoveType.CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.GUNLUGGER, MoveType.CHARACTER);
 
         List<Move> gunluggerDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.GUNLUGGER, MoveType.DEFAULT_CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.GUNLUGGER, MoveType.DEFAULT_CHARACTER);
 
         GearInstructions gearInstructionsGunlugger = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
@@ -3356,8 +3336,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- HARDHOLDER PLAYBOOK CREATOR --------------------------------- */
         List<Move> hardholderDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.HARDHOLDER, MoveType.DEFAULT_CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.HARDHOLDER, MoveType.DEFAULT_CHARACTER);
 
         GearInstructions gearInstructionsHardholder = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
@@ -3707,12 +3686,10 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- HOCUS PLAYBOOK CREATOR --------------------------------- */
         List<Move> hocusDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.HOCUS, MoveType.DEFAULT_CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.HOCUS, MoveType.DEFAULT_CHARACTER);
 
         List<Move> hocusMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.HOCUS, MoveType.CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.HOCUS, MoveType.CHARACTER);
 
         GearInstructions gearInstructionsHocus = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
@@ -3895,12 +3872,10 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- MAESTRO D' PLAYBOOK CREATOR --------------------------------- */
         List<Move> maestroDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.MAESTRO_D, MoveType.DEFAULT_CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.MAESTRO_D, MoveType.DEFAULT_CHARACTER);
 
         List<Move> maestroMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.MAESTRO_D, MoveType.CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.MAESTRO_D, MoveType.CHARACTER);
 
         GearInstructions gearInstructionsMaestro = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
@@ -4013,12 +3988,10 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- SAVVYHEAD PLAYBOOK CREATOR --------------------------------- */
         List<Move> savvyheadDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.SAVVYHEAD, MoveType.DEFAULT_CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.SAVVYHEAD, MoveType.DEFAULT_CHARACTER);
 
         List<Move> savvyheadMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.SAVVYHEAD, MoveType.CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.SAVVYHEAD, MoveType.CHARACTER);
 
         GearInstructions gearInstructionsSavvyhead = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
@@ -4097,12 +4070,10 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- SKINNER PLAYBOOK CREATOR --------------------------------- */
         List<Move> skinnerOptionalMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.CHARACTER);
 
         List<Move> skinnerDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.DEFAULT_CHARACTER)
-                .collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.DEFAULT_CHARACTER);
 
         GearInstructions gearInstructionsSkinner = GearInstructions.builder()
                 .id(UUID.randomUUID().toString())
@@ -4198,7 +4169,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultMoveCount(1)
                 .build();
 
-        playbookCreatorService.saveAll(Flux.just(angelCreator,
+        playbookCreatorService.saveAll(List.of(angelCreator,
                 battlebabePlaybookCreator,
                 playbookCreatorBrainer,
                 playbookCreatorChopper,
@@ -4209,7 +4180,7 @@ public class GameDataLoader implements CommandLineRunner {
                 playbookCreatorMaestro,
                 playbookCreatorSavvyhead,
                 playbookCreatorSkinner
-        )).blockLast();
+        ));
     }
 
     public void loadVehicleCreator() {
@@ -4395,7 +4366,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .battleVehicleCreator(battleVehicleCreator)
                 .build();
 
-        vehicleCreatorService.save(vehicleCreator).block();
+        vehicleCreatorService.save(vehicleCreator);
     }
 
     public void loadMcContent() {
@@ -5188,8 +5159,8 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbookImageUrl("https://awc-images.s3-ap-southeast-2.amazonaws.com/skinner-white-transparent.png")
                 .build();
 
-        playbookService.saveAll(Flux.just(angel, battlebabe, brainer, chopper, driver, gunlugger, hardholder,
-                maestroD, hocus, savvyhead, skinner)).blockLast();
+        playbookService.saveAll(List.of(angel, battlebabe, brainer, chopper, driver, gunlugger, hardholder,
+                maestroD, hocus, savvyhead, skinner));
     }
 
     private void createPlaybooks() {
@@ -5413,31 +5384,31 @@ public class GameDataLoader implements CommandLineRunner {
                 .threatNames(threatNames)
                 .build();
 
-        threatCreatorService.save(threatCreator).block();
+        threatCreatorService.save(threatCreator);
     }
 
     private void fleshOutPlaybookAndSave(PlaybookType playbookType) {
-        Playbook playbook = playbookService.findByPlaybookType(playbookType).block();
+        Playbook playbook = playbookService.findByPlaybookType(playbookType);
         assert playbook != null;
         if (playbook.getCreator() == null) {
-            PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(playbookType).block();
+            PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(playbookType);
             assert playbookCreator != null;
 
-            List<Name> names = nameService.findAllByPlaybookType(playbookType).collectList().block();
+            List<Name> names = nameService.findAllByPlaybookType(playbookType);
             assert names != null;
 
-            List<Look> looks = lookService.findAllByPlaybookType(playbookType).collectList().block();
+            List<Look> looks = lookService.findAllByPlaybookType(playbookType);
             assert looks != null;
 
-            List<StatsOption> statsOptions = statsOptionService.findAllByPlaybookType(playbookType).collectList().block();
+            List<StatsOption> statsOptions = statsOptionService.findAllByPlaybookType(playbookType);
             assert statsOptions != null;
 
             statsOptions.forEach(statsOption -> playbookCreator.getStatsOptions().add(statsOption));
             names.forEach(name -> playbookCreator.getNames().add(name));
             looks.forEach(look -> playbookCreator.getLooks().add(look));
-            playbookCreatorService.save(playbookCreator).block();
+            playbookCreatorService.save(playbookCreator);
             playbook.setCreator(playbookCreator);
-            playbookService.save(playbook).block();
+            playbookService.save(playbook);
         }
     }
 

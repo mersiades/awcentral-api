@@ -4,8 +4,8 @@ import com.mersiades.awccontent.models.VehicleCreator;
 import com.mersiades.awccontent.repositories.VehicleCreatorRepository;
 import com.mersiades.awccontent.services.VehicleCreatorService;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Service
 public class VehicleCreatorServiceImpl implements VehicleCreatorService {
@@ -17,23 +17,23 @@ public class VehicleCreatorServiceImpl implements VehicleCreatorService {
     }
 
     @Override
-    public Flux<VehicleCreator> findAll() {
+    public List<VehicleCreator> findAll() {
         return vehicleCreatorRepository.findAll();
     }
 
     @Override
-    public Mono<VehicleCreator> findById(String id) {
-        return vehicleCreatorRepository.findById(id);
+    public VehicleCreator findById(String id) {
+        return vehicleCreatorRepository.findById(id).orElseThrow();
     }
 
     @Override
-    public Mono<VehicleCreator> save(VehicleCreator vehicleCreator) {
+    public VehicleCreator save(VehicleCreator vehicleCreator) {
         return vehicleCreatorRepository.save(vehicleCreator);
     }
 
     @Override
-    public Flux<VehicleCreator> saveAll(Flux<VehicleCreator> vehicleCreatorFlux) {
-        return vehicleCreatorRepository.saveAll(vehicleCreatorFlux);
+    public List<VehicleCreator> saveAll(List<VehicleCreator> vehicleCreatorList) {
+        return vehicleCreatorRepository.saveAll(vehicleCreatorList);
     }
 
     @Override

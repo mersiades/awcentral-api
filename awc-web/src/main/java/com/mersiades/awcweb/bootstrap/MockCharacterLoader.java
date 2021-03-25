@@ -18,7 +18,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +71,7 @@ public class MockCharacterLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Long characterCount = Objects.requireNonNull(characterRepository.count().block());
+        long characterCount = characterRepository.count();
         if (characterCount == 0) {
             loadMockCharacters();
             loadHx();
@@ -80,19 +79,19 @@ public class MockCharacterLoader implements CommandLineRunner {
             loadNpcs(); // characterCount is serving as a proxy for npcCount here
         }
 
-        System.out.println("Character count: " + Objects.requireNonNull(characterRepository.count().block()));
+        System.out.println("Character count: " + characterRepository.count());
     }
 
     private void loadMockCharacters() {
-        GameRole saraAsPlayer = gameRoleService.findById(SARA_AS_PLAYER_ID).block();
+        GameRole saraAsPlayer = gameRoleService.findById(SARA_AS_PLAYER_ID);
         assert saraAsPlayer != null;
-        GameRole johnAsPlayer = gameRoleService.findById(JOHN_AS_PLAYER_ID).block();
+        GameRole johnAsPlayer = gameRoleService.findById(JOHN_AS_PLAYER_ID);
         assert johnAsPlayer != null;
-        GameRole mayaAsPlayer = gameRoleService.findById(MAYA_AS_PLAYER_ID).block();
+        GameRole mayaAsPlayer = gameRoleService.findById(MAYA_AS_PLAYER_ID);
         assert mayaAsPlayer != null;
-        GameRole ahmadAsPlayer = gameRoleService.findById(AHMAD_AS_PLAYER_ID).block();
+        GameRole ahmadAsPlayer = gameRoleService.findById(AHMAD_AS_PLAYER_ID);
         assert ahmadAsPlayer != null;
-        GameRole takeshiAsPlayer = gameRoleService.findById(TAKESHI_AS_PLAYER_ID).block();
+        GameRole takeshiAsPlayer = gameRoleService.findById(TAKESHI_AS_PLAYER_ID);
         assert takeshiAsPlayer != null;
 
         CharacterHarm harm = CharacterHarm.builder()
@@ -104,7 +103,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .value(0)
                 .build();
 
-        VehicleCreator vehicleCreator = vehicleCreatorService.findAll().take(1).blockFirst();
+        VehicleCreator vehicleCreator = vehicleCreatorService.findAll().get(0);
         assert vehicleCreator != null;
 
         // -------------------------------- Set up Sara's Angel ----------------------------------- //
@@ -114,7 +113,7 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         List<Move> angelKitMoves = moveService
                 .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.UNIQUE)
-                .collectList().block();
+                ;
 
         AngelKit angelKit = AngelKit.builder().id(UUID.randomUUID().toString())
                 .hasSupplier(false)
@@ -128,13 +127,11 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         List<Move> angelMoves = moveService.findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.CHARACTER)
-                .filter(move -> move.getName().equals("SIXTH SENSE") ||
-                        move.getName().equals("HEALING TOUCH"))
-                .collectList().block();
-        assert angelMoves != null;
+                .stream().filter(move -> move.getName().equals("SIXTH SENSE") ||
+                        move.getName().equals("HEALING TOUCH")).collect(Collectors.toList());
 
         List<Move> angelDefaultMoves = moveService.
-                findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.DEFAULT_CHARACTER).collectList().block();
+                findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.DEFAULT_CHARACTER);
         assert angelDefaultMoves != null;
 
         List<CharacterMove> characterMoves = createAndMergeCharacterMoves(angelMoves, angelDefaultMoves);
@@ -156,13 +153,11 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         List<Move> battlebabeMoves = moveService.findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.CHARACTER)
-                .filter(move -> move.getName().equals("DANGEROUS & SEXY") ||
-                        move.getName().equals("PERFECT INSTINCTS"))
-                .collectList().block();
-        assert battlebabeMoves != null;
+                .stream().filter(move -> move.getName().equals("DANGEROUS & SEXY") ||
+                        move.getName().equals("PERFECT INSTINCTS")).collect(Collectors.toList());
 
         List<Move> battlebabeDefaultMoves = moveService
-                .findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.DEFAULT_CHARACTER).collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.DEFAULT_CHARACTER);
         assert battlebabeDefaultMoves != null;
 
         List<CharacterMove> characterMoves2 = createAndMergeCharacterMoves(battlebabeMoves, battlebabeDefaultMoves);
@@ -184,20 +179,18 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         List<Move> brainerMoves = moveService.findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.CHARACTER)
-                .filter(move -> move.getName().equals("DEEP BRAIN SCAN") ||
-                        move.getName().equals("PRETERNATURAL BRAIN ATTUNEMENT"))
-                .collectList().block();
-        assert brainerMoves != null;
+                .stream().filter(move -> move.getName().equals("DEEP BRAIN SCAN") ||
+                        move.getName().equals("PRETERNATURAL BRAIN ATTUNEMENT")).collect(Collectors.toList());
 
         List<Move> brainerDefaultMoves = moveService
-                .findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.DEFAULT_CHARACTER).collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.DEFAULT_CHARACTER);
         assert brainerDefaultMoves != null;
 
         List<CharacterMove> characterMoves3 = createAndMergeCharacterMoves(brainerMoves, brainerDefaultMoves);
 
         // -------------------------------- Set up Takeshi's's Chopper ----------------------------------- //
         GangCreator gangCreator = Objects.requireNonNull(playbookCreatorService.findByPlaybookType(PlaybookType.CHOPPER)
-                .block()).getPlaybookUniqueCreator().getGangCreator();
+                ).getPlaybookUniqueCreator().getGangCreator();
 
         GangOption gangOption1 = gangCreator.getStrengths().get(0);
         GangOption gangOption2 = gangCreator.getStrengths().get(1);
@@ -241,7 +234,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         List<Move> chopperDefaultMoves = moveService
-                .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.DEFAULT_CHARACTER).collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.DEFAULT_CHARACTER);
         assert chopperDefaultMoves != null;
 
         List<CharacterMove> characterMoves5 = new ArrayList<>();
@@ -253,18 +246,16 @@ public class MockCharacterLoader implements CommandLineRunner {
         StatsBlock driverStatsBlock = getStatsBlock(PlaybookType.DRIVER);
 
         List<Move> driverMoves = moveService.findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.CHARACTER)
-                .filter(move -> move.getName().equals("EYE ON THE DOOR") ||
-                        move.getName().equals("COLLECTOR"))
-                .collectList().block();
-        assert driverMoves != null;
+                .stream().filter(move -> move.getName().equals("EYE ON THE DOOR") ||
+                        move.getName().equals("COLLECTOR")).collect(Collectors.toList());
 
         List<Move> driverDefaultMoves = moveService
-                .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.DEFAULT_CHARACTER).collectList().block();
+                .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.DEFAULT_CHARACTER);
         assert driverDefaultMoves != null;
 
         List<CharacterMove> characterMoves4 = createAndMergeCharacterMoves(driverMoves, driverDefaultMoves);
 
-        PlaybookCreator driverCreator = playbookCreatorService.findByPlaybookType(PlaybookType.DRIVER).block();
+        PlaybookCreator driverCreator = playbookCreatorService.findByPlaybookType(PlaybookType.DRIVER);
         assert driverCreator != null;
 
 
@@ -416,15 +407,15 @@ public class MockCharacterLoader implements CommandLineRunner {
     }
 
     private void loadHx() {
-        GameRole saraAsPlayer = gameRoleService.findById(SARA_AS_PLAYER_ID).block();
+        GameRole saraAsPlayer = gameRoleService.findById(SARA_AS_PLAYER_ID);
         assert saraAsPlayer != null;
-        GameRole johnAsPlayer = gameRoleService.findById(JOHN_AS_PLAYER_ID).block();
+        GameRole johnAsPlayer = gameRoleService.findById(JOHN_AS_PLAYER_ID);
         assert johnAsPlayer != null;
-        GameRole mayaAsPlayer = gameRoleService.findById(MAYA_AS_PLAYER_ID).block();
+        GameRole mayaAsPlayer = gameRoleService.findById(MAYA_AS_PLAYER_ID);
         assert mayaAsPlayer != null;
-        GameRole ahmadAsPlayer = gameRoleService.findById(AHMAD_AS_PLAYER_ID).block();
+        GameRole ahmadAsPlayer = gameRoleService.findById(AHMAD_AS_PLAYER_ID);
         assert ahmadAsPlayer != null;
-        GameRole takeshiAsPlayer = gameRoleService.findById(TAKESHI_AS_PLAYER_ID).block();
+        GameRole takeshiAsPlayer = gameRoleService.findById(TAKESHI_AS_PLAYER_ID);
         assert takeshiAsPlayer != null;
 
         Character doc = saraAsPlayer.getCharacters().stream().findFirst().orElseThrow();
@@ -513,19 +504,19 @@ public class MockCharacterLoader implements CommandLineRunner {
         dog.setHxBlock(List.of(dog1, dog2, dog3, dog4));
 
         // ------------------------------ Save to db --------------------------------- //
-        characterService.saveAll(Flux.just(doc, scarlet, smith, nee, dog)).blockLast();
-        gameRoleService.saveAll(Flux.just(saraAsPlayer, johnAsPlayer, mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer)).blockLast();
+        characterService.saveAll(List.of(doc, scarlet, smith, nee, dog));
+        gameRoleService.saveAll(List.of(saraAsPlayer, johnAsPlayer, mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer));
 
     }
 
     private void loadThreats() {
         GameRole daveAsMC = gameRoleService.findAllByUserId(KEYCLOAK_ID_1)
-                .filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).blockLast();
+                .stream().filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).findFirst().orElseThrow();
         assert daveAsMC != null;
         GameRole saraAsMC = gameRoleService.findAllByUserId(KEYCLOAK_ID_2)
-                .filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).blockLast();
+                .stream().filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).findFirst().orElseThrow();
         assert saraAsMC != null;
-        ThreatCreator threatCreator = threatCreatorService.findAll().take(1).blockFirst();
+        ThreatCreator threatCreator = threatCreatorService.findAll().get(0);
         assert threatCreator != null;
 
         Threat mockThreat1 = Threat.builder()
@@ -571,17 +562,17 @@ public class MockCharacterLoader implements CommandLineRunner {
         daveAsMC.getThreats().add(mockThreat2);
         saraAsMC.getThreats().add(mockThreat3);
         saraAsMC.getThreats().add(mockThreat4);
-        gameRoleService.saveAll(Flux.just(daveAsMC, saraAsMC)).blockLast();
+        gameRoleService.saveAll(List.of(daveAsMC, saraAsMC));
     }
 
     private void loadNpcs() {
         GameRole daveAsMC = gameRoleService.findAllByUserId(KEYCLOAK_ID_1)
-                .filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).blockLast();
+                .stream().filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).findFirst().orElseThrow();
         assert daveAsMC != null;
         GameRole saraAsMC = gameRoleService.findAllByUserId(KEYCLOAK_ID_2)
-                .filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).blockLast();
+                .stream().filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).findFirst().orElseThrow();
         assert saraAsMC != null;
-        ThreatCreator threatCreator = threatCreatorService.findAll().take(1).blockFirst();
+        ThreatCreator threatCreator = threatCreatorService.findAll().get(0);
         assert threatCreator != null;
 
         Npc mockNpc1 = Npc.builder()
@@ -603,7 +594,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         daveAsMC.getNpcs().add(mockNpc2);
         saraAsMC.getNpcs().add(mockNpc3);
         saraAsMC.getNpcs().add(mockNpc4);
-        gameRoleService.saveAll(Flux.just(saraAsMC, daveAsMC)).blockLast();
+        gameRoleService.saveAll(List.of(saraAsMC, daveAsMC));
     }
 
     private List<CharacterMove> createAndMergeCharacterMoves(List<Move> choiceMoves, List<Move> defaultMoves) {
@@ -619,7 +610,7 @@ public class MockCharacterLoader implements CommandLineRunner {
     }
 
     private List<Look> getLooks(PlaybookType playbookType) {
-        List<Look> looks = lookService.findAllByPlaybookType(playbookType).collectList().block();
+        List<Look> looks = lookService.findAllByPlaybookType(playbookType);
         assert looks != null;
 
         Look genderLook = looks.stream()
@@ -637,7 +628,7 @@ public class MockCharacterLoader implements CommandLineRunner {
     }
 
     private StatsBlock getStatsBlock(PlaybookType playbookType) {
-        StatsOption statsOption = statsOptionService.findAllByPlaybookType(playbookType).blockFirst();
+        StatsOption statsOption = statsOptionService.findAllByPlaybookType(playbookType).get(0);
         assert statsOption != null;
 
         CharacterStat cool = CharacterStat.builder().id(UUID.randomUUID().toString())
@@ -662,8 +653,8 @@ public class MockCharacterLoader implements CommandLineRunner {
             harm.setId(UUID.randomUUID().toString());
             character.setHarm(harm);
             gameRole.getCharacters().add(character);
-            characterService.save(character).block();
-            gameRoleService.save(gameRole).block();
+            characterService.save(character);
+            gameRoleService.save(gameRole);
         }
     }
 }

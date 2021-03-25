@@ -14,13 +14,9 @@ import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -93,10 +89,10 @@ class GameRoleServiceImplTest {
     @Test
     void shouldFindAllGameRoles() {
         // Given
-        when(gameRoleRepository.findAll()).thenReturn(Flux.just(mockGameRole, mockGameRole2));
+        when(gameRoleRepository.findAll()).thenReturn(List.of(mockGameRole, mockGameRole2));
 
         // When
-        List<GameRole> gameRoles = gameRoleService.findAll().collectList().block();
+        List<GameRole> gameRoles = gameRoleService.findAll();
 
         // Then
         assert gameRoles != null;
@@ -107,10 +103,10 @@ class GameRoleServiceImplTest {
     @Test
     void shouldFindGameRoleById() {
         // Given
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
+        when(gameRoleRepository.findById(anyString())).thenReturn(Optional.of(mockGameRole));
 
         // When
-        GameRole gameRole = gameRoleService.findById(MOCK_GAMEROLE_ID).block();
+        GameRole gameRole = gameRoleService.findById(MOCK_GAMEROLE_ID);
 
         // Then
         assertNotNull(gameRole, "Null GameRole returned");
@@ -121,10 +117,10 @@ class GameRoleServiceImplTest {
     @Test
     void shouldSaveGameRole() {
         // Given
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        when(gameRoleRepository.save(any())).thenReturn(mockGameRole);
 
         // When
-        GameRole savedGameRole = gameRoleService.save(mockGameRole).block();
+        GameRole savedGameRole = gameRoleService.save(mockGameRole);
 
         // Then
         assert savedGameRole != null;
@@ -135,24 +131,20 @@ class GameRoleServiceImplTest {
     @Test
     void shouldSaveGameRoles() {
         // Given
-        when(gameRoleRepository.saveAll(any(Publisher.class)))
-                .thenReturn(Flux.just(mockGameRole, mockGameRole2));
+        when(gameRoleRepository.saveAll(anyIterable()))
+                .thenReturn(List.of(mockGameRole, mockGameRole2));
 
         // When
-        List<GameRole> savedGameRoles = gameRoleService.saveAll(Flux.just(mockGameRole, mockGameRole2))
-                .collectList().block();
+        List<GameRole> savedGameRoles = gameRoleService.saveAll(List.of(mockGameRole, mockGameRole2));
 
         // Then
         assert savedGameRoles != null;
         assertEquals(2, savedGameRoles.size());
-        verify(gameRoleRepository, times(1)).saveAll(any(Publisher.class));
+        verify(gameRoleRepository, times(1)).saveAll(anyIterable());
     }
 
-    // This test stopped working when I added .block() to gameRoleRepository.delete()
     @Test
-    @Disabled
     void shouldDeleteGameRole() {
-        System.out.println("mockGameRole = " + mockGameRole);
         // When
         gameRoleService.delete(mockGameRole);
 
@@ -176,10 +168,10 @@ class GameRoleServiceImplTest {
         // Given
         Game mockGame2 = new Game();
         GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id2").role(RoleType.MC).game(mockGame2).user(mockUser).build();
-        when(gameRoleRepository.findAllByUser(any())).thenReturn(Flux.just(mockGameRole, mockGameRole2));
+        when(gameRoleRepository.findAllByUser(any())).thenReturn(List.of(mockGameRole, mockGameRole2));
 
         // When
-        List<GameRole> returnedGameRoles = gameRoleService.findAllByUser(mockUser).collectList().block();
+        List<GameRole> returnedGameRoles = gameRoleService.findAllByUser(mockUser);
 
         // Then
         assert returnedGameRoles != null;
@@ -192,10 +184,10 @@ class GameRoleServiceImplTest {
         // Given
         Game mockGame2 = new Game();
         GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id2").role(RoleType.MC).game(mockGame2).user(mockUser).build();
-        when(gameRoleRepository.findAllByUserId(anyString())).thenReturn(Flux.just(mockGameRole, mockGameRole2));
+        when(gameRoleRepository.findAllByUserId(anyString())).thenReturn(List.of(mockGameRole, mockGameRole2));
 
         // When
-        List<GameRole> returnedGameRoles = gameRoleService.findAllByUserId(mockUser.getId()).collectList().block();
+        List<GameRole> returnedGameRoles = gameRoleService.findAllByUserId(mockUser.getId());
 
         // Then
         assert returnedGameRoles != null;
@@ -209,11 +201,11 @@ class GameRoleServiceImplTest {
     void shouldAddThreat() {
         // Given
         Threat mockThreat = Threat.builder().id("mock-threat-id").threatKind(ThreatType.BRUTE).build();
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        when(gameRoleRepository.findById(anyString())).thenReturn(Optional.of(mockGameRole));
+        when(gameRoleRepository.save(any())).thenReturn(mockGameRole);
 
         // When
-        GameRole returnedGameRole = gameRoleService.addThreat(mockGameRole.getId(), mockThreat).block();
+        GameRole returnedGameRole = gameRoleService.addThreat(mockGameRole.getId(), mockThreat);
 
         // Then
         assert returnedGameRole != null;
@@ -229,11 +221,11 @@ class GameRoleServiceImplTest {
     void shouldAddNpc() {
         // Given
         Npc mockNpc = Npc.builder().id("mock-npc-id").build();
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        when(gameRoleRepository.findById(anyString())).thenReturn(Optional.of(mockGameRole));
+        when(gameRoleRepository.save(any())).thenReturn(mockGameRole);
 
         // When
-        GameRole returnedGameRole = gameRoleService.addNpc(mockGameRole.getId(), mockNpc).block();
+        GameRole returnedGameRole = gameRoleService.addNpc(mockGameRole.getId(), mockNpc);
 
         // Then
         assert returnedGameRole != null;
@@ -249,36 +241,28 @@ class GameRoleServiceImplTest {
     @Test
     void shouldAddNewCharacterToGameRole() {
         // Given
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService.addNewCharacter(MOCK_GAMEROLE_ID);
 
         // Then
         assertNotNull(returnedCharacter, "Null Character returned");
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
     void shouldSetCharacterPlaybook() {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService.setCharacterPlaybook(MOCK_GAMEROLE_ID, mockCharacter.getId(), PlaybookType.BATTLEBABE);
 
         // Then
         assertEquals(PlaybookType.BATTLEBABE, returnedCharacter.getPlaybook());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -286,18 +270,14 @@ class GameRoleServiceImplTest {
         // Given
         String mockCharacterName = "Mock Character Name";
         mockGameRole.getCharacters().add(mockCharacter);
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService.setCharacterName(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockCharacterName);
 
         // Then
         assertEquals(mockCharacterName, returnedCharacter.getName());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -309,9 +289,7 @@ class GameRoleServiceImplTest {
                 .category(LookType.FACE)
                 .build();
         mockGameRole.getCharacters().add(mockCharacter);
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook);
@@ -321,9 +299,7 @@ class GameRoleServiceImplTest {
         assertTrue(lookOptional.isPresent());
         Look savedLook = lookOptional.get();
         assertEquals(mockLook, savedLook);
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -337,9 +313,7 @@ class GameRoleServiceImplTest {
         Look existingLook = Look.builder().id("mock-look-id").category(LookType.FACE).look("handsome face").build();
         mockCharacter.getLooks().add(existingLook);
         mockGameRole.getCharacters().add(mockCharacter);
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook);
@@ -351,19 +325,15 @@ class GameRoleServiceImplTest {
         assertTrue(lookOptional.isPresent());
         Look savedLook = lookOptional.get();
         assertEquals(mockLook, savedLook);
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
     void shouldAddNewCharacterStat() {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
-        when(statsOptionService.findById(anyString())).thenReturn(Mono.just(mockStatsOption));
+        setupMockServices();
+        when(statsOptionService.findById(anyString())).thenReturn(mockStatsOption);
 
         // When
         Character returnedCharacter = gameRoleService.setCharacterStats(mockGameRole.getId(), mockCharacter.getId(), mockStatsOption.getId());
@@ -381,9 +351,7 @@ class GameRoleServiceImplTest {
                 .filter(characterStat -> characterStat.getStat().equals(StatType.WEIRD)).findFirst().orElseThrow().getValue());
 
         verify(statsOptionService, times(1)).findById(anyString());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -405,10 +373,8 @@ class GameRoleServiceImplTest {
                 .build();
         mockCharacter.setStatsBlock(statsBlock);
         mockGameRole.getCharacters().add(mockCharacter);
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
-        when(statsOptionService.findById(anyString())).thenReturn(Mono.just(mockStatsOption));
+        setupMockServices();
+        when(statsOptionService.findById(anyString())).thenReturn(mockStatsOption);
 
         // When
         Character returnedCharacter = gameRoleService
@@ -427,9 +393,7 @@ class GameRoleServiceImplTest {
                 .filter(characterStat -> characterStat.getStat().equals(StatType.WEIRD)).findFirst().orElseThrow().getValue());
 
         verify(statsOptionService, times(1)).findById(anyString());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -440,9 +404,7 @@ class GameRoleServiceImplTest {
         String item1 = "A big knife";
         String item2 = "Mechanic's toolkit";
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -452,9 +414,7 @@ class GameRoleServiceImplTest {
         assertEquals(2, returnedCharacter.getGear().size());
         assertTrue(returnedCharacter.getGear().contains(item1));
         assertTrue(returnedCharacter.getGear().contains(item2));
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -539,11 +499,9 @@ class GameRoleServiceImplTest {
                 .build();
         mockCharacter.setStatsBlock(statsBlock);
 
-        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(Mono.just(angelCreator));
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
-        when(statModifierService.findById(anyString())).thenReturn(Mono.empty());
+        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(angelCreator);
+        setupMockServices();
+//        when(statModifierService.findById(anyString())).thenReturn();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -559,9 +517,7 @@ class GameRoleServiceImplTest {
                     characterMove.getName().equals("INFIRMARY"));
         });
         verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -592,9 +548,7 @@ class GameRoleServiceImplTest {
                 .hxValue(-1)
                 .build();
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -604,9 +558,7 @@ class GameRoleServiceImplTest {
         assertEquals(2, returnedCharacter.getHxBlock().size());
         assertTrue(returnedCharacter.getHxBlock().contains(hxStat1));
         assertTrue(returnedCharacter.getHxBlock().contains(hxStat2));
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -614,9 +566,7 @@ class GameRoleServiceImplTest {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -624,15 +574,12 @@ class GameRoleServiceImplTest {
 
         // Then
         assertTrue(returnedCharacter.getHasCompletedCharacterCreation());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
 
     }
 
 
     // --------------------------------------- Setting Playbook Uniques ------------------------------------- //
-
 
 
     @Test
@@ -690,10 +637,9 @@ class GameRoleServiceImplTest {
         Boolean hasSupplier = false;
 
         when(moveService.findAllByPlaybookAndKind(any(PlaybookType.class), any(MoveType.class)))
-                .thenReturn(Flux.just(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc));
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+                .thenReturn(List.of(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc));
+        setupMockServices();
+
 
         // When
         Character returnedCharacter = gameRoleService
@@ -704,12 +650,12 @@ class GameRoleServiceImplTest {
                 returnedCharacter.getPlaybookUnique().getAngelKit().getAngelKitMoves());
 
         verify(moveService, times(1)).findAllByPlaybookAndKind(any(PlaybookType.class), any(MoveType.class));
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
+
     }
 
-    @Test
+
+        @Test
     public void shouldSetBrainerGear() {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
@@ -717,9 +663,7 @@ class GameRoleServiceImplTest {
         String item1 = "Weird glove";
         String item2 = "Funny hat";
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+            setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -729,9 +673,7 @@ class GameRoleServiceImplTest {
         assertEquals(2, returnedCharacter.getPlaybookUnique().getBrainerGear().getBrainerGear().size());
         assertTrue(returnedCharacter.getPlaybookUnique().getBrainerGear().getBrainerGear().contains(item1));
         assertTrue(returnedCharacter.getPlaybookUnique().getBrainerGear().getBrainerGear().contains(item2));
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+            verifyMockServices();
     }
 
     @Test
@@ -741,9 +683,7 @@ class GameRoleServiceImplTest {
         String weapon1 = "Crossbow with scope";
         String weapon2 = "Ornate staff";
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -753,9 +693,7 @@ class GameRoleServiceImplTest {
         assertEquals(2, returnedCharacter.getPlaybookUnique().getCustomWeapons().getWeapons().size());
         assertTrue(returnedCharacter.getPlaybookUnique().getCustomWeapons().getWeapons().contains(weapon1));
         assertTrue(returnedCharacter.getPlaybookUnique().getCustomWeapons().getWeapons().contains(weapon2));
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
 
     }
 
@@ -765,9 +703,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         Establishment mockEstablishment = Establishment.builder().id("mock-establishment-id").build();
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -775,9 +711,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(mockEstablishment.getId(), returnedCharacter.getPlaybookUnique().getEstablishment().getId());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     // TODO: shouldUpdateEstablishment
@@ -787,9 +721,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         Followers mockFollowers = Followers.builder().id("mock-followers-id").build();
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -797,9 +729,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(mockFollowers.getId(), returnedCharacter.getPlaybookUnique().getFollowers().getId());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     // TODO: shouldUpdateFollowers
@@ -809,9 +739,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         Gang mockGang = Gang.builder().id("mock-gang-id").build();
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -819,9 +747,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(mockGang.getId(), returnedCharacter.getPlaybookUnique().getGang().getId());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     // TODO: shouldUpdateGang
@@ -831,9 +757,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         Holding mockHolding = Holding.builder().id("mock-holding-id").build();
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -843,9 +767,7 @@ class GameRoleServiceImplTest {
         assertEquals(mockHolding.getId(), returnedCharacter.getPlaybookUnique().getHolding().getId());
         assertEquals(7, returnedCharacter.getVehicleCount());
         assertEquals(6, returnedCharacter.getBattleVehicleCount());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     // TODO: shouldUpdateHolding
@@ -855,9 +777,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         SkinnerGear mockSkinnerGear = SkinnerGear.builder().id("mock-skinner-gear-id").build();
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -865,9 +785,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(mockSkinnerGear.getId(), returnedCharacter.getPlaybookUnique().getSkinnerGear().getId());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     // TODO: shouldUpdateSkinnerGear
@@ -881,9 +799,7 @@ class GameRoleServiceImplTest {
         String weapon3 = "serious-gun-2";
         String weapon4 = "backup-weapon-1";
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -895,9 +811,7 @@ class GameRoleServiceImplTest {
         assertTrue(returnedCharacter.getPlaybookUnique().getWeapons().getWeapons().contains(weapon2));
         assertTrue(returnedCharacter.getPlaybookUnique().getWeapons().getWeapons().contains(weapon3));
         assertTrue(returnedCharacter.getPlaybookUnique().getWeapons().getWeapons().contains(weapon4));
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     // TODO: shouldUpdateWeapons
@@ -907,9 +821,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         Workspace mockWorkspace = Workspace.builder().id("mock-workspace-id").build();
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -917,9 +829,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(mockWorkspace.getId(), returnedCharacter.getPlaybookUnique().getWorkspace().getId());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     // TODO: shouldUpdateWorkspace
@@ -931,9 +841,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         int mockVehicleCount = 3;
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -941,9 +849,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(mockVehicleCount, returnedCharacter.getVehicleCount());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -951,9 +857,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         int mockBattleVehicleCount = 3;
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -961,9 +865,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(mockBattleVehicleCount, returnedCharacter.getBattleVehicleCount());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -971,9 +873,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         Vehicle mockVehicle = Vehicle.builder().id("mock-vehicle-id").build();
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -981,9 +881,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertTrue(returnedCharacter.getVehicles().contains(mockVehicle));
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     // TODO: shouldUpdateVehicle
@@ -993,9 +891,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         BattleVehicle mockBattleVehicle = BattleVehicle.builder().id("mock-battle-vehicle-id").build();
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -1003,9 +899,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertTrue(returnedCharacter.getBattleVehicles().contains(mockBattleVehicle));
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     // TODO: shouldUpdateBattleVehicle
@@ -1030,9 +924,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
 
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -1043,9 +935,7 @@ class GameRoleServiceImplTest {
                 returnedCharacter.getHxBlock().stream()
                         .filter(hxStat -> hxStat.getCharacterId().equals(newHxStat.getCharacterId()))
                         .findFirst().orElseThrow().getHxValue());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -1057,9 +947,7 @@ class GameRoleServiceImplTest {
                 .isStabilized(true)
                 .build();
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -1068,9 +956,7 @@ class GameRoleServiceImplTest {
         // Then
         assertEquals(mockCharacterHarm.getValue(), returnedCharacter.getHarm().getValue());
         assertEquals(mockCharacterHarm.getIsStabilized(), returnedCharacter.getHarm().getIsStabilized());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -1108,9 +994,7 @@ class GameRoleServiceImplTest {
         mockCharacter.setStatsBlock(mockStatsBlock);
         mockGameRole.getCharacters().add(mockCharacter);
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -1120,9 +1004,7 @@ class GameRoleServiceImplTest {
         assertTrue(returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.COOL))
                 .findFirst().orElseThrow().getIsHighlighted());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -1130,9 +1012,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         int mockBarter = 3;
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -1140,9 +1020,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(mockBarter, returnedCharacter.getBarter());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -1153,9 +1031,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
 
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -1163,9 +1039,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(2, returnedCharacter.getPlaybookUnique().getHolding().getBarter());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -1183,9 +1057,7 @@ class GameRoleServiceImplTest {
         int newFollowers = 50;
         int newBarter = 2;
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -1195,9 +1067,7 @@ class GameRoleServiceImplTest {
         assertEquals(newDescription, returnedCharacter.getPlaybookUnique().getFollowers().getDescription());
         assertEquals(newBarter, returnedCharacter.getPlaybookUnique().getFollowers().getBarter());
         assertEquals(newFollowers, returnedCharacter.getPlaybookUnique().getFollowers().getFollowers());
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -1209,9 +1079,7 @@ class GameRoleServiceImplTest {
         Project mockProject = Project.builder()
                 .id("mock-project-id").build();
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -1219,9 +1087,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertTrue(returnedCharacter.getPlaybookUnique().getWorkspace().getProjects().contains(mockProject));
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -1236,9 +1102,7 @@ class GameRoleServiceImplTest {
         mockCharacter.setPlaybookUnique(mockPlaybookUnique);
         mockGameRole.getCharacters().add(mockCharacter);
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -1246,9 +1110,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertFalse(returnedCharacter.getPlaybookUnique().getWorkspace().getProjects().contains(mockProject));
-        verify(gameRoleRepository, times(1)).findById(anyString());
-        verify(characterService, times(1)).save(any(Character.class));
-        verify(gameRoleRepository, times(1)).save(any(GameRole.class));
+        verifyMockServices();
     }
 
     @Test
@@ -1262,9 +1124,7 @@ class GameRoleServiceImplTest {
         mockCharacter.getHolds().add(mockHold);
         mockGameRole.getCharacters().add(mockCharacter);
 
-        when(gameRoleRepository.findById(anyString())).thenReturn(Mono.just(mockGameRole));
-        when(characterService.save(any())).thenReturn(Mono.just(mockCharacter));
-        when(gameRoleRepository.save(any())).thenReturn(Mono.just(mockGameRole));
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -1272,9 +1132,18 @@ class GameRoleServiceImplTest {
 
         // Then
         assertFalse(returnedCharacter.getHolds().contains(mockHold));
+        verifyMockServices();
+    }
+
+    private void verifyMockServices() {
         verify(gameRoleRepository, times(1)).findById(anyString());
         verify(characterService, times(1)).save(any(Character.class));
         verify(gameRoleRepository, times(1)).save(any(GameRole.class));
     }
 
+    private void setupMockServices() {
+        when(gameRoleRepository.findById(anyString())).thenReturn(Optional.of(mockGameRole));
+        when(characterService.save(any())).thenReturn(mockCharacter);
+        when(gameRoleRepository.save(any())).thenReturn(mockGameRole);
+    }
 }

@@ -7,11 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -48,10 +46,10 @@ class ThreatCreatorServiceImplTest {
     @Test
     void shouldFindAllThreatCreators() {
         // Given
-        when(threatCreatorRepository.findAll()).thenReturn(Flux.just(mockThreatCreator1, mockThreatCreator2));
+        when(threatCreatorRepository.findAll()).thenReturn(List.of(mockThreatCreator1, mockThreatCreator2));
 
         // When
-        List<ThreatCreator> returnedThreatCreators = threatCreatorService.findAll().collectList().block();
+        List<ThreatCreator> returnedThreatCreators = threatCreatorService.findAll();
 
         // Then
         assert returnedThreatCreators != null;
@@ -62,10 +60,10 @@ class ThreatCreatorServiceImplTest {
     @Test
     void shouldFindThreatCreatorById() {
         // Given
-        when(threatCreatorRepository.findById(anyString())).thenReturn(Mono.just(mockThreatCreator1));
+        when(threatCreatorRepository.findById(anyString())).thenReturn(Optional.of(mockThreatCreator1));
 
         // When
-        ThreatCreator returnedThreatCreator = threatCreatorService.findById(MOCK_THREAT_CREATOR_ID_1).block();
+        ThreatCreator returnedThreatCreator = threatCreatorService.findById(MOCK_THREAT_CREATOR_ID_1);
 
         // Then
         assert returnedThreatCreator != null;
@@ -76,10 +74,10 @@ class ThreatCreatorServiceImplTest {
     @Test
     void shouldSaveThreatCreator() {
         // Given
-        when(threatCreatorService.save(any(ThreatCreator.class))).thenReturn(Mono.just(mockThreatCreator1));
+        when(threatCreatorService.save(any(ThreatCreator.class))).thenReturn(mockThreatCreator1);
 
         // When
-        ThreatCreator savedThreatCreator = threatCreatorService.save(mockThreatCreator1).block();
+        ThreatCreator savedThreatCreator = threatCreatorService.save(mockThreatCreator1);
 
         // Then
         assert savedThreatCreator != null;
@@ -90,15 +88,15 @@ class ThreatCreatorServiceImplTest {
     @Test
     void shouldSaveAllThreatCreators() {
         // Given
-        when(threatCreatorRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockThreatCreator1, mockThreatCreator2));
+        when(threatCreatorRepository.saveAll(anyIterable())).thenReturn(List.of(mockThreatCreator1, mockThreatCreator2));
 
         // When
-        List<ThreatCreator> savedThreatCreators = threatCreatorService.saveAll(Flux.just(mockThreatCreator1, mockThreatCreator2)).collectList().block();
+        List<ThreatCreator> savedThreatCreators = threatCreatorService.saveAll(List.of(mockThreatCreator1, mockThreatCreator2));
 
         // Then
         assert savedThreatCreators != null;
         assertEquals(2, savedThreatCreators.size());
-        verify(threatCreatorRepository, times(1)).saveAll(any(Publisher.class));
+        verify(threatCreatorRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test

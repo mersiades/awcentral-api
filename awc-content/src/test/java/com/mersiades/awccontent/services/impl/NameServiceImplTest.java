@@ -1,19 +1,17 @@
-package com.mersiades.awccontent.services;
+package com.mersiades.awccontent.services.impl;
 
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Name;
 import com.mersiades.awccontent.models.PlaybookCreator;
+import com.mersiades.awccontent.repositories.NameRepository;
+import com.mersiades.awccontent.services.NameService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import com.mersiades.awccontent.repositories.NameRepository;
-import com.mersiades.awccontent.services.impl.NameServiceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -50,10 +48,10 @@ class NameServiceImplTest {
     void shouldFindAllNames() {
         // Given
         Name mockName2 = Name.builder().build();
-        when(nameRepository.findAll()).thenReturn(Flux.just(mockName1, mockName2));
+        when(nameRepository.findAll()).thenReturn(List.of(mockName1, mockName2));
 
         // When
-        List<Name> returnedNames = nameService.findAll().collectList().block();
+        List<Name> returnedNames = nameService.findAll();
 
         // Then
         assert returnedNames != null;
@@ -64,10 +62,10 @@ class NameServiceImplTest {
     @Test
     void shouldFindNameById() {
         // Given
-        when(nameRepository.findById(anyString())).thenReturn(Mono.just(mockName1));
+        when(nameRepository.findById(anyString())).thenReturn(Optional.of(mockName1));
 
         // When
-        Name returnedName = nameService.findById(MOCK_NAME_ID_1).block();
+        Name returnedName = nameService.findById(MOCK_NAME_ID_1);
 
         // Then
         assert returnedName != null;
@@ -78,10 +76,10 @@ class NameServiceImplTest {
     @Test
     void shouldSaveName() {
         // Given
-        when(nameRepository.save(any(Name.class))).thenReturn(Mono.just(mockName1));
+        when(nameRepository.save(any(Name.class))).thenReturn(mockName1);
 
         // When
-        Name savedName = nameService.save(mockName1).block();
+        Name savedName = nameService.save(mockName1);
 
         // Then
         assert savedName != null;
@@ -93,15 +91,15 @@ class NameServiceImplTest {
     void shouldSaveAllNames() {
         // Given
         Name mockName2 = Name.builder().build();
-        when(nameRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockName1, mockName2));
+        when(nameRepository.saveAll(anyIterable())).thenReturn(List.of(mockName1, mockName2));
 
         // When
-        List<Name> savedNames = nameService.saveAll(Flux.just(mockName1,mockName2)).collectList().block();
+        List<Name> savedNames = nameService.saveAll(List.of(mockName1,mockName2));
 
         // Then
         assert savedNames != null;
         assertEquals(2, savedNames.size());
-        verify(nameRepository, times(1)).saveAll(any(Publisher.class));
+        verify(nameRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test
@@ -131,10 +129,10 @@ class NameServiceImplTest {
                 .playbookCreator(mockPlaybookCreator)
                 .playbookType(PlaybookType.ANGEL)
                 .build();
-        when(nameRepository.findAllByPlaybookType(any(PlaybookType.class))).thenReturn(Flux.just(mockName1, mockName3));
+        when(nameRepository.findAllByPlaybookType(any(PlaybookType.class))).thenReturn(List.of(mockName1, mockName3));
 
         // When
-        List<Name> angelNames = nameService.findAllByPlaybookType(PlaybookType.ANGEL).collectList().block();
+        List<Name> angelNames = nameService.findAllByPlaybookType(PlaybookType.ANGEL);
 
         // Then
         assert angelNames != null;

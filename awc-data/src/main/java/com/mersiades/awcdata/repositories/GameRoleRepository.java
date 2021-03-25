@@ -2,14 +2,15 @@ package com.mersiades.awcdata.repositories;
 
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
-import reactor.core.publisher.Flux;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface GameRoleRepository extends ReactiveMongoRepository<GameRole, String> {
+import java.util.List;
 
-    Flux<GameRole> findAllByUser(User user);
+public interface GameRoleRepository extends MongoRepository<GameRole, String> {
 
-    Flux<GameRole> findAllByUserId(String userid);
+    List<GameRole> findAllByUser(User user);
+
+    List<GameRole> findAllByUserId(String userid);
 
 //    Flux<GameRole> findAllByGame(Game game);
 //

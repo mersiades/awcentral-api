@@ -8,11 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -46,10 +44,10 @@ class StatModifierServiceImplTest {
     void shouldFindAllStatModifiers() {
         // Given
         StatModifier mockStatModifier2 = StatModifier.builder().build();
-        when(statModifierRepository.findAll()).thenReturn(Flux.just(mockStatModifier1, mockStatModifier2));
+        when(statModifierRepository.findAll()).thenReturn(List.of(mockStatModifier1, mockStatModifier2));
 
         // When
-        List<StatModifier> returnedStatModifiers = statModifierService.findAll().collectList().block();
+        List<StatModifier> returnedStatModifiers = statModifierService.findAll();
 
         // Then
         assert returnedStatModifiers != null;
@@ -60,10 +58,10 @@ class StatModifierServiceImplTest {
     @Test
     void findById() {
         // Given
-        when(statModifierRepository.findById(anyString())).thenReturn(Mono.just(mockStatModifier1));
+        when(statModifierRepository.findById(anyString())).thenReturn(Optional.of(mockStatModifier1));
 
         // When
-        StatModifier returnedStatModifier = statModifierService.findById(MOCK_STAT_MODIFIER_ID_1).block();
+        StatModifier returnedStatModifier = statModifierService.findById(MOCK_STAT_MODIFIER_ID_1);
 
         // Then
         assert returnedStatModifier != null;
@@ -74,10 +72,10 @@ class StatModifierServiceImplTest {
     @Test
     void shouldSaveStatModifier() {
         // Given
-        when(statModifierRepository.save(any(StatModifier.class))).thenReturn(Mono.just(mockStatModifier1));
+        when(statModifierRepository.save(any(StatModifier.class))).thenReturn(mockStatModifier1);
 
         // When
-        StatModifier savedStatModifier = statModifierService.save(mockStatModifier1).block();
+        StatModifier savedStatModifier = statModifierService.save(mockStatModifier1);
 
         // Then
         assert savedStatModifier != null;
@@ -89,15 +87,15 @@ class StatModifierServiceImplTest {
     void shouldSaveAllStatModifiers() {
         // Given
         StatModifier mockStatModifier2 = StatModifier.builder().build();
-        when(statModifierRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mockStatModifier1, mockStatModifier2));
+        when(statModifierRepository.saveAll(anyIterable())).thenReturn(List.of(mockStatModifier1, mockStatModifier2));
 
         // When
-        List<StatModifier> savedStatModifiers = statModifierService.saveAll(Flux.just(mockStatModifier1, mockStatModifier2)).collectList().block();
+        List<StatModifier> savedStatModifiers = statModifierService.saveAll(List.of(mockStatModifier1, mockStatModifier2));
 
         // Then
         assert savedStatModifiers != null;
         assertEquals(2, savedStatModifiers.size());
-        verify(statModifierRepository, times(1)).saveAll(any(Publisher.class));
+        verify(statModifierRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test
