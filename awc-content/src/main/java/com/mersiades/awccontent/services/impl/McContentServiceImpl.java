@@ -4,8 +4,9 @@ import com.mersiades.awccontent.models.McContent;
 import com.mersiades.awccontent.repositories.McContentRepository;
 import com.mersiades.awccontent.services.McContentService;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class McContentServiceImpl implements McContentService {
@@ -17,28 +18,28 @@ public class McContentServiceImpl implements McContentService {
     }
 
     @Override
-    public Flux<McContent> findAll() {
+    public List<McContent> findAll() {
         return mcContentRepository.findAll();
     }
 
     @Override
-    public Mono<McContent> findById(String id) {
-        return mcContentRepository.findById(id);
+    public McContent findById(String id) {
+        return mcContentRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public Mono<McContent> save(McContent content) {
-        return mcContentRepository.save(content);
+    public McContent save(McContent mcContent) {
+        return mcContentRepository.save(mcContent);
     }
 
     @Override
-    public Flux<McContent> saveAll(Flux<McContent> contents) {
-        return mcContentRepository.saveAll(contents);
+    public List<McContent> saveAll(List<McContent> mcContents) {
+        return mcContentRepository.saveAll(mcContents);
     }
 
     @Override
-    public void delete(McContent content) {
-        mcContentRepository.delete(content);
+    public void delete(McContent mcContent) {
+        mcContentRepository.delete(mcContent);
     }
 
     @Override

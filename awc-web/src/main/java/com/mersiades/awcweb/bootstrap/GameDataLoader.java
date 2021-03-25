@@ -127,8 +127,8 @@ public class GameDataLoader implements CommandLineRunner {
             loadThreatCreator();
         }
 
-        McContent mcContent = mcContentRepository.findAll().take(1).blockFirst();
-        if (mcContent == null) {
+        List<McContent> mcContent = mcContentRepository.findAll();
+        if (mcContent.size() == 0) {
             loadMcContent();
         }
 
@@ -4863,7 +4863,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .selected(List.of(lifestyle, gigs, creatingVehicle, creatingBattleVehicle))
                 .build();
 
-        mcContentService.save(mcContent).block();
+        mcContentService.save(mcContent);
     }
 
     public void loadPlaybooks() {

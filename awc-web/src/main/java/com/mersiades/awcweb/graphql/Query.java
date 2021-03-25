@@ -105,6 +105,6 @@ public class Query implements GraphQLQueryResolver {
     }
 
     public McContent mcContent() {
-        return mcContentService.findAll().take(1).blockFirst();
+        return mcContentService.findAll().get(0);
     }
 }

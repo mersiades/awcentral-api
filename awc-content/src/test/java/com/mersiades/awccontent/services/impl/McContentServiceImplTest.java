@@ -7,11 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -44,10 +42,10 @@ class McContentServiceImplTest {
         McContent mcContent2 = McContent.builder()
                 .id("mock-mc-content-id-2").build();
 
-        when(mcContentRepository.findAll()).thenReturn(Flux.just(mcContent1, mcContent2));
+        when(mcContentRepository.findAll()).thenReturn(List.of(mcContent1, mcContent2));
 
         // When
-        List<McContent> looks = mcContentService.findAll().collectList().block();
+        List<McContent> looks = mcContentService.findAll();
 
         // Then
         assert looks != null;
@@ -58,10 +56,10 @@ class McContentServiceImplTest {
     @Test
     void shouldFindMcContentById() {
         // Given
-        when(mcContentRepository.findById(anyString())).thenReturn(Mono.just(mcContent1));
+        when(mcContentRepository.findById(anyString())).thenReturn(Optional.of(mcContent1));
 
         // When
-        McContent returnedMcContent = mcContentService.findById(MOCK_MC_CONTENT_ID_1).block();
+        McContent returnedMcContent = mcContentService.findById(MOCK_MC_CONTENT_ID_1);
 
         // Then
         assert returnedMcContent != null;
@@ -72,10 +70,10 @@ class McContentServiceImplTest {
     @Test
     void shouldSaveMcContent() {
         // Given
-        when(mcContentRepository.save(any())).thenReturn(Mono.just(mcContent1));
+        when(mcContentRepository.save(any())).thenReturn(mcContent1);
 
         // When
-        McContent savedMcContent = mcContentService.save(mcContent1).block();
+        McContent savedMcContent = mcContentService.save(mcContent1);
 
         // Then
         assert savedMcContent != null;
@@ -87,15 +85,15 @@ class McContentServiceImplTest {
     void shouldSaveAllMcContents() {
         // Given
         McContent mcContent2 = McContent.builder().build();
-        when(mcContentRepository.saveAll(any(Publisher.class))).thenReturn(Flux.just(mcContent1, mcContent2));
+        when(mcContentRepository.saveAll(anyIterable())).thenReturn(List.of(mcContent1, mcContent2));
 
         // When
-        List<McContent> savedMcContents = mcContentService.saveAll(Flux.just(mcContent1,mcContent2)).collectList().block();
+        List<McContent> savedMcContents = mcContentService.saveAll(List.of(mcContent1,mcContent2));
 
         // Then
         assert savedMcContents != null;
         assertEquals(2, savedMcContents.size());
-        verify(mcContentRepository, times(1)).saveAll(any(Publisher.class));
+        verify(mcContentRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test
