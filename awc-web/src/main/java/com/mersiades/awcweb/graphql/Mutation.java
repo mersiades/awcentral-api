@@ -30,7 +30,7 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.createGameWithMC(userId, displayName, email, name);
     }
 
-    public Game setGameName(String gameId, String name) throws Exception {
+    public Game setGameName(String gameId, String name)  {
         System.out.println("Setting name for Game: " + gameId);
         return gameService.setGameName(gameId, name);
     }
@@ -70,6 +70,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Game finishPreGame(String gameId) {
         System.out.println("Finishing pre-game for Game with id: " + gameId);
         return gameService.finishPreGame(gameId);
+    }
+
+    public Game closeFirstSession(String gameId) {
+        System.out.println("Closing first session for Game with id: " + gameId);
+        return gameService.closeFirstSession(gameId);
     }
 
     public GameRole addThreat(String gameRoleId, Threat threat) {

@@ -33,6 +33,8 @@ public interface GameService extends CrudService<Game, String> {
 
     Game finishPreGame(String gameId);
 
+    Game closeFirstSession(String gameId);
+
     // ---------------------------------------------- Move categories -------------------------------------------- //
 
     Game performPrintMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove);

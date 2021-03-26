@@ -215,7 +215,12 @@ class GameServiceImplTest {
         List<GameRole> gameRoles = new ArrayList<>();
         gameRoles.add(mockGameRole);
         gameRoles.add(mockGameRole2);
-        mockGame1 = Game.builder().id(MOCK_GAME_ID_1).name("Michael's Mock Game").mc(mockMc).gameRoles(gameRoles).build();
+        mockGame1 = Game.builder().id(MOCK_GAME_ID_1)
+                .name("Michael's Mock Game")
+                .mc(mockMc)
+                .hasFinishedPreGame(false)
+                .showFirstSession(false)
+                .gameRoles(gameRoles).build();
         gameService = new GameServiceImpl(gameRepository, userService, gameRoleService, characterService, moveService);
     }
 
@@ -505,6 +510,23 @@ class GameServiceImplTest {
         // Then
         assert returnedGame != null;
         assertTrue(returnedGame.getHasFinishedPreGame());
+        assertTrue(returnedGame.getShowFirstSession());
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldCloseFirstSession() {
+        // Given
+        mockGame1.setShowFirstSession(true);
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+
+        // When
+        Game returnedGame = gameService.closeFirstSession(mockGame1.getId());
+
+        // Then
+        assert returnedGame != null;
+        assertFalse(returnedGame.getShowFirstSession());
         verify(gameRepository, times(1)).save(any(Game.class));
     }
 

@@ -304,7 +304,11 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game createGameWithMC(String userId, String displayName, String email, String name) throws Exception {
         // Create the new game
-        Game newGame = Game.builder().id(UUID.randomUUID().toString()).name(name).hasFinishedPreGame(false).build();
+        Game newGame = Game.builder()
+                .name(name)
+                .hasFinishedPreGame(false)
+                .showFirstSession(false)
+                .build();
 
         User creator = userService.findOrCreateUser(userId, displayName, email);
 
@@ -326,7 +330,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game setGameName(String gameId, String name) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         game.setName(name);
         return gameRepository.save(game);
 
@@ -334,7 +338,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game addInvitee(String gameId, String email) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         game.getInvitees().add(email);
         gameRepository.save(game);
         return game;
@@ -342,7 +346,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game removeInvitee(String gameId, String email) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         game.getInvitees().remove(email);
         gameRepository.save(game);
         return game;
@@ -350,7 +354,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game addCommsApp(String gameId, String app) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         game.setCommsApp(app);
         gameRepository.save(game);
         return game;
@@ -358,7 +362,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game addCommsUrl(String gameId, String url) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         game.setCommsUrl(url);
         gameRepository.save(game);
         return game;
@@ -366,7 +370,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game addUserToGame(String gameId, String userId, String displayName, String email) throws Exception {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         assert game != null;
         User user = userService.findOrCreateUser(userId, displayName, email);
 
@@ -393,8 +397,16 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game finishPreGame(String gameId) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         game.setHasFinishedPreGame(true);
+        game.setShowFirstSession(true);
+        return gameRepository.save(game);
+    }
+
+    @Override
+    public Game closeFirstSession(String gameId) {
+        Game game = getGame(gameId);
+        game.setShowFirstSession(false);
         return gameRepository.save(game);
     }
 
@@ -402,7 +414,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game performPrintMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         Character character = characterService.findById(characterId);
         assert character != null;
 
@@ -438,7 +450,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game performBarterMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         GameRole gameRole = gameRoleService.findById(gameroleId);
 
         // Get Character
@@ -478,7 +490,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game performStockMove(String gameId, String gameroleId, String characterId, String moveName, int stockSpent) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         GameRole gameRole = gameRoleService.findById(gameroleId);
         // Find User's Character
         Character userCharacter = characterService.findById(characterId);
@@ -519,7 +531,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game performStatRollMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         GameRole gameRole = gameRoleService.findById(gameroleId);
         Character character = characterService.findById(characterId);
         assert character != null;
@@ -634,7 +646,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game performSpeedRollMove(String gameId, String gameroleId, String characterId, String moveId, int modifier) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         GameRole gameRole = gameRoleService.findById(gameroleId);
         Character character = characterService.findById(characterId);
         assert character != null;
@@ -692,7 +704,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game performWealthMove(String gameId, String gameroleId, String characterId) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         GameRole gameRole = gameRoleService.findById(gameroleId);
         Character character = characterService.findById(characterId);
         assert character != null;
@@ -741,7 +753,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game performFortunesMove(String gameId, String gameroleId, String characterId) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         GameRole gameRole = gameRoleService.findById(gameroleId);
         Character character = characterService.findById(characterId);
         assert character != null;
@@ -790,7 +802,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game performHelpOrInterfereMove(String gameId, String gameroleId, String characterId, String moveId, String targetId) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         GameRole gameRole = gameRoleService.findById(gameroleId);
         Character character = characterService.findById(characterId);
         assert character != null;
@@ -862,7 +874,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game performMakeWantKnownMove(String gameId, String gameroleId, String characterId, String moveId, int barter) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         GameRole gameRole = gameRoleService.findById(gameroleId);
         Character character = characterService.findById(characterId);
         assert character != null;
@@ -897,7 +909,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm) {
-        Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
+        Game game = getGame(gameId);
         GameRole gameRole = gameRoleService.findById(gameroleId);
         // Find Character
         Character character = characterService.findById(characterId);

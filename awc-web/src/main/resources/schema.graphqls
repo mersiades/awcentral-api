@@ -477,6 +477,38 @@ type ThreatCreator {
     threats: [ThreatCreatorContent]!
 }
 
+     ### ------------- MC CONTENT ------------- ###
+
+type ContentItem {
+    id: ID!
+    title: String!
+    content: String!
+}
+
+type TickerList {
+    id: ID!
+    title: String!
+    items: [String]!
+}
+
+type FirstSessionContent {
+    id: ID!
+    intro: String!
+    duringCharacterCreation: ContentItem!
+    duringFirstSession: TickerList!
+    threatMapInstructions: ContentItem!
+    afterFirstSession: TickerList!
+}
+
+type McContent {
+    id: ID!
+    firstSessionContent: FirstSessionContent!
+    decisionMaking: ContentItem!
+    core: [TickerList]!
+    harm: [ContentItem]!
+    selected: [ContentItem]!
+}
+
 # ---------------------------------------- GAME & CHARACTER TYPES --------------------------------------- #
 
 type User {
@@ -493,6 +525,7 @@ type Game {
     commsApp: String
     commsUrl: String
     hasFinishedPreGame: Boolean
+    showFirstSession: Boolean
     players: [User]
     gameRoles: [GameRole]
     invitees: [String]
@@ -1039,6 +1072,7 @@ type Query {
     playbookCreator(playbookType: PlaybookType!): PlaybookCreator
     vehicleCreator: VehicleCreator
     threatCreator: ThreatCreator
+    mcContent: McContent
 }
 
 # --------------------------------------------- MUTATIONS -------------------------------------------- #
@@ -1062,6 +1096,7 @@ type Mutation {
 
     # MC stuff
     finishPreGame(gameId: String!): Game
+    closeFirstSession(gameId: String!): Game
     addThreat(gameRoleId: String!, threat: ThreatInput): GameRole
     addNpc(gameRoleId: String!, npc: NpcInput): GameRole
 

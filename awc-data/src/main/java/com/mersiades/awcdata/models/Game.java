@@ -28,6 +28,8 @@ public class Game {
 
     private Boolean hasFinishedPreGame;
 
+    private Boolean showFirstSession;
+
     @Builder.Default
     private List<GameMessage> gameMessages = new ArrayList<>();
 
