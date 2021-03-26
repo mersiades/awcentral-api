@@ -4417,7 +4417,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "Make them buy.",
                         "Activate their stuff's downside.",
                         "Tell them the possible consequences and ask.",
-                        "Offer an opportunity, with ot without a cost.",
+                        "Offer an opportunity, with or without a cost.",
                         "Turn their move back on them.",
                         "Make a threat move (_from one of your threats_).",
                         "After every move: \"what do you do?\""))

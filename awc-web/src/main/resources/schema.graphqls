@@ -525,6 +525,7 @@ type Game {
     commsApp: String
     commsUrl: String
     hasFinishedPreGame: Boolean
+    showFirstSession: Boolean
     players: [User]
     gameRoles: [GameRole]
     invitees: [String]
@@ -1095,6 +1096,7 @@ type Mutation {
 
     # MC stuff
     finishPreGame(gameId: String!): Game
+    closeFirstSession(gameId: String!): Game
     addThreat(gameRoleId: String!, threat: ThreatInput): GameRole
     addNpc(gameRoleId: String!, npc: NpcInput): GameRole
 
