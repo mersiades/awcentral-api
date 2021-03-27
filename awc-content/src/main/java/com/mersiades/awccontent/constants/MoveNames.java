@@ -40,6 +40,7 @@ public class MoveNames {
     public static final String artfulName = "ARTFUL & GRACIOUS";
     public static final String hypnoticName = "HYPNOTIC";
     public static final String justGiveMotiveName = "JUST GIVE ME A MOTIVE";
+    public static final String sufferVHarm = "SUFFER V-HARM";
 
     // Moves that can earn holds
     public static final String readPersonName = "READ A PERSON";

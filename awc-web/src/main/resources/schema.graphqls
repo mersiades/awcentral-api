@@ -9,6 +9,7 @@ enum MessageType {
     ADJUST_HX_MOVE
     ROLL_STOCK_MOVE
     STOCK_MOVE
+    SUFFER_V_HARM_MOVE
 }
 
 enum RoleType {
@@ -55,7 +56,8 @@ enum RollType {
     HANDLING,
     STOCK,
     FORTUNE,
-    CHOICE
+    CHOICE,
+    V_HARM
 }
 
 enum PlaybookType {
@@ -1237,6 +1239,7 @@ type Mutation {
     performHelpOrInterfereMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, targetId: String!): Game
     performMakeWantKnownMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, barter: Int!): Game
     performSufferHarmMove(gameId: String!, gameRoleId: String!, characterId: String!, moveId: String!, harm: Int!): Game
+    performSufferVHarmMove(gameId: String!, gameRoleId: String!, characterId: String!, vHarm: Int!): Game
     performInflictHarmMove(gameId: String!,
         gameRoleId: String!,
         otherGameroleId: String!,

@@ -939,6 +939,24 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Game performSufferVHarmMove(String gameId, String gameroleId, String characterId, int harm) {
+        Game game = getGame(gameId);
+        GameRole gameRole = gameRoleService.findById(gameroleId);
+        Character character = getCharacter(gameRole, characterId);
+        Move move = moveService.findByName(sufferVHarm);
+        assert move != null;
+
+        // Create GameMessage
+        GameMessage gameMessage = getGameMessageWithDiceRolls(gameId, gameroleId, MessageType.SUFFER_V_HARM_MOVE);
+        gameMessage.setContent(move.getDescription());
+        gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
+        gameMessage.setHarmSuffered(harm);
+        gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + gameMessage.getHarmSuffered());
+        game.getGameMessages().add(gameMessage);
+        return gameRepository.save(game);
+    }
+
+    @Override
     public Game performInflictHarmMove(String gameId,
                                        String gameroleId,
                                        String otherGameroleId,

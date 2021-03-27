@@ -1082,6 +1082,46 @@ class GameServiceImplTest {
     }
 
     @Test
+    void performSufferVHarmMove() {
+        // Given
+        int mockVHarmSuffered = 2;
+        MoveAction sufferVHarmAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.V_HARM)
+                .build();
+        Move sufferVHarm = Move.builder()
+                .id(UUID.randomUUID().toString())
+                .name(MoveNames.sufferVHarm)
+                .description("When you _**suffer v-harm**_, roll+harm suffered...")
+                .kind(MoveType.PERIPHERAL)
+                .moveAction(sufferVHarmAction)
+                .playbook(null)
+                .build();
+        mockGameRole.getCharacters().add(mockCharacter);
+        when(moveService.findByName(anyString())).thenReturn(sufferVHarm);
+        when(gameRoleService.findById(anyString())).thenReturn(mockGameRole);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
+
+        // When
+        Game returnedGame = gameService.performSufferVHarmMove(mockGame1.getId(),
+                mockGameRole.getId(),
+                mockCharacter.getId(),
+                mockVHarmSuffered);
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+        assertEquals(mockVHarmSuffered, returnedGameMessage.getHarmSuffered());
+        assertTrue(returnedGameMessage.getContent().contains(sufferVHarm.getDescription()));
+        verify(moveService, times(1)).findByName(anyString());
+        verify(gameRoleService, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
+    @Test
     void shouldPerformInflictHarmMove() {
         // Given
         int mockHarmInflicted = 1;
@@ -1513,5 +1553,4 @@ class GameServiceImplTest {
         return character.getHxBlock().stream()
                 .filter(hxStat -> hxStat.getCharacterId().equals(otherCharacterId)).findFirst().orElseThrow();
     }
-
 }

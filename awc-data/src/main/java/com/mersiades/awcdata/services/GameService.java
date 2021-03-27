@@ -61,6 +61,8 @@ public interface GameService extends CrudService<Game, String> {
 
     Game performSufferHarmMove(String gameId, String gameroleId, String characterId, String moveId, int harm);
 
+    Game performSufferVHarmMove(String gameId, String gameroleId, String characterId, int harm);
+
     Game performInflictHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm);
 
     Game performHealHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm);
@@ -82,6 +84,4 @@ public interface GameService extends CrudService<Game, String> {
     // ---------------------------------------------- Other -------------------------------------------- //
 
     Game spendHold(String gameId, String gameroleId, String characterId, Hold hold);
-
-
 }
