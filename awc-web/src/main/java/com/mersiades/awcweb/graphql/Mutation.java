@@ -307,6 +307,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.performSufferHarmMove(gameId, gameroleId, characterId, moveId, harm);
     }
 
+    public Game performSufferVHarmMove(String gameId, String gameroleId, String characterId, int harm) {
+        System.out.println("Performing SUFFER V-HARM move for Character: " + characterId);
+        return gameService.performSufferVHarmMove(gameId, gameroleId, characterId, harm);
+    }
+
     public Game performInflictHarmMove(String gameId, String gameroleId, String otherGameroleId, String characterId, String otherCharacterId, int harm) {
         System.out.println("Performing INFLICT HARM ON PC move for Character: " + characterId);
         return gameService.performInflictHarmMove(gameId, gameroleId, otherGameroleId, characterId, otherCharacterId, harm);

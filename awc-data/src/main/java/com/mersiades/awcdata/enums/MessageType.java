@@ -9,5 +9,6 @@ public enum MessageType {
     SUFFER_HARM_MOVE,
     ADJUST_HX_MOVE,
     ROLL_STOCK_MOVE,
-    STOCK_MOVE
+    STOCK_MOVE,
+    SUFFER_V_HARM_MOVE,
 }

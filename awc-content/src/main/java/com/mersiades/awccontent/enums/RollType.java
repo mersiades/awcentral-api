@@ -9,5 +9,6 @@ public enum RollType {
     HANDLING,
     STOCK,
     FORTUNE,
-    CHOICE
+    CHOICE,
+    V_HARM
 }

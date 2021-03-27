@@ -394,6 +394,32 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(sufferHarmAction)
                 .playbook(null)
                 .build();
+        MoveAction sufferVHarmAction = MoveAction.builder()
+                .id(UUID.randomUUID().toString())
+                .actionType(MoveActionType.ROLL)
+                .rollType(RollType.V_HARM)
+                .build();
+        Move sufferVHarm = Move.builder()
+                .name(MoveNames.sufferVHarm)
+                .description("When you _**suffer v-harm**_, roll+harm suffered.\n" +
+                        "\n" +
+                        "On a 10+, you lose control, and your attacker chooses 1:\n" +
+                        "\n" +
+                        "- *You crash.*\n" +
+                        "- *You spin out.*\n" +
+                        "- *Choose 2 from the 7–9 list below.*\n" +
+                        "\n" +
+                        "On a 7–9, you're forced to swerve. Your attacker chooses 1:\n" +
+                        "\n" +
+                        "- *You give ground.*\n" +
+                        "- *You're driven off course, or forced onto a new course'.*\n" +
+                        "- *Your car takes 1-harm ap, right in the transmission.*\n" +
+                        "\n" +
+                        "On a miss, you swerve but recover without disadvantage.")
+                .kind(MoveType.PERIPHERAL)
+                .moveAction(sufferVHarmAction)
+                .playbook(null)
+                .build();
         MoveAction inflictHarmAction = MoveAction.builder()
                 .id(UUID.randomUUID().toString())
                 .actionType(MoveActionType.ADJUST_HX)
@@ -538,7 +564,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
 
-        moveService.saveAll(List.of(sufferHarm, inflictHarmMove, healPcHarm, giveBarter, goToMarket, makeWantKnown,
+        moveService.saveAll(List.of(sufferHarm, sufferVHarm, inflictHarmMove, healPcHarm, giveBarter, goToMarket, makeWantKnown,
                 insight, augury, changeHighlightedStats));
 
         System.out.println("|| --- Loading battle moves --- ||");
