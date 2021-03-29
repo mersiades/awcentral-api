@@ -133,7 +133,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public List<Game> findAllByInvitee(String email) {
         // Add a demo game if running demo profile
-        if (activeProfiles != null && (activeProfiles.equals("demo") || activeProfiles.equals("staging"))) {
+        if (activeProfiles != null && (activeProfiles.equals("demo"))) {
             CharacterHarm harm = CharacterHarm.builder()
                     .id(UUID.randomUUID().toString())
                     .hasChangedPlaybook(false)
