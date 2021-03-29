@@ -51,7 +51,7 @@ public class Query implements GraphQLQueryResolver {
     }
 
     public Game game(String gameId) {
-        System.out.println("Fetching Game by id: " + gameId);
+//        System.out.println("Fetching Game by id: " + gameId);
         return gameService.findById(gameId);
     }
 

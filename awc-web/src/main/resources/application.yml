@@ -4,3 +4,9 @@ graphql:
     websocket:
       enabled: false
 
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb: DEBUG
