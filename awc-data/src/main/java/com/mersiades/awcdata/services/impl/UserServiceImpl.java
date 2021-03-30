@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).orElseThrow();
         assert user != null;
         Optional<GameRole> gameRoleOptional = user.getGameRoles().stream()
-                .filter(gameRole -> gameRole.getGame().getId().equals(gameId))
+                .filter(gameRole -> gameRole.getGameId().equals(gameId))
                 .findFirst();
 
         gameRoleOptional.ifPresent(gameRole -> user.getGameRoles().remove(gameRole));

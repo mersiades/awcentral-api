@@ -75,11 +75,6 @@ public class GameRoleServiceImpl implements GameRoleService {
     // ---------------------------------------------- Game-related -------------------------------------------- //
 
     @Override
-    public List<GameRole> findAllByUser(User user) {
-        return gameRoleRepository.findAllByUser(user);
-    }
-
-    @Override
     public List<GameRole> findAllByUserId(String userId) {
         return gameRoleRepository.findAllByUserId(userId);
     }

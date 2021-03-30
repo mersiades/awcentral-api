@@ -118,8 +118,8 @@ public class GameServiceImpl implements GameService {
         Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
 
         // Remove Gameroles from mc and players
-        userService.removeGameroleFromUser(game.getMc().getId(), gameId);
-        game.getPlayers().forEach(player -> userService.removeGameroleFromUser(player.getId(), gameId));
+        userService.removeGameroleFromUser(game.getMc().getId().toString(), gameId);
+        game.getPlayers().forEach(player -> userService.removeGameroleFromUser(player.getId().toString(), gameId));
 
         // Delete Gameroles
         game.getGameRoles().forEach(gameRoleService::delete);
@@ -144,9 +144,20 @@ public class GameServiceImpl implements GameService {
                     .value(0)
                     .build();
 
-            GameRole nateGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.MC).build();
-            GameRole claireGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
-            GameRole ruthGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
+            String gameName = "Demo game";
+
+            GameRole nateGameRole = GameRole.builder()
+                    .id(UUID.randomUUID().toString())
+                    .gameName(gameName)
+                    .role(RoleType.MC).build();
+            GameRole claireGameRole = GameRole.builder()
+                    .id(UUID.randomUUID().toString())
+                    .gameName(gameName)
+                    .role(RoleType.PLAYER).build();
+            GameRole ruthGameRole = GameRole.builder()
+                    .id(UUID.randomUUID().toString())
+                    .gameName(gameName)
+                    .role(RoleType.PLAYER).build();
 
             User nate = User.builder().id(UUID.randomUUID().toString())
                     .email("nate@email.com").displayName("Nate").gameRoles(List.of(nateGameRole)).build();
@@ -268,31 +279,34 @@ public class GameServiceImpl implements GameService {
                     .statsBlock(brainerStatsBlock)
                     .build();
 
-            nateGameRole.setUser(nate);
-            claireGameRole.setUser(claire);
+            nateGameRole.setUserId(nate.getId());
+            claireGameRole.setUserId(claire.getId());
             claireGameRole.setCharacters(List.of(claireChar));
-            ruthGameRole.setUser(ruth);
+            ruthGameRole.setUserId(ruth.getId());
             ruthGameRole.setCharacters(List.of(ruthChar));
-            userService.saveAll(List.of(nate, claire, ruth));
-            gameRoleService.saveAll(List.of(nateGameRole, claireGameRole, ruthGameRole));
-            characterService.saveAll(List.of(claireChar, ruthChar));
+
 
             List<Game> games = gameRepository.findAllByInviteesContaining(email);
 
             if (games.size() == 0) {
                 Game newDemoGame = Game.builder()
-                        .name("Demo game")
+                        .name(gameName)
                         .players(List.of(claire, ruth))
                         .mc(nate)
                         .gameRoles(List.of(nateGameRole, claireGameRole, ruthGameRole))
                         .commsApp("Discord")
                         .commsUrl("https://discord.com/not-a-real-discord-channel")
                         .build();
-                gameRepository.save(newDemoGame);
+                Game savedGame = gameRepository.save(newDemoGame);
+                nateGameRole.setGameId(savedGame.getId());
+                claireGameRole.setGameId(savedGame.getId());
+                ruthGameRole.setGameId(savedGame.getId());
                 games.add(newDemoGame);
             }
 
-
+            userService.saveAll(List.of(nate, claire, ruth));
+            gameRoleService.saveAll(List.of(nateGameRole, claireGameRole, ruthGameRole));
+            characterService.saveAll(List.of(claireChar, ruthChar));
             return games;
         } else {
             return gameRepository.findAllByInviteesContaining(email);
@@ -313,7 +327,10 @@ public class GameServiceImpl implements GameService {
         User creator = userService.findOrCreateUser(userId, displayName, email);
 
         // Create an MC GameRole for the Game creator and add it to the Game
-        GameRole mcGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.MC).build();
+        GameRole mcGameRole = GameRole.builder()
+                .id(UUID.randomUUID().toString())
+                .gameName(name)
+                .role(RoleType.MC).build();
         newGame.getGameRoles().add(mcGameRole);
         newGame.setMc(creator);
         Game savedGame = gameRepository.save(newGame);
@@ -321,8 +338,8 @@ public class GameServiceImpl implements GameService {
         assert creator != null;
         userService.addGameroleToUser(creator.getId(), mcGameRole);
         // Add the Game and User to the MC's GameRole
-        mcGameRole.setGame(savedGame);
-        mcGameRole.setUser(creator);
+        mcGameRole.setGameId(savedGame.getId());
+        mcGameRole.setUserId(creator.getId());
         gameRoleService.save(mcGameRole);
 
         return newGame;
@@ -377,6 +394,9 @@ public class GameServiceImpl implements GameService {
         // Create Player Gamerole for user
         GameRole gameRole = GameRole.builder().id(UUID.randomUUID().toString())
                 .role(RoleType.PLAYER)
+                .gameName(game.getName())
+                .gameId(game.getId())
+                .userId(user.getId())
                 .build();
 
         game.getGameRoles().add(gameRole);
@@ -384,11 +404,7 @@ public class GameServiceImpl implements GameService {
         game.getInvitees().remove(email);
         gameRepository.save(game);
 
-        assert user != null;
         userService.addGameroleToUser(user.getId(), gameRole);
-
-        gameRole.setUser(user);
-        gameRole.setGame(game);
         gameRoleService.save(gameRole);
         return game;
     }

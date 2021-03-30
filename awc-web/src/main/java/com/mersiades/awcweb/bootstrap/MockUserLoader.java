@@ -95,7 +95,6 @@ public class MockUserLoader implements CommandLineRunner {
                     .displayName(KEYCLOAK_DISPLAY_NAME_1)
                     .email(KEYCLOAK_EMAIL_1).build();
 
-
             User mockUser2 = User.builder()
                     .id(KEYCLOAK_ID_2)
                     .displayName(KEYCLOAK_DISPLAY_NAME_2)
@@ -159,18 +158,24 @@ public class MockUserLoader implements CommandLineRunner {
             mockUser5.getGameRoles().add(ahmadAsPlayer);
             mockUser6.getGameRoles().add(takeshiAsPlayer);
 
-            daveAsMC.setUser(mockUser1);
-            daveAsMC.setGame(mockGame1);
-            sarahAsPlayer.setGame(mockGame1);
-            sarahAsPlayer.setUser(mockUser2);
-            johnAsPlayer.setGame(mockGame1);
-            johnAsPlayer.setUser(mockUser3);
-            mayaAsPlayer.setGame(mockGame1);
-            mayaAsPlayer.setUser(mockUser4);
-            ahmadAsPlayer.setGame(mockGame1);
-            ahmadAsPlayer.setUser(mockUser5);
-            takeshiAsPlayer.setGame(mockGame1);
-            takeshiAsPlayer.setUser(mockUser6);
+            daveAsMC.setGameId(mockGame1.getId());
+            daveAsMC.setGameName(mockGame1.getName());
+            daveAsMC.setUserId(mockUser1.getId());
+            sarahAsPlayer.setGameId(mockGame1.getId());
+            sarahAsPlayer.setGameName(mockGame1.getName());
+            sarahAsPlayer.setUserId(mockUser2.getId());
+            johnAsPlayer.setGameId(mockGame1.getId());
+            johnAsPlayer.setGameName(mockGame1.getName());
+            johnAsPlayer.setUserId(mockUser3.getId());
+            mayaAsPlayer.setGameId(mockGame1.getId());
+            mayaAsPlayer.setGameName(mockGame1.getName());
+            mayaAsPlayer.setUserId(mockUser4.getId());
+            ahmadAsPlayer.setGameId(mockGame1.getId());
+            ahmadAsPlayer.setGameName(mockGame1.getName());
+            ahmadAsPlayer.setUserId(mockUser5.getId());
+            takeshiAsPlayer.setGameId(mockGame1.getId());
+            takeshiAsPlayer.setGameName(mockGame1.getName());
+            takeshiAsPlayer.setUserId(mockUser6.getId());
             gameRoleService.saveAll(List.of(daveAsMC, sarahAsPlayer, johnAsPlayer,
                     mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer));
 
@@ -197,10 +202,12 @@ public class MockUserLoader implements CommandLineRunner {
             userService.saveAll(List.of(mockUser1, mockUser2, mockUser3, mockUser4, mockUser5, mockUser6));
 
 
-            daveAsPlayer.setUser(mockUser1);
-            daveAsPlayer.setGame(mockGame2);
-            sarahAsMC.setGame(mockGame2);
-            sarahAsMC.setUser(mockUser2);
+            daveAsPlayer.setUserId(mockUser1.getId());
+            daveAsPlayer.setGameId(mockGame2.getId());
+            daveAsPlayer.setGameName(mockGame2.getName());
+            sarahAsMC.setGameId(mockGame2.getId());
+            sarahAsMC.setGameName(mockGame2.getName());
+            sarahAsMC.setUserId(mockUser2.getId());
             gameRoleService.saveAll(List.of(daveAsPlayer, sarahAsMC));
 
         }

@@ -172,7 +172,7 @@ class UserServiceImplTest {
         GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id-2").build();
         Game mockGame = Game.builder().id("mock-game-id").build();
         mockGame.getGameRoles().add(mockGameRole2);
-        mockGameRole2.setGame(mockGame);
+        mockGameRole2.setGameId(mockGame.getId());
         mockUser1.getGameRoles().add(mockGameRole2);
         when(userRepository.findById(anyString())).thenReturn(Optional.of(mockUser1));
         when(userRepository.save(any(User.class))).thenReturn(mockUser1);

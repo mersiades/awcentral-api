@@ -204,11 +204,16 @@ class GameServiceImplTest {
 
         mockCharacter.setHxBlock(List.of(mockHxStat1));
         mockCharacter2.setHxBlock(List.of(mockHxStat2));
-        mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(RoleType.MC).game(mockGame1).user(mockMc).build();
+        mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID)
+                .role(RoleType.MC)
+                .gameId(MOCK_GAME_ID_1)
+                .gameName("Michael's Mock Game")
+                .userId(mockMc.getId()).build();
         mockGameRole2 = GameRole.builder()
                 .id("mock-game-role-id-2")
                 .role(RoleType.PLAYER)
-                .game(mockGame1)
+                .gameId(MOCK_GAME_ID_1)
+                .gameName("Michael's Mock Game")
                 .characters(List.of(mockCharacter2))
                 .build();
 
@@ -479,8 +484,8 @@ class GameServiceImplTest {
         GameRole mockPlayerGameRole = GameRole.builder()
                 .id("mock-gamerole-id-2")
                 .role(RoleType.PLAYER)
-                .user(mockPlayer)
-                .game(mockGame1).build();
+                .userId(mockPlayer.getId())
+                .gameId(mockGame1.getId()).build();
         mockGame1.getPlayers().add(mockPlayer);
         mockGame1.getGameRoles().add(mockPlayerGameRole);
         when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));

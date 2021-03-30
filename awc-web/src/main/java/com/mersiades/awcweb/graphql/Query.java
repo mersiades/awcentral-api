@@ -63,7 +63,7 @@ public class Query implements GraphQLQueryResolver {
 
         // Get the User's GameRole from the Game
         assert game != null;
-        GameRole usersGameRole = game.getGameRoles().stream().filter(gameRole -> gameRole.getUser().getId().equals(userId)).findFirst().orElseThrow();
+        GameRole usersGameRole = game.getGameRoles().stream().filter(gameRole -> gameRole.getUserId().equals(userId)).findFirst().orElseThrow();
 
         // Remove all GameRoles
         game.getGameRoles().clear();

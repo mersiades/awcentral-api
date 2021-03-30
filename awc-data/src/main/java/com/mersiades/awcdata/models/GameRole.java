@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -24,11 +23,11 @@ public class GameRole {
 
     private RoleType role;
 
-    @DBRef
-    private Game game;
+    private String gameId;
 
-    @DBRef
-    private User user;
+    private String gameName;
+
+    private String userId;
 
     @Builder.Default
     private List<Npc> npcs = new ArrayList<>();
@@ -50,14 +49,14 @@ public class GameRole {
             sb.append(", role= ").append(this.role);
         }
 
-        if (this.getGame() != null) {
-            sb.append(", Game= ").append(this.getGame().getId());
+        if (this.getGameId() != null) {
+            sb.append(", Game= ").append(this.getGameId().toString());
         }
 
-        if (this.getUser() == null) {
+        if (this.getUserId() == null) {
             sb.append(", User= null");
-        } else if (this.getUser().getId() != null) {
-            sb.append(", User= ").append(this.getUser().getId());
+        } else {
+            sb.append(", User= ").append(this.getUserId().toString());
         }
 
         sb.append("]");

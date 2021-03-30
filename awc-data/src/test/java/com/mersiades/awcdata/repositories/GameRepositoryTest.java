@@ -30,10 +30,10 @@ public class GameRepositoryTest {
         User mockUser1 = User.builder().id("mock-user-id-1").displayName("Mock User 1").email("user1@email.com").build();
         User mockUser2 = User.builder().id("mock-user-id-2").displayName("Mock User 2").email("user1@email.com").build();
 
-        mockGameRole1 = GameRole.builder().id("mock-gamerole-id-1").role(RoleType.MC).user(mockUser1).build();
-        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id-2").role(RoleType.PLAYER).user(mockUser1).build();
-        GameRole mockGameRole3 = GameRole.builder().id("mock-gamerole-id-3").role(RoleType.MC).user(mockUser2).build();
-        GameRole mockGameRole4 = GameRole.builder().id("mock-gamerole-id-4").role(RoleType.PLAYER).user(mockUser2).build();
+        mockGameRole1 = GameRole.builder().id("mock-gamerole-id-1").role(RoleType.MC).userId(mockUser1.getId()).build();
+        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id-2").role(RoleType.PLAYER).userId(mockUser1.getId()).build();
+        GameRole mockGameRole3 = GameRole.builder().id("mock-gamerole-id-3").role(RoleType.MC).userId(mockUser2.getId()).build();
+        GameRole mockGameRole4 = GameRole.builder().id("mock-gamerole-id-4").role(RoleType.PLAYER).userId(mockUser2.getId()).build();
 
         Game mockGame1 = Game.builder()
                 .name("Mock Game 1")

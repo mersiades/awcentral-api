@@ -69,7 +69,7 @@ class GameRoleServiceImplTest {
         Game mockGame1 = Game.builder().id(MOCK_GAME_ID).build();
         mockUser = User.builder().id(MOCK_USER_ID).build();
         mockCharacter = Character.builder().id(UUID.randomUUID().toString()).build();
-        mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(RoleType.MC).game(mockGame1).user(mockUser).build();
+        mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(RoleType.MC).gameId(mockGame1.getId()).userId(mockUser.getId()).build();
         mockGame1.getGameRoles().add(mockGameRole);
         mockUser.getGameRoles().add(mockGameRole);
         gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, statsOptionService, moveService, playbookCreatorService, statModifierService);
@@ -164,26 +164,10 @@ class GameRoleServiceImplTest {
     // ---------------------------------------------- Game-related -------------------------------------------- //
 
     @Test
-    void shouldFindAllGameRolesByUser() {
-        // Given
-        Game mockGame2 = new Game();
-        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id2").role(RoleType.MC).game(mockGame2).user(mockUser).build();
-        when(gameRoleRepository.findAllByUser(any())).thenReturn(List.of(mockGameRole, mockGameRole2));
-
-        // When
-        List<GameRole> returnedGameRoles = gameRoleService.findAllByUser(mockUser);
-
-        // Then
-        assert returnedGameRoles != null;
-        assertEquals(2, returnedGameRoles.size());
-        verify(gameRoleRepository, times(1)).findAllByUser(any(User.class));
-    }
-
-    @Test
     void shouldFindAllGameRolesByUserId() {
         // Given
         Game mockGame2 = new Game();
-        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id2").role(RoleType.MC).game(mockGame2).user(mockUser).build();
+        GameRole mockGameRole2 = GameRole.builder().id("mock-gamerole-id2").role(RoleType.MC).gameId(mockGame2.getId()).userId(mockUser.getId()).build();
         when(gameRoleRepository.findAllByUserId(anyString())).thenReturn(List.of(mockGameRole, mockGameRole2));
 
         // When
