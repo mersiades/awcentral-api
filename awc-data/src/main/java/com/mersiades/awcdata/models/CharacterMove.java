@@ -1,13 +1,12 @@
 package com.mersiades.awcdata.models;
 
 import com.mersiades.awccontent.enums.MoveType;
+import com.mersiades.awccontent.models.Move;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import com.mersiades.awccontent.models.Move;
-
-import java.util.UUID;
+import org.bson.types.ObjectId;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -26,7 +25,7 @@ public class CharacterMove extends Move {
     public static CharacterMove createFromMove(Move move, Boolean isSelected) {
         CharacterMove characterMove = new CharacterMove();
 
-        characterMove.setId(UUID.randomUUID().toString());
+        characterMove.setId(new ObjectId().toString());
         characterMove.setIsSelected(isSelected);
         characterMove.setMoveAction(move.getMoveAction());
         characterMove.setName(move.getName());
@@ -47,7 +46,7 @@ public class CharacterMove extends Move {
     public static CharacterMove createFromMove(Move move) {
         CharacterMove characterMove = new CharacterMove();
 
-        characterMove.setId(UUID.randomUUID().toString());
+        characterMove.setId(new ObjectId().toString());
         characterMove.setMoveAction(move.getMoveAction());
         characterMove.setName(move.getName());
         characterMove.setDescription(move.getDescription());

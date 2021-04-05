@@ -8,6 +8,7 @@ import com.mersiades.awcdata.repositories.*;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -15,7 +16,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @Order(value = 1)
@@ -44,14 +44,14 @@ public class MockUserLoader implements CommandLineRunner {
     final String KEYCLOAK_ID_6 = System.getenv("TAKESHI_ID");
     final String KEYCLOAK_DISPLAY_NAME_6 = "takeshi";
     final String KEYCLOAK_EMAIL_6 = "takeshi@email.com";
-    final String MOCK_GAME_1_ID = "0ca6cc54-77a5-4d6e-ba2e-ee1543d6a249";
-    final String MOCK_GAME_2_ID = "ecb645d2-06d3-46dc-ad7f-20bbd167085d";
-    final String DAVE_AS_PLAYER_ID = "2a7aba8d-f6e8-4880-8021-99809c800acc";
-    final String SARA_AS_PLAYER_ID = "be6b09af-9c96-452a-8b05-922be820c88f";
-    final String JOHN_AS_PLAYER_ID = "5ffe67b72e21523778660910)";
-    final String MAYA_AS_PLAYER_ID = "5ffe67b72e21523778660911)";
-    final String AHMAD_AS_PLAYER_ID = "5ffe67b72e21523778660912)";
-    final String TAKESHI_AS_PLAYER_ID = "5ffe67b72e21523778660913)";
+    public final String MOCK_GAME_1_ID = new ObjectId().toString();
+    public final String MOCK_GAME_2_ID = new ObjectId().toString();
+    public static final String DAVE_AS_PLAYER_ID = new ObjectId().toString();
+    public static final String SARA_AS_PLAYER_ID = new ObjectId().toString();
+    public static final String JOHN_AS_PLAYER_ID = new ObjectId().toString();
+    public static final String MAYA_AS_PLAYER_ID = new ObjectId().toString();
+    public static final String AHMAD_AS_PLAYER_ID = new ObjectId().toString();
+    public static final String TAKESHI_AS_PLAYER_ID = new ObjectId().toString();
 
     @Autowired
     UserRepository userRepository;
@@ -91,7 +91,7 @@ public class MockUserLoader implements CommandLineRunner {
 
             // -------------------------------------- Set up mock Users -------------------------------------- //
             User mockUser1 = User.builder()
-                    .id(KEYCLOAK_ID_1)
+                    .id((KEYCLOAK_ID_1))
                     .displayName(KEYCLOAK_DISPLAY_NAME_1)
                     .email(KEYCLOAK_EMAIL_1).build();
 
@@ -188,8 +188,8 @@ public class MockUserLoader implements CommandLineRunner {
                     .hasFinishedPreGame(false)
                     .build();
 
-            GameRole daveAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
-            GameRole sarahAsMC = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.MC).build();
+            GameRole daveAsPlayer = GameRole.builder().id(new ObjectId().toString()).role(RoleType.PLAYER).build();
+            GameRole sarahAsMC = GameRole.builder().id(new ObjectId().toString()).role(RoleType.MC).build();
 
             mockGame2.getGameRoles().add(daveAsPlayer);
             mockGame2.getGameRoles().add(sarahAsMC);

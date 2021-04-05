@@ -4,15 +4,16 @@ import com.mersiades.awccontent.constants.MoveNames;
 import com.mersiades.awccontent.enums.*;
 import com.mersiades.awccontent.models.*;
 import com.mersiades.awccontent.models.uniquecreators.*;
+import com.mersiades.awccontent.repositories.*;
+import com.mersiades.awccontent.services.*;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import com.mersiades.awccontent.repositories.*;
-import com.mersiades.awccontent.services.*;
 
-import java.util.*;
+import java.util.List;
 
 import static com.mersiades.awccontent.constants.MoveNames.*;
 import static com.mersiades.awccontent.enums.StatType.*;
@@ -149,7 +150,7 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading basic moves --- ||");
         /* ----------------------------- BASIC MOVES --------------------------------- */
         MoveAction doSomethingUnderFireAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(COOL)
@@ -168,7 +169,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction goAggroAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -195,7 +196,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction suckerAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -208,7 +209,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction doBattleAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -221,7 +222,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction seduceOrManipAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HOT)
@@ -247,7 +248,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction helpOrInterfereAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.HX)
                 .statToRollWith(null)
@@ -266,7 +267,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction readASitchAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(SHARP)
@@ -290,7 +291,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction readAPersonAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(SHARP)
@@ -313,7 +314,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction openBrainAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(WEIRD)
@@ -332,7 +333,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction lifestyleAndGigsAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.BARTER)
                 .rollType(null)
                 .statToRollWith(null)
@@ -345,7 +346,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction sessionEndAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -368,7 +369,7 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading peripheral moves --- ||");
         /* ----------------------------- PERIPHERAL MOVES --------------------------------- */
         MoveAction sufferHarmAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.HARM)
                 .build();
@@ -395,7 +396,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction sufferVHarmAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.V_HARM)
                 .build();
@@ -421,7 +422,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction inflictHarmAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ADJUST_HX)
                 .build();
         Move inflictHarmMove = Move.builder()
@@ -434,7 +435,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction healPcHarmAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ADJUST_HX)
                 .build();
         Move healPcHarm = Move.builder()
@@ -447,7 +448,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction giveBarterAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.BARTER)
                 .rollType(null)
                 .statToRollWith(null)
@@ -460,7 +461,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction goToMarketAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(SHARP)
@@ -484,7 +485,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction makeWantKnownAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.BARTER)
                 .build();
@@ -502,7 +503,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction insightAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -517,7 +518,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction auguryAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(WEIRD)
@@ -549,7 +550,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction changeHighlightedStatsAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -570,7 +571,7 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading battle moves --- ||");
         /* ----------------------------- BATTLE MOVES --------------------------------- */
         MoveAction exchangeHarmAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -586,7 +587,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction seizeByForceAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -606,7 +607,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction assaultAPositionAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -626,7 +627,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction keepHoldOfSomethingAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -646,7 +647,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction fightFreeAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -666,7 +667,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction defendSomeoneAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -686,7 +687,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction doSingleCombatAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -708,7 +709,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction layDownFireAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -728,7 +729,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction standOverwatchAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(COOL)
@@ -750,7 +751,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction keepAnEyeOutAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(SHARP)
@@ -770,7 +771,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction beTheBaitAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(COOL)
@@ -791,7 +792,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction beTheCatAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(COOL)
@@ -810,7 +811,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction beTheMouseAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(COOL)
@@ -829,7 +830,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction catOrMouseAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(SHARP)
@@ -853,7 +854,7 @@ public class GameDataLoader implements CommandLineRunner {
         System.out.println("|| --- Loading road war moves --- ||");
         /* ----------------------------- ROAD WAR MOVES --------------------------------- */
         MoveAction boardVehicleAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.SPEED)
                 .statToRollWith(COOL)
@@ -872,7 +873,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction outdistanceVehicleAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.SPEED)
                 .statToRollWith(COOL)
@@ -895,7 +896,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction overtakeVehicleAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.SPEED)
                 .statToRollWith(COOL)
@@ -918,7 +919,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction dealWithTerrainAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.HANDLING)
                 .statToRollWith(COOL)
@@ -941,7 +942,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(null)
                 .build();
         MoveAction shoulderAnotherVehicleAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(COOL)
@@ -964,15 +965,15 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- ANGEL MOVES --------------------------------- */
         System.out.println("|| --- Loading Angel moves --- ||");
         RollModifier sixthSenseMod = RollModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .movesToModify(List.of(openBrain))
                 .statToRollWith(StatType.SHARP).build();
         RollModifier profCompassionMod = RollModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .movesToModify(List.of(helpOrInterfere))
                 .statToRollWith(StatType.SHARP).build();
         MoveAction angelSpecialAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ADJUST_HX)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1008,7 +1009,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .kind(MoveType.CHARACTER)
                 .playbook(PlaybookType.ANGEL).build();
         MoveAction battlefieldGraceAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1021,7 +1022,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(PlaybookType.ANGEL)
                 .build();
         MoveAction healingTouchAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(WEIRD)
@@ -1044,7 +1045,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(PlaybookType.ANGEL)
                 .build();
         MoveAction touchedByDeathAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1063,7 +1064,7 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- ANGEL KIT MOVES --------------------------------- */
 
         MoveAction stabilizeAndHealAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STOCK)
                 .statToRollWith(null)
@@ -1085,7 +1086,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(stabilizeAndHealAction)
                 .playbook(PlaybookType.ANGEL).build();
         MoveAction speedTheRecoveryOfSomeoneAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.STOCK)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1097,7 +1098,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(speedTheRecoveryOfSomeoneAction)
                 .playbook(PlaybookType.ANGEL).build();
         MoveAction reviveSomeoneAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.STOCK)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1114,7 +1115,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(reviveSomeoneAction)
                 .playbook(PlaybookType.ANGEL).build();
         MoveAction treatAnNpcAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.STOCK)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1131,11 +1132,11 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- BATTLEBABE MOVES --------------------------------- */
         System.out.println("|| --- Loading Battlebabe moves --- ||");
         RollModifier iceColdMod = RollModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .movesToModify(List.of(goAggro))
                 .statToRollWith(HARD).build();
         MoveAction battlebabeSpecialAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1147,7 +1148,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(battlebabeSpecialAction)
                 .playbook(PlaybookType.BATTLEBABE).build();
         MoveAction dangerousAndSexyAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HOT)
@@ -1172,7 +1173,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null).kind(MoveType.CHARACTER)
                 .playbook(PlaybookType.BATTLEBABE).build();
         MoveAction mercilessAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1184,7 +1185,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(mercilessAction)
                 .playbook(PlaybookType.BATTLEBABE).build();
         MoveAction visionsOfDeathAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(WEIRD)
@@ -1203,7 +1204,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(visionsOfDeathAction)
                 .playbook(PlaybookType.BATTLEBABE).build();
         MoveAction perfectInstinctsAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1215,7 +1216,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(perfectInstinctsAction)
                 .playbook(PlaybookType.BATTLEBABE).build();
         MoveAction impossibleReflexesAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1232,17 +1233,17 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- BRAINER MOVES --------------------------------- */
         System.out.println("|| --- Loading Brainer moves --- ||");
         RollModifier lustMod = RollModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .movesToModify(List.of(seduceOrManip))
                 .statToRollWith(StatType.WEIRD).build();
         StatModifier attunementMod = StatModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .statToModify(StatType.WEIRD)
                 .modification(1).build();
         StatModifier savedAttunementMod = statModifierService.save(attunementMod);
 
         MoveAction brainerSpecialAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1276,7 +1277,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .playbook(PlaybookType.BRAINER).build();
         MoveAction brainScanAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(WEIRD)
@@ -1297,7 +1298,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(brainScanAction)
                 .playbook(PlaybookType.BRAINER).build();
         MoveAction whisperProjectionAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(WEIRD)
@@ -1311,7 +1312,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(whisperProjectionAction)
                 .playbook(PlaybookType.BRAINER).build();
         MoveAction puppetStringsAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(WEIRD)
@@ -1339,7 +1340,7 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- CHOPPER MOVES --------------------------------- */
         System.out.println("|| --- Loading Chopper moves --- ||");
         MoveAction chopperSpecialAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ADJUST_HX)
                 .build();
         Move chopperSpecial = Move.builder()
@@ -1351,7 +1352,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(chopperSpecialAction)
                 .playbook(PlaybookType.CHOPPER).build();
         MoveAction packAlphaAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -1371,7 +1372,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(packAlphaAction)
                 .playbook(PlaybookType.CHOPPER).build();
         MoveAction fuckingThievesAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -1394,11 +1395,11 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- DRIVER MOVES --------------------------------- */
         System.out.println("|| --- Loading Driver moves --- ||");
         RollModifier weatherEyeMod = RollModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .movesToModify(List.of(openBrain))
                 .statToRollWith(COOL).build();
         MoveAction driverSpecialAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(COOL)
@@ -1416,7 +1417,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(driverSpecialAction)
                 .playbook(PlaybookType.DRIVER).build();
         MoveAction combatDriverAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1428,7 +1429,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(combatDriverAction)
                 .playbook(PlaybookType.DRIVER).build();
         MoveAction eyeOnTheDoorAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(COOL)
@@ -1452,7 +1453,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollModifier(weatherEyeMod)
                 .playbook(PlaybookType.DRIVER).build();
         MoveAction reputationAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(COOL)
@@ -1470,7 +1471,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(reputationAction)
                 .playbook(PlaybookType.DRIVER).build();
         MoveAction daredevilAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1499,11 +1500,11 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- GUNLUGGER MOVES --------------------------------- */
         System.out.println("|| --- Loading Gunlugger moves --- ||");
         RollModifier battleHardenedMod = RollModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .movesToModify(List.of(doSomethingUnderFire, standOverwatch))
                 .statToRollWith(HARD).build();
         RollModifier battlefieldInstinctsMod = RollModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .movesToModify(List.of(openBrain))
                 .statToRollWith(HARD).build();
         StatModifier insanoMod = StatModifier.builder()
@@ -1511,7 +1512,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .modification(1).build();
         StatModifier savedInsanoMod = statModifierService.save(insanoMod);
         MoveAction gunluggerSpecialAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.GUNLUGGER_SPECIAL)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1531,7 +1532,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollModifier(battleHardenedMod)
                 .playbook(PlaybookType.GUNLUGGER).build();
         MoveAction fuckThisShitAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -1568,7 +1569,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .stat(null)
                 .playbook(PlaybookType.GUNLUGGER).build();
         MoveAction bloodcrazedAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1580,7 +1581,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(bloodcrazedAction)
                 .playbook(PlaybookType.GUNLUGGER).build();
         MoveAction notToBeFuckedWithAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1596,7 +1597,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- HARDHOLDER MOVES --------------------------------- */
         MoveAction hardholderSpecialAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1608,7 +1609,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(hardholderSpecialAction)
                 .playbook(PlaybookType.HARDHOLDER).build();
         MoveAction leadershipAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -1627,7 +1628,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(leadershipAction)
                 .playbook(PlaybookType.HARDHOLDER).build();
         MoveAction wealthAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HARD)
@@ -1652,7 +1653,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- HOCUS MOVES --------------------------------- */
         MoveAction hocusSpecialAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.HOCUS_SPECIAL)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1664,7 +1665,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(hocusSpecialAction)
                 .playbook(PlaybookType.HOCUS).build();
         MoveAction fortunesAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.FORTUNE)
                 .build();
@@ -1683,7 +1684,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(fortunesAction)
                 .playbook(PlaybookType.HOCUS).build();
         MoveAction frenzyAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(WEIRD)
@@ -1709,7 +1710,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(frenzyAction)
                 .playbook(PlaybookType.HOCUS).build();
         RollModifier charismaticModifier = RollModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .movesToModify(List.of(seduceOrManip))
                 .statToRollWith(WEIRD).build();
         Move charismatic = Move.builder()
@@ -1729,7 +1730,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statModifier(savedWacknutModifier)
                 .playbook(PlaybookType.HOCUS).build();
         RollModifier seeingSoulsModifier = RollModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .movesToModify(List.of(helpOrInterfere))
                 .statToRollWith(WEIRD).build();
         Move seeingSouls = Move.builder()
@@ -1739,7 +1740,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollModifier(seeingSoulsModifier)
                 .playbook(PlaybookType.HOCUS).build();
         MoveAction divineProtectionAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -1756,7 +1757,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- MAESTRO'D MOVES --------------------------------- */
         MoveAction maestroSpecialAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .build();
         Move maestroSpecial = Move.builder()
@@ -1766,7 +1767,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(maestroSpecialAction)
                 .playbook(PlaybookType.MAESTRO_D).build();
         RollModifier callThisHotModifier = RollModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .movesToModify(List.of(doSomethingUnderFire))
                 .statToRollWith(HOT).build();
         Move callThisHot = Move.builder()
@@ -1776,7 +1777,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollModifier(callThisHotModifier)
                 .playbook(PlaybookType.MAESTRO_D).build();
         RollModifier devilWithBladeModifier = RollModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .movesToModify(List.of(goAggro))
                 .statToRollWith(HOT).build();
         Move devilWithBlade = Move.builder()
@@ -1786,7 +1787,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .rollModifier(devilWithBladeModifier)
                 .playbook(PlaybookType.MAESTRO_D).build();
         MoveAction fingersInPieAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HOT)
@@ -1804,7 +1805,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(fingersInPieAction)
                 .playbook(PlaybookType.MAESTRO_D).build();
         MoveAction everybodyEatsAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HOT)
@@ -1828,7 +1829,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(everybodyEatsAction)
                 .playbook(PlaybookType.MAESTRO_D).build();
         MoveAction justGiveMotiveAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.CHOICE)
                 .build();
@@ -1850,7 +1851,7 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- SAVVYHEAD MOVES --------------------------------- */
 
         MoveAction savvyheadSpecialAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .build();
         Move savvyheadSpecial = Move.builder()
@@ -1864,7 +1865,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(PlaybookType.SAVVYHEAD).build();
 
         MoveAction thingsSpeakAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(WEIRD)
@@ -1889,7 +1890,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(PlaybookType.SAVVYHEAD).build();
 
         MoveAction bonefeelAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(WEIRD)
@@ -1910,7 +1911,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(PlaybookType.SAVVYHEAD).build();
 
         MoveAction oftenerRightAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .build();
         Move oftenerRight = Move.builder()
@@ -1921,7 +1922,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(PlaybookType.SAVVYHEAD).build();
 
         MoveAction frayingEdgeAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .build();
         Move frayingEdge = Move.builder()
@@ -1934,7 +1935,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(PlaybookType.SAVVYHEAD).build();
 
         RollModifier spookyIntenseModifier = RollModifier.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .movesToModify(List.of(doSomethingUnderFire, standOverwatch, beTheBait))
                 .statToRollWith(WEIRD).build();
         Move spookyIntense = Move.builder()
@@ -1960,7 +1961,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- SKINNER MOVES --------------------------------- */
         MoveAction skinnerSpecialAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.SKINNER_SPECIAL)
                 .build();
         Move skinnerSpecial = Move.builder()
@@ -1987,7 +1988,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .statModifier(savedBreathtakingModifier)
                 .playbook(PlaybookType.SKINNER).build();
         MoveAction lostAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(WEIRD)
@@ -2006,7 +2007,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(lostAction)
                 .playbook(PlaybookType.SKINNER).build();
         MoveAction artfulAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HOT)
@@ -2030,7 +2031,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(artfulAction)
                 .playbook(PlaybookType.SKINNER).build();
         MoveAction arrestingSkinnerAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.PRINT)
                 .rollType(null)
                 .statToRollWith(null)
@@ -2044,7 +2045,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .moveAction(arrestingSkinnerAction)
                 .playbook(PlaybookType.SKINNER).build();
         MoveAction hypnoticAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STAT)
                 .statToRollWith(HOT)
@@ -2899,7 +2900,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.DEFAULT_CHARACTER);
 
         AngelKitCreator angelKitCreator = AngelKitCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .angelKitInstructions("Your angel kit has all kinds of crap in it: scissors, rags, tape, needles, clamps, gloves, chill coils, wipes, alcohol, injectable tourniquets & bloodslower, instant blood packets (coffee reddener), tubes of meatmesh, bonepins & site injectors, biostabs, chemostabs, narcostabs (chillstabs) in quantity, and a roll of heart jumpshock patches for when it comes to that. It’s big enough to fill the trunk of a car.\n" +
                         "\n" +
                         "When you use it, spend its stock; you can spend 0–3 of its stock per use.\n" +
@@ -2910,12 +2911,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .startingStock(6)
                 .build();
         PlaybookUniqueCreator angelUniqueCreator = PlaybookUniqueCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.ANGEL_KIT)
                 .angelKitCreator(angelKitCreator)
                 .build();
         GearInstructions angelGearInstructions = GearInstructions.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gearIntro("You get:")
                 .youGetItems(List.of("fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
                 .introduceChoice("Small practical weapons")
@@ -2960,39 +2961,39 @@ public class GameDataLoader implements CommandLineRunner {
         List<Move> battlebabeDefaultMoves = moveRepository
                 .findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.DEFAULT_CHARACTER);
 
-        TaggedItem firearmBase1 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("handgun").tags(List.of("2-harm", "close", "reload", "loud")).build();
-        TaggedItem firearmBase2 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("shotgun").tags(List.of("3-harm", "close", "reload", "messy")).build();
-        TaggedItem firearmBase3 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("rifle").tags(List.of("2-harm", "far", "reload", "loud")).build();
-        TaggedItem firearmBase4 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("crossbow").tags(List.of("2-harm", "close", "slow")).build();
+        TaggedItem firearmBase1 = TaggedItem.builder().id(new ObjectId().toString()).description("handgun").tags(List.of("2-harm", "close", "reload", "loud")).build();
+        TaggedItem firearmBase2 = TaggedItem.builder().id(new ObjectId().toString()).description("shotgun").tags(List.of("3-harm", "close", "reload", "messy")).build();
+        TaggedItem firearmBase3 = TaggedItem.builder().id(new ObjectId().toString()).description("rifle").tags(List.of("2-harm", "far", "reload", "loud")).build();
+        TaggedItem firearmBase4 = TaggedItem.builder().id(new ObjectId().toString()).description("crossbow").tags(List.of("2-harm", "close", "slow")).build();
 
-        ItemCharacteristic firearmOption1 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("ornate").tag("+valuable").build();
-        ItemCharacteristic firearmOption2 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("antique").tag("+valuable").build();
-        ItemCharacteristic firearmOption3 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("semiautomatic").tag("-reload").build();
-        ItemCharacteristic firearmOption4 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("3-round burst").tag("+1harm").build();
-        ItemCharacteristic firearmOption5 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("automatic").tag("+area").build();
-        ItemCharacteristic firearmOption6 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("silenced").tag("-loud").build();
-        ItemCharacteristic firearmOption7 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("hi-powered").tag("close/far, or +1harm at far").build();
-        ItemCharacteristic firearmOption8 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("ap ammo").tag("+ap").build();
-        ItemCharacteristic firearmOption9 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("scoped").tag("+far, or +1harm at far").build();
-        ItemCharacteristic firearmOption10 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("big").tag("+1harm").build();
+        ItemCharacteristic firearmOption1 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("ornate").tag("+valuable").build();
+        ItemCharacteristic firearmOption2 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("antique").tag("+valuable").build();
+        ItemCharacteristic firearmOption3 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("semiautomatic").tag("-reload").build();
+        ItemCharacteristic firearmOption4 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("3-round burst").tag("+1harm").build();
+        ItemCharacteristic firearmOption5 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("automatic").tag("+area").build();
+        ItemCharacteristic firearmOption6 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("silenced").tag("-loud").build();
+        ItemCharacteristic firearmOption7 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("hi-powered").tag("close/far, or +1harm at far").build();
+        ItemCharacteristic firearmOption8 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("ap ammo").tag("+ap").build();
+        ItemCharacteristic firearmOption9 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("scoped").tag("+far, or +1harm at far").build();
+        ItemCharacteristic firearmOption10 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("big").tag("+1harm").build();
 
-        TaggedItem handBase1 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("staff").tags(List.of("1-harm", "hand", "area")).build();
-        TaggedItem handBase2 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("haft").tags(List.of("1-harm", "hand")).build();
-        TaggedItem handBase3 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("handle").tags(List.of("1-harm", "hand")).build();
-        TaggedItem handBase4 = TaggedItem.builder().id(UUID.randomUUID().toString()).description("chain").tags(List.of("1-harm", "hand", "area")).build();
+        TaggedItem handBase1 = TaggedItem.builder().id(new ObjectId().toString()).description("staff").tags(List.of("1-harm", "hand", "area")).build();
+        TaggedItem handBase2 = TaggedItem.builder().id(new ObjectId().toString()).description("haft").tags(List.of("1-harm", "hand")).build();
+        TaggedItem handBase3 = TaggedItem.builder().id(new ObjectId().toString()).description("handle").tags(List.of("1-harm", "hand")).build();
+        TaggedItem handBase4 = TaggedItem.builder().id(new ObjectId().toString()).description("chain").tags(List.of("1-harm", "hand", "area")).build();
 
-        ItemCharacteristic handOption1 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("ornate").tag("+valuable").build();
-        ItemCharacteristic handOption2 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("antique").tag("+valuable").build();
-        ItemCharacteristic handOption3 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("head").tag("+1harm").build();
-        ItemCharacteristic handOption4 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("spikes").tag("+1harm").build();
-        ItemCharacteristic handOption5 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("blade").tag("+1harm").build();
-        ItemCharacteristic handOption6 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("long blade*").tag("+2harm").build();
-        ItemCharacteristic handOption7 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("heavy blade*").tag("+2harm").build();
-        ItemCharacteristic handOption8 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("blades*").tag("+2harm").build();
-        ItemCharacteristic handOption9 = ItemCharacteristic.builder().id(UUID.randomUUID().toString()).description("hidden").tag("+infinite").build();
+        ItemCharacteristic handOption1 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("ornate").tag("+valuable").build();
+        ItemCharacteristic handOption2 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("antique").tag("+valuable").build();
+        ItemCharacteristic handOption3 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("head").tag("+1harm").build();
+        ItemCharacteristic handOption4 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("spikes").tag("+1harm").build();
+        ItemCharacteristic handOption5 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("blade").tag("+1harm").build();
+        ItemCharacteristic handOption6 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("long blade*").tag("+2harm").build();
+        ItemCharacteristic handOption7 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("heavy blade*").tag("+2harm").build();
+        ItemCharacteristic handOption8 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("blades*").tag("+2harm").build();
+        ItemCharacteristic handOption9 = ItemCharacteristic.builder().id(new ObjectId().toString()).description("hidden").tag("+infinite").build();
 
         CustomWeaponsCreator customWeaponsCreator = CustomWeaponsCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .firearmsTitle("CUSTOM FIREARMS")
                 .firearmsBaseInstructions("Base (choose 1):")
                 .firearmsBaseOptions(List.of(firearmBase1, firearmBase2, firearmBase3, firearmBase4))
@@ -3008,13 +3009,13 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         PlaybookUniqueCreator battlebabeUniqueCreator = PlaybookUniqueCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.CUSTOM_WEAPONS)
                 .customWeaponsCreator(customWeaponsCreator)
                 .build();
 
         GearInstructions battlebabeGearInstructions = GearInstructions.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gearIntro("You get:")
                 .youGetItems(List.of("fashion suitable to your look, including at your option fashion worth 1-armor or body armor worth 2-armor (you detail)"))
                 .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
@@ -3052,7 +3053,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.DEFAULT_CHARACTER);
 
         BrainerGearCreator brainerGearCreator = BrainerGearCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gear(List.of("implant syringe (tag hi-tech)" +
                                 "_After you’ve tagged someone, if a brainer move allows you to inflict harm on them, inflict +1harm._",
                         "brain relay (area close hi-tech)" +
@@ -3068,12 +3069,12 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         PlaybookUniqueCreator brainerUniqueCreator = PlaybookUniqueCreator.builder().type(UniqueType.BRAINER_GEAR)
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .brainerGearCreator(brainerGearCreator)
                 .build();
 
         GearInstructions brainerGearInstructions = GearInstructions.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gearIntro("You get:")
                 .youGetItems(List.of("fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
                 .introduceChoice("Small fancy weapons")
@@ -3115,73 +3116,73 @@ public class GameDataLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.CHOPPER, MoveType.DEFAULT_CHARACTER);
 
         GangOption gangOption1 = GangOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang consists of 30 or so violent bastards. Medium instead of small.")
                 .modifier("MEDIUM")
                 .build();
 
         GangOption gangOption2 = GangOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang's well-armed. +1harm")
                 .modifier("+1harm")
                 .build();
 
         GangOption gangOption3 = GangOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang's well-armored. +1armor")
                 .modifier("+1armor")
                 .build();
 
         GangOption gangOption4 = GangOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang's well-disciplined. Drop savage.")
                 .tag("-savage")
                 .build();
 
         GangOption gangOption5 = GangOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang's nomadic at heart, and able to maintain and repair its own bikes without a home base. It gets +mobile.")
                 .tag("+mobile")
                 .build();
 
         GangOption gangOption6 = GangOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang's self-sufficient, able to provide for itself by raiding and scavenging. It gets +rich")
                 .tag("+rich")
                 .build();
 
         GangOption gangOption7 = GangOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang's bikes are in bad shape and need constant attention. Vulnerable: breakdown.")
                 .tag("+vulnerable: breakdown")
                 .build();
 
         GangOption gangOption8 = GangOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang's bikes are picky and high-maintenance. Vulnerable: grounded.")
                 .tag("+vulnerable: grounded")
                 .build();
 
         GangOption gangOption9 = GangOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang's loose-knit, with members coming and going as they choose. Vulnerable: desertion")
                 .tag("+vulnerable: desertion")
                 .build();
 
         GangOption gangOption10 = GangOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang is in significant debt to someone powerful. Vulnerable: obligation.")
                 .tag("+vulnerable: obligation")
                 .build();
 
         GangOption gangOption11 = GangOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang is filthy and unwell. Vulnerable: disease.")
                 .tag("+vulnerable: disease")
                 .build();
 
         GangCreator gangCreator = GangCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .intro("By default, your gang consists of about 15 violent bastards with scavenged and makeshift weapons and armor, and no fucking discipline at all (2-harm gang small savage 1-armor)")
                 .defaultSize(GangSize.SMALL)
                 .defaultArmor(1)
@@ -3194,13 +3195,13 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         PlaybookUniqueCreator chopperUniqueCreator = PlaybookUniqueCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.GANG)
                 .gangCreator(gangCreator)
                 .build();
 
         GearInstructions chopperGearInstructions = GearInstructions.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gearIntro("In addition to your bike and gang, you get:")
                 .youGetItems(List.of("fashion suitable to your look, worth 1-armor or 2-armor (you detail)"))
                 .introduceChoice("No-nonsense weapons")
@@ -3249,7 +3250,7 @@ public class GameDataLoader implements CommandLineRunner {
         List<Move> driverDefaultMoves = moveRepository
                 .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.DEFAULT_CHARACTER);
         GearInstructions driverGearInstructions = GearInstructions.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gearIntro("In addition to your car, you get:")
                 .youGetItems(List.of("fashion suitable to your look, including at your option a piece worth 1-armor (you detail)"))
                 .introduceChoice("Handy weapons")
@@ -3297,7 +3298,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.GUNLUGGER, MoveType.DEFAULT_CHARACTER);
 
         GearInstructions gearInstructionsGunlugger = GearInstructions.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gearIntro("You get:")
                 .youGetItems(List.of("armor worth 2-armor (you detail)"))
                 .startingBarter(2)
@@ -3305,7 +3306,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         WeaponsCreator weaponsCreator = WeaponsCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .bfoGunOptionCount(1)
                 .seriousGunOptionCount(2)
                 .backupWeaponsOptionCount(1)
@@ -3332,7 +3333,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         PlaybookUniqueCreator gunluggerUniqueCreator = PlaybookUniqueCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.WEAPONS)
                 .weaponsCreator(weaponsCreator)
                 .build();
@@ -3365,7 +3366,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.HARDHOLDER, MoveType.DEFAULT_CHARACTER);
 
         GearInstructions gearInstructionsHardholder = GearInstructions.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gearIntro("In addition to your holding, detail your personal fashion.\n" +
                         "\n" +
                         "You can have, for your personal use, with the MC's approval, a few pieces of non-specialized gear or weapons from any character playbook.")
@@ -3373,7 +3374,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         HoldingOption holdingOption1 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your population in large, 200-300 souls. Surplus: +1barter, want: +disease")
                 .surplusChange(1)
                 .wantChange(List.of("+disease"))
@@ -3387,7 +3388,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption2 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your population in small, 50-60 souls. Want: anxiety instead of want: hungry")
                 .surplusChange(-2)
                 .wantChange(List.of("+anxiety", "-hungry"))
@@ -3401,7 +3402,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption3 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("for gigs, add lucrative raiding. Surplus: +1barter, want: +reprisals")
                 .surplusChange(1)
                 .wantChange(List.of("+reprisals"))
@@ -3415,7 +3416,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption4 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("for gigs, add protection tribute. Surplus: +1barter, want: +obligation")
                 .surplusChange(1)
                 .wantChange(List.of("+obligation"))
@@ -3429,7 +3430,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption5 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("for gigs, add a manufactory. Surplus: +1barter, want: +idle")
                 .surplusChange(1)
                 .wantChange(List.of("+idle"))
@@ -3443,7 +3444,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption6 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("for gigs, add a bustling, widely-known market commons. Surplus: +1barter, want: +strangers")
                 .surplusChange(1)
                 .wantChange(List.of("+strangers"))
@@ -3457,7 +3458,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption7 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang is large instead of medium, 60 violent bastards or so.")
                 .surplusChange(-2)
                 .wantChange(null)
@@ -3471,7 +3472,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption8 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang is well-disciplined. Drop unruly.")
                 .surplusChange(-2)
                 .wantChange(null)
@@ -3485,7 +3486,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption9 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your armory is sophisticated and extensive. Your gang gets +1harm.")
                 .surplusChange(-2)
                 .wantChange(null)
@@ -3499,7 +3500,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption10 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your garage includes 7 battle vehicles, plus a couple more utility vehicles if you want them.")
                 .surplusChange(-2)
                 .wantChange(null)
@@ -3513,7 +3514,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption11 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your compound is tall, deep and mighty, of stone and iron. Your gang gets +2armor with fighting in its defense.")
                 .surplusChange(-2)
                 .wantChange(null)
@@ -3527,7 +3528,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(2)
                 .build();
         HoldingOption holdingOption12 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your population is filthy and unwell. Want: +disease.")
                 .surplusChange(-2)
                 .wantChange(List.of("+disease"))
@@ -3541,7 +3542,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption13 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your population is lazy and drug-stupored. Want: +famine.")
                 .surplusChange(-2)
                 .wantChange(List.of("+famine"))
@@ -3555,7 +3556,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption14 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your population is decadent and perverse. Surplus: -1barter, want: +savagery.")
                 .surplusChange(-1)
                 .wantChange(List.of("+savagery"))
@@ -3569,7 +3570,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption15 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your holding owes protection to tribute. Surplus: -1barter, want: +reprisals")
                 .surplusChange(-1)
                 .wantChange(List.of("+reprisals"))
@@ -3583,7 +3584,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption16 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang is small instead of medium, only 10-20 violent bastards.")
                 .surplusChange(-2)
                 .wantChange(null)
@@ -3597,7 +3598,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption17 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your gang is a pack of fucking hyenas. Want: +savagery.")
                 .surplusChange(-2)
                 .wantChange(null)
@@ -3611,7 +3612,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption18 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your armory is for shit. Your gang gets -1harm.")
                 .surplusChange(-2)
                 .wantChange(null)
@@ -3625,7 +3626,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption19 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your garage is for shit. It has only 4 vehicles, and only 2 of them are suitable for battle.")
                 .surplusChange(-2)
                 .wantChange(null)
@@ -3639,7 +3640,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .newArmorBonus(-1)
                 .build();
         HoldingOption holdingOption20 = HoldingOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("your compound is mostly tents, lean-tos and wooden walls. Your gang gets no armor bonus when fighting to defend it.")
                 .surplusChange(-2)
                 .wantChange(null)
@@ -3654,7 +3655,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         HoldingCreator holdingCreator = HoldingCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .defaultHoldingSize(HoldingSize.MEDIUM)
                 .instructions("By default, your holding has:\n" +
                         "\n" +
@@ -3683,7 +3684,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         PlaybookUniqueCreator playbookUniqueCreatorHardHolder = PlaybookUniqueCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.HOLDING)
                 .holdingCreator(holdingCreator)
                 .build();
@@ -3718,14 +3719,14 @@ public class GameDataLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.HOCUS, MoveType.CHARACTER);
 
         GearInstructions gearInstructionsHocus = GearInstructions.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gearIntro("In addition to your followers, detail your fashion according to your look. But apart from that and some barter, you have no gear to speak of.")
                 .startingBarter(4)
                 .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
                 .build();
 
         FollowersOption followersOption1 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers are dedicated to you. Surplus: +1barter, and replace want: desertion with want: hungry.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(1)
@@ -3734,7 +3735,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(List.of("+hungry", "-desertion"))
                 .build();
         FollowersOption followersOption2 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers are involved in successful commerce. +1fortune.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
@@ -3743,7 +3744,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(null)
                 .build();
         FollowersOption followersOption3 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers, taken as a body, constitute a powerful psychic antenna. Surplus +augury.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
@@ -3752,7 +3753,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(null)
                 .build();
         FollowersOption followersOption4 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers are joyous and celebratory. Surplus: +party.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
@@ -3761,7 +3762,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(null)
                 .build();
         FollowersOption followersOption5 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers are rigorous and argumentative. Surplus: +insight.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
@@ -3770,7 +3771,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(null)
                 .build();
         FollowersOption followersOption6 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers are hard-working, no-nonsense. +1barter.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(1)
@@ -3779,7 +3780,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(null)
                 .build();
         FollowersOption followersOption7 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers are eager, enthusiastic and successful recruiters. Surplus: +growth.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
@@ -3788,7 +3789,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(null)
                 .build();
         FollowersOption followersOption8 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("You have few followers, 10 or fewer. Surplus: -1barter.")
                 .newNumberOfFollowers(10)
                 .surplusBarterChange(-1)
@@ -3797,7 +3798,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(null)
                 .build();
         FollowersOption followersOption9 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers aren't really yours, more like you're theirs. Want: judgement instead of want: desertion.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
@@ -3806,7 +3807,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(List.of("+judgement", "-desertion"))
                 .build();
         FollowersOption followersOption10 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers rely entirely on you for their lives and needs. Want: +desperation.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
@@ -3815,7 +3816,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(List.of("+desperation"))
                 .build();
         FollowersOption followersOption11 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers are drug-fixated. Surplus: +stupor.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
@@ -3824,7 +3825,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(null)
                 .build();
         FollowersOption followersOption12 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers disdain fashion, luxury and convention. Want: +disease.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
@@ -3833,7 +3834,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(List.of("+disease"))
                 .build();
         FollowersOption followersOption13 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers disdain law, peace, reason and society. Surplus: +violence.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
@@ -3842,7 +3843,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .wantChange(null)
                 .build();
         FollowersOption followersOption14 = FollowersOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("Your followers are decadent and perverse. Want: +savagery.")
                 .newNumberOfFollowers(-1)
                 .surplusBarterChange(-2)
@@ -3852,7 +3853,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         FollowersCreator followersCreator = FollowersCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .instructions("By default you have around 20 followers, loyal to you but not fanatical. They have their own lives apart from you, integrated into the local population (fortune+1 surplus: 1-barter want: desertion)")
                 .defaultNumberOfFollowers(20)
                 .defaultSurplusBarter(1)
@@ -3869,7 +3870,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         PlaybookUniqueCreator playbookUniqueCreatorHocus = PlaybookUniqueCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.FOLLOWERS)
                 .followersCreator(followersCreator)
                 .build();
@@ -3904,7 +3905,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.MAESTRO_D, MoveType.CHARACTER);
 
         GearInstructions gearInstructionsMaestro = GearInstructions.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gearIntro("In addition to your establishment, you get:")
                 .youGetItems(List.of(
                         "a wicked blade, like a kitchen knife or 12\" razor-sharp scissors (2-harm hand)",
@@ -3914,55 +3915,55 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         SecurityOption securityOption1 = SecurityOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("a real gang (3-harm gang small 1-armor)")
                 .value(2)
                 .build();
 
         SecurityOption securityOption2 = SecurityOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("a convenient shotgun (3-harm close reload messy)")
                 .value(1)
                 .build();
 
         SecurityOption securityOption3 = SecurityOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("a bouncer who knows his biz (2-harm 1-armor)")
                 .value(1)
                 .build();
 
         SecurityOption securityOption4 = SecurityOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("plywood & chickenwire (1-armor)")
                 .value(1)
                 .build();
 
         SecurityOption securityOption5 = SecurityOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("secrecy, passwords, codes & signals, invites-only, vouching etc.")
                 .value(1)
                 .build();
 
         SecurityOption securityOption6 = SecurityOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("everybody's packing: your cast & crew are a gang (2-harm gang small 0-armor)")
                 .value(1)
                 .build();
 
         SecurityOption securityOption7 = SecurityOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("a warren of dead-ends, hideaways and boltholes")
                 .value(1)
                 .build();
 
         SecurityOption securityOption8 = SecurityOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .description("no fixed location, always new venues")
                 .value(1)
                 .build();
 
         EstablishmentCreator establishmentCreator = EstablishmentCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .mainAttractionCount(1)
                 .sideAttractionCount(2)
                 .attractions(List.of("luxury food", "music", "fashion", "lots of food", "sex", "spectacle", "easy food",
@@ -3985,7 +3986,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         PlaybookUniqueCreator playbookUniqueCreatorMaestro = PlaybookUniqueCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.ESTABLISHMENT)
                 .establishmentCreator(establishmentCreator)
                 .build();
@@ -4020,14 +4021,14 @@ public class GameDataLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.SAVVYHEAD, MoveType.CHARACTER);
 
         GearInstructions gearInstructionsSavvyhead = GearInstructions.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gearIntro("In addition to your workspace, detail your personal fashion, and any personal piece or three of normal gear or weaponry.")
                 .startingBarter(6)
                 .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
                 .build();
 
         WorkspaceCreator workspaceCreator = WorkspaceCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .itemsCount(3)
                 .workspaceInstructions("When you go into your workspace and dedicate yourself to making a thing, or to getting to the bottom of some shit, decide what an tell the MC.\n" +
                         "\n" +
@@ -4067,7 +4068,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         PlaybookUniqueCreator playbookUniqueCreatorSavvyhead = PlaybookUniqueCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.WORKSPACE)
                 .workspaceCreator(workspaceCreator)
                 .build();
@@ -4102,7 +4103,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.DEFAULT_CHARACTER);
 
         GearInstructions gearInstructionsSkinner = GearInstructions.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gearIntro("You get:")
                 .youGetItems(List.of("fashion suitable to your look (you detail)"))
                 .startingBarter(2)
@@ -4110,56 +4111,56 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         SkinnerGearItem item1 = SkinnerGearItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .item("sleeve pistol (2-harm close reload loud)")
                 .build();
         SkinnerGearItem item2 = SkinnerGearItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .item("ornate dagger (2-harm hand valuable)")
                 .build();
         SkinnerGearItem item3 = SkinnerGearItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .item("hidden knives (2-harm hand infinite)")
                 .build();
         SkinnerGearItem item4 = SkinnerGearItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .item("ornate sword (3-harm hand valuable)")
                 .build();
         SkinnerGearItem item5 = SkinnerGearItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .item("antique handgun (2-harm close reload loud valuable)")
                 .build();
         SkinnerGearItem item6 = SkinnerGearItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .item("antique coins (worn valuable)")
                 .note("Drilled with holes for jewelry")
                 .build();
         SkinnerGearItem item7 = SkinnerGearItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .item("eyeglasses (worn valuable)")
                 .note("You may use these for +1sharp when your eyesight matters, but if you do, without them you get -1sharp when your eyesight matters.")
                 .build();
         SkinnerGearItem item8 = SkinnerGearItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .item("long gorgeous coat (worn valuable)")
                 .build();
         SkinnerGearItem item9 = SkinnerGearItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .item("spectacular tattoos (implanted)")
                 .build();
         SkinnerGearItem item10 = SkinnerGearItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .item("skin & hair kit (applied valuable)")
                 .note("Soaps, ochres, paints, creams, salves. Using it lets you take +1hot forward.")
                 .build();
         SkinnerGearItem item11 = SkinnerGearItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .item("a pet (valuable alive")
                 .note("Your choice and yours to detail.")
                 .build();
 
         SkinnerGearCreator skinnerGearCreator = SkinnerGearCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .graciousWeaponCount(1)
                 .luxeGearCount(2)
                 .graciousWeaponChoices(List.of(item1, item2, item3, item4, item5))
@@ -4167,7 +4168,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         PlaybookUniqueCreator playbookUniqueCreatorSkinner = PlaybookUniqueCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.SKINNER_GEAR)
                 .skinnerGearCreator(skinnerGearCreator)
                 .build();
@@ -4211,7 +4212,7 @@ public class GameDataLoader implements CommandLineRunner {
 
     public void loadVehicleCreator() {
         VehicleFrame bikeFrame = VehicleFrame.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .frameType(VehicleFrameType.BIKE)
                 .massive(0)
                 .examples("Road bike, trail bike, low-rider")
@@ -4219,7 +4220,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         VehicleFrame smallFrame = VehicleFrame.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .frameType(VehicleFrameType.SMALL)
                 .massive(1)
                 .examples("Compact, buggy")
@@ -4227,7 +4228,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         VehicleFrame mediumFrame = VehicleFrame.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .frameType(VehicleFrameType.MEDIUM)
                 .massive(2)
                 .examples("Coupe, sedan, jeep, pickup, van, limo, 4x4, tractor")
@@ -4235,7 +4236,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         VehicleFrame largeFrame = VehicleFrame.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .frameType(VehicleFrameType.LARGE)
                 .massive(3)
                 .examples("Semi, bus, ambulance, construction/utility")
@@ -4243,25 +4244,25 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         VehicleBattleOption battleOption1 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .battleOptionType(BattleOptionType.SPEED)
                 .name("+1speed")
                 .build();
 
         VehicleBattleOption battleOption2 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .battleOptionType(BattleOptionType.HANDLING)
                 .name("+1handling")
                 .build();
 
         VehicleBattleOption battleOption3 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .battleOptionType(BattleOptionType.MASSIVE)
                 .name("+1massive")
                 .build();
 
         VehicleBattleOption battleOption4 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .battleOptionType(BattleOptionType.ARMOR)
                 .name("+1armor")
                 .build();
@@ -4292,7 +4293,7 @@ public class GameDataLoader implements CommandLineRunner {
                 "rabbity");
 
         BikeCreator bikeCreator = BikeCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .vehicleType(VehicleType.BIKE)
                 .introInstructions("By default, your bike has speed=0, handling=0, 0-armor and the massive rating of its frame.")
                 .frame(bikeFrame)
@@ -4339,7 +4340,7 @@ public class GameDataLoader implements CommandLineRunner {
                 "rabbity");
 
         CarCreator carCreator = CarCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .vehicleType(VehicleType.CAR)
                 .introInstructions("By default, your vehicle has speed=0, handling=0, 0-armor and the massive rating of its frame.")
                 .frames(List.of(bikeFrame, smallFrame, mediumFrame, largeFrame))
@@ -4350,37 +4351,37 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         VehicleBattleOption battleOption5 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .battleOptionType(BattleOptionType.WEAPON)
                 .name("Mounted machine guns (3-harm close/far area messy)")
                 .build();
 
         VehicleBattleOption battleOption6 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .battleOptionType(BattleOptionType.WEAPON)
                 .name("Mounted grenade launcher (4-harm close area messy)")
                 .build();
 
         VehicleBattleOption battleOption7 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .battleOptionType(BattleOptionType.WEAPON)
                 .name("Ram or ramming spikes (as a weapon, vehicle inflicts +1harm)")
                 .build();
 
         VehicleBattleOption battleOption8 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .battleOptionType(BattleOptionType.WEAPON)
                 .name("Mounted 50cal mg (5-harm far area messy)")
                 .build();
 
         VehicleBattleOption battleOption9 = VehicleBattleOption.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .battleOptionType(BattleOptionType.WEAPON)
                 .name("Mounted boarding platform or harness (+1 to attempts to board another vehicle from this one)")
                 .build();
 
         BattleVehicleCreator battleVehicleCreator = BattleVehicleCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .vehicleType(VehicleType.BATTLE)
                 .battleVehicleOptions(List.of(battleOption1, battleOption2, battleOption3, battleOption4, battleOption5,
                         battleOption6, battleOption7, battleOption8, battleOption9))
@@ -4397,14 +4398,14 @@ public class GameDataLoader implements CommandLineRunner {
 
     public void loadMcContent() {
         TickerList agenda = TickerList.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Agenda")
                 .items(List.of("Make Apocalypse World seem real.",
                         "Make the player's characters' lives not boring.",
                         "Play to find out what happens."))
                 .build();
         TickerList alwaysSay = TickerList.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Always say")
                 .items(List.of("Always say what the principles demand.",
                         "Always say what the rules demand.",
@@ -4413,7 +4414,7 @@ public class GameDataLoader implements CommandLineRunner {
                 ).build();
 
         TickerList principles = TickerList.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("The principles")
                 .items(List.of(
                         "Barf forth apocalyptica.",
@@ -4430,7 +4431,7 @@ public class GameDataLoader implements CommandLineRunner {
                 ))
                 .build();
         TickerList moves = TickerList.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Your moves")
                 .items(List.of("Separate them.",
                         "Capture someone.",
@@ -4449,7 +4450,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "After every move: \"what do you do?\""))
                 .build();
         TickerList essentialThreats = TickerList.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Essential threats")
                 .items(List.of("Where the PCs are, create as a landscape.",
                         "For any PC's gang, create as brutes.",
@@ -4459,7 +4460,7 @@ public class GameDataLoader implements CommandLineRunner {
                 ))
                 .build();
         TickerList moreThings = TickerList.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("A few more things to do")
                 .items(List.of(
                         "Make maps.",
@@ -4471,7 +4472,7 @@ public class GameDataLoader implements CommandLineRunner {
                 ))
                 .build();
         ContentItem decisionMaking = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Decision-making")
                 .content("In order to play to find out what happens, you'll need to pass decision-making off sometimes.\n" +
                         "\n" +
@@ -4485,7 +4486,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "- Make it a stakes question.")
                 .build();
         ContentItem duringCharacterCreation = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("During character creation")
                 .content("While the players are making their characters, there are some things to get out up-front:\n" +
                         "\n" +
@@ -4496,7 +4497,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "- I'm not out to get you. I'm here to find out what's going to happen. Same as you!")
                 .build();
         TickerList duringFirstSession = TickerList.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("During the first session")
                 .items(List.of(
                         "MC the game. Bring it.",
@@ -4515,7 +4516,7 @@ public class GameDataLoader implements CommandLineRunner {
                 )
                 .build();
         ContentItem threatMapInstructions = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("The threat map")
                 .content("During play, keep notes on the threats in the world by noting them on your threat map.\n" +
                         "\n" +
@@ -4533,7 +4534,7 @@ public class GameDataLoader implements CommandLineRunner {
                 )
                 .build();
         TickerList afterFirstSession = TickerList.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("After the first session")
                 .items(List.of("Go back over the threat map. Pull it apart into individual threats.",
                         "Consider the resources that are available to each of them, and the resources that aren't.",
@@ -4542,14 +4543,14 @@ public class GameDataLoader implements CommandLineRunner {
                 )
                 .build();
         ContentItem harm = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Harm")
                 .content("_**Harm as established**_ equals the inflicter's weapon's harm minus the sufferer's armor.\n" +
                         "\n" +
                         "When you suffer harm, make the harm move.")
                 .build();
         ContentItem exchangingHarm = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Exchanging harm")
                 .content("When you _**exchange harm**_, both side simultaneously inflict and suffer harm as established:\n" +
                         "\n" +
@@ -4557,7 +4558,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "- _You suffer harm equal to the harm rating of your enemy's weapon, minus the armor rating of your own armor._")
                 .build();
         ContentItem degrees = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Degrees of harm")
                 .content("For each 1-harm you suffer, mark a segment of your harm countdown clock. Start in the 12:00-3:00 segment and continue around clockwise.\n" +
                         "\n" +
@@ -4578,7 +4579,7 @@ public class GameDataLoader implements CommandLineRunner {
                 )
                 .build();
         ContentItem npcHarm = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("When an NPC takes harm")
                 .content("_**1-harm**: cosmetic damage, pain, concussion, fear if the NPC's likely to be afraid of pain._\n" +
                         "\n" +
@@ -4592,7 +4593,7 @@ public class GameDataLoader implements CommandLineRunner {
                 )
                 .build();
         ContentItem gangAsWeapon = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Using a gang as a weapon")
                 .content("When you have a gang, you can _**sucker someone**_, _**go aggro on them**_, or make a _**battle move**_, using your gang as a weapon.\n" +
                         "\n" +
@@ -4608,7 +4609,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "- *Against a medium gang, a large gang inflicts +1harm and gets +1armor.*")
                 .build();
         ContentItem gangHarm = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("When a gang takes harm")
                 .content("_**1-harm**: a few injuries, one or two serious, no fatalities._\n" +
                         "\n" +
@@ -4640,7 +4641,7 @@ public class GameDataLoader implements CommandLineRunner {
                 )
                 .build();
         ContentItem vehicleAsWeapon = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Using a vehicle as a weapon")
                 .content("When you you're behind the wheel, you can _**sucker someone**_, _**go aggro on them**_, or make a _**battle move**_, using your vehicle as a weapon.\n" +
                         "\n" +
@@ -4664,7 +4665,7 @@ public class GameDataLoader implements CommandLineRunner {
                 )
                 .build();
         ContentItem vehicleHarm = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("When a vehicle suffers harm")
                 .content("Vehicles can suffer regular harm, from bullets, explosions and direct hits from other vehicles, or v-harm, from glancing hits.\n" +
                         "\n" +
@@ -4683,7 +4684,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "Whether harm blows through to a vehicle's driver and passengers, doesn't blow through, or just hits them too without having to blow through, depends on the MC's judgement of the circumstances and the vehicle.")
                 .build();
         ContentItem vharm = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("V-harm")
                 .content("_**V-harm as established**_ is the attacking car's massive minus the defending car's massive or handling, defender's choice.\n" +
                         "\n" +
@@ -4705,7 +4706,7 @@ public class GameDataLoader implements CommandLineRunner {
                 )
                 .build();
         ContentItem buildingHarm = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("When a building takes harm")
                 .content("As with vehicles, when a building suffers harm, there are two considerations: structural damage to the building itself, and how much of the harm blows through to the people inside.\n" +
                         "\n" +
@@ -4724,7 +4725,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "Whether harm actually blows through to a building's inhabitants depends on the MC's judgement of the circumstances and the building. Don't stand near the windows!")
                 .build();
         ContentItem dHarm = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("D-harm")
                 .content("A person suffers d-harm from deprivation. d-harm is strictly for acute cases of deprivation. For scarcity and chronic deprivation, create affliction threats instead.\n" +
                         "\n" +
@@ -4760,7 +4761,7 @@ public class GameDataLoader implements CommandLineRunner {
                 )
                 .build();
         ContentItem psiHarm = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("&Psi;-harm")
                 .content("A person suffers &Psi;-harm from exposure to the world's psychic maelstrom.\n" +
                         "\n" +
@@ -4790,12 +4791,12 @@ public class GameDataLoader implements CommandLineRunner {
                         "On a miss, you keep it together and overcome the -harm with no effect.")
                 .build();
         ContentItem sHarm = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("S-harm")
                 .content("s-harm means stun. It disables its target without causing any regular harm. Use it on a PC, and doing anything at all means doing it under fire; the fire is \"you're stunned\".")
                 .build();
         ContentItem lifestyle = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Lifestyle")
                 .content("If the player pays _**1-barter**_ at the beginning of the session, the character has the same quality of life as most people around her.\n" +
                         "\n" +
@@ -4815,7 +4816,7 @@ public class GameDataLoader implements CommandLineRunner {
                 )
                 .build();
         ContentItem gigs = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Gigs")
                 .content("When a player tells you that her character would like to _**work a gig**_, ask her what she has in mind. She might pick one from her list, or she might suggest a new one.\n" +
                         "\n" +
@@ -4830,7 +4831,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "No matter which way you do it, the baseline for the pay is, when they work a gig, they get _**3-barter**_. You're allowed to pay 2- or 4-barter when you feel like it should, but save them for exceptional outcomes.")
                 .build();
         ContentItem creatingVehicle = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Creating a vehicle")
                 .content("_These are rules for a wider range of vehicles than is usually available to the PCs._\n" +
                         "\n" +
@@ -4856,7 +4857,7 @@ public class GameDataLoader implements CommandLineRunner {
                 )
                 .build();
         ContentItem creatingBattleVehicle = ContentItem.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .title("Creating a specialized battle vehicle")
                 .content("Create the vehicle as normal, and then choose 2:\n" +
                         "\n" +
@@ -4868,7 +4869,7 @@ public class GameDataLoader implements CommandLineRunner {
                         "- _Mounted boarding platform or harness (+1 to attempts to board another vehicle from this one)_")
                 .build();
         FirstSessionContent firstSessionContent = FirstSessionContent.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .intro("The players have it easy. They have these fun little procedures to go through and then they're ready to play.\n" +
                         "\n" +
                         "Your job is harder, you have a lot more to set up then they do.\n" +
@@ -5220,7 +5221,7 @@ public class GameDataLoader implements CommandLineRunner {
                 "- In any local population, create an affliction.";
 
         ThreatCreatorContent warlord = ThreatCreatorContent.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .threatType(ThreatType.WARLORD)
                 .impulses(List.of(
                         "Slaver (to own or sell people)",
@@ -5245,7 +5246,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         ThreatCreatorContent grotesque = ThreatCreatorContent.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .threatType(ThreatType.GROTESQUE)
                 .impulses(List.of(
                         "Cannibal (craves satiety and plenty)",
@@ -5272,7 +5273,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         ThreatCreatorContent brute = ThreatCreatorContent.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .threatType(ThreatType.BRUTE)
                 .impulses(List.of(
                         "Hunting pack (to victimize anyone vulnerable)",
@@ -5296,7 +5297,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         ThreatCreatorContent affliction = ThreatCreatorContent.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .threatType(ThreatType.AFFLICTION)
                 .impulses(List.of(
                         "Disease (to saturate a population)",
@@ -5321,7 +5322,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         ThreatCreatorContent landscape = ThreatCreatorContent.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .threatType(ThreatType.LANDSCAPE)
                 .impulses(List.of(
                         "Prison (to contain, to deny egress)",
@@ -5348,7 +5349,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         ThreatCreatorContent terrain = ThreatCreatorContent.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .threatType(ThreatType.TERRAIN)
                 .impulses(List.of(
                         "A precipice (to send someone over)",
@@ -5371,7 +5372,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
 
         ThreatCreatorContent vehicle = ThreatCreatorContent.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .threatType(ThreatType.VEHICLE)
                 .impulses(List.of(
                         "Relentless bitch (to keep moving)",

@@ -13,6 +13,7 @@ import com.mersiades.awcdata.models.uniques.*;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -20,7 +21,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.mersiades.awccontent.constants.MoveNames.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,7 +68,7 @@ class GameRoleServiceImplTest {
         MockitoAnnotations.initMocks(this);
         Game mockGame1 = Game.builder().id(MOCK_GAME_ID).build();
         mockUser = User.builder().id(MOCK_USER_ID).build();
-        mockCharacter = Character.builder().id(UUID.randomUUID().toString()).build();
+        mockCharacter = Character.builder().id(new ObjectId().toString()).build();
         mockGameRole = GameRole.builder().id(MOCK_GAMEROLE_ID).role(RoleType.MC).gameId(mockGame1.getId()).userId(mockUser.getId()).build();
         mockGame1.getGameRoles().add(mockGameRole);
         mockUser.getGameRoles().add(mockGameRole);
@@ -411,7 +411,7 @@ class GameRoleServiceImplTest {
         String moveId2 = "sixth-sense-id";
         String moveId3 = "infirmary-id";
 
-        RollModifier sixthSenseMod = RollModifier.builder().id(UUID.randomUUID().toString()).statToRollWith(StatType.SHARP).build();
+        RollModifier sixthSenseMod = RollModifier.builder().id(new ObjectId().toString()).statToRollWith(StatType.SHARP).build();
         Move angelSpecial = Move.builder()
                 .id(moveId1)
                 .name("ANGEL SPECIAL")
@@ -440,19 +440,19 @@ class GameRoleServiceImplTest {
         List<Move> angelMoves = List.of(angelSpecial, sixthSense, infirmary);
 
         AngelKitCreator angelKitCreator = AngelKitCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .angelKitInstructions("Your angel kit has...")
                 .startingStock(6)
                 .build();
 
         PlaybookUniqueCreator angelUniqueCreator = PlaybookUniqueCreator.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.ANGEL_KIT)
                 .angelKitCreator(angelKitCreator)
                 .build();
 
         GearInstructions angelGearInstructions = GearInstructions.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .build();
 
         PlaybookCreator angelCreator = PlaybookCreator.builder()
@@ -572,7 +572,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
 
         MoveAction stabilizeAndHealAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
                 .rollType(RollType.STOCK)
                 .statToRollWith(null)
@@ -583,7 +583,7 @@ class GameRoleServiceImplTest {
                 .playbook(PlaybookType.ANGEL)
                 .kind(MoveType.UNIQUE).build();
         MoveAction speedTheRecoveryOfSomeoneAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.STOCK)
                 .rollType(null)
                 .statToRollWith(null)
@@ -594,7 +594,7 @@ class GameRoleServiceImplTest {
                 .moveAction(speedTheRecoveryOfSomeoneAction)
                 .kind(MoveType.UNIQUE).build();
         MoveAction reviveSomeoneAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.STOCK)
                 .rollType(null)
                 .statToRollWith(null)
@@ -605,7 +605,7 @@ class GameRoleServiceImplTest {
                 .moveAction(reviveSomeoneAction)
                 .kind(MoveType.UNIQUE).build();
         MoveAction treatAnNpcAction = MoveAction.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .actionType(MoveActionType.STOCK)
                 .rollType(null)
                 .statToRollWith(null)
