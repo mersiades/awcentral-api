@@ -16,11 +16,15 @@ import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static com.mersiades.awccontent.constants.MoveNames.*;
@@ -118,8 +122,8 @@ public class GameServiceImpl implements GameService {
         Game game = gameRepository.findById(gameId).orElseThrow(NoSuchElementException::new);
 
         // Remove Gameroles from mc and players
-        userService.removeGameroleFromUser(game.getMc().getId(), gameId);
-        game.getPlayers().forEach(player -> userService.removeGameroleFromUser(player.getId(), gameId));
+        userService.removeGameroleFromUser(game.getMc().getId().toString(), gameId);
+        game.getPlayers().forEach(player -> userService.removeGameroleFromUser(player.getId().toString(), gameId));
 
         // Delete Gameroles
         game.getGameRoles().forEach(gameRoleService::delete);
@@ -135,7 +139,7 @@ public class GameServiceImpl implements GameService {
         // Add a demo game if running demo profile
         if (activeProfiles != null && (activeProfiles.equals("demo"))) {
             CharacterHarm harm = CharacterHarm.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .hasChangedPlaybook(false)
                     .hasComeBackHard(false)
                     .hasComeBackWeird(false)
@@ -144,67 +148,78 @@ public class GameServiceImpl implements GameService {
                     .value(0)
                     .build();
 
-            GameRole nateGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.MC).build();
-            GameRole claireGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
-            GameRole ruthGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
+            String gameName = "Demo game";
 
-            User nate = User.builder().id(UUID.randomUUID().toString())
+            GameRole nateGameRole = GameRole.builder()
+                    .id(new ObjectId().toString())
+                    .gameName(gameName)
+                    .role(RoleType.MC).build();
+            GameRole claireGameRole = GameRole.builder()
+                    .id(new ObjectId().toString())
+                    .gameName(gameName)
+                    .role(RoleType.PLAYER).build();
+            GameRole ruthGameRole = GameRole.builder()
+                    .id(new ObjectId().toString())
+                    .gameName(gameName)
+                    .role(RoleType.PLAYER).build();
+
+            User nate = User.builder().id(new ObjectId().toString())
                     .email("nate@email.com").displayName("Nate").gameRoles(List.of(nateGameRole)).build();
-            User claire = User.builder().id(UUID.randomUUID().toString())
+            User claire = User.builder().id(new ObjectId().toString())
                     .email("claire@email.com").displayName("Claire").gameRoles(List.of(claireGameRole)).build();
-            User ruth = User.builder().id(UUID.randomUUID().toString())
+            User ruth = User.builder().id(new ObjectId().toString())
                     .email("ruth@email.com").displayName("Ruth").gameRoles(List.of(ruthGameRole)).build();
 
             Look angel2 = Look.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .playbookType(PlaybookType.ANGEL)
                     .category(LookType.GENDER)
                     .look("woman")
                     .build();
             Look angel6 = Look.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .playbookType(PlaybookType.ANGEL)
                     .category(LookType.CLOTHES)
                     .look("utility wear")
                     .build();
             Look angel10 = Look.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .playbookType(PlaybookType.ANGEL)
                     .category(LookType.FACE)
                     .look("strong face")
                     .build();
             Look angel15 = Look.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .playbookType(PlaybookType.ANGEL)
                     .category(LookType.EYES)
                     .look("quick eyes")
                     .build();
             Look angel21 = Look.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .playbookType(PlaybookType.ANGEL)
                     .category(LookType.BODY)
                     .look("compact body")
                     .build();
 
 
-            CharacterStat angelCool = CharacterStat.builder().id(UUID.randomUUID().toString())
+            CharacterStat angelCool = CharacterStat.builder().id(new ObjectId().toString())
                     .stat(StatType.COOL).value(1).isHighlighted(false).build();
-            CharacterStat angelHard = CharacterStat.builder().id(UUID.randomUUID().toString())
+            CharacterStat angelHard = CharacterStat.builder().id(new ObjectId().toString())
                     .stat(HARD).value(0).isHighlighted(true).build();
-            CharacterStat angelHot = CharacterStat.builder().id(UUID.randomUUID().toString())
+            CharacterStat angelHot = CharacterStat.builder().id(new ObjectId().toString())
                     .stat(StatType.HOT).value(1).isHighlighted(true).build();
-            CharacterStat angelSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
+            CharacterStat angelSharp = CharacterStat.builder().id(new ObjectId().toString())
                     .stat(StatType.SHARP).value(2).isHighlighted(false).build();
-            CharacterStat angelWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
+            CharacterStat angelWeird = CharacterStat.builder().id(new ObjectId().toString())
                     .stat(StatType.WEIRD).value(-1).isHighlighted(false).build();
 
-            StatsBlock angelStatsBlock1 = StatsBlock.builder().id(UUID.randomUUID().toString())
+            StatsBlock angelStatsBlock1 = StatsBlock.builder().id(new ObjectId().toString())
                     .statsOptionId("demo-stats-option-id-1")
                     .stats(List.of(angelCool, angelHard, angelHot, angelSharp, angelWeird))
                     .build();
 
             Character claireChar = Character.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .playbook(PlaybookType.ANGEL)
                     .looks(List.of(angel2, angel6, angel10, angel15, angel21))
                     .statsBlock(angelStatsBlock1)
@@ -213,54 +228,54 @@ public class GameServiceImpl implements GameService {
                     .build();
 
             Look brainer3 = Look.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .playbookType(PlaybookType.BRAINER)
                     .category(LookType.GENDER)
                     .look("ambiguous")
                     .build();
 
             Look brainer6 = Look.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .playbookType(PlaybookType.BRAINER)
                     .category(LookType.CLOTHES)
                     .look("high formal wear")
                     .build();
             Look brainer12 = Look.builder()
                     .playbookType(PlaybookType.BRAINER)
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .category(LookType.FACE)
                     .look("pale face")
                     .build();
             Look brainer17 = Look.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .playbookType(PlaybookType.BRAINER)
                     .category(LookType.EYES)
                     .look("dead eyes")
                     .build();
             Look brainer23 = Look.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .playbookType(PlaybookType.BRAINER)
                     .category(LookType.BODY)
                     .look("awkward angular body").build();
 
-            CharacterStat brainerCool = CharacterStat.builder().id(UUID.randomUUID().toString())
+            CharacterStat brainerCool = CharacterStat.builder().id(new ObjectId().toString())
                     .stat(StatType.COOL).value(1).isHighlighted(false).build();
-            CharacterStat brainerHard = CharacterStat.builder().id(UUID.randomUUID().toString())
+            CharacterStat brainerHard = CharacterStat.builder().id(new ObjectId().toString())
                     .stat(HARD).value(1).isHighlighted(true).build();
-            CharacterStat brainerHot = CharacterStat.builder().id(UUID.randomUUID().toString())
+            CharacterStat brainerHot = CharacterStat.builder().id(new ObjectId().toString())
                     .stat(StatType.HOT).value(-2).isHighlighted(true).build();
-            CharacterStat brainerSharp = CharacterStat.builder().id(UUID.randomUUID().toString())
+            CharacterStat brainerSharp = CharacterStat.builder().id(new ObjectId().toString())
                     .stat(StatType.SHARP).value(1).isHighlighted(false).build();
-            CharacterStat brainerWeird = CharacterStat.builder().id(UUID.randomUUID().toString())
+            CharacterStat brainerWeird = CharacterStat.builder().id(new ObjectId().toString())
                     .stat(StatType.WEIRD).value(2).isHighlighted(false).build();
 
-            StatsBlock brainerStatsBlock = StatsBlock.builder().id(UUID.randomUUID().toString())
+            StatsBlock brainerStatsBlock = StatsBlock.builder().id(new ObjectId().toString())
                     .statsOptionId("demo-stats-option-id-2")
                     .stats(List.of(brainerCool, brainerHard, brainerHot, brainerSharp, brainerWeird))
                     .build();
 
             Character ruthChar = Character.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .playbook(PlaybookType.BRAINER)
                     .looks(List.of(brainer3, brainer6, brainer12, brainer17, brainer23))
                     .name("Jackson")
@@ -268,31 +283,34 @@ public class GameServiceImpl implements GameService {
                     .statsBlock(brainerStatsBlock)
                     .build();
 
-            nateGameRole.setUser(nate);
-            claireGameRole.setUser(claire);
+            nateGameRole.setUserId(nate.getId());
+            claireGameRole.setUserId(claire.getId());
             claireGameRole.setCharacters(List.of(claireChar));
-            ruthGameRole.setUser(ruth);
+            ruthGameRole.setUserId(ruth.getId());
             ruthGameRole.setCharacters(List.of(ruthChar));
-            userService.saveAll(List.of(nate, claire, ruth));
-            gameRoleService.saveAll(List.of(nateGameRole, claireGameRole, ruthGameRole));
-            characterService.saveAll(List.of(claireChar, ruthChar));
+
 
             List<Game> games = gameRepository.findAllByInviteesContaining(email);
 
             if (games.size() == 0) {
                 Game newDemoGame = Game.builder()
-                        .name("Demo game")
+                        .name(gameName)
                         .players(List.of(claire, ruth))
                         .mc(nate)
                         .gameRoles(List.of(nateGameRole, claireGameRole, ruthGameRole))
                         .commsApp("Discord")
                         .commsUrl("https://discord.com/not-a-real-discord-channel")
                         .build();
-                gameRepository.save(newDemoGame);
+                Game savedGame = gameRepository.save(newDemoGame);
+                nateGameRole.setGameId(savedGame.getId());
+                claireGameRole.setGameId(savedGame.getId());
+                ruthGameRole.setGameId(savedGame.getId());
                 games.add(newDemoGame);
             }
 
-
+            userService.saveAll(List.of(nate, claire, ruth));
+            gameRoleService.saveAll(List.of(nateGameRole, claireGameRole, ruthGameRole));
+            characterService.saveAll(List.of(claireChar, ruthChar));
             return games;
         } else {
             return gameRepository.findAllByInviteesContaining(email);
@@ -313,7 +331,10 @@ public class GameServiceImpl implements GameService {
         User creator = userService.findOrCreateUser(userId, displayName, email);
 
         // Create an MC GameRole for the Game creator and add it to the Game
-        GameRole mcGameRole = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.MC).build();
+        GameRole mcGameRole = GameRole.builder()
+                .id(new ObjectId().toString())
+                .gameName(name)
+                .role(RoleType.MC).build();
         newGame.getGameRoles().add(mcGameRole);
         newGame.setMc(creator);
         Game savedGame = gameRepository.save(newGame);
@@ -321,8 +342,8 @@ public class GameServiceImpl implements GameService {
         assert creator != null;
         userService.addGameroleToUser(creator.getId(), mcGameRole);
         // Add the Game and User to the MC's GameRole
-        mcGameRole.setGame(savedGame);
-        mcGameRole.setUser(creator);
+        mcGameRole.setGameId(savedGame.getId());
+        mcGameRole.setUserId(creator.getId());
         gameRoleService.save(mcGameRole);
 
         return newGame;
@@ -375,8 +396,11 @@ public class GameServiceImpl implements GameService {
         User user = userService.findOrCreateUser(userId, displayName, email);
 
         // Create Player Gamerole for user
-        GameRole gameRole = GameRole.builder().id(UUID.randomUUID().toString())
+        GameRole gameRole = GameRole.builder().id(new ObjectId().toString())
                 .role(RoleType.PLAYER)
+                .gameName(game.getName())
+                .gameId(game.getId())
+                .userId(user.getId())
                 .build();
 
         game.getGameRoles().add(gameRole);
@@ -384,11 +408,7 @@ public class GameServiceImpl implements GameService {
         game.getInvitees().remove(email);
         gameRepository.save(game);
 
-        assert user != null;
         userService.addGameroleToUser(user.getId(), gameRole);
-
-        gameRole.setUser(user);
-        gameRole.setGame(game);
         gameRoleService.save(gameRole);
         return game;
     }
@@ -419,7 +439,7 @@ public class GameServiceImpl implements GameService {
         assert character != null;
 
         GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.PRINT_MOVE)
@@ -472,7 +492,7 @@ public class GameServiceImpl implements GameService {
 
         // Create message
         GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.BARTER_MOVE)
@@ -500,7 +520,7 @@ public class GameServiceImpl implements GameService {
         assert move != null;
 
         GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.STOCK_MOVE)
@@ -545,9 +565,9 @@ public class GameServiceImpl implements GameService {
                 .stream().filter(characterMove -> characterMove.getId().equals(moveId)).findFirst();
         CharacterStat modifier;
         String moveName;
-        Hold hold1 = Hold.builder().id(UUID.randomUUID().toString()).build();
-        Hold hold2 = Hold.builder().id(UUID.randomUUID().toString()).build();
-        Hold hold3 = Hold.builder().id(UUID.randomUUID().toString()).build();
+        Hold hold1 = Hold.builder().id(new ObjectId().toString()).build();
+        Hold hold2 = Hold.builder().id(new ObjectId().toString()).build();
+        Hold hold3 = Hold.builder().id(new ObjectId().toString()).build();
 
         if (moveOptional.isPresent()) {
             moveName = moveOptional.get().getName();
@@ -972,7 +992,7 @@ public class GameServiceImpl implements GameService {
         assert inflictHarmMove != null;
 
         GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.ADJUST_HX_MOVE)
@@ -1031,7 +1051,7 @@ public class GameServiceImpl implements GameService {
         otherCharacter.getHarm().setValue(otherCharacter.getHarm().getValue() - harm);
 
         GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.ADJUST_HX_MOVE)
@@ -1086,7 +1106,7 @@ public class GameServiceImpl implements GameService {
                 }).collect(Collectors.toList()));
 
         GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.ADJUST_HX_MOVE)
@@ -1139,7 +1159,7 @@ public class GameServiceImpl implements GameService {
                 }).collect(Collectors.toList()));
 
         GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.ADJUST_HX_MOVE)
@@ -1187,7 +1207,7 @@ public class GameServiceImpl implements GameService {
         }
 
         GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.ADJUST_HX_MOVE)
@@ -1226,14 +1246,14 @@ public class GameServiceImpl implements GameService {
         assert hocusSpecialMove != null;
 
         Hold hold1 = Hold.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .moveName(hocusSpecialName)
                 .moveDescription(hocusSpecialMove.getDescription())
                 .rollResult(0)
                 .build();
 
         Hold hold2 = Hold.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .moveName(hocusSpecialName)
                 .moveDescription(hocusSpecialMove.getDescription())
                 .rollResult(0)
@@ -1243,7 +1263,7 @@ public class GameServiceImpl implements GameService {
         characterOther.getHolds().add(hold2);
 
         GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.PRINT_MOVE)
@@ -1298,7 +1318,7 @@ public class GameServiceImpl implements GameService {
         }
 
         GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.PRINT_MOVE)
@@ -1409,7 +1429,7 @@ public class GameServiceImpl implements GameService {
         }
 
         GameMessage gameMessage = GameMessage.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.PRINT_MOVE)
@@ -1471,7 +1491,7 @@ public class GameServiceImpl implements GameService {
         int roll2 = random.nextInt(6) + 1;
 
         return GameMessage.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(messageType)

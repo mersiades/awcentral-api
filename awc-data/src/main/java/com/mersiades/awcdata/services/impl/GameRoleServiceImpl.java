@@ -1,6 +1,9 @@
 package com.mersiades.awcdata.services.impl;
 
-import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.enums.MoveType;
+import com.mersiades.awccontent.enums.PlaybookType;
+import com.mersiades.awccontent.enums.StatType;
+import com.mersiades.awccontent.enums.UniqueType;
 import com.mersiades.awccontent.models.*;
 import com.mersiades.awccontent.services.MoveService;
 import com.mersiades.awccontent.services.PlaybookCreatorService;
@@ -12,6 +15,7 @@ import com.mersiades.awcdata.models.uniques.*;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -75,11 +79,6 @@ public class GameRoleServiceImpl implements GameRoleService {
     // ---------------------------------------------- Game-related -------------------------------------------- //
 
     @Override
-    public List<GameRole> findAllByUser(User user) {
-        return gameRoleRepository.findAllByUser(user);
-    }
-
-    @Override
     public List<GameRole> findAllByUserId(String userId) {
         return gameRoleRepository.findAllByUserId(userId);
     }
@@ -91,7 +90,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow();
 
         if (threat.getId() == null) {
-            threat.setId(UUID.randomUUID().toString());
+            threat.setId(new ObjectId().toString());
         }
         if (gameRole.getThreats().size() == 0) {
             gameRole.getThreats().add(threat);
@@ -120,7 +119,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
 
         if (npc.getId() == null) {
-            npc.setId(UUID.randomUUID().toString());
+            npc.setId(new ObjectId().toString());
         }
         if (gameRole.getNpcs().size() == 0) {
             gameRole.getNpcs().add(npc);
@@ -151,7 +150,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
 
         CharacterHarm harm = CharacterHarm.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .hasChangedPlaybook(false)
                 .hasComeBackHard(false)
                 .hasComeBackWeird(false)
@@ -229,7 +228,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         Character character = getCharacterById(gameRole, characterId);
 
         if (look.getId() == null) {
-            look.setId(UUID.randomUUID().toString());
+            look.setId(new ObjectId().toString());
         }
 
         // Check to see if the character already has a Look with the given category
@@ -277,7 +276,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         assert statsOption != null;
 
         StatsBlock statsBlock = StatsBlock.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .statsOptionId(statsOptionId)
                 .build();
 
@@ -383,7 +382,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
             }
             // Give CharacterMove an id
-            characterMove.setId(UUID.randomUUID().toString());
+            characterMove.setId(new ObjectId().toString());
         });
 
         List<String> newCharacterMoveNames = characterMoves
@@ -429,7 +428,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         Character character = gameRole.getCharacters().stream()
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
-        hxStats.forEach(hxStat -> hxStat.setId(UUID.randomUUID().toString()));
+        hxStats.forEach(hxStat -> hxStat.setId(new ObjectId().toString()));
 
         character.setHxBlock(hxStats);
 
@@ -478,13 +477,13 @@ public class GameRoleServiceImpl implements GameRoleService {
                     .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.UNIQUE);
             assert angelKitMoves != null;
 
-            AngelKit angelKit = AngelKit.builder().id(UUID.randomUUID().toString())
+            AngelKit angelKit = AngelKit.builder().id(new ObjectId().toString())
                     .hasSupplier(hasSupplier)
                     .angelKitMoves(angelKitMoves)
                     .stock(stock).build();
 
             PlaybookUnique angelUnique = PlaybookUnique.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .type(UniqueType.ANGEL_KIT)
                     .angelKit(angelKit)
                     .build();
@@ -514,14 +513,14 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
         BrainerGear brainerGear1 = BrainerGear.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .brainerGear(brainerGear)
                 .build();
 
         if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.BRAINER_GEAR) {
             // make new brainerGear & set
             PlaybookUnique brainerUnique = PlaybookUnique.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .type(UniqueType.BRAINER_GEAR)
                     .brainerGear(brainerGear1)
                     .build();
@@ -551,12 +550,12 @@ public class GameRoleServiceImpl implements GameRoleService {
 
         if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.CUSTOM_WEAPONS) {
             // Create new PlaybookUnique for Battlebabe
-            CustomWeapons customWeapons = CustomWeapons.builder().id(UUID.randomUUID().toString())
+            CustomWeapons customWeapons = CustomWeapons.builder().id(new ObjectId().toString())
                     .weapons(weapons)
                     .build();
 
             PlaybookUnique battlebabeUnique = PlaybookUnique.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .type(UniqueType.CUSTOM_WEAPONS)
                     .customWeapons(customWeapons)
                     .build();
@@ -585,12 +584,12 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
         if (establishment.getId() == null) {
-            establishment.setId(UUID.randomUUID().toString());
+            establishment.setId(new ObjectId().toString());
         }
 
         if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.ESTABLISHMENT) {
             PlaybookUnique gangUnique = PlaybookUnique.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .type(UniqueType.ESTABLISHMENT)
                     .establishment(establishment)
                     .build();
@@ -619,13 +618,13 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
         if (followers.getId() == null) {
-            followers.setId(UUID.randomUUID().toString());
+            followers.setId(new ObjectId().toString());
         }
 
         if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.FOLLOWERS) {
 
             PlaybookUnique playbookUniqueHardHolder = PlaybookUnique.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .type(UniqueType.FOLLOWERS)
                     .followers(followers)
                     .build();
@@ -654,12 +653,12 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
         if (gang.getId() == null) {
-            gang.setId(UUID.randomUUID().toString());
+            gang.setId(new ObjectId().toString());
         }
 
         if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.GANG) {
             PlaybookUnique gangUnique = PlaybookUnique.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .type(UniqueType.GANG)
                     .gang(gang)
                     .build();
@@ -688,13 +687,13 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
         if (holding.getId() == null) {
-            holding.setId(UUID.randomUUID().toString());
+            holding.setId(new ObjectId().toString());
         }
 
         if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.HOLDING) {
 
             PlaybookUnique playbookUniqueHardHolder = PlaybookUnique.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .type(UniqueType.HOLDING)
                     .holding(holding)
                     .build();
@@ -729,7 +728,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         assert gameRole != null;
 
         if (skinnerGear.getId() == null) {
-            skinnerGear.setId(UUID.randomUUID().toString());
+            skinnerGear.setId(new ObjectId().toString());
         }
 
         // GameRoles can have multiple characters, so get the right character
@@ -739,7 +738,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.SKINNER_GEAR) {
             // Create new PlaybookUnique for Battlebabe
             PlaybookUnique playbookUniqueSkinner = PlaybookUnique.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .type(UniqueType.SKINNER_GEAR)
                     .skinnerGear(skinnerGear)
                     .build();
@@ -769,12 +768,12 @@ public class GameRoleServiceImpl implements GameRoleService {
         if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.WEAPONS) {
             // Create new PlaybookUnique for Battlebabe
             Weapons newWeapons = Weapons.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .weapons(weapons)
                     .build();
 
             PlaybookUnique gunluggerUnique = PlaybookUnique.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .type(UniqueType.WEAPONS)
                     .weapons(newWeapons)
                     .build();
@@ -803,12 +802,12 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
         if (workspace.getId() == null) {
-            workspace.setId(UUID.randomUUID().toString());
+            workspace.setId(new ObjectId().toString());
         }
 
         if (character.getPlaybookUnique() == null || character.getPlaybookUnique().getType() != UniqueType.WORKSPACE) {
             PlaybookUnique gangUnique = PlaybookUnique.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .type(UniqueType.WORKSPACE)
                     .workspace(workspace)
                     .build();
@@ -870,7 +869,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     public Character setVehicle(String gameRoleId, String characterId, Vehicle vehicle) {
         // If it's a new Vehicle, add id
         if (vehicle.getId() == null) {
-            vehicle.setId(UUID.randomUUID().toString());
+            vehicle.setId(new ObjectId().toString());
         }
 
 
@@ -914,7 +913,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     public Character setBattleVehicle(String gameRoleId, String characterId, BattleVehicle battleVehicle) {
         // If it's a new BattleVehicle, add id
         if (battleVehicle.getId() == null) {
-            battleVehicle.setId(UUID.randomUUID().toString());
+            battleVehicle.setId(new ObjectId().toString());
         }
 
 
@@ -966,7 +965,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         Character character = getCharacterById(gameRole, characterId);
 
         if (hxStat.getId() == null) {
-            hxStat.setId(UUID.randomUUID().toString());
+            hxStat.setId(new ObjectId().toString());
         }
 
         Optional<HxStat> existingHxStatOptional = character.getHxBlock()
@@ -1116,7 +1115,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
         if (project.getId() == null) {
-            project.setId(UUID.randomUUID().toString());
+            project.setId(new ObjectId().toString());
         }
 
         if (character.getPlaybookUnique().getWorkspace().getProjects().size() == 0) {
@@ -1217,7 +1216,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
         if (optionalStat.isEmpty()) {
             CharacterStat newStat = CharacterStat.builder()
-                    .id(UUID.randomUUID().toString())
+                    .id(new ObjectId().toString())
                     .stat(stat)
                     .value(value)
                     .isHighlighted(false)

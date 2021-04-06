@@ -2,7 +2,6 @@ package com.mersiades.awcdata.models;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ public class User {
     private String email;
 
     // one to many
-    @DBRef
     @Builder.Default
     private List<GameRole> gameRoles = new ArrayList<>();
 

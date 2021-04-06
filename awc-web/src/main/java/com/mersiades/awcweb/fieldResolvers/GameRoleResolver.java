@@ -20,6 +20,6 @@ public class GameRoleResolver implements GraphQLResolver<GameRole> {
     }
 
     public String getUserId(GameRole gameRole) {
-        return gameRole.getUser().getId();
+        return gameRole.getUserId();
     }
 }

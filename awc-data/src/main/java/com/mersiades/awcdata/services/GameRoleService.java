@@ -12,8 +12,6 @@ import java.util.List;
 public interface GameRoleService extends CrudService<GameRole, String> {
 
     // ---------------------------------------------- Game-related -------------------------------------------- //
-    List<GameRole> findAllByUser(User user);
-
     List<GameRole> findAllByUserId(String userId);
 
     // ---------------------------------------------- MC stuff -------------------------------------------- //

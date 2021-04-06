@@ -1,13 +1,10 @@
 package com.mersiades.awcweb.fieldResolvers;
 
-import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.User;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import graphql.kickstart.tools.GraphQLResolver;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class UserResolver implements GraphQLResolver<User> {
@@ -19,7 +16,4 @@ public class UserResolver implements GraphQLResolver<User> {
         this.gameRoleService = gameRoleService;
     }
 
-    public List<GameRole> getGameRoles(User user) {
-        return gameRoleService.findAllByUser(user);
-    }
 }

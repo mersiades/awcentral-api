@@ -635,7 +635,8 @@ type GameRole {
     id: ID!
     role: RoleType
     userId: String!
-    game: Game
+    gameId: String!
+    gameName: String!
     npcs: [Npc]
     threats: [Threat]
     characters: [Character]

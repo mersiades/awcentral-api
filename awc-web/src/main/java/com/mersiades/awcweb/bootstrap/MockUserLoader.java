@@ -8,6 +8,7 @@ import com.mersiades.awcdata.repositories.*;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -15,7 +16,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @Order(value = 1)
@@ -44,14 +44,14 @@ public class MockUserLoader implements CommandLineRunner {
     final String KEYCLOAK_ID_6 = System.getenv("TAKESHI_ID");
     final String KEYCLOAK_DISPLAY_NAME_6 = "takeshi";
     final String KEYCLOAK_EMAIL_6 = "takeshi@email.com";
-    final String MOCK_GAME_1_ID = "0ca6cc54-77a5-4d6e-ba2e-ee1543d6a249";
-    final String MOCK_GAME_2_ID = "ecb645d2-06d3-46dc-ad7f-20bbd167085d";
-    final String DAVE_AS_PLAYER_ID = "2a7aba8d-f6e8-4880-8021-99809c800acc";
-    final String SARA_AS_PLAYER_ID = "be6b09af-9c96-452a-8b05-922be820c88f";
-    final String JOHN_AS_PLAYER_ID = "5ffe67b72e21523778660910)";
-    final String MAYA_AS_PLAYER_ID = "5ffe67b72e21523778660911)";
-    final String AHMAD_AS_PLAYER_ID = "5ffe67b72e21523778660912)";
-    final String TAKESHI_AS_PLAYER_ID = "5ffe67b72e21523778660913)";
+    public final String MOCK_GAME_1_ID = new ObjectId().toString();
+    public final String MOCK_GAME_2_ID = new ObjectId().toString();
+    public static final String DAVE_AS_PLAYER_ID = new ObjectId().toString();
+    public static final String SARA_AS_PLAYER_ID = new ObjectId().toString();
+    public static final String JOHN_AS_PLAYER_ID = new ObjectId().toString();
+    public static final String MAYA_AS_PLAYER_ID = new ObjectId().toString();
+    public static final String AHMAD_AS_PLAYER_ID = new ObjectId().toString();
+    public static final String TAKESHI_AS_PLAYER_ID = new ObjectId().toString();
 
     @Autowired
     UserRepository userRepository;
@@ -91,10 +91,9 @@ public class MockUserLoader implements CommandLineRunner {
 
             // -------------------------------------- Set up mock Users -------------------------------------- //
             User mockUser1 = User.builder()
-                    .id(KEYCLOAK_ID_1)
+                    .id((KEYCLOAK_ID_1))
                     .displayName(KEYCLOAK_DISPLAY_NAME_1)
                     .email(KEYCLOAK_EMAIL_1).build();
-
 
             User mockUser2 = User.builder()
                     .id(KEYCLOAK_ID_2)
@@ -159,18 +158,24 @@ public class MockUserLoader implements CommandLineRunner {
             mockUser5.getGameRoles().add(ahmadAsPlayer);
             mockUser6.getGameRoles().add(takeshiAsPlayer);
 
-            daveAsMC.setUser(mockUser1);
-            daveAsMC.setGame(mockGame1);
-            sarahAsPlayer.setGame(mockGame1);
-            sarahAsPlayer.setUser(mockUser2);
-            johnAsPlayer.setGame(mockGame1);
-            johnAsPlayer.setUser(mockUser3);
-            mayaAsPlayer.setGame(mockGame1);
-            mayaAsPlayer.setUser(mockUser4);
-            ahmadAsPlayer.setGame(mockGame1);
-            ahmadAsPlayer.setUser(mockUser5);
-            takeshiAsPlayer.setGame(mockGame1);
-            takeshiAsPlayer.setUser(mockUser6);
+            daveAsMC.setGameId(mockGame1.getId());
+            daveAsMC.setGameName(mockGame1.getName());
+            daveAsMC.setUserId(mockUser1.getId());
+            sarahAsPlayer.setGameId(mockGame1.getId());
+            sarahAsPlayer.setGameName(mockGame1.getName());
+            sarahAsPlayer.setUserId(mockUser2.getId());
+            johnAsPlayer.setGameId(mockGame1.getId());
+            johnAsPlayer.setGameName(mockGame1.getName());
+            johnAsPlayer.setUserId(mockUser3.getId());
+            mayaAsPlayer.setGameId(mockGame1.getId());
+            mayaAsPlayer.setGameName(mockGame1.getName());
+            mayaAsPlayer.setUserId(mockUser4.getId());
+            ahmadAsPlayer.setGameId(mockGame1.getId());
+            ahmadAsPlayer.setGameName(mockGame1.getName());
+            ahmadAsPlayer.setUserId(mockUser5.getId());
+            takeshiAsPlayer.setGameId(mockGame1.getId());
+            takeshiAsPlayer.setGameName(mockGame1.getName());
+            takeshiAsPlayer.setUserId(mockUser6.getId());
             gameRoleService.saveAll(List.of(daveAsMC, sarahAsPlayer, johnAsPlayer,
                     mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer));
 
@@ -183,8 +188,8 @@ public class MockUserLoader implements CommandLineRunner {
                     .hasFinishedPreGame(false)
                     .build();
 
-            GameRole daveAsPlayer = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.PLAYER).build();
-            GameRole sarahAsMC = GameRole.builder().id(UUID.randomUUID().toString()).role(RoleType.MC).build();
+            GameRole daveAsPlayer = GameRole.builder().id(new ObjectId().toString()).role(RoleType.PLAYER).build();
+            GameRole sarahAsMC = GameRole.builder().id(new ObjectId().toString()).role(RoleType.MC).build();
 
             mockGame2.getGameRoles().add(daveAsPlayer);
             mockGame2.getGameRoles().add(sarahAsMC);
@@ -197,10 +202,12 @@ public class MockUserLoader implements CommandLineRunner {
             userService.saveAll(List.of(mockUser1, mockUser2, mockUser3, mockUser4, mockUser5, mockUser6));
 
 
-            daveAsPlayer.setUser(mockUser1);
-            daveAsPlayer.setGame(mockGame2);
-            sarahAsMC.setGame(mockGame2);
-            sarahAsMC.setUser(mockUser2);
+            daveAsPlayer.setUserId(mockUser1.getId());
+            daveAsPlayer.setGameId(mockGame2.getId());
+            daveAsPlayer.setGameName(mockGame2.getName());
+            sarahAsMC.setGameId(mockGame2.getId());
+            sarahAsMC.setGameName(mockGame2.getName());
+            sarahAsMC.setUserId(mockUser2.getId());
             gameRoleService.saveAll(List.of(daveAsPlayer, sarahAsMC));
 
         }

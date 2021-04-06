@@ -13,6 +13,7 @@ import com.mersiades.awcdata.models.uniques.Gang;
 import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -22,8 +23,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.mersiades.awcweb.bootstrap.MockUserLoader.*;
 
 
 @Component
@@ -34,11 +36,11 @@ public class MockCharacterLoader implements CommandLineRunner {
     final String KEYCLOAK_ID_1 = System.getenv("DAVE_ID");
     final String KEYCLOAK_ID_2 = System.getenv("SARA_ID");
 
-    final String SARA_AS_PLAYER_ID = "be6b09af-9c96-452a-8b05-922be820c88f";
-    final String JOHN_AS_PLAYER_ID = "5ffe67b72e21523778660910)";
-    final String MAYA_AS_PLAYER_ID = "5ffe67b72e21523778660911)";
-    final String AHMAD_AS_PLAYER_ID = "5ffe67b72e21523778660912)";
-    final String TAKESHI_AS_PLAYER_ID = "5ffe67b72e21523778660913)";
+//    final String SARA_AS_PLAYER_ID = "be6b09af-9c96-452a-8b05-922be820c88f";
+//    final String JOHN_AS_PLAYER_ID = "5ffe67b72e21523778660910)";
+//    final String MAYA_AS_PLAYER_ID = "5ffe67b72e21523778660911)";
+//    final String AHMAD_AS_PLAYER_ID = "5ffe67b72e21523778660912)";
+//    final String TAKESHI_AS_PLAYER_ID = "5ffe67b72e21523778660913)";
 
     private final GameRoleService gameRoleService;
     private final LookService lookService;
@@ -115,13 +117,13 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.UNIQUE)
                 ;
 
-        AngelKit angelKit = AngelKit.builder().id(UUID.randomUUID().toString())
+        AngelKit angelKit = AngelKit.builder().id(new ObjectId().toString())
                 .hasSupplier(false)
                 .angelKitMoves(angelKitMoves)
                 .stock(2).build();
 
         PlaybookUnique angelUnique = PlaybookUnique.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.ANGEL_KIT)
                 .angelKit(angelKit)
                 .build();
@@ -142,12 +144,12 @@ public class MockCharacterLoader implements CommandLineRunner {
         StatsBlock battlebabeStatsBlock = getStatsBlock(PlaybookType.BATTLEBABE);
 
         CustomWeapons customWeapons = CustomWeapons.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .weapons(List.of("antique rifle (2-harm, load, valuable", "Ornate staff (1-harm, valuable)"))
                 .build();
 
         PlaybookUnique battlebabeUnique = PlaybookUnique.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.CUSTOM_WEAPONS)
                 .customWeapons(customWeapons)
                 .build();
@@ -168,12 +170,12 @@ public class MockCharacterLoader implements CommandLineRunner {
         StatsBlock brainerStatsBlock = getStatsBlock(PlaybookType.BRAINER);
 
         BrainerGear brainerGear = BrainerGear.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .brainerGear(List.of("brain relay", "violation glove"))
                 .build();
 
         PlaybookUnique brainerUnique = PlaybookUnique.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.BRAINER_GEAR)
                 .brainerGear(brainerGear)
                 .build();
@@ -201,7 +203,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         StatsBlock chopperStatsBlock = getStatsBlock(PlaybookType.CHOPPER);
 
         Vehicle chopperBike = Vehicle.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .vehicleType(VehicleType.BIKE)
                 .name("Honda")
                 // BIKE frame
@@ -218,7 +220,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         Gang gang = Gang.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .size(GangSize.MEDIUM)
                 .harm(3)
                 .armor(1)
@@ -228,7 +230,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         PlaybookUnique chopperUnique = PlaybookUnique.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .type(UniqueType.GANG)
                 .gang(gang)
                 .build();
@@ -260,7 +262,7 @@ public class MockCharacterLoader implements CommandLineRunner {
 
 
         Vehicle car1 = Vehicle.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .vehicleType(VehicleType.CAR)
                 .name("Unnamed vehicle")
                 // SMALL frame
@@ -279,7 +281,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         Vehicle car2 = Vehicle.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .vehicleType(VehicleType.CAR)
                 .name("Bess")
                 // LARGE frame
@@ -298,7 +300,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .build();
 
         Vehicle bike = Vehicle.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .vehicleType(VehicleType.BIKE)
                 .name("Ducati Monster")
                 // BIKE frame
@@ -430,75 +432,75 @@ public class MockCharacterLoader implements CommandLineRunner {
         assert dog != null;
 
         // ------------------------------ Doc's Hx --------------------------------- //
-        HxStat doc1 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat doc1 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(scarlet.getId()).characterName(scarlet.getName()).hxValue(-2).build();
 
-        HxStat doc2 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat doc2 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(smith.getId()).characterName(smith.getName()).hxValue(2).build();
 
-        HxStat doc3 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat doc3 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(nee.getId()).characterName(nee.getName()).hxValue(3).build();
 
-        HxStat doc4 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat doc4 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(dog.getId()).characterName(dog.getName()).hxValue(1).build();
         doc.setHxBlock(List.of(doc1, doc2, doc3, doc4));
 
         // ------------------------------ Scarlet's Hx --------------------------------- //
-        HxStat scarlet1 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat scarlet1 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(doc.getId()).characterName(doc.getName()).hxValue(-1).build();
 
-        HxStat scarlet2 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat scarlet2 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(smith.getId()).characterName(smith.getName()).hxValue(3).build();
 
-        HxStat scarlet3 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat scarlet3 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(nee.getId()).characterName(nee.getName()).hxValue(-1).build();
 
-        HxStat scarlet4 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat scarlet4 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(dog.getId()).characterName(dog.getName()).hxValue(0).build();
 
         scarlet.setHxBlock(List.of(scarlet1, scarlet2, scarlet3, scarlet4));
 
         // ------------------------------ Smith's Hx --------------------------------- //
-        HxStat smith1 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat smith1 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(doc.getId()).characterName(doc.getName()).hxValue(2).build();
 
-        HxStat smith2 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat smith2 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(scarlet.getId()).characterName(scarlet.getName()).hxValue(2).build();
 
-        HxStat smith3 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat smith3 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(nee.getId()).characterName(nee.getName()).hxValue(3).build();
 
-        HxStat smith4 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat smith4 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(dog.getId()).characterName(dog.getName()).hxValue(1).build();
 
         smith.setHxBlock(List.of(smith1, smith2, smith3, smith4));
 
         // ------------------------------ Nee's Hx --------------------------------- //
-        HxStat nee1 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat nee1 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(doc.getId()).characterName(doc.getName()).hxValue(-2).build();
 
-        HxStat nee2 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat nee2 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(scarlet.getId()).characterName(scarlet.getName()).hxValue(2).build();
 
-        HxStat nee3 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat nee3 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(smith.getId()).characterName(smith.getName()).hxValue(3).build();
 
-        HxStat nee4 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat nee4 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(dog.getId()).characterName(dog.getName()).hxValue(-1).build();
 
         nee.setHxBlock(List.of(nee1, nee2, nee3, nee4));
 
         // ------------------------------ Dog's Hx --------------------------------- //
-        HxStat dog1 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat dog1 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(doc.getId()).characterName(doc.getName()).hxValue(-2).build();
 
-        HxStat dog2 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat dog2 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(scarlet.getId()).characterName(scarlet.getName()).hxValue(2).build();
 
-        HxStat dog3 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat dog3 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(smith.getId()).characterName(smith.getName()).hxValue(3).build();
 
-        HxStat dog4 = HxStat.builder().id(UUID.randomUUID().toString())
+        HxStat dog4 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(nee.getId()).characterName(nee.getName()).hxValue(-1).build();
 
         dog.setHxBlock(List.of(dog1, dog2, dog3, dog4));
@@ -520,7 +522,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         assert threatCreator != null;
 
         Threat mockThreat1 = Threat.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .name("Tum Tum")
                 .threatKind(ThreatType.WARLORD)
                 .impulse(threatCreator.getThreats().stream()
@@ -530,7 +532,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .stakes("Maecenas vitae consequat justo, quis sollicitudin nulla. Phasellus pulvinar nunc eget mauris tristique, ut aliquam felis mattis. Nulla ultricies feugiat arcu non facilisis.")
                 .build();
         Threat mockThreat2 = Threat.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .name("Gnarly")
                 .threatKind(ThreatType.GROTESQUE)
                 .impulse(threatCreator.getThreats().stream()
@@ -539,7 +541,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .description("Maecenas tempus ac felis at sollicitudin. Etiam pulvinar, nibh eget fringilla pretium, sem sem ultricies augue, vitae condimentum enim nibh nec mi.")
                 .build();
         Threat mockThreat3 = Threat.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .name("Fleece")
                 .threatKind(ThreatType.BRUTE)
                 .impulse(threatCreator.getThreats().stream()
@@ -548,7 +550,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .description("Maecenas tempus ac felis at sollicitudin. Etiam pulvinar, nibh eget fringilla pretium, sem sem ultricies augue, vitae condimentum enim nibh nec mi.")
                 .build();
         Threat mockThreat4 = Threat.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .name("Wet Rot")
                 .threatKind(ThreatType.AFFLICTION)
                 .impulse(threatCreator.getThreats().stream()
@@ -576,18 +578,18 @@ public class MockCharacterLoader implements CommandLineRunner {
         assert threatCreator != null;
 
         Npc mockNpc1 = Npc.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .name("Vision")
                 .description("Badass truck; driver").build();
         Npc mockNpc2 = Npc.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .name("Nbeke").build();
         Npc mockNpc3 = Npc.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .name("Batty")
                 .description("Overly polite gun for hire").build();
         Npc mockNpc4 = Npc.builder()
-                .id(UUID.randomUUID().toString())
+                .id(new ObjectId().toString())
                 .name("Farley").build();
 
         daveAsMC.getNpcs().add(mockNpc1);
@@ -631,18 +633,18 @@ public class MockCharacterLoader implements CommandLineRunner {
         StatsOption statsOption = statsOptionService.findAllByPlaybookType(playbookType).get(0);
         assert statsOption != null;
 
-        CharacterStat cool = CharacterStat.builder().id(UUID.randomUUID().toString())
+        CharacterStat cool = CharacterStat.builder().id(new ObjectId().toString())
                 .stat(StatType.COOL).value(statsOption.getCOOL()).isHighlighted(false).build();
-        CharacterStat hard = CharacterStat.builder().id(UUID.randomUUID().toString())
+        CharacterStat hard = CharacterStat.builder().id(new ObjectId().toString())
                 .stat(StatType.HARD).value(statsOption.getHARD()).isHighlighted(true).build();
-        CharacterStat hot = CharacterStat.builder().id(UUID.randomUUID().toString())
+        CharacterStat hot = CharacterStat.builder().id(new ObjectId().toString())
                 .stat(StatType.HOT).value(statsOption.getHOT()).isHighlighted(true).build();
-        CharacterStat sharp = CharacterStat.builder().id(UUID.randomUUID().toString())
+        CharacterStat sharp = CharacterStat.builder().id(new ObjectId().toString())
                 .stat(StatType.SHARP).value(statsOption.getSHARP()).isHighlighted(false).build();
-        CharacterStat weird = CharacterStat.builder().id(UUID.randomUUID().toString())
+        CharacterStat weird = CharacterStat.builder().id(new ObjectId().toString())
                 .stat(StatType.WEIRD).value(statsOption.getWEIRD()).isHighlighted(false).build();
 
-        return StatsBlock.builder().id(UUID.randomUUID().toString())
+        return StatsBlock.builder().id(new ObjectId().toString())
                 .statsOptionId(statsOption.getId())
                 .stats(List.of(cool, hard, hot, sharp, weird))
                 .build();
@@ -650,7 +652,7 @@ public class MockCharacterLoader implements CommandLineRunner {
 
     private void saveCharacter(GameRole gameRole, CharacterHarm harm, Character character) {
         if (gameRole.getCharacters().size() == 0) {
-            harm.setId(UUID.randomUUID().toString());
+            harm.setId(new ObjectId().toString());
             character.setHarm(harm);
             gameRole.getCharacters().add(character);
             characterService.save(character);
