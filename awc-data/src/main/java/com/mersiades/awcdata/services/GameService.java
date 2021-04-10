@@ -23,6 +23,8 @@ public interface GameService extends CrudService<Game, String> {
 
     Game removeInvitee(String gameId, String email);
 
+    Game removePlayer(String gameId, String playerId);
+
     Game addCommsApp(String gameId, String app);
 
     Game addCommsUrl(String gameId, String url);

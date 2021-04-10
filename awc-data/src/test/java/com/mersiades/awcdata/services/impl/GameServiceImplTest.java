@@ -57,6 +57,7 @@ class GameServiceImplTest {
     GameRole mockGameRole2;
 
     User mockMc;
+    User mockPlayer;
 
     StatsBlock mockStatsBlock;
 
@@ -137,6 +138,7 @@ class GameServiceImplTest {
     public void setUp()  {
         MockitoAnnotations.initMocks(this);
         mockMc = User.builder().id("mock-user-id").email("mock-email").displayName("mock-displayname").build();
+        mockPlayer = User.builder().id("mock-user-id-2").email("mock-email-2").displayName("mock-displayname-2").build();
 
         mockCool = CharacterStat.builder()
                 .id(new ObjectId().toString())
@@ -216,6 +218,7 @@ class GameServiceImplTest {
                 .gameId(MOCK_GAME_ID_1)
                 .gameName("Michael's Mock Game")
                 .characters(List.of(mockCharacter2))
+                .userId(mockPlayer.getId())
                 .build();
 
         List<GameRole> gameRoles = new ArrayList<>();
@@ -416,6 +419,21 @@ class GameServiceImplTest {
         // Then
         assert returnedGame != null;
         assertFalse(returnedGame.getInvitees().contains(mockInvitee));
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldRemovePlayerFromGame() {
+        // Given
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
+
+        // When
+        Game returnedGame = gameService.removePlayer(mockGame1.getId(), mockPlayer.getId());
+
+        // Then
+        assert returnedGame != null;
+        assertFalse(returnedGame.getPlayers().contains(mockPlayer));
         verify(gameRepository, times(1)).save(any(Game.class));
     }
 

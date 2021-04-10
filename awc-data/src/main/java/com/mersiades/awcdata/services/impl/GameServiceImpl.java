@@ -374,6 +374,16 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Game removePlayer(String gameId, String playerId) {
+        Game game = getGame(gameId);
+        List<User> players = game.getPlayers()
+                .stream().filter(user -> !user.getId().equals(playerId)).collect(Collectors.toList());
+        game.setPlayers(players);
+        gameRepository.save(game);
+        return game;
+    }
+
+    @Override
     public Game addCommsApp(String gameId, String app) {
         Game game = getGame(gameId);
         game.setCommsApp(app);
