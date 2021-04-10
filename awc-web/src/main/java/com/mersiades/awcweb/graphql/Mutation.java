@@ -382,4 +382,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.removeHold(gameRoleId, characterId, hold);
     }
 
+    public Game playXCard(String gameId) {
+        System.out.println("Playing X card in Game: " + gameId);
+        return gameService.playXCard(gameId);
+    }
+
 }

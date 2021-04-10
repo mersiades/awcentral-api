@@ -1521,6 +1521,24 @@ class GameServiceImplTest {
         verifyMockServices();
     }
 
+    @Test
+    void shouldPlayXCard() {
+        // Given
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
+
+        // When
+        Game returnedGame = gameService.playXCard(mockGame1.getId());
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+
+        assertTrue(returnedGameMessage.getTitle().contains("AN X-CARD HAS BEEN PLAYED"));
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
     private Character getSavedCharacter(Game game, String gameRoleId, String characterId) {
         return game.getGameRoles().stream()
                 .filter(gameRole -> gameRole.getId().equals(gameRoleId)).findFirst().orElseThrow()

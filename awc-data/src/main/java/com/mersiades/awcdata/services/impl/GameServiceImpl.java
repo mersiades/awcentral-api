@@ -64,6 +64,10 @@ public class GameServiceImpl implements GameService {
             "\n" +
             "Also see the rules about a gang holding together after it takes harm.";
 
+    private static final String X_CARD_CONTENT = "_“I’d like your help. Your help to make this game fun for everyone. If anything makes anyone uncomfortable in any way, click on the X-Card icon. You don’t have to explain why. It doesn't matter why. When we see that the X-Card has been played, we simply edit out anything X-Carded. And if there is ever an issue, anyone can call for a break and we can talk privately. I know it sounds funny but it will help us play amazing games together and usually I’m the one who uses the X-Card to help take care of myself. Please help make this game fun for everyone. Thank you!\"_\n" +
+            "\n" +
+            "The X-Card was created by **John Stavropoulos** and you can [read more about it here](http://tinyurl.com/x-card-rpg).";
+
     private final GameRepository gameRepository;
     private final UserService userService;
     private final GameRoleService gameRoleService;
@@ -1459,6 +1463,23 @@ public class GameServiceImpl implements GameService {
         characterService.save(character);
         gameRole.setCharacters(List.of(character));
         gameRoleService.save(gameRole);
+        game.getGameMessages().add(gameMessage);
+        return gameRepository.save(game);
+    }
+
+    @Override
+    public Game playXCard(String gameId) {
+        Game game = getGame(gameId);
+
+        GameMessage gameMessage = GameMessage.builder()
+                .id(new ObjectId().toString())
+                .gameId(gameId)
+                .messageType(MessageType.X_CARD)
+                .sentOn(Instant.now().toString())
+                .title("AN X-CARD HAS BEEN PLAYED")
+                .content(X_CARD_CONTENT)
+                .build();
+
         game.getGameMessages().add(gameMessage);
         return gameRepository.save(game);
     }
