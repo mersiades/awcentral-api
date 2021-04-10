@@ -1534,7 +1534,7 @@ class GameServiceImplTest {
         assert returnedGame != null;
         GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
 
-        assertTrue(returnedGameMessage.getTitle().contains("AN X_CARD HAS BEEN PLAYED"));
+        assertTrue(returnedGameMessage.getTitle().contains("AN X-CARD HAS BEEN PLAYED"));
         verify(gameRepository, times(1)).findById(anyString());
         verify(gameRepository, times(1)).save(any(Game.class));
     }
