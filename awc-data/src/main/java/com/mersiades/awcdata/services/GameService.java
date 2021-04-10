@@ -86,4 +86,6 @@ public interface GameService extends CrudService<Game, String> {
     // ---------------------------------------------- Other -------------------------------------------- //
 
     Game spendHold(String gameId, String gameroleId, String characterId, Hold hold);
+
+    Game playXCard(String gameId);
 }
