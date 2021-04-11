@@ -380,10 +380,30 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game removePlayer(String gameId, String playerId) {
         Game game = getGame(gameId);
+        User user = userService.findById(playerId);
+        assert user != null;
+
+        // Remove gameRole from User
+        GameRole gameRoleToRemove = user.getGameRoles().stream()
+                .filter(gameRole -> gameRole.getGameId().equals(gameId)).findFirst().orElseThrow(NoSuchElementException::new);
+        user.getGameRoles().remove(gameRoleToRemove);
+
+        // Remove gameRole from game
+        List<GameRole> gamesFilteredGameRoles = game.getGameRoles().stream()
+                .filter(gameRole -> !gameRole.getUserId().equals(playerId))
+                .collect(Collectors.toList());
+        game.setGameRoles(gamesFilteredGameRoles);
+
+        // Remove player from game
         List<User> players = game.getPlayers()
-                .stream().filter(user -> !user.getId().equals(playerId)).collect(Collectors.toList());
+                .stream().filter(user1 -> !user1.getId().equals(playerId)).collect(Collectors.toList());
         game.setPlayers(players);
+
+        // Delete gameRole from db
+        gameRoleService.delete(gameRoleToRemove);
+
         gameRepository.save(game);
+        userService.save(user);
         return game;
     }
 

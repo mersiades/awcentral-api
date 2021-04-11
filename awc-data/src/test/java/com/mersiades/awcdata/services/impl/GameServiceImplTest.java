@@ -425,8 +425,12 @@ class GameServiceImplTest {
     @Test
     void shouldRemovePlayerFromGame() {
         // Given
+        mockPlayer.getGameRoles().add(mockGameRole2);
         when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
         when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
+        when(userService.findById(anyString())).thenReturn(mockPlayer);
+        when(userService.save(any(User.class))).thenReturn(mockPlayer);
+        doNothing().when(gameRoleService).delete(any(GameRole.class));
 
         // When
         Game returnedGame = gameService.removePlayer(mockGame1.getId(), mockPlayer.getId());
@@ -434,7 +438,12 @@ class GameServiceImplTest {
         // Then
         assert returnedGame != null;
         assertFalse(returnedGame.getPlayers().contains(mockPlayer));
+        assertFalse(returnedGame.getGameRoles().contains(mockGameRole2));
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(userService, times(1)).findById(anyString());
         verify(gameRepository, times(1)).save(any(Game.class));
+        verify(userService, times(1)).save(any(User.class));
+        verify(gameRoleService, times(1)).delete(any(GameRole.class));
     }
 
     @Test
