@@ -793,7 +793,6 @@ public class GameServiceImpl implements GameService {
         gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifier.getValue());
 
 
-
         if (character.getHasPlusOneForward()) {
             gameMessage.setUsedPlusOneForward(true);
             gameMessage.setRollResult(gameMessage.getRollResult() + 1);
@@ -1120,33 +1119,58 @@ public class GameServiceImpl implements GameService {
         Character otherCharacter = getCharacter(otherGameRole, otherCharacterId);
         Move healHarmMove = moveService.findByName(healHarmName);
         assert healHarmMove != null;
+        boolean hasIncrementedExperience = false;
+
+        // Check if harm will take hxValue to 4 or over and flag experience increase
+        HxStat hxStat = userCharacter.getHxBlock()
+                .stream().filter(hxStat1 -> hxStat1.getCharacterId().equals(otherCharacterId)).findFirst().orElseThrow(NoSuchElementException::new);
+        if (hxStat.getHxValue() + harm >= 4) {
+            hasIncrementedExperience = true;
+        }
 
         // Adjust Hx on user's Character
         userCharacter.setHxBlock(userCharacter.getHxBlock()
-                .stream().peek(hxStat -> {
-                    if (hxStat.getCharacterId().equals(otherCharacterId)) {
-                        hxStat.setHxValue(hxStat.getHxValue() + harm);
+                .stream().peek(hxStat2 -> {
+                    if (hxStat2.getCharacterId().equals(otherCharacterId)) {
+                        hxStat2.setHxValue(hxStat2.getHxValue() + harm);
+                        // If this brings hx value to 4 or higher, reset to 1 and add experience to the healer
+                        if (hxStat2.getHxValue() >= 4) {
+                            hxStat2.setHxValue(1);
+                            userCharacter.setExperience(userCharacter.getExperience() + 1);
+                        }
                     }
                 }).collect(Collectors.toList()));
 
         // Adjust harm on other Character
         otherCharacter.getHarm().setValue(otherCharacter.getHarm().getValue() - harm);
 
+        String contentLine1 = String.format("%s healed %s of %s-harm.",
+                userCharacter.getName(),
+                otherCharacter.getName(),
+                harm);
+
+        String contentLine2;
+
+        if (hasIncrementedExperience) {
+            contentLine2 = String.format("%n%n%s's Hx has been reset to 1 and their experience has been marked, and %s's harm has been decreased by **%s**.",
+                    userCharacter.getName(),
+                    otherCharacter.getName(),
+                    harm);
+        } else {
+            contentLine2 = String.format("%n%n%s's Hx with %s has been increased by **%s**, and %s's harm has been decreased by **%s**.",
+                    userCharacter.getName(),
+                    otherCharacter.getName(),
+                    harm,
+                    otherCharacter.getName(),
+                    harm);
+        }
+
         GameMessage gameMessage = GameMessage.builder()
                 .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.ADJUST_HX_MOVE)
-                .content(String.format("%s healed %s of %s-harm.%n%n%s's Hx with %s has been increased by **%s**, and %s's harm has been decreased by **%s**.",
-                        userCharacter.getName(),
-                        otherCharacter.getName(),
-                        harm,
-                        userCharacter.getName(),
-                        otherCharacter.getName(),
-                        harm,
-                        otherCharacter.getName(),
-                        harm
-                ))
+                .content(contentLine1 + contentLine2)
                 .title(String.format("%s: %s", userCharacter.getName(), healHarmMove.getName()).toUpperCase())
                 .sentOn(Instant.now().toString()).build();
 
