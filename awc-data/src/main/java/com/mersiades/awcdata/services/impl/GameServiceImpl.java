@@ -589,6 +589,7 @@ public class GameServiceImpl implements GameService {
         GameRole gameRole = gameRoleService.findById(gameroleId);
         Character character = characterService.findById(characterId);
         assert character != null;
+        boolean hasIncrementedExperience = false;
 
         GameMessage gameMessage = getGameMessageWithDiceRolls(gameId, gameroleId, MessageType.ROLL_STAT_MOVE);
 
@@ -635,6 +636,13 @@ public class GameServiceImpl implements GameService {
         hold2.setRollResult(gameMessage.getRollResult());
         hold3.setRollResult(gameMessage.getRollResult());
 
+        if (modifier.getIsHighlighted()) {
+            character.setExperience(character.getExperience() + 1);
+            gameMessage.setContent(gameMessage.getContent() +
+                    "\n" +
+                    "\n" +
+                    "An experience point has been gained for rolling a highlighted stat.");
+        }
 
         // Uses a +1forward if the character has one
         if (character.getHasPlusOneForward()) {
@@ -739,6 +747,13 @@ public class GameServiceImpl implements GameService {
         gameMessage.setAdditionalModifierName(additionalModifierName);
         gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifyingStat.getValue() + modifier);
 
+        if (modifyingStat.getIsHighlighted()) {
+            character.setExperience(character.getExperience() + 1);
+            gameMessage.setContent(gameMessage.getContent() +
+                    "\n" +
+                    "\n" +
+                    "An experience point has been gained for rolling a highlighted stat.");
+        }
 
         if (character.getHasPlusOneForward()) {
             gameMessage.setUsedPlusOneForward(true);
@@ -778,6 +793,8 @@ public class GameServiceImpl implements GameService {
         gameMessage.setModifierStatName(modifier.getStat());
         gameMessage.setRollResult(gameMessage.getRoll1() + gameMessage.getRoll2() + modifier.getValue());
 
+
+
         if (character.getHasPlusOneForward()) {
             gameMessage.setUsedPlusOneForward(true);
             gameMessage.setRollResult(gameMessage.getRollResult() + 1);
@@ -797,6 +814,14 @@ public class GameServiceImpl implements GameService {
         }
         content += move.getDescription();
         gameMessage.setContent(content);
+
+        if (modifier.getIsHighlighted()) {
+            character.setExperience(character.getExperience() + 1);
+            gameMessage.setContent(gameMessage.getContent() +
+                    "\n" +
+                    "\n" +
+                    "An experience point has been gained for rolling a highlighted stat.");
+        }
 
         characterService.save(character);
         gameRole.setCharacters(List.of(character));
