@@ -163,6 +163,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .hasCompletedCharacterCreation(false)
                 .hasPlusOneForward(false)
                 .barter(-1)
+                .experience(0)
                 .harm(harm).build();
         characterService.save(newCharacter);
         assert gameRole != null;
@@ -188,6 +189,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setVehicles(new ArrayList<>());
         character.setBattleVehicles(new ArrayList<>());
         character.setHasCompletedCharacterCreation(false);
+        character.setExperience(0);
 
         // Set default Vehicle and BattleVehicle counts by PlaybookType
         if (List.of(PlaybookType.DRIVER, PlaybookType.CHOPPER).contains(playbookType)) {
@@ -968,11 +970,23 @@ public class GameRoleServiceImpl implements GameRoleService {
             hxStat.setId(new ObjectId().toString());
         }
 
+        // Character improvement: increase experience if hxValue crosses threshold, rest hxValue
+        if (hxStat.getHxValue() >= 4) {
+            hxStat.setHxValue(1);
+            character.setExperience(character.getExperience() + 1);
+        }
+
+        if (hxStat.getHxValue() <= -3) {
+            hxStat.setHxValue(0);
+            character.setExperience(character.getExperience() + 1);
+        }
+
         Optional<HxStat> existingHxStatOptional = character.getHxBlock()
                 .stream().filter(hxStat1 -> hxStat1.getId().equals(hxStat.getId())).findFirst();
 
         if (existingHxStatOptional.isEmpty()) {
             // Add new HxStat
+
             character.getHxBlock().add(hxStat);
         } else {
             // Replace HdxStat with updated data, if it already exists

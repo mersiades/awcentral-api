@@ -2,11 +2,11 @@ package com.mersiades.awcdata.models;
 
 import com.mersiades.awccontent.enums.LookType;
 import com.mersiades.awccontent.enums.PlaybookType;
+import com.mersiades.awccontent.models.Look;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.mersiades.awccontent.models.Look;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -45,6 +45,10 @@ public class Character {
     private int vehicleCount;
 
     private int battleVehicleCount;
+
+//    @Size(max = 5, message = "Experience must be between 0 and 5")
+//    @NotNull
+    private int experience;
 
     @Builder.Default
     private List<BattleVehicle> battleVehicles = new ArrayList<>();

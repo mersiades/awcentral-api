@@ -144,27 +144,32 @@ class GameServiceImplTest {
                 .id(new ObjectId().toString())
                 .stat(COOL)
                 .value(1)
+                .isHighlighted(false)
                 .build();
         mockHard = CharacterStat.builder()
                 .id(new ObjectId().toString())
                 .stat(HARD)
                 .value(1)
+                .isHighlighted(false)
                 .build();
         mockHot = CharacterStat.builder()
                 .id(new ObjectId().toString())
                 .stat(HOT)
                 .value(1)
+                .isHighlighted(false)
                 .build();
 
         mockSharp = CharacterStat.builder()
                 .id(new ObjectId().toString())
                 .stat(SHARP)
                 .value(1)
+                .isHighlighted(false)
                 .build();
         mockWeird = CharacterStat.builder()
                 .id(new ObjectId().toString())
                 .stat(WEIRD)
                 .value(1)
+                .isHighlighted(false)
                 .build();
 
         mockStatsBlock = StatsBlock.builder()
@@ -183,12 +188,14 @@ class GameServiceImplTest {
                 .statsBlock(mockStatsBlock)
                 .hasPlusOneForward(false)
                 .harm(mockHarm)
+                .experience(0)
                 .build();
 
         mockCharacter2 = Character.builder()
                 .id("mock-character-id-2")
                 .name("mock-character-name-2")
                 .harm(mockHarm)
+                .experience(0)
                 .build();
 
         mockHxStat2 = HxStat.builder()

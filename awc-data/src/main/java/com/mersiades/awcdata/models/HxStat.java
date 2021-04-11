@@ -19,5 +19,6 @@ public class HxStat {
 
     private String characterName;
 
+//    @Size(min = -2, max = 3, message = "Hx must be between -2 and 3")
     private int hxValue;
 }

@@ -923,6 +923,74 @@ class GameRoleServiceImplTest {
     }
 
     @Test
+    void shouldResetCharacterHxTo1AndIncrementExperience() {
+        HxStat oldHxStat = HxStat.builder()
+                .id("hx-stat-id")
+                .hxValue(3)
+                .characterName("Bob")
+                .characterId("bob-id")
+                .build();
+        HxStat newHxStat = HxStat.builder()
+                .id("hx-stat-id")
+                .hxValue(4)
+                .characterName("Bob")
+                .characterId("bob-id")
+                .build();
+        mockCharacter.getHxBlock().add(oldHxStat);
+        mockCharacter.setExperience(0);
+        mockGameRole.getCharacters().add(mockCharacter);
+
+
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .adjustCharacterHx(mockGameRole.getId(), mockCharacter.getId(), newHxStat);
+
+        // Then
+        assertEquals(1,
+                returnedCharacter.getHxBlock().stream()
+                        .filter(hxStat -> hxStat.getCharacterId().equals(newHxStat.getCharacterId()))
+                        .findFirst().orElseThrow().getHxValue());
+        assertEquals(1, returnedCharacter.getExperience());
+        verifyMockServices();
+    }
+
+    @Test
+    void shouldResetCharacterHxTo0AndIncrementExperience() {
+        HxStat oldHxStat = HxStat.builder()
+                .id("hx-stat-id")
+                .hxValue(-2)
+                .characterName("Bob")
+                .characterId("bob-id")
+                .build();
+        HxStat newHxStat = HxStat.builder()
+                .id("hx-stat-id")
+                .hxValue(-3)
+                .characterName("Bob")
+                .characterId("bob-id")
+                .build();
+        mockCharacter.getHxBlock().add(oldHxStat);
+        mockCharacter.setExperience(0);
+        mockGameRole.getCharacters().add(mockCharacter);
+
+
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .adjustCharacterHx(mockGameRole.getId(), mockCharacter.getId(), newHxStat);
+
+        // Then
+        assertEquals(0,
+                returnedCharacter.getHxBlock().stream()
+                        .filter(hxStat -> hxStat.getCharacterId().equals(newHxStat.getCharacterId()))
+                        .findFirst().orElseThrow().getHxValue());
+        assertEquals(1, returnedCharacter.getExperience());
+        verifyMockServices();
+    }
+
+    @Test
     void shouldSetCharacterHarm() {
         mockGameRole.getCharacters().add(mockCharacter);
         CharacterHarm mockCharacterHarm = CharacterHarm.builder()
