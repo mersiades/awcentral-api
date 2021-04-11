@@ -630,6 +630,7 @@ type Character {
     vehicles: [Vehicle]
     battleVehicleCount: Int
     battleVehicles: [BattleVehicle]
+    experience: Int!
 }
 
 type GameRole {

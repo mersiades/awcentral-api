@@ -654,6 +654,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         if (gameRole.getCharacters().size() == 0) {
             harm.setId(new ObjectId().toString());
             character.setHarm(harm);
+            character.setExperience(0);
             gameRole.getCharacters().add(character);
             characterService.save(character);
             gameRoleService.save(gameRole);
