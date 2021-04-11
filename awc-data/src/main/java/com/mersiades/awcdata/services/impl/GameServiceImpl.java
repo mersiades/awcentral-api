@@ -1194,6 +1194,7 @@ public class GameServiceImpl implements GameService {
         Character otherCharacter = getCharacter(otherGameRole, otherCharacterId);
         CharacterMove angelSpecialMove = getCharacterMoveByName(userCharacter, angelSpecialName);
         assert angelSpecialMove != null;
+        boolean hasIncrementedExperience = false;
 
         // Adjust Hx on user's Character
         userCharacter.setHxBlock(userCharacter.getHxBlock()
@@ -1203,27 +1204,50 @@ public class GameServiceImpl implements GameService {
                     }
                 }).collect(Collectors.toList()));
 
+        // Check if harm will take hxValue to 4 or over and flag experience increase
+        HxStat hxStat = otherCharacter.getHxBlock()
+                .stream().filter(hxStat1 -> hxStat1.getCharacterId().equals(characterId)).findFirst().orElseThrow(NoSuchElementException::new);
+        if (hxStat.getHxValue() + 1 >= 4) {
+            hasIncrementedExperience = true;
+        }
+
         // Adjust Hx on other Character
         otherCharacter.setHxBlock(otherCharacter.getHxBlock()
-                .stream().peek(hxStat -> {
-                    if (hxStat.getCharacterId().equals(characterId)) {
-                        hxStat.setHxValue(hxStat.getHxValue() + 1);
+                .stream().peek(hxStat2 -> {
+                    if (hxStat2.getCharacterId().equals(characterId)) {
+                        hxStat2.setHxValue(hxStat2.getHxValue() + 1);
+                        // If this brings hx value to 4 or higher, reset to 1 and add experience to the harm-sufferer
+                        if (hxStat2.getHxValue() >= 4) {
+                            hxStat2.setHxValue(1);
+                            otherCharacter.setExperience(otherCharacter.getExperience() + 1);
+                        }
                     }
                 }).collect(Collectors.toList()));
+
+        String contentPart1 = String.format("%s and %s shagged, and now %s's Hx with %s is **3**, ",
+                userCharacter.getName(),
+                otherCharacter.getName(),
+                userCharacter.getName(),
+                otherCharacter.getName());
+
+        String contentPart2;
+
+        if (hasIncrementedExperience) {
+            contentPart2 = String.format("and %s's Hx with %s has been reset to 1 and experience marked.",
+                    otherCharacter.getName(),
+                    userCharacter.getName());
+        } else {
+            contentPart2 = String.format("and %s's Hx with %s has increased by **1**.",
+                    otherCharacter.getName(),
+                    userCharacter.getName());
+        }
 
         GameMessage gameMessage = GameMessage.builder()
                 .id(new ObjectId().toString())
                 .gameId(gameId)
                 .gameRoleId(gameroleId)
                 .messageType(MessageType.ADJUST_HX_MOVE)
-                .content(String.format("%s and %s shagged, and now %s's Hx with %s is **3**, and %s's Hx with %s has increased by **1**.",
-                        userCharacter.getName(),
-                        otherCharacter.getName(),
-                        userCharacter.getName(),
-                        otherCharacter.getName(),
-                        otherCharacter.getName(),
-                        userCharacter.getName()
-                ))
+                .content(contentPart1 + contentPart2)
                 .title(String.format("%s: %s", userCharacter.getName(), angelSpecialMove.getName()).toUpperCase())
                 .sentOn(Instant.now().toString()).build();
         game.getGameMessages().add(gameMessage);
