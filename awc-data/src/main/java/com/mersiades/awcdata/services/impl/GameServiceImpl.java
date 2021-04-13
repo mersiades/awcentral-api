@@ -429,6 +429,11 @@ public class GameServiceImpl implements GameService {
         assert game != null;
         User user = userService.findOrCreateUser(userId, displayName, email);
 
+        // If the game already has the user in it, change nothing.
+        if (game.getPlayers().contains(user)) {
+            return game;
+        }
+
         // Create Player Gamerole for user
         GameRole gameRole = GameRole.builder().id(new ObjectId().toString())
                 .role(RoleType.PLAYER)
