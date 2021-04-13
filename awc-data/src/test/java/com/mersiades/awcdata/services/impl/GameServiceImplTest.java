@@ -513,6 +513,28 @@ class GameServiceImplTest {
     }
 
     @Test
+    void shouldNotAddNewUserToGame_alreadyAsPlayer() throws Exception {
+        // Given
+        mockGame1.getPlayers().add(mockPlayer);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(userService.findOrCreateUser(anyString(), anyString(), anyString())).thenReturn(mockPlayer);
+
+        // When
+        Game returnedGame = gameService.addUserToGame(mockGame1.getId(),
+                mockPlayer.getId(),
+                mockPlayer.getDisplayName(),
+                mockPlayer.getEmail());
+
+        // Then
+        assert returnedGame != null;
+        assertEquals(2, returnedGame.getGameRoles().size());
+        assertEquals(1, returnedGame.getPlayers().size());
+
+        verify(userService, times(1)).findOrCreateUser(anyString(),anyString(),anyString());
+        verify(gameRepository, times(1)).findById(anyString());
+    }
+
+    @Test
     void shouldFindGameByIdAndDelete() {
         // Given
         User mockPlayer = User.builder().id("mock-player-user-id").displayName("player-displayname").email("player-email").build();

@@ -19,6 +19,19 @@
         <module>awc-content</module>
     </modules>
 
+    <!-- TODO: add name and description to all POMs -->
+
+    <!-- TODO: <licenses>
+        <license>
+            <name>GNU General Public License v3.0</name>
+            <url>https://www.gnu.org/licenses/gpl.txt</url>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>Spring Framework Guru</name>
+    </organization> -->
+
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
         <java.version>11</java.version>
@@ -39,6 +52,8 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <!-- TODO: Add testing dependencies, actuator -->
     </dependencies>
 
     <dependencyManagement>
@@ -79,6 +94,8 @@
 
     <build>
         <plugins>
+            <!-- TODO: add spring-boot-maven-plugin -->
+            <!-- TODO: add customised maven-clean https://www.udemy.com/course/spring-boot-microservices-with-spring-cloud-beginner-to-guru/learn/lecture/15111996  -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
@@ -107,6 +124,7 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
             </plugin>
+            <!-- TODO: add maven enforcer https://www.udemy.com/course/spring-boot-microservices-with-spring-cloud-beginner-to-guru/learn/lecture/15112252#questions  -->
         </plugins>
     </build>
 </project>
