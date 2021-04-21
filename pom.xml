@@ -153,4 +153,15 @@
             <url>https://repo.repsy.io/mvn/hnmck8utxwzk/nkk-maven-repo</url>
         </repository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>repsy</id>
+            <name>The private Neon King Kong repository on Repsy</name>
+            <url>https://repo.repsy.io/mvn/hnmck8utxwzk/nkk-maven-repo</url>
+        </repository>
+    </repositories>
 </project>
