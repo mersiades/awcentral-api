@@ -11,5 +11,9 @@ public interface MoveRepository extends MongoRepository<Move, String> {
 
     List<Move> findAllByPlaybookAndKind(PlaybookType playbookType, MoveType kind);
 
+    Move findByKind(MoveType kind);
+
+    List<Move> findAllByKind(MoveType kind);
+
     Move findByName(String moveName);
 }

@@ -220,6 +220,14 @@ type GearInstructions {
     startingBarter: Int
 }
 
+type ImprovementBlock {
+    id: ID!
+    playbookType: PlaybookType
+    improvementInstructions: String
+    improvementMoves: [Move]
+    futureImprovementMoves: [Move]
+}
+
 type PlaybookCreator {
     id: ID!
     playbookType: PlaybookType
@@ -236,6 +244,7 @@ type PlaybookCreator {
     defaultMoves: [Move]
     gearInstructions: GearInstructions
     playbookUniqueCreator: PlaybookUniqueCreator
+    improvementBlock: ImprovementBlock
 }
 
     ### ------------- Playbook Unique Creators ------------- ###
