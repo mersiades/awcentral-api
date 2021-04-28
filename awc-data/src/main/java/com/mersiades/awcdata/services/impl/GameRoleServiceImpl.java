@@ -19,6 +19,7 @@ import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static com.mersiades.awccontent.constants.MoveNames.collectorName;
@@ -374,14 +375,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 //            characterMove.setIsSelected(true);
             // Adjust CharacterStat if CharacterMove has a StatModifier
             if (characterMove.getStatModifier() != null) {
-                CharacterStat statToBeModified = character.getStatsBlock().getStats()
-                        .stream()
-                        .filter(characterStat -> characterStat.getStat().equals(characterMove.getStatModifier().getStatToModify()))
-                        .findFirst().orElseThrow();
-
-                statToBeModified.setValue(statToBeModified.getValue() + characterMove.getStatModifier().getModification());
-                statToBeModified.setModifier(characterMove.getStatModifier().getId());
-
+                modifyCharacterStat(character, characterMove);
             }
             // Give CharacterMove an id
             characterMove.setId(new ObjectId().toString());
@@ -1202,9 +1196,79 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
-    public Character adjustImprovements(String gameRoleId, String characterId, List<String> improvementIDs, List<String> futureImprovementIDs) {
+    public Character adjustImprovements(String gameRoleId, String characterId,
+                                        List<String> improvementIDs, List<String> futureImprovementIDs) {
         GameRole gameRole = getGameRole(gameRoleId);
         Character character = getCharacterById(gameRole, characterId);
+        int allowedImprovements = character.getAllowedImprovements();
+        AtomicBoolean shouldAbort = new AtomicBoolean(false);
+
+        if (allowedImprovements >= improvementIDs.size() + futureImprovementIDs.size()) {
+            // Check if existing improvements is not in improvementIDs lists,
+            // remove if it is not in the lists
+            character.getImprovementMoves().forEach(characterMove -> {
+                if (!improvementIDs.contains(characterMove.getId())) {
+                    // switch on MoveType, reverse move
+                    switch (characterMove.getKind()) {
+                        case IMPROVE_STAT:
+                            unModifyCharacterStat(character, characterMove);
+
+                            break;
+                        default:
+                            // TODO: throw exception
+                    }
+                    character.setImprovementMoves(
+                            character.getImprovementMoves().stream()
+                                    .filter(characterMove1 -> !characterMove1.getId().equals(characterMove.getId()))
+                                    .collect(Collectors.toList()));
+                }
+            });
+
+            // Check if existing futureImprovements is not in futureImprovementIDs lists,
+            // abort operation if there's a problem. Existing futureImprovements
+            // should not be removed
+            character.getFutureImprovementMoves().forEach(characterMove -> {
+                if (!futureImprovementIDs.contains(characterMove.getId())) {
+                    // Don't try to reverse future improvements
+                    // TODO: Send error to front-end
+                    shouldAbort.set(true);
+                }
+            });
+
+            if (shouldAbort.get()) {
+                // Return without making any changes
+                return character;
+            }
+
+
+            improvementIDs.forEach(improvementID -> {
+                // check if already an improvement
+                Optional<CharacterMove> existingImprovementOptional = character.getImprovementMoves()
+                        .stream().filter(characterMove -> characterMove.getId().equals(improvementID)).findFirst();
+
+                if (existingImprovementOptional.isEmpty()) {
+                    // Get move from db
+                    Move move = moveService.findById(improvementID);
+                    // Convert to CharacterMove
+                    CharacterMove characterMove = CharacterMove.createFromMove(move, true);
+                    // Give CharacterMove an id
+                    characterMove.setId(new ObjectId().toString());
+
+                    // switch on move type, add move, change character
+                    switch (characterMove.getKind()) {
+                        case IMPROVE_STAT:
+                            modifyCharacterStat(character, characterMove);
+
+                            break;
+                        default:
+                            // TODO: throw exception
+                    }
+                    character.getImprovementMoves().add(characterMove);
+                }
+            });
+
+
+        }
 
 
         // Save to db
@@ -1283,5 +1347,29 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     private GameRole getGameRole(String gameRoleId) {
         return gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
+    }
+
+    private void modifyCharacterStat(Character character, CharacterMove characterMove) {
+
+        CharacterStat statToBeModified = character.getStatsBlock().getStats()
+                .stream()
+                .filter(characterStat -> characterStat.getStat().equals(characterMove.getStatModifier().getStatToModify()))
+                .findFirst().orElseThrow();
+
+        // Only increase stat if under the limit
+        if (statToBeModified.getValue() < characterMove.getStatModifier().getMaxLimit()) {
+            statToBeModified.setValue(statToBeModified.getValue() + characterMove.getStatModifier().getModification());
+            statToBeModified.setModifier(characterMove.getStatModifier().getId());
+        }
+    }
+
+    private void unModifyCharacterStat(Character character, CharacterMove characterMove) {
+        CharacterStat statToBeModified = character.getStatsBlock().getStats()
+                .stream()
+                .filter(characterStat -> characterStat.getStat().equals(characterMove.getStatModifier().getStatToModify()))
+                .findFirst().orElseThrow();
+
+        statToBeModified.setValue(statToBeModified.getValue() - characterMove.getStatModifier().getModification());
+        statToBeModified.setModifier(null);
     }
 }

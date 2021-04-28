@@ -62,6 +62,36 @@ class GameRoleServiceImplTest {
 
     StatsOption mockStatsOption;
 
+    StatModifier mockSharpMax2Mod = StatModifier.builder()
+            .id(new ObjectId().toString())
+            .statToModify(StatType.SHARP)
+            .modification(1)
+            .maxLimit(2)
+            .build();
+
+    Move mockSharpMax2 = Move.builder()
+            .name(sharpMax2Name)
+            .description("get +1sharp (max sharp+2)\n")
+            .statModifier(mockSharpMax2Mod)
+            .kind(MoveType.IMPROVE_STAT)
+            .stat(null)
+            .build();
+
+    StatModifier mockCoolMax2Mod = StatModifier.builder()
+            .id(new ObjectId().toString())
+            .statToModify(StatType.COOL)
+            .modification(1)
+            .maxLimit(2)
+            .build();
+
+    Move mockCoolMax2 = Move.builder()
+            .name(coolMax2Name)
+            .description("get +1cool (max cool+2)\n")
+            .statModifier(mockCoolMax2Mod)
+            .kind(MoveType.IMPROVE_STAT)
+            .stat(null)
+            .build();
+
 
     @BeforeEach
     public void setUp() {
@@ -1224,20 +1254,93 @@ class GameRoleServiceImplTest {
     @Test
     void shouldIncreaseStatOnAdjustStatImprovement() {
         // Given
-        int mockCoolValue = 0;
-        String mockImprovementId = "mock-cool-max-2-id";
-        CharacterStat mockCoolStat = CharacterStat.builder()
-                .id("mock-cool-stat-id")
-                .stat(StatType.COOL)
-                .value(mockCoolValue)
+        int mockSharpValue = 0;
+        String mockImprovementId = "mock-sharp-max-2-id";
+        CharacterStat mockSharpStat = CharacterStat.builder()
+                .id("mock-sharp-stat-id")
+                .stat(StatType.SHARP)
+                .value(mockSharpValue)
                 .build();
 
         StatsBlock mockStatsBlock = StatsBlock.builder()
                 .id("mock-stat-block-id")
                 .statsOptionId("mock-stats-option-id")
-                .stats(List.of(mockCoolStat))
+                .stats(List.of(mockSharpStat))
                 .build();
         mockCharacter.setStatsBlock(mockStatsBlock);
+        mockCharacter.setAllowedImprovements(1);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(mockSharpMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(mockImprovementId), List.of());
+
+        // Then
+        assertEquals(mockSharpValue + 1, returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue()
+                );
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(mockSharpMax2.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldNotIncreaseStatBecauseAtMax() {
+        // Given
+        int mockSharpValue = 2;
+        String mockImprovementId = "mock-sharp-max-2-id";
+        CharacterStat mockSharpStat = CharacterStat.builder()
+                .id("mock-sharp-stat-id")
+                .stat(StatType.SHARP)
+                .value(mockSharpValue)
+                .build();
+
+        StatsBlock mockStatsBlock = StatsBlock.builder()
+                .id("mock-stat-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockSharpStat))
+                .build();
+        mockCharacter.setStatsBlock(mockStatsBlock);
+        mockCharacter.setAllowedImprovements(1);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(mockSharpMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(mockImprovementId), List.of());
+
+        // Then
+        assertEquals(mockSharpValue, returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue()
+        );
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(mockSharpMax2.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldNotAdjustImprovementsIfTooManyIds() {
+        // Given
+        int mockSharpValue = 2;
+        String mockImprovementId = "mock-sharp-max-2-id";
+        CharacterStat mockSharpStat = CharacterStat.builder()
+                .id("mock-sharp-stat-id")
+                .stat(StatType.SHARP)
+                .value(mockSharpValue)
+                .build();
+
+        StatsBlock mockStatsBlock = StatsBlock.builder()
+                .id("mock-stat-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockSharpStat))
+                .build();
+        mockCharacter.setStatsBlock(mockStatsBlock);
+        mockCharacter.setAllowedImprovements(0);
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
 
@@ -1246,13 +1349,57 @@ class GameRoleServiceImplTest {
                 mockCharacter.getId(), List.of(mockImprovementId), List.of());
 
         // Then
-        assertEquals(mockCoolValue + 1, returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(StatType.COOL)).findFirst().orElseThrow().getValue()
-                );
+        assertEquals(mockSharpValue, returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue()
+        );
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(mockSharpMax2.getName())));
+        verifyMockServices();
     }
 
     @Test
-    void shouldNotIncreaseStatBecauseAtMax() {}
+    void shouldReverseAdjustStatImprovement() {
+        // Given
+        int mockSharpValue = 2;
+        int mockCoolValue = 0;
+        String mockImprovementId = "mock-sharp-max-2-id";
+        CharacterStat mockSharpStat = CharacterStat.builder()
+                .id("mock-sharp-stat-id")
+                .stat(StatType.SHARP)
+                .value(mockSharpValue)
+                .build();
+
+        CharacterStat mockCoolStat = CharacterStat.builder()
+                .id("mock-cool-stat-id")
+                .stat(StatType.COOL)
+                .value(mockSharpValue)
+                .build();
+
+        StatsBlock mockStatsBlock = StatsBlock.builder()
+                .id("mock-stat-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockSharpStat, mockCoolStat))
+                .build();
+        mockCharacter.setStatsBlock(mockStatsBlock);
+        mockCharacter.setAllowedImprovements(1);
+        CharacterMove mockSharpMax2CM = CharacterMove.createFromMove(mockSharpMax2);
+        mockCharacter.setImprovementMoves(List.of(mockSharpMax2CM));
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(mockCoolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of("some-other-improvement-move-id"), List.of());
+
+        // Then
+        assertEquals(mockSharpValue - mockSharpMax2CM.getStatModifier().getModification(), returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue()
+        );
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(mockSharpMax2.getName())));
+        verifyMockServices();
+    }
 
     @Test
     void shouldRemoveHold() {
