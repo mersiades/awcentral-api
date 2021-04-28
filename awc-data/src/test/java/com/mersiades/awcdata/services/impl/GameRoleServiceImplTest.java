@@ -1166,6 +1166,95 @@ class GameRoleServiceImplTest {
     }
 
     @Test
+    void shouldSpendPointsAndSetAllowedImprovementsTo1() {
+        // Given
+        int mockExperience = 5;
+        mockCharacter.setExperience(mockExperience);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .spendExperience(mockGameRole.getId(), mockCharacter.getId());
+
+        // Then
+        assertEquals(0, returnedCharacter.getExperience());
+        assertEquals(1, returnedCharacter.getAllowedImprovements());
+        verifyMockServices();
+    }
+
+    @Test
+    void shouldSpendPointsWithRemainderAndIncreaseAllowedImprovements() {
+        // Given
+        int mockExperience = 12;
+        int mockAllowedImprovements = 2;
+        mockCharacter.setExperience(mockExperience);
+        mockCharacter.setAllowedImprovements(mockAllowedImprovements);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .spendExperience(mockGameRole.getId(), mockCharacter.getId());
+
+        // Then
+        assertEquals(2, returnedCharacter.getExperience());
+        assertEquals(mockAllowedImprovements + 2, returnedCharacter.getAllowedImprovements());
+        verifyMockServices();
+    }
+
+    @Test
+    void shouldNotSpendImprovementPointsBecauseTooFew() {
+        // Given
+        int mockExperience = 3;
+        mockCharacter.setExperience(mockExperience);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .spendExperience(mockGameRole.getId(), mockCharacter.getId());
+
+        // Then
+        assertEquals(mockExperience, returnedCharacter.getExperience());
+        assertEquals(0, returnedCharacter.getAllowedImprovements());
+        verifyMockServices();
+    }
+
+    @Test
+    void shouldIncreaseStatOnAdjustStatImprovement() {
+        // Given
+        int mockCoolValue = 0;
+        String mockImprovementId = "mock-cool-max-2-id";
+        CharacterStat mockCoolStat = CharacterStat.builder()
+                .id("mock-cool-stat-id")
+                .stat(StatType.COOL)
+                .value(mockCoolValue)
+                .build();
+
+        StatsBlock mockStatsBlock = StatsBlock.builder()
+                .id("mock-stat-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCoolStat))
+                .build();
+        mockCharacter.setStatsBlock(mockStatsBlock);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(mockImprovementId), List.of());
+
+        // Then
+        assertEquals(mockCoolValue + 1, returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(StatType.COOL)).findFirst().orElseThrow().getValue()
+                );
+    }
+
+    @Test
+    void shouldNotIncreaseStatBecauseAtMax() {}
+
+    @Test
     void shouldRemoveHold() {
         Hold mockHold = Hold.builder()
                 .id("mock-hold-id")

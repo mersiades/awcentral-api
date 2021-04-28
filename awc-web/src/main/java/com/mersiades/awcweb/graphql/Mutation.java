@@ -256,6 +256,16 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.removeProject(gameRoleId, characterId, project);
     }
 
+    public Character adjustImprovements(String gameRoleId, String characterId, List<String> improvementIDs, List<String> futureImprovementIDs) {
+        System.out.println("Adjusting improvements for Character: " + characterId);
+        return gameRoleService.adjustImprovements(gameRoleId, characterId, improvementIDs, futureImprovementIDs);
+    }
+
+    public Character spendExperience(String gameRoleId, String characterId) {
+        System.out.println("Spending experience points for Character: " + characterId);
+        return gameRoleService.spendExperience(gameRoleId, characterId);
+    }
+
     // ------------------------------------------ Move Categories --------------------------------------- //
 
     public Game performPrintMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove) {
