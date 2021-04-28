@@ -2075,6 +2075,501 @@ public class GameDataLoader implements CommandLineRunner {
 
         moveService.saveAll(List.of(skinnerSpecial, breathtaking, artful, lost, anArrestingSkinner, hypnotic));
 
+        /* ----------------------------- GENERIC STAT IMPROVEMENT MOVES --------------------------------- */
+
+        StatModifier sharpMax2Mod = StatModifier.builder()
+                .id(new ObjectId().toString())
+                .statToModify(StatType.SHARP)
+                .modification(1)
+                .maxLimit(2)
+                .build();
+        StatModifier savedSharpMax2Mod = statModifierService.save(sharpMax2Mod);
+        Move sharpMax2 = Move.builder()
+                .name("SHARP MAX 2")
+                .description("get +1sharp (max sharp+2)\n")
+                .statModifier(savedSharpMax2Mod)
+                .kind(MoveType.IMPROVE_STAT)
+                .stat(null)
+                .build();
+        StatModifier coolMax2Mod = StatModifier.builder()
+                .id(new ObjectId().toString())
+                .statToModify(StatType.COOL)
+                .modification(1)
+                .maxLimit(2)
+                .build();
+        StatModifier savedCoolMax2Mod = statModifierService.save(coolMax2Mod);
+        Move coolMax2 = Move.builder()
+                .name("COOL MAX 2")
+                .description("get +1cool (max sharp+2)\n")
+                .statModifier(savedCoolMax2Mod)
+                .kind(MoveType.IMPROVE_STAT)
+                .stat(null)
+                .build();
+
+        StatModifier hardMax2Mod = StatModifier.builder()
+                .id(new ObjectId().toString())
+                .statToModify(StatType.HARD)
+                .modification(1)
+                .maxLimit(2)
+                .build();
+        StatModifier savedHardMax2Mod = statModifierService.save(hardMax2Mod);
+        Move hardMax2 = Move.builder()
+                .name("HARD MAX 2")
+                .description("get +1hard (max hard+2)\n")
+                .statModifier(savedHardMax2Mod)
+                .kind(MoveType.IMPROVE_STAT)
+                .stat(null)
+                .build();
+
+        StatModifier hotMax2Mod = StatModifier.builder()
+                .id(new ObjectId().toString())
+                .statToModify(StatType.HOT)
+                .modification(1)
+                .maxLimit(2)
+                .build();
+        StatModifier savedHotMax2Mod = statModifierService.save(hotMax2Mod);
+        Move hotMax2 = Move.builder()
+                .name("HOT MAX 2")
+                .description("get +1hot (max hot+2)\n")
+                .statModifier(savedHotMax2Mod)
+                .kind(MoveType.IMPROVE_STAT)
+                .stat(null)
+                .build();
+
+        StatModifier weirdMax2Mod = StatModifier.builder()
+                .id(new ObjectId().toString())
+                .statToModify(StatType.WEIRD)
+                .modification(1)
+                .maxLimit(2)
+                .build();
+        StatModifier savedWeirdMax2Mod = statModifierService.save(weirdMax2Mod);
+        Move weirdMax2 = Move.builder()
+                .name("WEIRD MAX 2")
+                .description("get +1weird (max weird+2)\n")
+                .statModifier(savedWeirdMax2Mod)
+                .kind(MoveType.IMPROVE_STAT)
+                .stat(null)
+                .build();
+
+        StatModifier sharpMax3Mod = StatModifier.builder()
+                .id(new ObjectId().toString())
+                .statToModify(StatType.SHARP)
+                .modification(1)
+                .maxLimit(3)
+                .build();
+        StatModifier savedSharpMax3Mod = statModifierService.save(sharpMax3Mod);
+        Move sharpMax3 = Move.builder()
+                .name("SHARP MAX 3")
+                .description("get +1sharp (max sharp+3)\n")
+                .statModifier(savedSharpMax3Mod)
+                .kind(MoveType.IMPROVE_STAT)
+                .stat(null)
+                .build();
+        StatModifier coolMax3Mod = StatModifier.builder()
+                .id(new ObjectId().toString())
+                .statToModify(StatType.COOL)
+                .modification(1)
+                .maxLimit(3)
+                .build();
+        StatModifier savedCoolMax3Mod = statModifierService.save(coolMax3Mod);
+        Move coolMax3 = Move.builder()
+                .name("COOL MAX 3")
+                .description("get +1cool (max sharp+3)\n")
+                .statModifier(savedCoolMax3Mod)
+                .kind(MoveType.IMPROVE_STAT)
+                .stat(null)
+                .build();
+
+        StatModifier hardMax3Mod = StatModifier.builder()
+                .id(new ObjectId().toString())
+                .statToModify(StatType.HARD)
+                .modification(1)
+                .maxLimit(3)
+                .build();
+        StatModifier savedHardMax3Mod = statModifierService.save(hardMax3Mod);
+        Move hardMax3 = Move.builder()
+                .name("HARD MAX 3")
+                .description("get +1hard (max hard+3)\n")
+                .statModifier(savedHardMax3Mod)
+                .kind(MoveType.IMPROVE_STAT)
+                .stat(null)
+                .build();
+
+        StatModifier hotMax3Mod = StatModifier.builder()
+                .id(new ObjectId().toString())
+                .statToModify(StatType.HOT)
+                .modification(1)
+                .maxLimit(3)
+                .build();
+        StatModifier savedHotMax3Mod = statModifierService.save(hotMax3Mod);
+        Move hotMax3 = Move.builder()
+                .name("HOT MAX 3")
+                .description("get +1hot (max hot+3)\n")
+                .statModifier(savedHotMax3Mod)
+                .kind(MoveType.IMPROVE_STAT)
+                .stat(null)
+                .build();
+
+        StatModifier weirdMax3Mod = StatModifier.builder()
+                .id(new ObjectId().toString())
+                .statToModify(StatType.WEIRD)
+                .modification(1)
+                .maxLimit(3)
+                .build();
+        StatModifier savedWeirdMax3Mod = statModifierService.save(weirdMax3Mod);
+        Move weirdMax3 = Move.builder()
+                .name("WEIRD MAX 3")
+                .description("get +1weird (max weird+3)\n")
+                .statModifier(savedWeirdMax3Mod)
+                .kind(MoveType.IMPROVE_STAT)
+                .stat(null)
+                .build();
+
+        moveService.saveAll(List.of(coolMax2, coolMax3, hardMax2, hardMax3, hotMax2,
+                hotMax3, sharpMax2, sharpMax3, weirdMax2, weirdMax3));
+
+        /* ----------------------------- ADD CHARACTER MOVE IMPROVEMENT MOVES --------------------------------- */
+
+        Move addAngelMove1 = Move.builder()
+                .name("ADD ANGEL MOVE 1")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.ANGEL)
+                .build();
+
+        Move addAngelMove2 = Move.builder()
+                .name("ADD ANGEL MOVE 2")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.ANGEL)
+                .build();
+
+        Move addBattleBabeMove1 = Move.builder()
+                .name("ADD BATTLEBABE MOVE 1")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.BATTLEBABE)
+                .build();
+
+        Move addBattleBabeMove2 = Move.builder()
+                .name("ADD BATTLEBABE MOVE 2")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.BATTLEBABE)
+                .build();
+
+        Move addBrainerMove1 = Move.builder()
+                .name("ADD BRAINER MOVE 1")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.BRAINER)
+                .build();
+
+        Move addBrainerMove2 = Move.builder()
+                .name("ADD BRAINER MOVE 2")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.BRAINER)
+                .build();
+
+        Move addDriverMove1 = Move.builder()
+                .name("ADD DRIVER MOVE 1")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.DRIVER)
+                .build();
+
+        Move addDriverMove2 = Move.builder()
+                .name("ADD DRIVER MOVE 2")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.DRIVER)
+                .build();
+
+        Move addGunluggerMove1 = Move.builder()
+                .name("ADD GUNLUGGER MOVE 1")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.GUNLUGGER)
+                .build();
+
+        Move addGunluggerMove2 = Move.builder()
+                .name("ADD GUNLUGGER MOVE 2")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.GUNLUGGER)
+                .build();
+
+        Move addHocusMove1 = Move.builder()
+                .name("ADD HOCUS MOVE 1")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.HOCUS)
+                .build();
+
+        Move addHocusMove2 = Move.builder()
+                .name("ADD HOCUS MOVE 2")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.HOCUS)
+                .build();
+
+        Move addMaestroDMove1 = Move.builder()
+                .name("ADD MAESTRO_D MOVE 1")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.MAESTRO_D)
+                .build();
+
+        Move addMaestroDMove2 = Move.builder()
+                .name("ADD MAESTRO_D MOVE 2")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.MAESTRO_D)
+                .build();
+
+        Move addSavvyheadMove1 = Move.builder()
+                .name("ADD SAVVYHEAD MOVE 1")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.SAVVYHEAD)
+                .build();
+
+        Move addSavvyheadMove2 = Move.builder()
+                .name("ADD SAVVYHEAD MOVE 2")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.SAVVYHEAD)
+                .build();
+
+        Move addSkinnerMove1 = Move.builder()
+                .name("ADD SKINNER MOVE 1")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.SKINNER)
+                .build();
+
+        Move addSkinnerMove2 = Move.builder()
+                .name("ADD SKINNER MOVE 2")
+                .description("get a new angel move\n")
+                .kind(MoveType.ADD_CHARACTER_MOVE)
+                .playbook(PlaybookType.SKINNER)
+                .build();
+
+        moveService.saveAll(List.of(addAngelMove1, addAngelMove2, addBattleBabeMove1, addBattleBabeMove2,
+                addBrainerMove1, addBrainerMove2, addDriverMove1, addDriverMove2, addGunluggerMove1,
+                addGunluggerMove2, addHocusMove1, addHocusMove2, addMaestroDMove1, addMaestroDMove2,
+                addSavvyheadMove1, addSavvyheadMove2, addSkinnerMove1, addSkinnerMove2));
+
+        /* ----------------------------- ADJUST UNIQUE IMPROVEMENT MOVES --------------------------------- */
+
+        Move adjustAngelUnique1 = Move.builder()
+                .name("ADJUST ANGEL UNIQUE 1")
+                .description("get a supplier (_cf_, detail with the MC)\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.ANGEL)
+                .build();
+
+        Move adjustBrainerlUnique1 = Move.builder()
+                .name("ADJUST BRAINER UNIQUE 1")
+                .description("get 2 new or replacement brainer gear (you choose)\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.BRAINER)
+                .build();
+
+        Move adjustChopperUnique1 = Move.builder()
+                .name("ADJUST CHOPPER UNIQUE 1")
+                .description("choose a new option for your gang\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.CHOPPER)
+                .build();
+
+        Move adjustChopperUnique2 = Move.builder()
+                .name("ADJUST CHOPPER UNIQUE 2")
+                .description("choose a new option for your gang\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.CHOPPER)
+                .build();
+
+        Move adjustHardHolderUnique1 = Move.builder()
+                .name("ADJUST HARDHOLDER UNIQUE 1")
+                .description("choose a new option for your holding\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.HARDHOLDER)
+                .build();
+
+        Move adjustHardHolderUnique2 = Move.builder()
+                .name("ADJUST HARDHOLDER UNIQUE 2")
+                .description("choose a new option for your holding\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.HARDHOLDER)
+                .build();
+
+        Move adjustHardHolderUnique3 = Move.builder()
+                .name("ADJUST HARDHOLDER UNIQUE 3")
+                .description("erase an option from your holding\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.HARDHOLDER)
+                .build();
+
+        Move adjustHocusUnique1 = Move.builder()
+                .name("ADJUST HOCUS UNIQUE 1")
+                .description("choose a new option for your followers\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.HOCUS)
+                .build();
+
+        Move adjustHocusUnique2 = Move.builder()
+                .name("ADJUST HOCUS UNIQUE 2")
+                .description("choose a new option for your followers\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.HOCUS)
+                .build();
+
+        Move adjustMaestroDUnique1 = Move.builder()
+                .name("ADJUST MAESTRO D' UNIQUE 1")
+                .description("add a security to your establishment\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.MAESTRO_D)
+                .build();
+
+        Move adjustMaestroDUnique2 = Move.builder()
+                .name("ADJUST MAESTRO D' UNIQUE 2")
+                .description("resolve somebody's interest in your establishment\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.MAESTRO_D)
+                .build();
+
+        Move adjustSavvyheadUnique1 = Move.builder()
+                .name("ADJUST SAVVYHEAD UNIQUE 1")
+                .description("add 2 options to your workspace\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.SAVVYHEAD)
+                .build();
+
+        Move adjustSavvyheadUnique2 = Move.builder()
+                .name("ADJUST SAVVYHEAD UNIQUE 2")
+                .description("add life support to your workspace, and now you can work on people there too\n")
+                .kind(MoveType.ADJUST_UNIQUE)
+                .playbook(PlaybookType.SAVVYHEAD)
+                .build();
+
+        moveService.saveAll(List.of(adjustAngelUnique1, adjustBrainerlUnique1, adjustChopperUnique1,
+                adjustChopperUnique2, adjustHardHolderUnique1, adjustHardHolderUnique2, adjustHardHolderUnique3,
+                adjustMaestroDUnique1, adjustMaestroDUnique2, adjustSavvyheadUnique1, adjustSavvyheadUnique2,
+                adjustHocusUnique1, adjustHocusUnique2));
+
+        /* ----------------------------- ADD OTHER PLAYBOOK MOVE IMPROVEMENT MOVES --------------------------------- */
+
+        Move addOtherPBMove1 = Move.builder()
+                .name("ADD MOVE FROM OTHER PLAYBOOK 1")
+                .description("get a move from another playbook\n")
+                .kind(MoveType.ADD_OTHER_PB_MOVE)
+                .build();
+
+        Move addOtherPBMove2 = Move.builder()
+                .name("ADD MOVE FROM OTHER PLAYBOOK 2")
+                .description("get a move from another playbook\n")
+                .kind(MoveType.ADD_OTHER_PB_MOVE)
+                .build();
+
+        moveService.saveAll(List.of(addOtherPBMove1, addOtherPBMove2));
+
+        /* ----------------------------- ADD UNIQUE IMPROVEMENT MOVES --------------------------------- */
+
+        Move addGangLeadership = Move.builder()
+                .name("ADD GANG AND LEADERSHIP")
+                .description("get a gang (you detail) and _**leadership**_\n")
+                .kind(MoveType.ADD_UNIQUE)
+                .playbook(PlaybookType.HARDHOLDER)
+                .build();
+
+        Move addGangPackAlpha = Move.builder()
+                .name("ADD GANG AND LEADERSHIP")
+                .description("get a gang (you detail) and _**pack alpha**_\n")
+                .kind(MoveType.ADD_UNIQUE)
+                .playbook(PlaybookType.CHOPPER)
+                .build();
+
+        Move addHolding = Move.builder()
+                .name("ADD HOLDING")
+                .description("get a holding (you detail) and _**wealth**_\n")
+                .kind(MoveType.ADD_UNIQUE)
+                .playbook(PlaybookType.HARDHOLDER)
+                .build();
+
+        Move addWorkspace = Move.builder()
+                .name("ADD WORKSPACE")
+                .description("get a garage (workspace, you detail) and crew\n")
+                .kind(MoveType.ADD_UNIQUE)
+                .playbook(PlaybookType.SAVVYHEAD)
+                .build();
+
+        Move addFollowers = Move.builder()
+                .name("ADD FOLLOWERS")
+                .description("get followers (you detail) and _**fortunes**_\n")
+                .kind(MoveType.ADD_UNIQUE)
+                .playbook(PlaybookType.HOCUS)
+                .build();
+
+        Move addEstablishment = Move.builder()
+                .name("ADD ESTABLISHMENT")
+                .description("get an establishment (you detail)\n")
+                .kind(MoveType.ADD_UNIQUE)
+                .playbook(PlaybookType.HOCUS)
+                .build();
+
+        moveService.saveAll(List.of(addGangLeadership, addGangPackAlpha, addHolding, addWorkspace, addFollowers,
+                addEstablishment));
+
+        /* ----------------------------- ADD VEHICLE IMPROVEMENT MOVES --------------------------------- */
+
+        Move addVehicle = Move.builder()
+                .name("ADD VEHICLE")
+                .description("get a vehicle (you detail)\n")
+                .kind(MoveType.ADD_VEHICLE)
+                .build();
+
+        moveService.save(addVehicle);
+
+        /* ----------------------------- UNGIVEN FUTURE IMPROVEMENT MOVES --------------------------------- */
+
+        Move genericIncreaseStat = Move.builder()
+                .name("GENERIC INCREASE STAT")
+                .description("get +1 to any stat (max stat+3)\n")
+                .kind(MoveType.GENERIC_INCREASE_STAT)
+                .build();
+
+        Move retire = Move.builder()
+                .name("RETIRE")
+                .description("retire your character to safety\n")
+                .kind(MoveType.RETIRE)
+                .build();
+
+        Move addSecondCharacter = Move.builder()
+                .name("ADD SECOND CHARACTER")
+                .description("create a second character to play\n")
+                .kind(MoveType.ADD_SECOND_CHARACTER)
+                .build();
+
+        Move changePlaybook = Move.builder()
+                .name("CHANGE PLAYBOOK")
+                .description("change your character to a new playbook\n")
+                .kind(MoveType.CHANGE_PLAYBOOK)
+                .build();
+
+        Move improveBasicMoves1 = Move.builder()
+                .name("IMPROVE BASIC MOVES 1")
+                .description("choose 3 basic moves and advance them\n")
+                .kind(MoveType.IMPROVE_BASIC_MOVES)
+                .build();
+
+        Move improveBasicMoves2 = Move.builder()
+                .name("IMPROVE BASIC MOVES 2")
+                .description("advance the other three basic moves\n")
+                .kind(MoveType.IMPROVE_BASIC_MOVES)
+                .build();
+
     }
 
     private void loadNames() {

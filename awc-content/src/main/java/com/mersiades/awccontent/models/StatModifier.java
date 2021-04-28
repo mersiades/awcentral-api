@@ -19,4 +19,6 @@ public class StatModifier {
     private StatType statToModify;
 
     private int modification;
+
+    private int maxLimit;
 }
