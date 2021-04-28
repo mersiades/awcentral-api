@@ -1201,6 +1201,41 @@ public class GameRoleServiceImpl implements GameRoleService {
         return character;
     }
 
+    @Override
+    public Character adjustImprovements(String gameRoleId, String characterId, List<String> improvementIDs, List<String> futureImprovementIDs) {
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
+
+
+        // Save to db
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
+
+        return character;
+    }
+
+    @Override
+    public Character spendExperience(String gameRoleId, String characterId) {
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
+
+        int currentExperience = character.getExperience();
+
+        if (currentExperience >= 5 ) {
+            int allowedImprovementsIncrease = currentExperience / 5;
+            int remainingExperience = currentExperience % 5;
+            character.setExperience(remainingExperience);
+            character.setAllowedImprovements(character.getAllowedImprovements() + allowedImprovementsIncrease);
+        }
+
+
+        // Save to db
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
+
+        return character;
+    }
+
 
     private void createOrUpdateCharacterStat(Character character, StatsOption statsOption, StatType stat) {
         int value;
@@ -1244,5 +1279,9 @@ public class GameRoleServiceImpl implements GameRoleService {
     private Character getCharacterById(GameRole gameRole, String characterId) {
         return gameRole.getCharacters().stream()
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+    }
+
+    private GameRole getGameRole(String gameRoleId) {
+        return gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
     }
 }

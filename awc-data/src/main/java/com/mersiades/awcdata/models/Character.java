@@ -50,6 +50,9 @@ public class Character {
 //    @NotNull
     private int experience;
 
+    // Min 0, max 16
+    private int allowedImprovements;
+
     @Builder.Default
     private List<BattleVehicle> battleVehicles = new ArrayList<>();
 
