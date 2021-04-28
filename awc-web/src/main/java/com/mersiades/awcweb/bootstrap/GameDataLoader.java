@@ -14,6 +14,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.mersiades.awccontent.constants.MoveNames.*;
 import static com.mersiades.awccontent.enums.StatType.*;
@@ -2085,7 +2086,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         StatModifier savedSharpMax2Mod = statModifierService.save(sharpMax2Mod);
         Move sharpMax2 = Move.builder()
-                .name("SHARP MAX 2")
+                .name(sharpMax2Name)
                 .description("get +1sharp (max sharp+2)\n")
                 .statModifier(savedSharpMax2Mod)
                 .kind(MoveType.IMPROVE_STAT)
@@ -2099,7 +2100,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         StatModifier savedCoolMax2Mod = statModifierService.save(coolMax2Mod);
         Move coolMax2 = Move.builder()
-                .name("COOL MAX 2")
+                .name(coolMax2Name)
                 .description("get +1cool (max sharp+2)\n")
                 .statModifier(savedCoolMax2Mod)
                 .kind(MoveType.IMPROVE_STAT)
@@ -2114,7 +2115,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         StatModifier savedHardMax2Mod = statModifierService.save(hardMax2Mod);
         Move hardMax2 = Move.builder()
-                .name("HARD MAX 2")
+                .name(hardMax2Name)
                 .description("get +1hard (max hard+2)\n")
                 .statModifier(savedHardMax2Mod)
                 .kind(MoveType.IMPROVE_STAT)
@@ -2129,7 +2130,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         StatModifier savedHotMax2Mod = statModifierService.save(hotMax2Mod);
         Move hotMax2 = Move.builder()
-                .name("HOT MAX 2")
+                .name(hotMax2Name)
                 .description("get +1hot (max hot+2)\n")
                 .statModifier(savedHotMax2Mod)
                 .kind(MoveType.IMPROVE_STAT)
@@ -2144,7 +2145,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         StatModifier savedWeirdMax2Mod = statModifierService.save(weirdMax2Mod);
         Move weirdMax2 = Move.builder()
-                .name("WEIRD MAX 2")
+                .name(weirdMax2Name)
                 .description("get +1weird (max weird+2)\n")
                 .statModifier(savedWeirdMax2Mod)
                 .kind(MoveType.IMPROVE_STAT)
@@ -2159,7 +2160,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         StatModifier savedSharpMax3Mod = statModifierService.save(sharpMax3Mod);
         Move sharpMax3 = Move.builder()
-                .name("SHARP MAX 3")
+                .name(sharpMax3Name)
                 .description("get +1sharp (max sharp+3)\n")
                 .statModifier(savedSharpMax3Mod)
                 .kind(MoveType.IMPROVE_STAT)
@@ -2173,7 +2174,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         StatModifier savedCoolMax3Mod = statModifierService.save(coolMax3Mod);
         Move coolMax3 = Move.builder()
-                .name("COOL MAX 3")
+                .name(coolMax3Name)
                 .description("get +1cool (max sharp+3)\n")
                 .statModifier(savedCoolMax3Mod)
                 .kind(MoveType.IMPROVE_STAT)
@@ -2188,7 +2189,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         StatModifier savedHardMax3Mod = statModifierService.save(hardMax3Mod);
         Move hardMax3 = Move.builder()
-                .name("HARD MAX 3")
+                .name(hardMax3Name)
                 .description("get +1hard (max hard+3)\n")
                 .statModifier(savedHardMax3Mod)
                 .kind(MoveType.IMPROVE_STAT)
@@ -2203,7 +2204,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         StatModifier savedHotMax3Mod = statModifierService.save(hotMax3Mod);
         Move hotMax3 = Move.builder()
-                .name("HOT MAX 3")
+                .name(hotMax3Name)
                 .description("get +1hot (max hot+3)\n")
                 .statModifier(savedHotMax3Mod)
                 .kind(MoveType.IMPROVE_STAT)
@@ -2218,7 +2219,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .build();
         StatModifier savedWeirdMax3Mod = statModifierService.save(weirdMax3Mod);
         Move weirdMax3 = Move.builder()
-                .name("WEIRD MAX 3")
+                .name(weirdMax3Name)
                 .description("get +1weird (max weird+3)\n")
                 .statModifier(savedWeirdMax3Mod)
                 .kind(MoveType.IMPROVE_STAT)
@@ -2231,127 +2232,127 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- ADD CHARACTER MOVE IMPROVEMENT MOVES --------------------------------- */
 
         Move addAngelMove1 = Move.builder()
-                .name("ADD ANGEL MOVE 1")
+                .name(addAngelMove1Name)
                 .description("get a new angel move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.ANGEL)
                 .build();
 
         Move addAngelMove2 = Move.builder()
-                .name("ADD ANGEL MOVE 2")
+                .name(addAngelMove2Name)
                 .description("get a new angel move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.ANGEL)
                 .build();
 
         Move addBattleBabeMove1 = Move.builder()
-                .name("ADD BATTLEBABE MOVE 1")
-                .description("get a new angel move\n")
+                .name(addBattleBabeMove1Name)
+                .description("get a new battlebabe move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.BATTLEBABE)
                 .build();
 
         Move addBattleBabeMove2 = Move.builder()
-                .name("ADD BATTLEBABE MOVE 2")
-                .description("get a new angel move\n")
+                .name(addBattleBabeMove2Name)
+                .description("get a new battlebabe move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.BATTLEBABE)
                 .build();
 
         Move addBrainerMove1 = Move.builder()
-                .name("ADD BRAINER MOVE 1")
-                .description("get a new angel move\n")
+                .name(addBrainerMove1Name)
+                .description("get a new brainer move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.BRAINER)
                 .build();
 
         Move addBrainerMove2 = Move.builder()
-                .name("ADD BRAINER MOVE 2")
-                .description("get a new angel move\n")
+                .name(addBrainerMove2Name)
+                .description("get a new brainer move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.BRAINER)
                 .build();
 
         Move addDriverMove1 = Move.builder()
-                .name("ADD DRIVER MOVE 1")
-                .description("get a new angel move\n")
+                .name(addDriverMove1Name)
+                .description("get a new driver move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.DRIVER)
                 .build();
 
         Move addDriverMove2 = Move.builder()
-                .name("ADD DRIVER MOVE 2")
-                .description("get a new angel move\n")
+                .name(addDriverMove2Name)
+                .description("get a new driver move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.DRIVER)
                 .build();
 
         Move addGunluggerMove1 = Move.builder()
-                .name("ADD GUNLUGGER MOVE 1")
-                .description("get a new angel move\n")
+                .name(addGunluggerMove1Name)
+                .description("get a new gunlugger move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.GUNLUGGER)
                 .build();
 
         Move addGunluggerMove2 = Move.builder()
-                .name("ADD GUNLUGGER MOVE 2")
-                .description("get a new angel move\n")
+                .name(addGunluggerMove2Name)
+                .description("get a new gunlugger move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.GUNLUGGER)
                 .build();
 
         Move addHocusMove1 = Move.builder()
-                .name("ADD HOCUS MOVE 1")
-                .description("get a new angel move\n")
+                .name(addHocusMove1Name)
+                .description("get a new hocus move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.HOCUS)
                 .build();
 
         Move addHocusMove2 = Move.builder()
-                .name("ADD HOCUS MOVE 2")
-                .description("get a new angel move\n")
+                .name(addHocusMove2Name)
+                .description("get a new hocus move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.HOCUS)
                 .build();
 
         Move addMaestroDMove1 = Move.builder()
-                .name("ADD MAESTRO_D MOVE 1")
-                .description("get a new angel move\n")
+                .name(addMaestroDMove1Name)
+                .description("get a new maestro d' move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.MAESTRO_D)
                 .build();
 
         Move addMaestroDMove2 = Move.builder()
-                .name("ADD MAESTRO_D MOVE 2")
-                .description("get a new angel move\n")
+                .name(addMaestroDMove2Name)
+                .description("get a new maestro d' move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.MAESTRO_D)
                 .build();
 
         Move addSavvyheadMove1 = Move.builder()
-                .name("ADD SAVVYHEAD MOVE 1")
-                .description("get a new angel move\n")
+                .name(addSavvyheadMove1Name)
+                .description("get a new savvyhead move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.SAVVYHEAD)
                 .build();
 
         Move addSavvyheadMove2 = Move.builder()
-                .name("ADD SAVVYHEAD MOVE 2")
-                .description("get a new angel move\n")
+                .name(addSavvyheadMove2Name)
+                .description("get a new savvyhead move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.SAVVYHEAD)
                 .build();
 
         Move addSkinnerMove1 = Move.builder()
-                .name("ADD SKINNER MOVE 1")
-                .description("get a new angel move\n")
+                .name(addSkinnerMove1Name)
+                .description("get a new skinner move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.SKINNER)
                 .build();
 
         Move addSkinnerMove2 = Move.builder()
-                .name("ADD SKINNER MOVE 2")
-                .description("get a new angel move\n")
+                .name(addSkinnerMove2Name)
+                .description("get a new skinner move\n")
                 .kind(MoveType.ADD_CHARACTER_MOVE)
                 .playbook(PlaybookType.SKINNER)
                 .build();
@@ -2364,97 +2365,97 @@ public class GameDataLoader implements CommandLineRunner {
         /* ----------------------------- ADJUST UNIQUE IMPROVEMENT MOVES --------------------------------- */
 
         Move adjustAngelUnique1 = Move.builder()
-                .name("ADJUST ANGEL UNIQUE 1")
+                .name(adjustAngelUnique1Name)
                 .description("get a supplier (_cf_, detail with the MC)\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.ANGEL)
                 .build();
 
-        Move adjustBrainerlUnique1 = Move.builder()
-                .name("ADJUST BRAINER UNIQUE 1")
+        Move adjustBrainerUnique1 = Move.builder()
+                .name(adjustBrainerUnique1Name)
                 .description("get 2 new or replacement brainer gear (you choose)\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.BRAINER)
                 .build();
 
         Move adjustChopperUnique1 = Move.builder()
-                .name("ADJUST CHOPPER UNIQUE 1")
+                .name(adjustChopperUnique1Name)
                 .description("choose a new option for your gang\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.CHOPPER)
                 .build();
 
         Move adjustChopperUnique2 = Move.builder()
-                .name("ADJUST CHOPPER UNIQUE 2")
+                .name(adjustChopperUnique2Name)
                 .description("choose a new option for your gang\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.CHOPPER)
                 .build();
 
         Move adjustHardHolderUnique1 = Move.builder()
-                .name("ADJUST HARDHOLDER UNIQUE 1")
+                .name(adjustHardHolderUnique1Name)
                 .description("choose a new option for your holding\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.HARDHOLDER)
                 .build();
 
         Move adjustHardHolderUnique2 = Move.builder()
-                .name("ADJUST HARDHOLDER UNIQUE 2")
+                .name(adjustHardHolderUnique2Name)
                 .description("choose a new option for your holding\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.HARDHOLDER)
                 .build();
 
         Move adjustHardHolderUnique3 = Move.builder()
-                .name("ADJUST HARDHOLDER UNIQUE 3")
+                .name(adjustHardHolderUnique3Name)
                 .description("erase an option from your holding\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.HARDHOLDER)
                 .build();
 
         Move adjustHocusUnique1 = Move.builder()
-                .name("ADJUST HOCUS UNIQUE 1")
+                .name(adjustHocusUnique1Name)
                 .description("choose a new option for your followers\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.HOCUS)
                 .build();
 
         Move adjustHocusUnique2 = Move.builder()
-                .name("ADJUST HOCUS UNIQUE 2")
+                .name(adjustHocusUnique2Name)
                 .description("choose a new option for your followers\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.HOCUS)
                 .build();
 
         Move adjustMaestroDUnique1 = Move.builder()
-                .name("ADJUST MAESTRO D' UNIQUE 1")
+                .name(adjustMaestroDUnique1Name)
                 .description("add a security to your establishment\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.MAESTRO_D)
                 .build();
 
         Move adjustMaestroDUnique2 = Move.builder()
-                .name("ADJUST MAESTRO D' UNIQUE 2")
+                .name(adjustMaestroDUnique2Name)
                 .description("resolve somebody's interest in your establishment\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.MAESTRO_D)
                 .build();
 
         Move adjustSavvyheadUnique1 = Move.builder()
-                .name("ADJUST SAVVYHEAD UNIQUE 1")
+                .name(adjustSavvyheadUnique1Name)
                 .description("add 2 options to your workspace\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.SAVVYHEAD)
                 .build();
 
         Move adjustSavvyheadUnique2 = Move.builder()
-                .name("ADJUST SAVVYHEAD UNIQUE 2")
+                .name(adjustSavvyheadUnique2Name)
                 .description("add life support to your workspace, and now you can work on people there too\n")
                 .kind(MoveType.ADJUST_UNIQUE)
                 .playbook(PlaybookType.SAVVYHEAD)
                 .build();
 
-        moveService.saveAll(List.of(adjustAngelUnique1, adjustBrainerlUnique1, adjustChopperUnique1,
+        moveService.saveAll(List.of(adjustAngelUnique1, adjustBrainerUnique1, adjustChopperUnique1,
                 adjustChopperUnique2, adjustHardHolderUnique1, adjustHardHolderUnique2, adjustHardHolderUnique3,
                 adjustMaestroDUnique1, adjustMaestroDUnique2, adjustSavvyheadUnique1, adjustSavvyheadUnique2,
                 adjustHocusUnique1, adjustHocusUnique2));
@@ -2569,6 +2570,9 @@ public class GameDataLoader implements CommandLineRunner {
                 .description("advance the other three basic moves\n")
                 .kind(MoveType.IMPROVE_BASIC_MOVES)
                 .build();
+
+        moveService.saveAll(List.of(genericIncreaseStat, retire, addSecondCharacter, changePlaybook,
+                improveBasicMoves1, improveBasicMoves2));
 
     }
 
@@ -3374,6 +3378,11 @@ public class GameDataLoader implements CommandLineRunner {
 
     public void loadPlaybookCreators() {
         System.out.println("|| --- Loading playbook creators --- ||");
+
+        String IMPROVEMENT_INSTRUCTIONS_FOR_APP = "Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, an experience circle will be marked. When the 5th is marked, you can make an improvement.\n" +
+                "\n" +
+                "Each time you improve, choose one of the options. Check it off; you can’t choose it again.";
+
         String IMPROVEMENT_INSTRUCTIONS = "Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
                 "\n" +
                 "Each time you improve, choose one of the options. Check it off; you can’t choose it again.";
@@ -3387,6 +3396,17 @@ public class GameDataLoader implements CommandLineRunner {
                 "On the others’ turns, answer their questions as you like.\n" +
                 "\n" +
                 "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.";
+
+        // Grab common improvement moves
+        Move genericIncreaseStat = moveRepository.findByKind(MoveType.GENERIC_INCREASE_STAT);
+        Move retire = moveRepository.findByKind(MoveType.RETIRE);
+        Move addSecondCharacter = moveRepository.findByKind(MoveType.ADD_SECOND_CHARACTER);
+        Move changePlaybook = moveRepository.findByKind(MoveType.CHANGE_PLAYBOOK);
+        Move improveBasicMoves1 = moveRepository.findAllByKind(MoveType.IMPROVE_BASIC_MOVES).get(0);
+        Move improveBasicMoves2 = moveRepository.findAllByKind(MoveType.IMPROVE_BASIC_MOVES).get(1);
+        List<Move> improveStatMoves = moveRepository.findAllByKind(MoveType.IMPROVE_STAT);
+        List<Move> addOtherPlaybookMovesMoves = moveRepository.findAllByKind(MoveType.ADD_OTHER_PB_MOVE);
+
         /* ----------------------------- ANGEL PLAYBOOK CREATOR --------------------------------- */
         List<Move> angelOptionalMoves = moveRepository
                 .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.CHARACTER);
@@ -3424,10 +3444,34 @@ public class GameDataLoader implements CommandLineRunner {
                 .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
                 .startingBarter(2)
                 .build();
+
+        List<String> improveStatMovesAngel = List.of(sharpMax3Name, coolMax2Name, hardMax2Name, weirdMax2Name);
+
+        Move addCharMoveAngel1 = moveRepository.findByName(addAngelMove1Name);
+        Move addCharMoveAngel2 = moveRepository.findByName(addAngelMove2Name);
+        Move getSupplier = moveRepository.findByName(adjustAngelUnique1Name);
+
+        List<Move> improvementMovesAngel = improveStatMoves.stream()
+                .filter(move -> improveStatMovesAngel.contains(move.getName())).collect(Collectors.toList());
+
+        improvementMovesAngel.add(improveStatMoves.stream()
+                .filter(move -> move.getName().equals(hardMax2Name)).findFirst().orElseThrow());
+
+        improvementMovesAngel.addAll(List.of(addCharMoveAngel1, addCharMoveAngel2, getSupplier));
+        improvementMovesAngel.addAll(addOtherPlaybookMovesMoves);
+
+        ImprovementBlock improvementBlockAngel = ImprovementBlock.builder()
+                .playbookType(PlaybookType.ANGEL)
+                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
+                .futureImprovementMoves(List.of(genericIncreaseStat, retire, addSecondCharacter, changePlaybook,
+                        improveBasicMoves1, improveBasicMoves2))
+                .improvementMoves(improvementMovesAngel)
+                .build();
         PlaybookCreator angelCreator = PlaybookCreator.builder()
                 .playbookType(PlaybookType.ANGEL)
                 .gearInstructions(angelGearInstructions)
                 .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+                .improvementBlock(improvementBlockAngel)
                 .movesInstructions("You get all the basic moves. Choose 2 angel moves.\n" +
                         "\n" +
                         "You can use all the battle moves, but when you get the chance, look up _**keeping an eye out**_, and _**baiting a trap**_, as well as the rules for harm.")
