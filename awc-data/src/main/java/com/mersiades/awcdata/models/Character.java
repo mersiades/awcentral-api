@@ -72,6 +72,12 @@ public class Character {
     private List<CharacterMove> characterMoves = new ArrayList<>();
 
     @Builder.Default
+    private List<CharacterMove> improvementMoves = new ArrayList<>();
+
+    @Builder.Default
+    private List<CharacterMove> futureImprovementMoves = new ArrayList<>();
+
+    @Builder.Default
     private List<Hold> holds = new ArrayList<>();
 
     public Optional<Look> getLookByCategory(LookType category) {

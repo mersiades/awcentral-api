@@ -1240,7 +1240,9 @@ public class GameDataLoader implements CommandLineRunner {
         StatModifier attunementMod = StatModifier.builder()
                 .id(new ObjectId().toString())
                 .statToModify(StatType.WEIRD)
-                .modification(1).build();
+                .modification(1)
+                .maxLimit(3)
+                .build();
         StatModifier savedAttunementMod = statModifierService.save(attunementMod);
 
         MoveAction brainerSpecialAction = MoveAction.builder()
@@ -1510,7 +1512,9 @@ public class GameDataLoader implements CommandLineRunner {
                 .statToRollWith(HARD).build();
         StatModifier insanoMod = StatModifier.builder()
                 .statToModify(HARD)
-                .modification(1).build();
+                .modification(1)
+                .maxLimit(3)
+                .build();
         StatModifier savedInsanoMod = statModifierService.save(insanoMod);
         MoveAction gunluggerSpecialAction = MoveAction.builder()
                 .id(new ObjectId().toString())
@@ -1722,7 +1726,9 @@ public class GameDataLoader implements CommandLineRunner {
                 .playbook(PlaybookType.HOCUS).build();
         StatModifier wacknutModifier = StatModifier.builder()
                 .statToModify(WEIRD)
-                .modification(1).build();
+                .modification(1)
+                .maxLimit(3)
+                .build();
         StatModifier savedWacknutModifier = statModifierService.save(wacknutModifier);
         Move fuckingWacknut = Move.builder()
                 .name("FUCKING WACKNUT")
@@ -1948,7 +1954,9 @@ public class GameDataLoader implements CommandLineRunner {
 
         StatModifier deepInsightsModifier = StatModifier.builder()
                 .statToModify(WEIRD)
-                .modification(1).build();
+                .modification(1)
+                .maxLimit(3)
+                .build();
         StatModifier savedDeepInsightsModifier = statModifierService.save(deepInsightsModifier);
         Move deepInsights = Move.builder()
                 .name("DEEP INSIGHTS")
@@ -1980,7 +1988,8 @@ public class GameDataLoader implements CommandLineRunner {
 
         StatModifier breathtakingModifier = StatModifier.builder()
                 .statToModify(HOT)
-                .modification(1).build();
+                .modification(1)
+                .maxLimit(3).build();
         StatModifier savedBreathtakingModifier = statModifierService.save(breathtakingModifier);
         Move breathtaking = Move.builder()
                 .name("BREATHTAKING")
