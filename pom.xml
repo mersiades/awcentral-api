@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -19,50 +20,29 @@
         <module>awc-content</module>
     </modules>
 
-    <!-- TODO: add name and description to all POMs -->
-
-    <!-- TODO: <licenses>
-        <license>
-            <name>GNU General Public License v3.0</name>
-            <url>https://www.gnu.org/licenses/gpl.txt</url>
-        </license>
-    </licenses>
-
     <organization>
-        <name>Spring Framework Guru</name>
-    </organization> -->
+        <name>Neon King Kong</name>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>Michael Mersiades</name>
+            <organization>Neon King Kong</organization>
+        </developer>
+    </developers>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <reactor-test.version>3.4.0</reactor-test.version>
-<!--        <mongodb.version>2.3.9.RELEASE</mongodb.version>-->
         <graphql-starter.version>7.1.0</graphql-starter.version>
         <graphiql-starter.version>5.0.2</graphiql-starter.version>
         <graphql-tools.version>6.2.0</graphql-tools.version>
         <project.scm.id>github</project.scm.id>
     </properties>
 
-    <dependencies>
-        <!-- - - - - - - - - - -  Utility dependencies - - - - - - - - - - -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- TODO: Add testing dependencies, actuator -->
-    </dependencies>
-
     <dependencyManagement>
         <dependencies>
-<!--            <dependency>-->
-<!--                <groupId>io.projectreactor</groupId>-->
-<!--                <artifactId>reactor-test</artifactId>-->
-<!--                <version>${reactor-test.version}</version>-->
-<!--            </dependency>-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-mongodb</artifactId>
@@ -86,6 +66,22 @@
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <!-- - - - - - - - - - -  Utility dependencies - - - - - - - - - - -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- - - - - - - - - - - Test dependencies - - - - - - - - - - -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <scm>
         <developerConnection>scm:git:https://github.com/mersiades/awcentral.git</developerConnection>
         <url>https://github.com/mersiades/awcentral</url>
@@ -94,8 +90,18 @@
 
     <build>
         <plugins>
-            <!-- TODO: add spring-boot-maven-plugin -->
-            <!-- TODO: add customised maven-clean https://www.udemy.com/course/spring-boot-microservices-with-spring-cloud-beginner-to-guru/learn/lecture/15111996  -->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>auto-clean</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
@@ -124,7 +130,32 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
             </plugin>
-            <!-- TODO: add maven enforcer https://www.udemy.com/course/spring-boot-microservices-with-spring-cloud-beginner-to-guru/learn/lecture/15112252#questions  -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.6.0,)</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>11</version>
+                                </requireJavaVersion>
+                                <requireReleaseDeps>
+                                    <onlyWhenRelease>true</onlyWhenRelease>
+                                    <message>Release builds must not have snapshot dependencies</message>
+                                </requireReleaseDeps>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
