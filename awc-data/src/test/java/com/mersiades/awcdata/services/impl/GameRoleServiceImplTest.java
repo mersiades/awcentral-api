@@ -551,9 +551,7 @@ class GameRoleServiceImplTest {
 
     }
 
-
     // --------------------------------------- Setting Playbook Uniques ------------------------------------- //
-
 
     @Test
     public void shouldSetAngelKit() {
@@ -579,8 +577,7 @@ class GameRoleServiceImplTest {
 
     }
 
-
-        @Test
+    @Test
     public void shouldSetBrainerGear() {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
