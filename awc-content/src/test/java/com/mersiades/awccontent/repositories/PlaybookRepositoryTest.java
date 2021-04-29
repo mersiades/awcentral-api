@@ -1,7 +1,5 @@
 package com.mersiades.awccontent.repositories;
 
-import com.mersiades.awccontent.enums.PlaybookType;
-import com.mersiades.awccontent.models.Playbook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
+
+import static com.mersiades.awccontent.content.PlaybooksContent.angel;
+import static com.mersiades.awccontent.content.PlaybooksContent.battlebabe;
 
 @Disabled
 @ExtendWith({SpringExtension.class})
@@ -20,19 +21,6 @@ public class PlaybookRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        Playbook angel = Playbook.builder()
-                .playbookType(PlaybookType.ANGEL)
-                .barterInstructions("At the beginning ....")
-                .intro("When you’re lying ...")
-                .introComment("Angels are medics. ...")
-                .playbookImageUrl("https://awc-images...").build();
-
-        Playbook battlebabe = Playbook.builder()
-                .playbookType(PlaybookType.BATTLEBABE)
-                .barterInstructions("At the beginning ....")
-                .intro("Even in a place ...")
-                .introComment("Dangerous...")
-                .playbookImageUrl("https://awc-images...").build();
 
         playbookRepository.deleteAll();
 
