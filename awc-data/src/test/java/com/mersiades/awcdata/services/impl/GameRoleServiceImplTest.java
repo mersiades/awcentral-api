@@ -63,18 +63,6 @@ class GameRoleServiceImplTest {
 
     StatsOption mockStatsOption;
 
-    StatModifier mockSharpMax2Mod;
-
-    Move mockSharpMax2;
-
-    StatModifier mockCoolMax2Mod;
-
-    Move mockCoolMax2;
-
-    Move mockAddAngelMove;
-
-    Move mockAddOtherPBMove;
-
     PlaybookCreator mockPlaybookCreatorAngel;
 
     AngelKit mockAngelKit;
@@ -103,52 +91,9 @@ class GameRoleServiceImplTest {
                 .playbookType(PlaybookType.ANGEL)
                 .build();
 
-        mockSharpMax2Mod = StatModifier.builder()
-                .id(new ObjectId().toString())
-                .statToModify(StatType.SHARP)
-                .modification(1)
-                .maxLimit(2)
-                .build();
-
-        mockSharpMax2 = Move.builder()
-                .name(sharpMax2Name)
-                .description("get +1sharp (max sharp+2)\n")
-                .statModifier(mockSharpMax2Mod)
-                .kind(MoveType.IMPROVE_STAT)
-                .stat(null)
-                .build();
-
-        mockCoolMax2Mod = StatModifier.builder()
-                .id(new ObjectId().toString())
-                .statToModify(StatType.COOL)
-                .modification(1)
-                .maxLimit(2)
-                .build();
-
-        mockCoolMax2 = Move.builder()
-                .name(coolMax2Name)
-                .description("get +1cool (max cool+2)\n")
-                .statModifier(mockCoolMax2Mod)
-                .kind(MoveType.IMPROVE_STAT)
-                .stat(null)
-                .build();
-
-        mockAddAngelMove = Move.builder()
-                .name(addAngelMove1Name)
-                .description("get a new angel move\n")
-                .kind(MoveType.ADD_CHARACTER_MOVE)
-                .playbook(PlaybookType.ANGEL)
-                .build();
-
         mockPlaybookCreatorAngel = PlaybookCreator.builder()
                 .id("mock-angel-playbook-creator-id")
                 .moveChoiceCount(2)
-                .build();
-
-        mockAddOtherPBMove = Move.builder()
-                .name("ADD MOVE FROM OTHER PLAYBOOK 1")
-                .description("get a move from another playbook\n")
-                .kind(MoveType.ADD_OTHER_PB_MOVE)
                 .build();
 
         mockAngelKit = AngelKit.builder()
@@ -1311,7 +1256,6 @@ class GameRoleServiceImplTest {
     void shouldIncreaseStat_onAddCharacterImprovement() {
         // Given
         int mockSharpValue = 0;
-        String mockImprovementId = "mock-sharp-max-2-id";
         CharacterStat mockSharpStat = CharacterStat.builder()
                 .id("mock-sharp-stat-id")
                 .stat(StatType.SHARP)
@@ -1327,18 +1271,18 @@ class GameRoleServiceImplTest {
         mockCharacter.setAllowedImprovements(1);
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(mockSharpMax2);
+        when(moveService.findById(anyString())).thenReturn(MovesContent.sharpMax2);
 
         // When
         Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(mockImprovementId), List.of());
+                mockCharacter.getId(), List.of(MovesContent.sharpMax2.getId()), List.of());
 
         // Then
         assertEquals(mockSharpValue + 1, returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue()
                 );
         assertTrue(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(mockSharpMax2.getName())));
+                .anyMatch(characterMove -> characterMove.getName().equals(MovesContent.sharpMax2.getName())));
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
     }
@@ -1366,22 +1310,22 @@ class GameRoleServiceImplTest {
                 .build();
         mockCharacter.setStatsBlock(mockStatsBlock);
         mockCharacter.setAllowedImprovements(1);
-        CharacterMove mockSharpMax2CM = CharacterMove.createFromMove(mockSharpMax2);
+        CharacterMove mockSharpMax2CM = CharacterMove.createFromMove(MovesContent.sharpMax2);
         mockCharacter.setImprovementMoves(List.of(mockSharpMax2CM));
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(mockCoolMax2);
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
 
         // When
         Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of("some-other-improvement-move-id"), List.of());
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
 
         // Then
         assertEquals(mockSharpValue - mockSharpMax2CM.getStatModifier().getModification(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue()
         );
         assertFalse(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(mockSharpMax2.getName())));
+                .anyMatch(characterMove -> characterMove.getName().equals(MovesContent.sharpMax2.getName())));
         verifyMockServices();
     }
 
@@ -1389,7 +1333,6 @@ class GameRoleServiceImplTest {
     void shouldNotIncreaseStat_onAddCharacterImprovement_becauseAtMax() {
         // Given
         int mockSharpValue = 2;
-        String mockImprovementId = "mock-sharp-max-2-id";
         CharacterStat mockSharpStat = CharacterStat.builder()
                 .id("mock-sharp-stat-id")
                 .stat(StatType.SHARP)
@@ -1405,18 +1348,18 @@ class GameRoleServiceImplTest {
         mockCharacter.setAllowedImprovements(1);
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(mockSharpMax2);
+        when(moveService.findById(anyString())).thenReturn(MovesContent.sharpMax2);
 
         // When
         Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(mockImprovementId), List.of());
+                mockCharacter.getId(), List.of(MovesContent.sharpMax2.getId()), List.of());
 
         // Then
         assertEquals(mockSharpValue, returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue()
         );
         assertTrue(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(mockSharpMax2.getName())));
+                .anyMatch(characterMove -> characterMove.getName().equals(MovesContent.sharpMax2.getName())));
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
     }
@@ -1451,7 +1394,7 @@ class GameRoleServiceImplTest {
                 .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue()
         );
         assertFalse(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(mockSharpMax2.getName())));
+                .anyMatch(characterMove -> characterMove.getName().equals(MovesContent.sharpMax2.getName())));
         verifyMockServices();
     }
 
@@ -1459,21 +1402,20 @@ class GameRoleServiceImplTest {
     void shouldIncreaseAllowedPlaybookMoves_onAddCharacterImprovement() {
         // Given
         int initialAllowedPlaybookMoves = 2;
-        String mockImprovementId = "mock-add-angel-move-improvement-id";
         mockCharacter.setAllowedImprovements(1);
         mockCharacter.setAllowedPlaybookMoves(initialAllowedPlaybookMoves);
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(mockAddAngelMove);
+        when(moveService.findById(anyString())).thenReturn(MovesContent.addAngelMove1);
 
         // When
         Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(mockImprovementId), List.of());
+                mockCharacter.getId(), List.of(MovesContent.addAngelMove1.getId()), List.of());
 
         // Then
         assertEquals(initialAllowedPlaybookMoves + 1, returnedCharacter.getAllowedPlaybookMoves());
         assertTrue(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(mockAddAngelMove.getName())));
+                .anyMatch(characterMove -> characterMove.getName().equals(MovesContent.addAngelMove1.getName())));
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
     }
@@ -1494,22 +1436,22 @@ class GameRoleServiceImplTest {
                 .stats(List.of(mockCoolStat))
                 .build();
         mockCharacter.setStatsBlock(mockStatsBlock);
-        CharacterMove mockAddAngelMoveAsCM = CharacterMove.createFromMove(mockAddAngelMove);
+        CharacterMove mockAddAngelMoveAsCM = CharacterMove.createFromMove(MovesContent.addAngelMove1);
         mockCharacter.setAllowedImprovements(1);
         mockCharacter.setAllowedPlaybookMoves(initialAllowedPlaybookMoves);
         mockCharacter.setImprovementMoves(List.of(mockAddAngelMoveAsCM));
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(mockCoolMax2);
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
 
         // When
         Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of("some-other-improvement-id"), List.of());
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
 
         // Then
         assertEquals(initialAllowedPlaybookMoves - 1, returnedCharacter.getAllowedPlaybookMoves());
         assertFalse(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(mockAddAngelMove.getName())));
+                .anyMatch(characterMove -> characterMove.getName().equals(MovesContent.addAngelMove1.getName())));
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
     }
@@ -1518,21 +1460,20 @@ class GameRoleServiceImplTest {
     void shouldIncreaseAllowedOtherPlaybookMoves_onAddCharacterImprovement() {
         // Given
         int initialAllowedOtherPlaybookMoves = 0;
-        String mockImprovementId = "mock-add-other-pb-move-improvement-id";
         mockCharacter.setAllowedImprovements(1);
         mockCharacter.setAllowedOtherPlaybookMoves(initialAllowedOtherPlaybookMoves);
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(mockAddOtherPBMove);
+        when(moveService.findById(anyString())).thenReturn(MovesContent.addOtherPBMove1);
 
         // When
         Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(mockImprovementId), List.of());
+                mockCharacter.getId(), List.of(MovesContent.addOtherPBMove1.getId()), List.of());
 
         // Then
         assertEquals(initialAllowedOtherPlaybookMoves + 1, returnedCharacter.getAllowedOtherPlaybookMoves());
         assertTrue(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(mockAddOtherPBMove.getName())));
+                .anyMatch(characterMove -> characterMove.getName().equals(MovesContent.addOtherPBMove1.getName())));
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
     }
@@ -1553,22 +1494,22 @@ class GameRoleServiceImplTest {
                 .stats(List.of(mockCoolStat))
                 .build();
         mockCharacter.setStatsBlock(mockStatsBlock);
-        CharacterMove mockAddOtherPBMoveAsCM = CharacterMove.createFromMove(mockAddOtherPBMove);
+        CharacterMove mockAddOtherPBMoveAsCM = CharacterMove.createFromMove(MovesContent.addOtherPBMove1);
         mockCharacter.setAllowedImprovements(1);
         mockCharacter.setAllowedOtherPlaybookMoves(initialAllowedOtherPlaybookMoves);
         mockCharacter.setImprovementMoves(List.of(mockAddOtherPBMoveAsCM));
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(mockCoolMax2);
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
 
         // When
         Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of("some-other-improvement-id"), List.of());
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
 
         // Then
         assertEquals(initialAllowedOtherPlaybookMoves - 1, returnedCharacter.getAllowedOtherPlaybookMoves());
         assertFalse(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(mockAddOtherPBMove.getName())));
+                .anyMatch(characterMove -> characterMove.getName().equals(MovesContent.addOtherPBMove1.getName())));
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
     }
@@ -1577,7 +1518,6 @@ class GameRoleServiceImplTest {
     void shouldAddSupplier_onAddCharacterImprovement() {
         // Given
         CharacterMove mockAdjustAngelUnique1 = CharacterMove.createFromMove(MovesContent.adjustAngelUnique1);
-        mockAdjustAngelUnique1.setId("mock-adjust-angel-unique-id");
         mockCharacter.setAllowedImprovements(1);
         mockCharacter.setPlaybookUnique(mockPlaybookUnique);
         mockGameRole.getCharacters().add(mockCharacter);
@@ -1614,16 +1554,15 @@ class GameRoleServiceImplTest {
         mockCharacter.setStatsBlock(mockStatsBlock);
         mockCharacter.setAllowedImprovements(1);
         CharacterMove mockAdjustAngelUnique1 = CharacterMove.createFromMove(MovesContent.adjustAngelUnique1);
-        mockAdjustAngelUnique1.setId("mock-adjust-angel-unique-id");
         mockCharacter.setImprovementMoves(List.of(mockAdjustAngelUnique1));
         mockCharacter.setPlaybookUnique(mockPlaybookUnique);
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(mockCoolMax2);
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
 
         // When
         Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of("some-other-improvement-id"), List.of());
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
 
         // Then
         assertFalse(returnedCharacter.getPlaybookUnique().getAngelKit().isHasSupplier());
