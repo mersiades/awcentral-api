@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addGameroleToUser(String userId, GameRole gameRole) {
         User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
-        System.out.println("Adding gamerole to user");
         user.getGameRoles().add(gameRole);
         return userRepository.save(user);
     }
