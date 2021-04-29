@@ -1,6 +1,7 @@
 package com.mersiades.awcweb.bootstrap;
 
 import com.mersiades.awccontent.constants.MoveNames;
+import com.mersiades.awccontent.content.MovesContent;
 import com.mersiades.awccontent.enums.*;
 import com.mersiades.awccontent.models.*;
 import com.mersiades.awccontent.models.uniquecreators.*;
@@ -150,25 +151,7 @@ public class GameDataLoader implements CommandLineRunner {
     private void loadMoves() {
         System.out.println("|| --- Loading basic moves --- ||");
         /* ----------------------------- BASIC MOVES --------------------------------- */
-        MoveAction doSomethingUnderFireAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ROLL)
-                .rollType(RollType.STAT)
-                .statToRollWith(COOL)
-                .build();
-        Move doSomethingUnderFire = Move.builder()
-                .name(underFireName)
-                .description("When you _**do something under fire**_, or dig in to endure fire, roll+cool.\n" +
-                        "\n" +
-                        "On a 10+, you do it.\n" +
-                        "\n" +
-                        "On a 7–9, you flinch, hesitate, or stall: the MC can offer you a worse outcome, a hard bargain, or an ugly choice.\n" +
-                        "\n" +
-                        "On a miss, be prepared for the worst.")
-                .kind(MoveType.BASIC)
-                .moveAction(doSomethingUnderFireAction)
-                .playbook(null)
-                .build();
+        Move doSomethingUnderFire = MovesContent.doSomethingUnderFire;
         MoveAction goAggroAction = MoveAction.builder()
                 .id(new ObjectId().toString())
                 .actionType(MoveActionType.ROLL)
@@ -2378,12 +2361,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- ADJUST UNIQUE IMPROVEMENT MOVES --------------------------------- */
 
-        Move adjustAngelUnique1 = Move.builder()
-                .name(adjustAngelUnique1Name)
-                .description("get a supplier (_cf_, detail with the MC)\n")
-                .kind(MoveType.ADJUST_UNIQUE)
-                .playbook(PlaybookType.ANGEL)
-                .build();
+        Move adjustAngelUnique1 = MovesContent.adjustAngelUnique1;
 
         Move adjustBrainerUnique1 = Move.builder()
                 .name(adjustBrainerUnique1Name)

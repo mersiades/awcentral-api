@@ -13,6 +13,7 @@ import com.mersiades.awcdata.models.uniques.*;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
+import com.mersiades.awccontent.content.MovesContent;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,6 +76,10 @@ class GameRoleServiceImplTest {
     Move mockAddOtherPBMove;
 
     PlaybookCreator mockPlaybookCreatorAngel;
+
+    AngelKit mockAngelKit;
+
+    PlaybookUnique mockPlaybookUnique;
 
 
     @BeforeEach
@@ -144,6 +149,16 @@ class GameRoleServiceImplTest {
                 .name("ADD MOVE FROM OTHER PLAYBOOK 1")
                 .description("get a move from another playbook\n")
                 .kind(MoveType.ADD_OTHER_PB_MOVE)
+                .build();
+
+        mockAngelKit = AngelKit.builder()
+                .id("mock-angel-kit-id")
+                .hasSupplier(false)
+                .build();
+
+        mockPlaybookUnique = PlaybookUnique.builder()
+                .id("mock-playbook-unique-id")
+                .angelKit(mockAngelKit)
                 .build();
     }
 
@@ -1554,6 +1569,66 @@ class GameRoleServiceImplTest {
         assertEquals(initialAllowedOtherPlaybookMoves - 1, returnedCharacter.getAllowedOtherPlaybookMoves());
         assertFalse(returnedCharacter.getImprovementMoves().stream()
                 .anyMatch(characterMove -> characterMove.getName().equals(mockAddOtherPBMove.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldAddSupplier_onAddCharacterImprovement() {
+        // Given
+        CharacterMove mockAdjustAngelUnique1 = CharacterMove.createFromMove(MovesContent.adjustAngelUnique1);
+        mockAdjustAngelUnique1.setId("mock-adjust-angel-unique-id");
+        mockCharacter.setAllowedImprovements(1);
+        mockCharacter.setPlaybookUnique(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(mockAdjustAngelUnique1);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(mockAdjustAngelUnique1.getId()), List.of());
+
+        // Then
+        assertTrue(returnedCharacter.getPlaybookUnique().getAngelKit().isHasSupplier());
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(mockAdjustAngelUnique1.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldRemoveSupplier_onRemoveCharacterImprovement() {
+        // Given
+
+        CharacterStat mockCoolStat = CharacterStat.builder()
+                .id("mock-cool-stat-id")
+                .stat(StatType.COOL)
+                .value(2)
+                .build();
+
+        StatsBlock mockStatsBlock = StatsBlock.builder()
+                .id("mock-stat-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCoolStat))
+                .build();
+        mockCharacter.setStatsBlock(mockStatsBlock);
+        mockCharacter.setAllowedImprovements(1);
+        CharacterMove mockAdjustAngelUnique1 = CharacterMove.createFromMove(MovesContent.adjustAngelUnique1);
+        mockAdjustAngelUnique1.setId("mock-adjust-angel-unique-id");
+        mockCharacter.setImprovementMoves(List.of(mockAdjustAngelUnique1));
+        mockCharacter.setPlaybookUnique(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(mockCoolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of("some-other-improvement-id"), List.of());
+
+        // Then
+        assertFalse(returnedCharacter.getPlaybookUnique().getAngelKit().isHasSupplier());
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(mockAdjustAngelUnique1.getName())));
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
     }

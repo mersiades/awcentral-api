@@ -22,8 +22,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-import static com.mersiades.awccontent.constants.MoveNames.collectorName;
-import static com.mersiades.awccontent.constants.MoveNames.otherCarTankName;
+import static com.mersiades.awccontent.constants.MoveNames.*;
 
 @Service
 public class GameRoleServiceImpl implements GameRoleService {
@@ -1223,6 +1222,9 @@ public class GameRoleServiceImpl implements GameRoleService {
                         case ADD_OTHER_PB_MOVE:
                             character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() - 1);
                             break;
+                        case ADJUST_UNIQUE:
+                            unAdjustUnique(character, characterMove);
+                            break;
                         default:
                             // TODO: throw exception
                     }
@@ -1274,6 +1276,9 @@ public class GameRoleServiceImpl implements GameRoleService {
                         case ADD_OTHER_PB_MOVE:
                             character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() + 1);
                             break;
+                        case ADJUST_UNIQUE:
+                            adjustUnique(character, characterMove);
+                            break;
                         default:
                             // TODO: throw exception
                     }
@@ -1291,6 +1296,26 @@ public class GameRoleServiceImpl implements GameRoleService {
         gameRoleRepository.save(gameRole);
 
         return character;
+    }
+
+    private void unAdjustUnique(Character character, CharacterMove characterMove) {
+        switch (characterMove.getName()) {
+            case adjustAngelUnique1Name:
+                character.getPlaybookUnique().getAngelKit().setHasSupplier(false);
+                break;
+            default:
+                // TODO: throw error
+        }
+    }
+
+    private void adjustUnique(Character character, CharacterMove characterMove) {
+        switch (characterMove.getName()) {
+            case adjustAngelUnique1Name:
+                character.getPlaybookUnique().getAngelKit().setHasSupplier(true);
+                break;
+            default:
+                // TODO: throw error
+        }
     }
 
     @Override
