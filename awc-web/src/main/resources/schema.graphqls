@@ -1084,6 +1084,7 @@ type Query {
     gameForPlayer(gameId:String!, userId:String!): Game
     gamesForInvitee(email: String!): [Game]
     allMoves: [Move]
+    otherPlaybookMoves(playbookType: PlaybookType!): [Move]
     playbooks: [Playbook]
     playbook(playbookType: PlaybookType!): Playbook
     playbookCreator(playbookType: PlaybookType!): PlaybookCreator

@@ -8,6 +8,7 @@ import com.mersiades.awccontent.services.MoveService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MoveServiceImpl implements MoveService {
@@ -56,5 +57,19 @@ public class MoveServiceImpl implements MoveService {
     @Override
     public Move findByName(String moveName) {
         return moveRepository.findByName(moveName);
+    }
+
+    @Override
+    public List<Move> findOtherPlaybookMoves(PlaybookType playbookType) {
+        List<Move> allMoves = this.findAll();
+
+        // Filter out moves from own playbook, and filter out all playbook default moves
+        List<Move> allCharacterMovesFromOtherPlaybooks = allMoves.stream()
+                .filter(move -> !move.getPlaybook().equals(playbookType) &&
+                        !move.getKind().equals(MoveType.DEFAULT_CHARACTER)).collect(Collectors.toList());
+
+        // Filter out moves with no move action or roll modifier
+        return allCharacterMovesFromOtherPlaybooks.stream()
+                .filter(move -> move.getMoveAction() != null || move.getRollModifier() != null).collect(Collectors.toList());
     }
 }
