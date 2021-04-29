@@ -1216,8 +1216,9 @@ public class GameRoleServiceImpl implements GameRoleService {
                     switch (characterMove.getKind()) {
                         case IMPROVE_STAT:
                             unModifyCharacterStat(character, characterMove);
-
                             break;
+                        case ADD_CHARACTER_MOVE:
+                            character.setAllowedPlaybookMoves(character.getAllowedPlaybookMoves() - 1);
                         default:
                             // TODO: throw exception
                     }
@@ -1262,8 +1263,9 @@ public class GameRoleServiceImpl implements GameRoleService {
                     switch (characterMove.getKind()) {
                         case IMPROVE_STAT:
                             modifyCharacterStat(character, characterMove);
-
                             break;
+                        case ADD_CHARACTER_MOVE:
+                            character.setAllowedPlaybookMoves(character.getAllowedPlaybookMoves() + 1);
                         default:
                             // TODO: throw exception
                     }
