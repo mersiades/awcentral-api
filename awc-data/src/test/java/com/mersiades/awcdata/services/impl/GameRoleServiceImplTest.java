@@ -72,6 +72,8 @@ class GameRoleServiceImplTest {
 
     Move mockAddAngelMove;
 
+    Move mockAddOtherPBMove;
+
     PlaybookCreator mockPlaybookCreatorAngel;
 
 
@@ -136,6 +138,12 @@ class GameRoleServiceImplTest {
         mockPlaybookCreatorAngel = PlaybookCreator.builder()
                 .id("mock-angel-playbook-creator-id")
                 .moveChoiceCount(2)
+                .build();
+
+        mockAddOtherPBMove = Move.builder()
+                .name("ADD MOVE FROM OTHER PLAYBOOK 1")
+                .description("get a move from another playbook\n")
+                .kind(MoveType.ADD_OTHER_PB_MOVE)
                 .build();
     }
 
@@ -1321,6 +1329,48 @@ class GameRoleServiceImplTest {
     }
 
     @Test
+    void shouldDecreaseStat_onRemoveCharacterImprovement() {
+        // Given
+        int mockSharpValue = 2;
+        CharacterStat mockSharpStat = CharacterStat.builder()
+                .id("mock-sharp-stat-id")
+                .stat(StatType.SHARP)
+                .value(mockSharpValue)
+                .build();
+
+        CharacterStat mockCoolStat = CharacterStat.builder()
+                .id("mock-cool-stat-id")
+                .stat(StatType.COOL)
+                .value(mockSharpValue)
+                .build();
+
+        StatsBlock mockStatsBlock = StatsBlock.builder()
+                .id("mock-stat-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockSharpStat, mockCoolStat))
+                .build();
+        mockCharacter.setStatsBlock(mockStatsBlock);
+        mockCharacter.setAllowedImprovements(1);
+        CharacterMove mockSharpMax2CM = CharacterMove.createFromMove(mockSharpMax2);
+        mockCharacter.setImprovementMoves(List.of(mockSharpMax2CM));
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(mockCoolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of("some-other-improvement-move-id"), List.of());
+
+        // Then
+        assertEquals(mockSharpValue - mockSharpMax2CM.getStatModifier().getModification(), returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue()
+        );
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(mockSharpMax2.getName())));
+        verifyMockServices();
+    }
+
+    @Test
     void shouldNotIncreaseStat_onAddCharacterImprovement_becauseAtMax() {
         // Given
         int mockSharpValue = 2;
@@ -1357,7 +1407,7 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    void shouldNotAdjustImprovementsIfTooManyIds() {
+    void shouldNotAdjustImprovements_ifTooManyIds() {
         // Given
         int mockSharpValue = 2;
         String mockImprovementId = "mock-sharp-max-2-id";
@@ -1450,45 +1500,62 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    void shouldDecreaseStat_onRemoveCharacterImprovement() {
+    void shouldIncreaseAllowedOtherPlaybookMoves_onAddCharacterImprovement() {
         // Given
-        int mockSharpValue = 2;
-        CharacterStat mockSharpStat = CharacterStat.builder()
-                .id("mock-sharp-stat-id")
-                .stat(StatType.SHARP)
-                .value(mockSharpValue)
-                .build();
+        int initialAllowedOtherPlaybookMoves = 0;
+        String mockImprovementId = "mock-add-other-pb-move-improvement-id";
+        mockCharacter.setAllowedImprovements(1);
+        mockCharacter.setAllowedOtherPlaybookMoves(initialAllowedOtherPlaybookMoves);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(mockAddOtherPBMove);
 
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(mockImprovementId), List.of());
+
+        // Then
+        assertEquals(initialAllowedOtherPlaybookMoves + 1, returnedCharacter.getAllowedOtherPlaybookMoves());
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(mockAddOtherPBMove.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldDecreaseAllowedOtherPlaybookMoves_onRemoveCharacterImprovement() {
+        // Given
+        int initialAllowedOtherPlaybookMoves = 1;
         CharacterStat mockCoolStat = CharacterStat.builder()
                 .id("mock-cool-stat-id")
                 .stat(StatType.COOL)
-                .value(mockSharpValue)
+                .value(2)
                 .build();
 
         StatsBlock mockStatsBlock = StatsBlock.builder()
                 .id("mock-stat-block-id")
                 .statsOptionId("mock-stats-option-id")
-                .stats(List.of(mockSharpStat, mockCoolStat))
+                .stats(List.of(mockCoolStat))
                 .build();
         mockCharacter.setStatsBlock(mockStatsBlock);
+        CharacterMove mockAddOtherPBMoveAsCM = CharacterMove.createFromMove(mockAddOtherPBMove);
         mockCharacter.setAllowedImprovements(1);
-        CharacterMove mockSharpMax2CM = CharacterMove.createFromMove(mockSharpMax2);
-        mockCharacter.setImprovementMoves(List.of(mockSharpMax2CM));
+        mockCharacter.setAllowedOtherPlaybookMoves(initialAllowedOtherPlaybookMoves);
+        mockCharacter.setImprovementMoves(List.of(mockAddOtherPBMoveAsCM));
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
         when(moveService.findById(anyString())).thenReturn(mockCoolMax2);
 
         // When
         Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of("some-other-improvement-move-id"), List.of());
+                mockCharacter.getId(), List.of("some-other-improvement-id"), List.of());
 
         // Then
-        assertEquals(mockSharpValue - mockSharpMax2CM.getStatModifier().getModification(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue()
-        );
+        assertEquals(initialAllowedOtherPlaybookMoves - 1, returnedCharacter.getAllowedOtherPlaybookMoves());
         assertFalse(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(mockSharpMax2.getName())));
+                .anyMatch(characterMove -> characterMove.getName().equals(mockAddOtherPBMove.getName())));
         verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
     }
 
     @Test

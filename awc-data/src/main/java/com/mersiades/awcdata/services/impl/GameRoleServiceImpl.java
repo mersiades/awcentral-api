@@ -1219,6 +1219,10 @@ public class GameRoleServiceImpl implements GameRoleService {
                             break;
                         case ADD_CHARACTER_MOVE:
                             character.setAllowedPlaybookMoves(character.getAllowedPlaybookMoves() - 1);
+                            break;
+                        case ADD_OTHER_PB_MOVE:
+                            character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() - 1);
+                            break;
                         default:
                             // TODO: throw exception
                     }
@@ -1247,7 +1251,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
 
             improvementIDs.forEach(improvementID -> {
-                // check if already an improvement
+                // Check if already an improvement
                 Optional<CharacterMove> existingImprovementOptional = character.getImprovementMoves()
                         .stream().filter(characterMove -> characterMove.getId().equals(improvementID)).findFirst();
 
@@ -1259,16 +1263,21 @@ public class GameRoleServiceImpl implements GameRoleService {
                     // Give CharacterMove an id
                     characterMove.setId(new ObjectId().toString());
 
-                    // switch on move type, add move, change character
+                    // Switch on move type, change character
                     switch (characterMove.getKind()) {
                         case IMPROVE_STAT:
                             modifyCharacterStat(character, characterMove);
                             break;
                         case ADD_CHARACTER_MOVE:
                             character.setAllowedPlaybookMoves(character.getAllowedPlaybookMoves() + 1);
+                            break;
+                        case ADD_OTHER_PB_MOVE:
+                            character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() + 1);
+                            break;
                         default:
                             // TODO: throw exception
                     }
+                    // Add move
                     character.getImprovementMoves().add(characterMove);
                 }
             });
