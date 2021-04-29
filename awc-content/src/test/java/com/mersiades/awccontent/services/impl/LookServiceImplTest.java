@@ -1,6 +1,5 @@
 package com.mersiades.awccontent.services.impl;
 
-import com.mersiades.awccontent.enums.LookType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Look;
 import com.mersiades.awccontent.repositories.LookRepository;
@@ -13,30 +12,21 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mersiades.awccontent.content.LooksContent.lookAngel1;
+import static com.mersiades.awccontent.content.LooksContent.lookBattlebabe1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class LookServiceImplTest {
-
-    public static final String MOCK_LOOK_ID_1 = "mock-look-id-1";
 
     @Mock
     LookRepository lookRepository;
 
     LookService lookService;
 
-    Look mockLook1;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        mockLook1 = Look.builder()
-                .id(MOCK_LOOK_ID_1)
-                .category(LookType.CLOTHES)
-                .playbookType(PlaybookType.BATTLEBABE)
-                .look("Sexy leatherwear")
-                .build();
 
         lookService = new LookServiceImpl(lookRepository);
     }
@@ -44,12 +34,7 @@ class LookServiceImplTest {
     @Test
     void shouldFindAllLooks() {
         // Given
-        Look mockLook2 = Look.builder()
-                .playbookType(PlaybookType.SKINNER)
-                .category(LookType.EYES)
-                .look("askance").build();
-
-        when(lookRepository.findAll()).thenReturn(List.of(mockLook1, mockLook2));
+        when(lookRepository.findAll()).thenReturn(List.of(lookAngel1, lookBattlebabe1));
 
         // When
         List<Look> looks = lookService.findAll();
@@ -63,39 +48,38 @@ class LookServiceImplTest {
     @Test
     void shouldFindLookById() {
         // Given
-        when(lookRepository.findById(anyString())).thenReturn(Optional.of(mockLook1));
+        when(lookRepository.findById(anyString())).thenReturn(Optional.of(lookAngel1));
 
         // When
-        Look returnedLook = lookService.findById(MOCK_LOOK_ID_1);
+        Look returnedLook = lookService.findById(lookAngel1.getId());
 
         // Then
         assert returnedLook != null;
-        assertEquals(MOCK_LOOK_ID_1, returnedLook.getId());
+        assertEquals(lookAngel1.getId(), returnedLook.getId());
         verify(lookRepository, times(1)).findById(anyString());
     }
 
     @Test
     void shouldSaveLook() {
         // Given
-        when(lookRepository.save(any())).thenReturn(mockLook1);
+        when(lookRepository.save(any())).thenReturn(lookAngel1);
 
         // When
-        Look savedLook = lookService.save(mockLook1);
+        Look savedLook = lookService.save(lookAngel1);
 
         // Then
         assert savedLook != null;
-        assertEquals(MOCK_LOOK_ID_1, savedLook.getId());
+        assertEquals(lookAngel1.getId(), savedLook.getId());
         verify(lookRepository, times(1)).save(any(Look.class));
     }
 
     @Test
     void shouldSaveAllLooks() {
         // Given
-        Look mockLook2 = Look.builder().build();
-        when(lookRepository.saveAll(anyIterable())).thenReturn(List.of(mockLook1, mockLook2));
+        when(lookRepository.saveAll(anyIterable())).thenReturn(List.of(lookAngel1, lookBattlebabe1));
 
         // When
-        List<Look> savedLooks = lookService.saveAll(List.of(mockLook1,mockLook2));
+        List<Look> savedLooks = lookService.saveAll(List.of(lookAngel1,lookBattlebabe1));
 
         // Then
         assert savedLooks != null;
@@ -106,7 +90,7 @@ class LookServiceImplTest {
     @Test
     void shouldDeleteLook() {
         // When
-        lookService.delete(mockLook1);
+        lookService.delete(lookBattlebabe1);
 
         // Then
         verify(lookRepository, times(1)).delete(any(Look.class));
@@ -115,7 +99,7 @@ class LookServiceImplTest {
     @Test
     void deleteById() {
         // When
-        lookService.deleteById(MOCK_LOOK_ID_1);
+        lookService.deleteById(lookBattlebabe1.getId());
 
         // Then
         verify(lookRepository, times(1)).deleteById(anyString());
@@ -124,11 +108,7 @@ class LookServiceImplTest {
     @Test
     void findAllByPlaybookType() {
         // Given
-        Look mockLook3 = Look.builder()
-                .playbookType(PlaybookType.BATTLEBABE)
-                .category(LookType.EYES)
-                .look("almond").build();
-        when(lookService.findAllByPlaybookType(any())).thenReturn(List.of(mockLook1, mockLook3));
+        when(lookService.findAllByPlaybookType(any())).thenReturn(List.of(lookBattlebabe1, lookBattlebabe1));
 
         // When
         List<Look> returnedLooks = lookService.findAllByPlaybookType(PlaybookType.BATTLEBABE);
