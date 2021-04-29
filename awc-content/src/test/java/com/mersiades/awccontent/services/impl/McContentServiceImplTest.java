@@ -11,95 +11,87 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mersiades.awccontent.content.McContentContent.mcContent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class McContentServiceImplTest {
-
-    public static final String MOCK_MC_CONTENT_ID_1 = "mock-mc-content-id-1";
 
     @Mock
     McContentRepository mcContentRepository;
 
     McContentService mcContentService;
 
-    McContent mcContent1;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        mcContent1 = McContent.builder()
-                .id(MOCK_MC_CONTENT_ID_1).build();
 
         mcContentService = new McContentServiceImpl(mcContentRepository) {
         };
     }
 
+    // There is only one McContent
     @Test
     void shouldFindAllMcContents() {
         // Given
-        McContent mcContent2 = McContent.builder()
-                .id("mock-mc-content-id-2").build();
-
-        when(mcContentRepository.findAll()).thenReturn(List.of(mcContent1, mcContent2));
+        when(mcContentRepository.findAll()).thenReturn(List.of(mcContent));
 
         // When
         List<McContent> looks = mcContentService.findAll();
 
         // Then
         assert looks != null;
-        assertEquals(2, looks.size());
+        assertEquals(1, looks.size());
         verify(mcContentRepository, times(1)).findAll();
     }
 
     @Test
     void shouldFindMcContentById() {
         // Given
-        when(mcContentRepository.findById(anyString())).thenReturn(Optional.of(mcContent1));
+        when(mcContentRepository.findById(anyString())).thenReturn(Optional.of(mcContent));
 
         // When
-        McContent returnedMcContent = mcContentService.findById(MOCK_MC_CONTENT_ID_1);
+        McContent returnedMcContent = mcContentService.findById(mcContent.getId());
 
         // Then
         assert returnedMcContent != null;
-        assertEquals(MOCK_MC_CONTENT_ID_1, returnedMcContent.getId());
+        assertEquals(mcContent.getId(), returnedMcContent.getId());
         verify(mcContentRepository, times(1)).findById(anyString());
     }
 
     @Test
     void shouldSaveMcContent() {
         // Given
-        when(mcContentRepository.save(any())).thenReturn(mcContent1);
+        when(mcContentRepository.save(any())).thenReturn(mcContent);
 
         // When
-        McContent savedMcContent = mcContentService.save(mcContent1);
+        McContent savedMcContent = mcContentService.save(mcContent);
 
         // Then
         assert savedMcContent != null;
-        assertEquals(MOCK_MC_CONTENT_ID_1, savedMcContent.getId());
+        assertEquals(mcContent.getId(), savedMcContent.getId());
         verify(mcContentRepository, times(1)).save(any(McContent.class));
     }
 
+    // There is only one McContent
     @Test
     void shouldSaveAllMcContents() {
         // Given
-        McContent mcContent2 = McContent.builder().build();
-        when(mcContentRepository.saveAll(anyIterable())).thenReturn(List.of(mcContent1, mcContent2));
+        when(mcContentRepository.saveAll(anyIterable())).thenReturn(List.of(mcContent));
 
         // When
-        List<McContent> savedMcContents = mcContentService.saveAll(List.of(mcContent1,mcContent2));
+        List<McContent> savedMcContents = mcContentService.saveAll(List.of(mcContent));
 
         // Then
         assert savedMcContents != null;
-        assertEquals(2, savedMcContents.size());
+        assertEquals(1, savedMcContents.size());
         verify(mcContentRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test
     void shouldDeleteMcContent() {
         // When
-        mcContentService.delete(mcContent1);
+        mcContentService.delete(mcContent);
 
         // Then
         verify(mcContentRepository, times(1)).delete(any(McContent.class));
@@ -108,7 +100,7 @@ class McContentServiceImplTest {
     @Test
     void shouldDeleteMcContentById() {
         // When
-        mcContentService.deleteById(MOCK_MC_CONTENT_ID_1);
+        mcContentService.deleteById(mcContent.getId());
 
         // Then
         verify(mcContentRepository, times(1)).deleteById(anyString());
