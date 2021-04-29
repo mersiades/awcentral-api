@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import static com.mersiades.awccontent.constants.MoveNames.*;
 import static com.mersiades.awccontent.content.MovesContent.sufferVHarm;
 import static com.mersiades.awccontent.content.MovesContent.*;
+import static com.mersiades.awccontent.content.NamesContent.*;
 
 @Component
 @Order(value = 0)
@@ -365,349 +366,282 @@ public class GameDataLoader implements CommandLineRunner {
 
     private void loadNames() {
         System.out.println("|| --- Loading playbook names --- ||");
-        /* ----------------------------- ANGEL NAMES --------------------------------- */
-        Name dou = Name.builder().playbookType(PlaybookType.ANGEL).name("Dou").build();
-        Name bon = Name.builder().playbookType(PlaybookType.ANGEL).name("Bon").build();
-        Name abe = Name.builder().playbookType(PlaybookType.ANGEL).name("Abe").build();
-        Name boo = Name.builder().playbookType(PlaybookType.ANGEL).name("Boo").build();
-        Name t = Name.builder().playbookType(PlaybookType.ANGEL).name("T").build();
-        Name kal = Name.builder().playbookType(PlaybookType.ANGEL).name("Kal").build();
-        Name charName = Name.builder().playbookType(PlaybookType.ANGEL).name("Char").build();
-        Name jav = Name.builder().playbookType(PlaybookType.ANGEL).name("Jav").build();
-        Name ruth = Name.builder().playbookType(PlaybookType.ANGEL).name("Ruth").build();
-        Name wei = Name.builder().playbookType(PlaybookType.ANGEL).name("Wei").build();
-        Name jay = Name.builder().playbookType(PlaybookType.ANGEL).name("Jay").build();
-        Name nee = Name.builder().playbookType(PlaybookType.ANGEL).name("Nee").build();
-        Name kim = Name.builder().playbookType(PlaybookType.ANGEL).name("Kim").build();
-        Name lan = Name.builder().playbookType(PlaybookType.ANGEL).name("Lan").build();
-        Name di = Name.builder().playbookType(PlaybookType.ANGEL).name("Di").build();
-        Name dez = Name.builder().playbookType(PlaybookType.ANGEL).name("Dez").build();
-        Name doc = Name.builder().playbookType(PlaybookType.ANGEL).name("Doc").build();
-        Name core = Name.builder().playbookType(PlaybookType.ANGEL).name("Core").build();
-        Name wheels = Name.builder().playbookType(PlaybookType.ANGEL).name("Wheels").build();
-        Name buzz = Name.builder().playbookType(PlaybookType.ANGEL).name("Buzz").build();
-        Name key = Name.builder().playbookType(PlaybookType.ANGEL).name("Key").build();
-        Name line = Name.builder().playbookType(PlaybookType.ANGEL).name("Line").build();
-        Name gabe = Name.builder().playbookType(PlaybookType.ANGEL).name("Gabe").build();
-        Name biz = Name.builder().playbookType(PlaybookType.ANGEL).name("Biz").build();
-        Name bish = Name.builder().playbookType(PlaybookType.ANGEL).name("Bish").build();
-        Name inch = Name.builder().playbookType(PlaybookType.ANGEL).name("Inch").build();
-        Name grip = Name.builder().playbookType(PlaybookType.ANGEL).name("Grip").build();
-        Name setter = Name.builder().playbookType(PlaybookType.ANGEL).name("Setter").build();
 
-        nameService.saveAll(List.of(dou, bon, abe, boo, t, kal, charName, jav, ruth, wei, jay, nee,
-                kim, lan, di, dez, core, wheels, doc, buzz, key, line, gabe, biz, bish, inch, grip, setter))
-        ;
-
-        /* ----------------------------- BATTLEBABE NAMES --------------------------------- */
-        Name snow = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Snow").build();
-        Name crimson = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Crimson").build();
-        Name shadow = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Shadow").build();
-        Name azure = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Azure").build();
-        Name midnight = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Midnight").build();
-        Name scarlet = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Scarlet").build();
-        Name violetta = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Violetta").build();
-        Name amber = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Amber").build();
-        Name rouge = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Rouge").build();
-        Name damson = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Damson").build();
-        Name sunset = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Sunset").build();
-        Name emerald = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Emerald").build();
-        Name ruby = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Ruby").build();
-        Name raksha = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Raksha").build();
-        Name kickskirt = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Kickskirt").build();
-        Name kite = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Kite").build();
-        Name monsoon = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Monsoon").build();
-        Name smith = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Smith").build();
-        Name beastie = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Beastie").build();
-        Name baaba = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Baaba").build();
-        Name melody = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Melody").build();
-        Name mar = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Mar").build();
-        Name tavi = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Tavi").build();
-        Name absinthe = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Absinthe").build();
-        Name honeytree = Name.builder().playbookType(PlaybookType.BATTLEBABE).name("Honeytree").build();
-
-        nameService.saveAll(List.of(snow, crimson, shadow, beastie, azure, midnight, scarlet, violetta, amber, rouge,
-                damson, sunset, emerald, ruby, raksha, kickskirt, kite, monsoon, smith, baaba, melody, mar, tavi,
-                absinthe, honeytree));
-
-        /* ----------------------------- BRAINER NAMES --------------------------------- */
-        Name smith2 = Name.builder().playbookType(PlaybookType.BRAINER).name("Smith").build();
-        Name jones = Name.builder().playbookType(PlaybookType.BRAINER).name("Jones").build();
-        Name jackson = Name.builder().playbookType(PlaybookType.BRAINER).name("Jackson").build();
-        Name marsh = Name.builder().playbookType(PlaybookType.BRAINER).name("Marsh").build();
-        Name lively = Name.builder().playbookType(PlaybookType.BRAINER).name("Lively").build();
-        Name burroughs = Name.builder().playbookType(PlaybookType.BRAINER).name("Burroughs").build();
-        Name gritch = Name.builder().playbookType(PlaybookType.BRAINER).name("Gritch").build();
-        Name joyette = Name.builder().playbookType(PlaybookType.BRAINER).name("Joyette").build();
-        Name iris = Name.builder().playbookType(PlaybookType.BRAINER).name("Iris").build();
-        Name marie = Name.builder().playbookType(PlaybookType.BRAINER).name("Marie").build();
-        Name amiette = Name.builder().playbookType(PlaybookType.BRAINER).name("Amiette").build();
-        Name suselle = Name.builder().playbookType(PlaybookType.BRAINER).name("Suselle").build();
-        Name cybelle = Name.builder().playbookType(PlaybookType.BRAINER).name("Cybelle").build();
-        Name pallor = Name.builder().playbookType(PlaybookType.BRAINER).name("Pallor").build();
-        Name sin = Name.builder().playbookType(PlaybookType.BRAINER).name("Sin").build();
-        Name charmer = Name.builder().playbookType(PlaybookType.BRAINER).name("Charmer").build();
-        Name pity = Name.builder().playbookType(PlaybookType.BRAINER).name("Pity").build();
-        Name brace = Name.builder().playbookType(PlaybookType.BRAINER).name("Brace").build();
-        Name sundown = Name.builder().playbookType(PlaybookType.BRAINER).name("Sundown").build();
-
-        nameService.saveAll(List.of(smith2, jones, jackson, marsh, lively, burroughs, gritch, joyette, iris, marie,
-                amiette, suselle, cybelle, pallor, sin, charmer, pity, brace, sundown));
-
-        /* ----------------------------- CHOPPER NAMES --------------------------------- */
-        Name dog = Name.builder().playbookType(PlaybookType.CHOPPER).name("Dog").build();
-        Name domino = Name.builder().playbookType(PlaybookType.CHOPPER).name("Domino").build();
-        Name tBone = Name.builder().playbookType(PlaybookType.CHOPPER).name("T-bone").build();
-        Name stinky = Name.builder().playbookType(PlaybookType.CHOPPER).name("Stinky").build();
-        Name satan = Name.builder().playbookType(PlaybookType.CHOPPER).name("Satan").build();
-        Name lars = Name.builder().playbookType(PlaybookType.CHOPPER).name("Lars").build();
-        Name bullet = Name.builder().playbookType(PlaybookType.CHOPPER).name("Bullet").build();
-        Name dice = Name.builder().playbookType(PlaybookType.CHOPPER).name("Dice").build();
-        Name shitHead = Name.builder().playbookType(PlaybookType.CHOPPER).name("Shit head").build();
-        Name halfPint = Name.builder().playbookType(PlaybookType.CHOPPER).name("Half pint").build();
-        Name shooter = Name.builder().playbookType(PlaybookType.CHOPPER).name("Shooter").build();
-        Name diamond = Name.builder().playbookType(PlaybookType.CHOPPER).name("Diamond").build();
-        Name goldie = Name.builder().playbookType(PlaybookType.CHOPPER).name("Goldie").build();
-        Name tinker = Name.builder().playbookType(PlaybookType.CHOPPER).name("Tinker").build();
-        Name loose = Name.builder().playbookType(PlaybookType.CHOPPER).name("Loose").build();
-        Name baby = Name.builder().playbookType(PlaybookType.CHOPPER).name("Baby").build();
-        Name juck = Name.builder().playbookType(PlaybookType.CHOPPER).name("Juck").build();
-        Name hammer = Name.builder().playbookType(PlaybookType.CHOPPER).name("Hammer").build();
-        Name hooch = Name.builder().playbookType(PlaybookType.CHOPPER).name("Hooch").build();
-        Name snakeEyes = Name.builder().playbookType(PlaybookType.CHOPPER).name("Snake eyes").build();
-        Name pinkie = Name.builder().playbookType(PlaybookType.CHOPPER).name("Pinkie").build();
-        Name wire = Name.builder().playbookType(PlaybookType.CHOPPER).name("Wire").build();
-        Name blues = Name.builder().playbookType(PlaybookType.CHOPPER).name("Blues").build();
-
-        nameService.saveAll(List.of(dog, domino, tBone, stinky, satan, lars, bullet, dice, shitHead, halfPint,
-                shooter, diamond, goldie, tinker, loose, baby, juck, hammer, hooch, snakeEyes, pinkie, wire, blues));
-
-        /* ----------------------------- DRIVER NAMES --------------------------------- */
-        Name lauren = Name.builder().playbookType(PlaybookType.DRIVER).name("Lauren").build();
-        Name audrey = Name.builder().playbookType(PlaybookType.DRIVER).name("Audrey").build();
-        Name farley = Name.builder().playbookType(PlaybookType.DRIVER).name("Farley").build();
-        Name sammy = Name.builder().playbookType(PlaybookType.DRIVER).name("Sammy").build();
-        Name katherine = Name.builder().playbookType(PlaybookType.DRIVER).name("Katherine").build();
-        Name marilyn = Name.builder().playbookType(PlaybookType.DRIVER).name("Marilyn").build();
-        Name james = Name.builder().playbookType(PlaybookType.DRIVER).name("James").build();
-        Name bridget = Name.builder().playbookType(PlaybookType.DRIVER).name("Bridget").build();
-        Name paul = Name.builder().playbookType(PlaybookType.DRIVER).name("Paul").build();
-        Name annette = Name.builder().playbookType(PlaybookType.DRIVER).name("Annette").build();
-        Name marlene = Name.builder().playbookType(PlaybookType.DRIVER).name("Marlene").build();
-        Name frankie = Name.builder().playbookType(PlaybookType.DRIVER).name("Frankie").build();
-        Name marlon = Name.builder().playbookType(PlaybookType.DRIVER).name("Marlon").build();
-        Name kim1 = Name.builder().playbookType(PlaybookType.DRIVER).name("Kim").build();
-        Name errol = Name.builder().playbookType(PlaybookType.DRIVER).name("Errol").build();
-        Name humphrey = Name.builder().playbookType(PlaybookType.DRIVER).name("Humphrey").build();
-        Name phoenix = Name.builder().playbookType(PlaybookType.DRIVER).name("Phoenix").build();
-        Name mustang = Name.builder().playbookType(PlaybookType.DRIVER).name("Mustang").build();
-        Name impala = Name.builder().playbookType(PlaybookType.DRIVER).name("Impala").build();
-        Name suv = Name.builder().playbookType(PlaybookType.DRIVER).name("Suv").build();
-        Name cougar = Name.builder().playbookType(PlaybookType.DRIVER).name("Cougar").build();
-        Name cobra = Name.builder().playbookType(PlaybookType.DRIVER).name("Cobra").build();
-        Name dart = Name.builder().playbookType(PlaybookType.DRIVER).name("Dart").build();
-        Name gremlin = Name.builder().playbookType(PlaybookType.DRIVER).name("Gremlin").build();
-        Name grandCherokee = Name.builder().playbookType(PlaybookType.DRIVER).name("Grand Cherokee").build();
-        Name jag = Name.builder().playbookType(PlaybookType.DRIVER).name("Jag").build();
-        Name beemer = Name.builder().playbookType(PlaybookType.DRIVER).name("Beemer").build();
-
-        nameService.saveAll(List.of(lauren, audrey, farley, sammy, katherine, marilyn, james, bridget, paul,
-                annette, marlene, frankie, marlon, kim1, errol, humphrey, phoenix, mustang, impala, suv, cougar,
-                cobra, dart, gremlin, grandCherokee, jag, beemer));
-
-        /* ----------------------------- GUNLUGGER NAMES --------------------------------- */
-        Name vonk = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Vonk the Sculptor").build();
-        Name batty = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Batty").build();
-        Name jonker = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Jonker").build();
-        Name at = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("A.T.").build();
-        Name rueWakeman = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Rue Wakeman").build();
-        Name navarre = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Navarre").build();
-        Name man = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Man").build();
-        Name kartak = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Kartak").build();
-        Name barbarossa = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Barbarossa").build();
-        Name keeler = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Keeler").build();
-        Name grekkor = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Grekkor").build();
-        Name crille = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Crille").build();
-        Name doom = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Doom").build();
-        Name chaplain = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Chaplain").build();
-        Name rex = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Rex").build();
-        Name fido = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Fido").build();
-        Name spot = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Spot").build();
-        Name boxer = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Boxer").build();
-        Name doberman = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Doberman").build();
-        Name trey = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Trey").build();
-        Name killer = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Killer").build();
-        Name butch = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Butch").build();
-        Name fifi = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Fifi").build();
-        Name fluffy = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Fluffy").build();
-        Name duke = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Duke").build();
-        Name wolf = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Wolf").build();
-        Name rover = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Rover").build();
-        Name max = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Max").build();
-        Name buddy = Name.builder().playbookType(PlaybookType.GUNLUGGER).name("Buddy").build();
-
-
-        nameService.saveAll(List.of(vonk, batty, jonker, at, rueWakeman, navarre, man, kartak, barbarossa,
-                keeler, grekkor, crille, doom, chaplain, rex, fido, spot, boxer, doberman, trey, killer, butch,
-                fifi, fluffy, duke, wolf, rover, max, buddy));
-
-        /* ----------------------------- HARDHOLDER NAMES --------------------------------- */
-        Name hardholderName1 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Nbeke").build();
-        Name hardholderName2 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Allison").build();
-        Name hardholderName3 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Kobe").build();
-        Name hardholderName4 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Kreider").build();
-        Name hardholderName5 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Tranh").build();
-        Name hardholderName6 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Marco").build();
-        Name hardholderName7 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Sadiq").build();
-        Name hardholderName8 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Vega").build();
-        Name hardholderName9 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Lang").build();
-        Name hardholderName10 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Lin").build();
-        Name hardholderName11 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Jackson").build();
-        Name hardholderName12 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Madame").build();
-        Name hardholderName13 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Barbecue").build();
-        Name hardholderName14 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Grandma").build();
-        Name hardholderName15 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Uncle").build();
-        Name hardholderName16 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Parson").build();
-        Name hardholderName17 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Barnum").build();
-        Name hardholderName18 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Colonel").build();
-        Name hardholderName19 = Name.builder().playbookType(PlaybookType.HARDHOLDER).name("Mother Superior").build();
-
-        nameService.saveAll(List.of(hardholderName1, hardholderName2, hardholderName3, hardholderName4,
-                hardholderName5, hardholderName6, hardholderName7, hardholderName8, hardholderName9,
-                hardholderName10, hardholderName11, hardholderName12, hardholderName13, hardholderName14,
-                hardholderName15, hardholderName16, hardholderName17, hardholderName18, hardholderName19));
-
-        /* ----------------------------- HOCUS NAMES --------------------------------- */
-        Name hocus = Name.builder().playbookType(PlaybookType.HOCUS).name("Vision").build();
-        Name hocus1 = Name.builder().playbookType(PlaybookType.HOCUS).name("Hope").build();
-        Name hocus2 = Name.builder().playbookType(PlaybookType.HOCUS).name("Dust").build();
-        Name hocus3 = Name.builder().playbookType(PlaybookType.HOCUS).name("Truth").build();
-        Name hocus4 = Name.builder().playbookType(PlaybookType.HOCUS).name("Found").build();
-        Name hocus5 = Name.builder().playbookType(PlaybookType.HOCUS).name("Always").build();
-        Name hocus6 = Name.builder().playbookType(PlaybookType.HOCUS).name("Lost").build();
-        Name hocus7 = Name.builder().playbookType(PlaybookType.HOCUS).name("Want").build();
-        Name hocus8 = Name.builder().playbookType(PlaybookType.HOCUS).name("Must").build();
-        Name hocus9 = Name.builder().playbookType(PlaybookType.HOCUS).name("Bright").build();
-        Name hocus10 = Name.builder().playbookType(PlaybookType.HOCUS).name("Sorrow").build();
-        Name hocus11 = Name.builder().playbookType(PlaybookType.HOCUS).name("Horse").build();
-        Name hocus12 = Name.builder().playbookType(PlaybookType.HOCUS).name("Rabbit").build();
-        Name hocus13 = Name.builder().playbookType(PlaybookType.HOCUS).name("Trout").build();
-        Name hocus14 = Name.builder().playbookType(PlaybookType.HOCUS).name("Cat").build();
-        Name hocus15 = Name.builder().playbookType(PlaybookType.HOCUS).name("Spider").build();
-        Name hocus16 = Name.builder().playbookType(PlaybookType.HOCUS).name("Snake").build();
-        Name hocus17 = Name.builder().playbookType(PlaybookType.HOCUS).name("Bat").build();
-        Name hocus18 = Name.builder().playbookType(PlaybookType.HOCUS).name("Lizard").build();
-        Name hocus19 = Name.builder().playbookType(PlaybookType.HOCUS).name("Jackal").build();
-        Name hocus20 = Name.builder().playbookType(PlaybookType.HOCUS).name("Weaver Bird").build();
-        Name hocus21 = Name.builder().playbookType(PlaybookType.HOCUS).name("Lark").build();
-
-        nameService.saveAll(List.of(hocus, hocus1, hocus2, hocus3, hocus4, hocus5, hocus6, hocus7,
-                hocus8, hocus9, hocus10, hocus11, hocus12, hocus13, hocus14, hocus15, hocus16,
-                hocus17, hocus18, hocus19, hocus20, hocus21));
-
-        /* ----------------------------- MAESTRO D' NAMES --------------------------------- */
-        Name maestroD1 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Cookie").build();
-        Name maestroD2 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Silver").build();
-        Name maestroD3 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Smoky").build();
-        Name maestroD4 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Slops").build();
-        Name maestroD5 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Chief").build();
-        Name maestroD6 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Rose").build();
-        Name maestroD7 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Anika").build();
-        Name maestroD8 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("JD").build();
-        Name maestroD9 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Chairman").build();
-        Name maestroD10 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Grave").build();
-        Name maestroD11 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Saffron").build();
-        Name maestroD12 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Life").build();
-        Name maestroD13 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Yen").build();
-        Name maestroD14 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Emmy").build();
-        Name maestroD15 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Julia").build();
-        Name maestroD16 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Jackbird").build();
-        Name maestroD17 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Francois").build();
-        Name maestroD18 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Esco").build();
-        Name maestroD19 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Boiardi").build();
-        Name maestroD20 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Mari").build();
-        Name maestroD21 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Nan").build();
-        Name maestroD22 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Rache").build();
-        Name maestroD23 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Proper").build();
-        Name maestroD24 = Name.builder().playbookType(PlaybookType.MAESTRO_D).name("Fall").build();
-
-        nameService.saveAll(List.of(maestroD1, maestroD2, maestroD3, maestroD4, maestroD5, maestroD6, maestroD7,
-                maestroD8, maestroD9, maestroD10, maestroD11, maestroD12, maestroD13, maestroD14, maestroD15,
-                maestroD16, maestroD17, maestroD18, maestroD19, maestroD20, maestroD21, maestroD22, maestroD23,
-                maestroD24));
-
-        /* ----------------------------- SAVVYHEAD NAMES --------------------------------- */
-        Name savvyhead1 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Leah").build();
-        Name savvyhead2 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Joshua").build();
-        Name savvyhead3 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Tai").build();
-        Name savvyhead4 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Ethan").build();
-        Name savvyhead5 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Bran").build();
-        Name savvyhead6 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Jeremy").build();
-        Name savvyhead7 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Amanuel").build();
-        Name savvyhead8 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Justin").build();
-        Name savvyhead9 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Jessica").build();
-        Name savvyhead10 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Eliza").build();
-        Name savvyhead11 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Dylan").build();
-        Name savvyhead12 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Adnan").build();
-        Name savvyhead13 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Alan").build();
-        Name savvyhead14 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Nils").build();
-        Name savvyhead15 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Ellen").build();
-        Name savvyhead16 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Lee").build();
-        Name savvyhead17 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Kim").build();
-        Name savvyhead18 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Adele").build();
-        Name savvyhead19 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Leone").build();
-        Name savvyhead20 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Burdick").build();
-        Name savvyhead21 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Oliver").build();
-        Name savvyhead22 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Goldman").build();
-        Name savvyhead23 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Whiting").build();
-        Name savvyhead24 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Fauci").build();
-        Name savvyhead25 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Hossfield").build();
-        Name savvyhead26 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Lemma").build();
-        Name savvyhead27 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Morrell").build();
-        Name savvyhead28 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Ozair").build();
-        Name savvyhead29 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Robinson").build();
-        Name savvyhead30 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Lemieux").build();
-        Name savvyhead31 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Whitmont").build();
-        Name savvyhead32 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Cullen").build();
-        Name savvyhead33 = Name.builder().playbookType(PlaybookType.SAVVYHEAD).name("Spector").build();
-
-        nameService.saveAll(List.of(savvyhead1, savvyhead2, savvyhead3, savvyhead4, savvyhead5,
-                savvyhead6, savvyhead7, savvyhead8, savvyhead9, savvyhead10, savvyhead11,
-                savvyhead11, savvyhead12, savvyhead13, savvyhead14, savvyhead15, savvyhead16,
-                savvyhead17, savvyhead18, savvyhead19, savvyhead20, savvyhead21, savvyhead22,
-                savvyhead23, savvyhead24, savvyhead25, savvyhead26, savvyhead27, savvyhead28,
-                savvyhead29, savvyhead30, savvyhead31, savvyhead32, savvyhead33));
-
-        /* ----------------------------- SKINNER NAMES --------------------------------- */
-        Name skinner1 = Name.builder().playbookType(PlaybookType.SKINNER).name("October").build();
-        Name skinner2 = Name.builder().playbookType(PlaybookType.SKINNER).name("Venus").build();
-        Name skinner3 = Name.builder().playbookType(PlaybookType.SKINNER).name("Mercury").build();
-        Name skinner4 = Name.builder().playbookType(PlaybookType.SKINNER).name("Dune").build();
-        Name skinner5 = Name.builder().playbookType(PlaybookType.SKINNER).name("Shade").build();
-        Name skinner6 = Name.builder().playbookType(PlaybookType.SKINNER).name("Heron").build();
-        Name skinner7 = Name.builder().playbookType(PlaybookType.SKINNER).name("Plum").build();
-        Name skinner8 = Name.builder().playbookType(PlaybookType.SKINNER).name("Orchid").build();
-        Name skinner9 = Name.builder().playbookType(PlaybookType.SKINNER).name("Storm").build();
-        Name skinner10 = Name.builder().playbookType(PlaybookType.SKINNER).name("Dusk").build();
-        Name skinner11 = Name.builder().playbookType(PlaybookType.SKINNER).name("Sword").build();
-        Name skinner12 = Name.builder().playbookType(PlaybookType.SKINNER).name("Midnight").build();
-        Name skinner13 = Name.builder().playbookType(PlaybookType.SKINNER).name("Hide").build();
-        Name skinner14 = Name.builder().playbookType(PlaybookType.SKINNER).name("Frost").build();
-        Name skinner15 = Name.builder().playbookType(PlaybookType.SKINNER).name("Lawn").build();
-        Name skinner16 = Name.builder().playbookType(PlaybookType.SKINNER).name("June").build();
-        Name skinner17 = Name.builder().playbookType(PlaybookType.SKINNER).name("Icicle").build();
-        Name skinner18 = Name.builder().playbookType(PlaybookType.SKINNER).name("Tern").build();
-        Name skinner19 = Name.builder().playbookType(PlaybookType.SKINNER).name("Lavender").build();
-        Name skinner20 = Name.builder().playbookType(PlaybookType.SKINNER).name("Spice").build();
-        Name skinner21 = Name.builder().playbookType(PlaybookType.SKINNER).name("Gazelle").build();
-        Name skinner22 = Name.builder().playbookType(PlaybookType.SKINNER).name("Lion").build();
-        Name skinner23 = Name.builder().playbookType(PlaybookType.SKINNER).name("Peacock").build();
-        Name skinner24 = Name.builder().playbookType(PlaybookType.SKINNER).name("Grace").build();
-
-        nameService.saveAll(List.of(skinner1, skinner2, skinner3, skinner4, skinner5, skinner6,
-                skinner7, skinner8, skinner9, skinner10, skinner11, skinner12, skinner13,
-                skinner14, skinner15, skinner16, skinner17, skinner18, skinner19, skinner20,
-                skinner21, skinner22, skinner23, skinner24));
+        nameService.saveAll(List.of(
+                nameAngel1,
+                nameAngel2,
+                nameAngel3,
+                nameAngel4,
+                nameAngel5,
+                nameAngel6,
+                nameAngel7,
+                nameAngel8,
+                nameAngel9,
+                nameAngel10,
+                nameAngel11,
+                nameAngel12,
+                nameAngel13,
+                nameAngel14,
+                nameAngel15,
+                nameAngel16,
+                nameAngel17,
+                nameAngel18,
+                nameAngel19,
+                nameAngel20,
+                nameAngel21,
+                nameAngel22,
+                nameAngel23,
+                nameAngel24,
+                nameAngel25,
+                nameAngel26,
+                nameAngel27,
+                nameAngel28,
+                nameBattlebabe1,
+                nameBattlebabe2,
+                nameBattlebabe3,
+                nameBattlebabe4,
+                nameBattlebabe5,
+                nameBattlebabe6,
+                nameBattlebabe7,
+                nameBattlebabe8,
+                nameBattlebabe9,
+                nameBattlebabe10,
+                nameBattlebabe11,
+                nameBattlebabe12,
+                nameBattlebabe13,
+                nameBattlebabe14,
+                nameBattlebabe15,
+                nameBattlebabe16,
+                nameBattlebabe17,
+                nameBattlebabe18,
+                nameBattlebabe19,
+                nameBattlebabe20,
+                nameBattlebabe21,
+                nameBattlebabe22,
+                nameBattlebabe23,
+                nameBattlebabe24,
+                nameBattlebabe25,
+                nameBrainer1,
+                nameBrainer2,
+                nameBrainer3,
+                nameBrainer4,
+                nameBrainer5,
+                nameBrainer6,
+                nameBrainer7,
+                nameBrainer8,
+                nameBrainer9,
+                nameBrainer10,
+                nameBrainer11,
+                nameBrainer12,
+                nameBrainer13,
+                nameBrainer14,
+                nameBrainer15,
+                nameBrainer16,
+                nameBrainer17,
+                nameBrainer18,
+                nameBrainer19,
+                nameChopper1,
+                nameChopper2,
+                nameChopper3,
+                nameChopper4,
+                nameChopper5,
+                nameChopper6,
+                nameChopper7,
+                nameChopper8,
+                nameChopper9,
+                nameChopper10,
+                nameChopper11,
+                nameChopper12,
+                nameChopper13,
+                nameChopper14,
+                nameChopper15,
+                nameChopper16,
+                nameChopper17,
+                nameChopper18,
+                nameChopper19,
+                nameChopper20,
+                nameChopper21,
+                nameChopper22,
+                nameChopper23,
+                nameDriver1,
+                nameDriver2,
+                nameDriver3,
+                nameDriver4,
+                nameDriver5,
+                nameDriver6,
+                nameDriver7,
+                nameDriver8,
+                nameDriver9,
+                nameDriver10,
+                nameDriver11,
+                nameDriver12,
+                nameDriver13,
+                nameDriver14,
+                nameDriver15,
+                nameDriver16,
+                nameDriver17,
+                nameDriver18,
+                nameDriver19,
+                nameDriver20,
+                nameDriver21,
+                nameDriver22,
+                nameDriver23,
+                nameDriver24,
+                nameDriver25,
+                nameDriver26,
+                nameDriver27,
+                nameGunlugger1,
+                nameGunlugger2,
+                nameGunlugger3,
+                nameGunlugger4,
+                nameGunlugger5,
+                nameGunlugger6,
+                nameGunlugger7,
+                nameGunlugger8,
+                nameGunlugger9,
+                nameGunlugger10,
+                nameGunlugger11,
+                nameGunlugger12,
+                nameGunlugger13,
+                nameGunlugger14,
+                nameGunlugger15,
+                nameGunlugger16,
+                nameGunlugger17,
+                nameGunlugger18,
+                nameGunlugger19,
+                nameGunlugger20,
+                nameGunlugger21,
+                nameGunlugger22,
+                nameGunlugger23,
+                nameGunlugger24,
+                nameGunlugger25,
+                nameGunlugger26,
+                nameGunlugger27,
+                nameGunlugger28,
+                nameGunlugger29,
+                nameHardholder1,
+                nameHardholder2,
+                nameHardholder3,
+                nameHardholder4,
+                nameHardholder5,
+                nameHardholder6,
+                nameHardholder7,
+                nameHardholder8,
+                nameHardholder9,
+                nameHardholder10,
+                nameHardholder11,
+                nameHardholder12,
+                nameHardholder13,
+                nameHardholder14,
+                nameHardholder15,
+                nameHardholder16,
+                nameHardholder17,
+                nameHardholder18,
+                nameHardholder19,
+                nameHocus,
+                nameHocus1,
+                nameHocus2,
+                nameHocus3,
+                nameHocus4,
+                nameHocus5,
+                nameHocus6,
+                nameHocus7,
+                nameHocus8,
+                nameHocus9,
+                nameHocus10,
+                nameHocus11,
+                nameHocus12,
+                nameHocus13,
+                nameHocus14,
+                nameHocus15,
+                nameHocus16,
+                nameHocus17,
+                nameHocus18,
+                nameHocus19,
+                nameHocus20,
+                nameHocus21,
+                nameMaestroD1,
+                nameMaestroD2,
+                nameMaestroD3,
+                nameMaestroD4,
+                nameMaestroD5,
+                nameMaestroD6,
+                nameMaestroD7,
+                nameMaestroD8,
+                nameMaestroD9,
+                nameMaestroD10,
+                nameMaestroD11,
+                nameMaestroD12,
+                nameMaestroD13,
+                nameMaestroD14,
+                nameMaestroD15,
+                nameMaestroD16,
+                nameMaestroD17,
+                nameMaestroD18,
+                nameMaestroD19,
+                nameMaestroD20,
+                nameMaestroD21,
+                nameMaestroD22,
+                nameMaestroD23,
+                nameMaestroD24,
+                nameSavvyhead1,
+                nameSavvyhead2,
+                nameSavvyhead3,
+                nameSavvyhead4,
+                nameSavvyhead5,
+                nameSavvyhead6,
+                nameSavvyhead7,
+                nameSavvyhead8,
+                nameSavvyhead9,
+                nameSavvyhead10,
+                nameSavvyhead11,
+                nameSavvyhead12,
+                nameSavvyhead13,
+                nameSavvyhead14,
+                nameSavvyhead15,
+                nameSavvyhead16,
+                nameSavvyhead17,
+                nameSavvyhead18,
+                nameSavvyhead19,
+                nameSavvyhead20,
+                nameSavvyhead21,
+                nameSavvyhead22,
+                nameSavvyhead23,
+                nameSavvyhead24,
+                nameSavvyhead25,
+                nameSavvyhead26,
+                nameSavvyhead27,
+                nameSavvyhead28,
+                nameSavvyhead29,
+                nameSavvyhead30,
+                nameSavvyhead31,
+                nameSavvyhead32,
+                nameSavvyhead33,
+                nameSkinner1,
+                nameSkinner2,
+                nameSkinner3,
+                nameSkinner4,
+                nameSkinner5,
+                nameSkinner6,
+                nameSkinner7,
+                nameSkinner8,
+                nameSkinner9,
+                nameSkinner10,
+                nameSkinner11,
+                nameSkinner12,
+                nameSkinner13,
+                nameSkinner14,
+                nameSkinner15,
+                nameSkinner16,
+                nameSkinner17,
+                nameSkinner18,
+                nameSkinner19,
+                nameSkinner20,
+                nameSkinner21,
+                nameSkinner22,
+                nameSkinner23,
+                nameSkinner24
+        ));
     }
 
     private void loadLooks() {

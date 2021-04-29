@@ -13,19 +13,16 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mersiades.awccontent.content.NamesContent.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class NameServiceImplTest {
 
-    public static final String MOCK_NAME_ID_1 = "mock-name-id-1";
-
     @Mock
     NameRepository nameRepository;
 
     NameService nameService;
-
-    Name mockName1;
 
     PlaybookCreator mockPlaybookCreator;
 
@@ -34,12 +31,6 @@ class NameServiceImplTest {
         MockitoAnnotations.initMocks(this);
 
         mockPlaybookCreator = PlaybookCreator.builder().build();
-        mockName1 = Name.builder()
-                .id(MOCK_NAME_ID_1)
-                .name("Mr Mock Name")
-                .playbookCreator(mockPlaybookCreator)
-                .playbookType(PlaybookType.ANGEL)
-                .build();
 
         nameService = new NameServiceImpl(nameRepository);
     }
@@ -47,8 +38,7 @@ class NameServiceImplTest {
     @Test
     void shouldFindAllNames() {
         // Given
-        Name mockName2 = Name.builder().build();
-        when(nameRepository.findAll()).thenReturn(List.of(mockName1, mockName2));
+        when(nameRepository.findAll()).thenReturn(List.of(nameAngel1, nameAngel2));
 
         // When
         List<Name> returnedNames = nameService.findAll();
@@ -62,39 +52,38 @@ class NameServiceImplTest {
     @Test
     void shouldFindNameById() {
         // Given
-        when(nameRepository.findById(anyString())).thenReturn(Optional.of(mockName1));
+        when(nameRepository.findById(anyString())).thenReturn(Optional.of(nameAngel1));
 
         // When
-        Name returnedName = nameService.findById(MOCK_NAME_ID_1);
+        Name returnedName = nameService.findById(nameAngel1.getId());
 
         // Then
         assert returnedName != null;
-        assertEquals(MOCK_NAME_ID_1, returnedName.getId());
+        assertEquals(nameAngel1.getId(), returnedName.getId());
         verify(nameRepository, times(1)).findById(anyString());
     }
 
     @Test
     void shouldSaveName() {
         // Given
-        when(nameRepository.save(any(Name.class))).thenReturn(mockName1);
+        when(nameRepository.save(any(Name.class))).thenReturn(nameAngel1);
 
         // When
-        Name savedName = nameService.save(mockName1);
+        Name savedName = nameService.save(nameAngel1);
 
         // Then
         assert savedName != null;
-        assertEquals(mockName1.getId(), savedName.getId());
+        assertEquals(nameAngel1.getId(), savedName.getId());
         verify(nameRepository, times(1)).save(any(Name.class));
     }
 
     @Test
     void shouldSaveAllNames() {
         // Given
-        Name mockName2 = Name.builder().build();
-        when(nameRepository.saveAll(anyIterable())).thenReturn(List.of(mockName1, mockName2));
+        when(nameRepository.saveAll(anyIterable())).thenReturn(List.of(nameAngel1, nameAngel2));
 
         // When
-        List<Name> savedNames = nameService.saveAll(List.of(mockName1,mockName2));
+        List<Name> savedNames = nameService.saveAll(List.of(nameAngel1,nameAngel2));
 
         // Then
         assert savedNames != null;
@@ -105,7 +94,7 @@ class NameServiceImplTest {
     @Test
     void shouldDeleteName() {
         // When
-        nameService.delete(mockName1);
+        nameService.delete(nameAngel1);
 
         // Then
         verify(nameRepository, times(1)).delete(any(Name.class));
@@ -114,7 +103,7 @@ class NameServiceImplTest {
     @Test
     void shouldDeleteNameById() {
         // When
-        nameService.deleteById(MOCK_NAME_ID_1);
+        nameService.deleteById(nameAngel1.getId());
 
         // Then
         verify(nameRepository, times(1)).deleteById(anyString());
@@ -123,13 +112,7 @@ class NameServiceImplTest {
     @Test
     void shouldFindAllNamesByPlaybookType() {
         // Given
-        Name mockName3 = Name.builder()
-                .id("mock-name-id-3")
-                .name("another name")
-                .playbookCreator(mockPlaybookCreator)
-                .playbookType(PlaybookType.ANGEL)
-                .build();
-        when(nameRepository.findAllByPlaybookType(any(PlaybookType.class))).thenReturn(List.of(mockName1, mockName3));
+        when(nameRepository.findAllByPlaybookType(any(PlaybookType.class))).thenReturn(List.of(nameAngel1, nameAngel3));
 
         // When
         List<Name> angelNames = nameService.findAllByPlaybookType(PlaybookType.ANGEL);
