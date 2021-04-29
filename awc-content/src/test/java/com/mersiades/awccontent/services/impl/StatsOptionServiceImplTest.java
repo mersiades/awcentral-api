@@ -12,35 +12,21 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel1;
+import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class StatsOptionServiceImplTest {
-
-    public static final String MOCK_STATS_OPTION_ID_1 = "mock-stats-option-id-1";
 
     @Mock
     StatsOptionRepository soRepository;
 
     StatsOptionService soService;
 
-    StatsOption mockSo1;
-
-    StatsOption mockSo2;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        mockSo1 = StatsOption.builder()
-                .id(MOCK_STATS_OPTION_ID_1)
-                .playbookType(PlaybookType.ANGEL)
-                .build();
-
-        mockSo2 = StatsOption.builder()
-                .id("mock-stats-option-id-2")
-                .playbookType(PlaybookType.ANGEL)
-                .build();
 
         soService = new StatsOptionServiceImpl(soRepository);
     }
@@ -48,7 +34,7 @@ class StatsOptionServiceImplTest {
     @Test
     void shouldFindAllStatsOptions() {
         // Given
-        when(soRepository.findAll()).thenReturn(List.of(mockSo1, mockSo2));
+        when(soRepository.findAll()).thenReturn(List.of(statsOptionAngel1, statsOptionAngel2));
 
         // When
         List<StatsOption> returnedStatsOptions = soService.findAll();
@@ -62,28 +48,28 @@ class StatsOptionServiceImplTest {
     @Test
     void shouldFindStatsOptionById() {
         // Given
-        when(soRepository.findById(anyString())).thenReturn(Optional.of(mockSo1));
+        when(soRepository.findById(anyString())).thenReturn(Optional.of(statsOptionAngel1));
 
         // When
-        StatsOption returnedStatsOption = soService.findById(MOCK_STATS_OPTION_ID_1);
+        StatsOption returnedStatsOption = soService.findById(statsOptionAngel1.getId());
 
         // Then
         assert returnedStatsOption != null;
-        assertEquals(MOCK_STATS_OPTION_ID_1, returnedStatsOption.getId());
+        assertEquals(statsOptionAngel1.getId(), returnedStatsOption.getId());
         verify(soRepository, times(1)).findById(anyString());
     }
 
     @Test
     void shouldSaveStatsOption() {
         // Given
-        when(soRepository.save(any(StatsOption.class))).thenReturn(mockSo1);
+        when(soRepository.save(any(StatsOption.class))).thenReturn(statsOptionAngel1);
 
         // When
-        StatsOption savedStatsOption = soService.save(mockSo1);
+        StatsOption savedStatsOption = soService.save(statsOptionAngel1);
 
         // Then
         assert savedStatsOption != null;
-        assertEquals(mockSo1.getId(), savedStatsOption.getId());
+        assertEquals(statsOptionAngel1.getId(), savedStatsOption.getId());
         verify(soRepository, times(1)).save(any(StatsOption.class));
     }
 
@@ -91,10 +77,10 @@ class StatsOptionServiceImplTest {
     void shouldSaveAllStatsOptions() {
         // Given
         StatsOption mockSo2 = StatsOption.builder().build();
-        when(soRepository.saveAll(anyIterable())).thenReturn(List.of(mockSo1, mockSo2));
+        when(soRepository.saveAll(anyIterable())).thenReturn(List.of(statsOptionAngel1, statsOptionAngel2));
 
         // When
-        List<StatsOption> savedStatsOptions = soService.saveAll(List.of(mockSo1,mockSo2));
+        List<StatsOption> savedStatsOptions = soService.saveAll(List.of(statsOptionAngel1, statsOptionAngel2));
 
         // Then
         assert savedStatsOptions != null;
@@ -105,7 +91,7 @@ class StatsOptionServiceImplTest {
     @Test
     void shouldDeleteStatsOption() {
         // When
-        soService.delete(mockSo1);
+        soService.delete(statsOptionAngel2);
 
         // Then
         verify(soRepository, times(1)).delete(any(StatsOption.class));
@@ -114,7 +100,7 @@ class StatsOptionServiceImplTest {
     @Test
     void shouldDeleteStatsOptionById() {
         // When
-        soService.deleteById(MOCK_STATS_OPTION_ID_1);
+        soService.deleteById(statsOptionAngel1.getId());
 
         // Then
         verify(soRepository, times(1)).deleteById(anyString());
@@ -123,7 +109,7 @@ class StatsOptionServiceImplTest {
     @Test
     void shouldFindAllStatsOptionsByPlaybookType() {
         // Given
-        when(soRepository.findAllByPlaybookType(any(PlaybookType.class))).thenReturn(List.of(mockSo1, mockSo2));
+        when(soRepository.findAllByPlaybookType(any(PlaybookType.class))).thenReturn(List.of(statsOptionAngel1, statsOptionAngel2));
 
         // When
         List<StatsOption> returnedStatsOptions = soService.findAllByPlaybookType(PlaybookType.ANGEL);
