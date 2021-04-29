@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.mersiades.awccontent.constants.MoveNames.*;
+import static com.mersiades.awccontent.content.LooksContent.*;
 import static com.mersiades.awccontent.content.MovesContent.sufferVHarm;
 import static com.mersiades.awccontent.content.MovesContent.*;
 import static com.mersiades.awccontent.content.NamesContent.*;
@@ -646,370 +647,301 @@ public class GameDataLoader implements CommandLineRunner {
 
     private void loadLooks() {
         System.out.println("|| --- Loading playbook looks --- ||");
-        /* ----------------------------- ANGEL LOOKS --------------------------------- */
-        Look angel1 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.GENDER).look("man").build();
-        Look angel2 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.GENDER).look("woman").build();
-        Look angel3 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.GENDER).look("ambiguous").build();
-        Look angel4 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.GENDER).look("transgressing").build();
-        Look angel5 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.GENDER).look("concealed").build();
-        Look angel6 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.CLOTHES).look("utility wear").build();
-        Look angel7 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.CLOTHES).look("casual wear plus utility").build();
-        Look angel8 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.CLOTHES).look("scrounge wear plus utility").build();
-        Look angel9 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.FACE).look("kind face").build();
-        Look angel10 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.FACE).look("strong face").build();
-        Look angel11 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.FACE).look("rugged face").build();
-        Look angel12 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.FACE).look("haggard face").build();
-        Look angel13 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.FACE).look("pretty face").build();
-        Look angel14 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.FACE).look("lively face").build();
-        Look angel15 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.EYES).look("quick eyes").build();
-        Look angel16 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.EYES).look("hard eyes").build();
-        Look angel17 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.EYES).look("caring eyes").build();
-        Look angel18 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.EYES).look("bright eyes").build();
-        Look angel19 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.EYES).look("laughing eyes").build();
-        Look angel20 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.EYES).look("clear eyes").build();
-        Look angel21 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("compact body").build();
-        Look angel22 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("stout body").build();
-        Look angel23 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("spare body").build();
-        Look angel24 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("big body").build();
-        Look angel25 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("rangy body").build();
-        Look angel26 = Look.builder().playbookType(PlaybookType.ANGEL).category(LookType.BODY).look("sturdy body").build();
+        lookService.saveAll(List.of(
+                lookAngel1,
+                lookAngel2,
+                lookAngel3,
+                lookAngel4,
+                lookAngel5,
+                lookAngel6,
+                lookAngel7,
+                lookAngel8,
+                lookAngel9,
+                lookAngel10,
+                lookAngel11,
+                lookAngel12,
+                lookAngel13,
+                lookAngel14,
+                lookAngel15,
+                lookAngel16,
+                lookAngel17,
+                lookAngel18,
+                lookAngel19,
+                lookAngel20,
+                lookAngel21,
+                lookAngel22,
+                lookAngel23,
+                lookAngel24,
+                lookAngel25,
+                lookAngel26,
+                lookBattlebabe1,
+                lookBattlebabe2,
+                lookBattlebabe3,
+                lookBattlebabe4,
+                lookBattlebabe5,
+                lookBattlebabe6,
+                lookBattlebabe7,
+                lookBattlebabe8,
+                lookBattlebabe9,
+                lookBattlebabe10,
+                lookBattlebabe11,
+                lookBattlebabe12,
+                lookBattlebabe13,
+                lookBattlebabe14,
+                lookBattlebabe15,
+                lookBattlebabe16,
+                lookBattlebabe17,
+                lookBattlebabe18,
+                lookBattlebabe19,
+                lookBattlebabe20,
+                lookBattlebabe21,
+                lookBattlebabe22,
+                lookBattlebabe23,
+                lookBattlebabe24,
+                lookBattlebabe25,
+                lookBattlebabe26,
+                lookBrainer1,
+                lookBrainer2,
+                lookBrainer3,
+                lookBrainer4,
+                lookBrainer5,
+                lookBrainer6,
+                lookBrainer7,
+                lookBrainer8,
+                lookBrainer9,
+                lookBrainer10,
+                lookBrainer11,
+                lookBrainer12,
+                lookBrainer13,
+                lookBrainer14,
+                lookBrainer15,
+                lookBrainer16,
+                lookBrainer17,
+                lookBrainer18,
+                lookBrainer19,
+                lookBrainer20,
+                lookBrainer21,
+                lookBrainer22,
+                lookBrainer23,
+                lookBrainer24,
+                lookBrainer25,
+                lookBrainer26,
+                lookBrainer27,
+                lookChopper1,
+                lookChopper2,
+                lookChopper3,
+                lookChopper4,
+                lookChopper5,
+                lookChopper6,
+                lookChopper7,
+                lookChopper8,
+                lookChopper9,
+                lookChopper10,
+                lookChopper11,
+                lookChopper12,
+                lookChopper13,
+                lookChopper14,
+                lookChopper15,
+                lookChopper16,
+                lookChopper17,
+                lookChopper18,
+                lookChopper19,
+                lookChopper20,
+                lookChopper21,
+                lookChopper22,
+                lookChopper23,
+                lookDriver1,
+                lookDriver2,
+                lookDriver3,
+                lookDriver4,
+                lookDriver5,
+                lookDriver6,
+                lookDriver7,
+                lookDriver8,
+                lookDriver9,
+                lookDriver10,
+                lookDriver11,
+                lookDriver12,
+                lookDriver13,
+                lookDriver14,
+                lookDriver15,
+                lookDriver16,
+                lookDriver17,
+                lookDriver18,
+                lookDriver19,
+                lookDriver20,
+                lookDriver21,
+                lookDriver22,
+                lookDriver23,
+                lookDriver24,
+                lookDriver25,
+                lookDriver26,
+                lookDriver27,
+                lookGunlugger1,
+                lookGunlugger2,
+                lookGunlugger3,
+                lookGunlugger4,
+                lookGunlugger5,
+                lookGunlugger6,
+                lookGunlugger7,
+                lookGunlugger8,
+                lookGunlugger9,
+                lookGunlugger10,
+                lookGunlugger11,
+                lookGunlugger12,
+                lookGunlugger13,
+                lookGunlugger14,
+                lookGunlugger15,
+                lookGunlugger16,
+                lookGunlugger17,
+                lookGunlugger18,
+                lookGunlugger19,
+                lookGunlugger20,
+                lookGunlugger21,
+                lookGunlugger22,
+                lookGunlugger23,
+                lookGunlugger24,
+                lookGunlugger25,
+                lookGunlugger26,
+                lookHardHolder1,
+                lookHardHolder2,
+                lookHardHolder3,
+                lookHardHolder4,
+                lookHardHolder5,
+                lookHardHolder6,
+                lookHardHolder7,
+                lookHardHolder8,
+                lookHardHolder9,
+                lookHardHolder10,
+                lookHardHolder11,
+                lookHardHolder12,
+                lookHardHolder13,
+                lookHardHolder14,
+                lookHardHolder15,
+                lookHardHolder16,
+                lookHardHolder17,
+                lookHardHolder18,
+                lookHardHolder19,
+                lookHardHolder20,
+                lookHardHolder21,
+                lookHardHolder22,
+                lookHardHolder23,
+                lookHardHolder24,
+                lookHardHolder25,
+                lookHardHolder26,
+                lookHardHolder27,
+                lookHocus1,
+                lookHocus2,
+                lookHocus3,
+                lookHocus4,
+                lookHocus5,
+                lookHocus6,
+                lookHocus7,
+                lookHocus8,
+                lookHocus9,
+                lookHocus10,
+                lookHocus11,
+                lookHocus12,
+                lookHocus13,
+                lookHocus14,
+                lookHocus15,
+                lookHocus16,
+                lookHocus17,
+                lookHocus18,
+                lookHocus19,
+                lookHocus20,
+                lookHocus21,
+                lookHocus22,
+                lookHocus23,
+                lookHocus24,
+                lookHocus25,
+                lookHocus26,
+                lookHocus27,
+                lookHocus28,
+                lookMaestroD1,
+                lookMaestroD2,
+                lookMaestroD3,
+                lookMaestroD4,
+                lookMaestroD5,
+                lookMaestroD6,
+                lookMaestroD7,
+                lookMaestroD8,
+                lookMaestroD9,
+                lookMaestroD10,
+                lookMaestroD11,
+                lookMaestroD12,
+                lookMaestroD13,
+                lookMaestroD14,
+                lookMaestroD15,
+                lookMaestroD16,
+                lookMaestroD17,
+                lookMaestroD18,
+                lookMaestroD19,
+                lookMaestroD20,
+                lookMaestroD21,
+                lookMaestroD22,
+                lookMaestroD23,
+                lookMaestroD24,
+                lookMaestroD25,
+                lookMaestroD26,
+                lookMaestroD27,
+                lookMaestroD28,
+                lookMaestroD29,
+                lookSavvyhead1,
+                lookSavvyhead2,
+                lookSavvyhead3,
+                lookSavvyhead4,
+                lookSavvyhead5,
+                lookSavvyhead6,
+                lookSavvyhead7,
+                lookSavvyhead8,
+                lookSavvyhead9,
+                lookSavvyhead10,
+                lookSavvyhead11,
+                lookSavvyhead12,
+                lookSavvyhead13,
+                lookSavvyhead14,
+                lookSavvyhead15,
+                lookSavvyhead16,
+                lookSavvyhead17,
+                lookSavvyhead18,
+                lookSavvyhead19,
+                lookSavvyhead20,
+                lookSavvyhead21,
+                lookSavvyhead22,
+                lookSavvyhead23,
+                lookSkinner1,
+                lookSkinner2,
+                lookSkinner3,
+                lookSkinner4,
+                lookSkinner5,
+                lookSkinner6,
+                lookSkinner7,
+                lookSkinner8,
+                lookSkinner9,
+                lookSkinner10,
+                lookSkinner11,
+                lookSkinner12,
+                lookSkinner13,
+                lookSkinner14,
+                lookSkinner15,
+                lookSkinner16,
+                lookSkinner17,
+                lookSkinner18,
+                lookSkinner19,
+                lookSkinner20,
+                lookSkinner21,
+                lookSkinner22,
+                lookSkinner23,
+                lookSkinner24,
+                lookSkinner25,
+                lookSkinner26,
+                lookSkinner27,
+                lookSkinner28,
+                lookSkinner29
+        ));
 
-        lookService.saveAll(List.of(angel1, angel2, angel3, angel4, angel5, angel6, angel7, angel8, angel9,
-                angel10, angel11, angel12, angel13, angel14, angel15, angel16, angel17, angel18, angel19,
-                angel20, angel21, angel22, angel23, angel24, angel25, angel26));
 
-        /* ----------------------------- BATTLEBABE LOOKS --------------------------------- */
-        Look battlebabe1 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.GENDER).look("man").build();
-        Look battlebabe2 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.GENDER).look("woman").build();
-        Look battlebabe3 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.GENDER).look("ambiguous").build();
-        Look battlebabe4 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.GENDER).look("transgressing").build();
-        Look battlebabe5 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.CLOTHES).look("formal wear").build();
-        Look battlebabe6 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.CLOTHES).look("display wear").build();
-        Look battlebabe7 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.CLOTHES).look("luxe wear").build();
-        Look battlebabe8 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.CLOTHES).look("casual wear").build();
-        Look battlebabe9 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.CLOTHES).look("showy armor").build();
-        Look battlebabe10 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.FACE).look("smooth face").build();
-        Look battlebabe11 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.FACE).look("sweet face").build();
-        Look battlebabe12 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.FACE).look("handsome face").build();
-        Look battlebabe13 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.FACE).look("sharp face").build();
-        Look battlebabe14 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.FACE).look("girlish face").build();
-        Look battlebabe15 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.FACE).look("boyish face").build();
-        Look battlebabe16 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.FACE).look("striking face").build();
-        Look battlebabe17 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.EYES).look("calculating eyes").build();
-        Look battlebabe18 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.EYES).look("merciless eyes").build();
-        Look battlebabe19 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.EYES).look("frosty eyes").build();
-        Look battlebabe20 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.EYES).look("arresting eyes").build();
-        Look battlebabe21 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.EYES).look("indifferent eyes").build();
-        Look battlebabe22 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.BODY).look("sweet body").build();
-        Look battlebabe23 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.BODY).look("slim body").build();
-        Look battlebabe24 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.BODY).look("gorgeous body").build();
-        Look battlebabe25 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.BODY).look("muscular body").build();
-        Look battlebabe26 = Look.builder().playbookType(PlaybookType.BATTLEBABE).category(LookType.BODY).look("angular body").build();
-
-        lookService.saveAll(List.of(battlebabe1, battlebabe2, battlebabe3, battlebabe4, battlebabe5, battlebabe6,
-                battlebabe7, battlebabe8, battlebabe9, battlebabe10, battlebabe11, battlebabe12, battlebabe13,
-                battlebabe14, battlebabe15, battlebabe16, battlebabe17, battlebabe18, battlebabe19, battlebabe20,
-                battlebabe21, battlebabe22, battlebabe23, battlebabe24, battlebabe25, battlebabe26));
-
-        /* ----------------------------- BRAINER LOOKS --------------------------------- */
-        Look brainer1 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.GENDER).look("man").build();
-        Look brainer2 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.GENDER).look("woman").build();
-        Look brainer3 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.GENDER).look("ambiguous").build();
-        Look brainer4 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.GENDER).look("transgressing").build();
-        Look brainer5 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.GENDER).look("concealed").build();
-        Look brainer6 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.CLOTHES).look("high formal wear").build();
-        Look brainer7 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.CLOTHES).look("clinical wear").build();
-        Look brainer8 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.CLOTHES).look("fetish-bondage wear").build();
-        Look brainer9 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.CLOTHES).look("environmental wear improper to the local environment").build();
-        Look brainer10 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.FACE).look("scarred face").build();
-        Look brainer11 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.FACE).look("smooth face").build();
-        Look brainer12 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.FACE).look("pale face").build();
-        Look brainer13 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.FACE).look("bony face").build();
-        Look brainer14 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.FACE).look("plump moist face").build();
-        Look brainer15 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.FACE).look("sweet face").build();
-        Look brainer16 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.EYES).look("soft eyes").build();
-        Look brainer17 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.EYES).look("dead eyes").build();
-        Look brainer18 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.EYES).look("deep eyes").build();
-        Look brainer19 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.EYES).look("caring eyes").build();
-        Look brainer20 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.EYES).look("pale eyes").build();
-        Look brainer21 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.EYES).look("ruined eyes").build();
-        Look brainer22 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.EYES).look("wet eyes").build();
-        Look brainer23 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.BODY).look("awkward angular body").build();
-        Look brainer24 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.BODY).look("soft body").build();
-        Look brainer25 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.BODY).look("slight body").build();
-        Look brainer26 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.BODY).look("crippled body").build();
-        Look brainer27 = Look.builder().playbookType(PlaybookType.BRAINER).category(LookType.BODY).look("fat body").build();
-
-        lookService.saveAll(List.of(brainer1, brainer2, brainer3, brainer4, brainer5, brainer6, brainer7, brainer8,
-                brainer9, brainer10, brainer11, brainer12, brainer13, brainer14, brainer15, brainer16, brainer17,
-                brainer18, brainer19, brainer20, brainer21, brainer22, brainer23, brainer24, brainer25, brainer26,
-                brainer27));
-
-        /* ----------------------------- CHOPPER LOOKS --------------------------------- */
-        Look chopper1 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("man").build();
-        Look chopper2 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("woman").build();
-        Look chopper3 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("ambiguous").build();
-        Look chopper4 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.GENDER).look("transgressing").build();
-        Look chopper5 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("combat biker wear").build();
-        Look chopper6 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("showy biker wear").build();
-        Look chopper7 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("scrounge biker wear").build();
-        Look chopper8 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.CLOTHES).look("S&M biker wear").build();
-        Look chopper9 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("weathered face").build();
-        Look chopper10 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("strong face").build();
-        Look chopper11 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("rugged face").build();
-        Look chopper12 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("narrow face").build();
-        Look chopper13 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.FACE).look("busted face").build();
-        Look chopper14 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("narrow eyes").build();
-        Look chopper15 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("scorched eyes").build();
-        Look chopper16 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("calculating eyes").build();
-        Look chopper17 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("weary eyes").build();
-        Look chopper18 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.EYES).look("kind eyes").build();
-        Look chopper19 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("squat body").build();
-        Look chopper20 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("rangy body").build();
-        Look chopper21 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("wiry body").build();
-        Look chopper22 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("sturdy body").build();
-        Look chopper23 = Look.builder().playbookType(PlaybookType.CHOPPER).category(LookType.BODY).look("fat body").build();
-
-        lookService.saveAll(List.of(chopper1, chopper2, chopper3, chopper4, chopper5, chopper6, chopper7, chopper8,
-                chopper9, chopper10, chopper11, chopper12, chopper13, chopper14, chopper15, chopper16, chopper17,
-                chopper18, chopper19, chopper20, chopper21, chopper22, chopper23));
-
-        /* ----------------------------- DRIVER LOOKS --------------------------------- */
-        Look driver1 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("man").build();
-        Look driver2 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("woman").build();
-        Look driver3 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("ambiguous").build();
-        Look driver4 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.GENDER).look("transgressing").build();
-        Look driver5 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("vintage wear").build();
-        Look driver6 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("casual wear").build();
-        Look driver7 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("utility wear").build();
-        Look driver8 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("leather wear").build();
-        Look driver9 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.CLOTHES).look("showy scrounge wear").build();
-        Look driver10 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("handsome face").build();
-        Look driver11 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("gorgeous face").build();
-        Look driver12 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("stern face").build();
-        Look driver13 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("fine-boned face").build();
-        Look driver14 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("worn face").build();
-        Look driver15 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.FACE).look("crooked face").build();
-        Look driver16 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("cool eyes").build();
-        Look driver17 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("hooded eyes").build();
-        Look driver18 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("hard eyes").build();
-        Look driver19 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("sad eyes").build();
-        Look driver20 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("cold eyes").build();
-        Look driver21 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.EYES).look("pale eyes").build();
-        Look driver22 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("slim body").build();
-        Look driver23 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("pudgy body").build();
-        Look driver24 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("stocky body").build();
-        Look driver25 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("solid body").build();
-        Look driver26 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("tall body").build();
-        Look driver27 = Look.builder().playbookType(PlaybookType.DRIVER).category(LookType.BODY).look("strong body").build();
-
-        lookService.saveAll(List.of(driver1, driver2, driver3, driver4, driver5, driver6, driver7, driver8, driver9,
-                driver10, driver11, driver12, driver13, driver14, driver15, driver16, driver17, driver18, driver19,
-                driver20, driver21, driver22, driver23, driver24, driver25, driver26, driver26, driver27));
-
-        /* ----------------------------- GUNLUGGER LOOKS --------------------------------- */
-        Look gunlugger1 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.GENDER).look("man").build();
-        Look gunlugger2 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.GENDER).look("woman").build();
-        Look gunlugger3 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.GENDER).look("ambiguous").build();
-        Look gunlugger4 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.GENDER).look("transgressing").build();
-        Look gunlugger5 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.GENDER).look("concealed").build();
-        Look gunlugger6 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.CLOTHES).look("scrounged mismatched armor").build();
-        Look gunlugger7 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.CLOTHES).look("battered old armor").build();
-        Look gunlugger8 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.CLOTHES).look("custom homemade armor").build();
-        Look gunlugger10 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.FACE).look("scarred face").build();
-        Look gunlugger11 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.FACE).look("blunt face").build();
-        Look gunlugger12 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.FACE).look("bony face").build();
-        Look gunlugger13 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.FACE).look("dull face").build();
-        Look gunlugger14 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.FACE).look("worn face").build();
-        Look gunlugger15 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.FACE).look("blasted face").build();
-        Look gunlugger16 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.EYES).look("mad eyes").build();
-        Look gunlugger17 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.EYES).look("raging eyes").build();
-        Look gunlugger18 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.EYES).look("wise eyes").build();
-        Look gunlugger19 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.EYES).look("sad eyes").build();
-        Look gunlugger20 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.EYES).look("little piggy eyes").build();
-        Look gunlugger21 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.EYES).look("cunning eyes").build();
-        Look gunlugger22 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("hard body").build();
-        Look gunlugger23 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("stocky body").build();
-        Look gunlugger24 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("stringy body").build();
-        Look gunlugger25 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("battered body").build();
-        Look gunlugger26 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("overbuilt body").build();
-        Look gunlugger27 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("compact body").build();
-        Look gunlugger9 = Look.builder().playbookType(PlaybookType.GUNLUGGER).category(LookType.BODY).look("huge body").build();
-
-        lookService.saveAll(List.of(gunlugger1, gunlugger2, gunlugger3, gunlugger4, gunlugger5, gunlugger6, gunlugger7,
-                gunlugger8, gunlugger9, gunlugger10, gunlugger11, gunlugger12, gunlugger13, gunlugger14, gunlugger15,
-                gunlugger16, gunlugger17, gunlugger18, gunlugger19, gunlugger20, gunlugger21, gunlugger22, gunlugger23,
-                gunlugger24, gunlugger25, gunlugger26, gunlugger27));
-
-        /* ----------------------------- HARDHOLDER LOOKS --------------------------------- */
-        Look hardHolder1 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.GENDER).look("man").build();
-        Look hardHolder2 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.GENDER).look("woman").build();
-        Look hardHolder3 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.GENDER).look("ambiguous").build();
-        Look hardHolder4 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.GENDER).look("transgressing").build();
-        Look hardHolder5 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.CLOTHES).look("luxe wear").build();
-        Look hardHolder6 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.CLOTHES).look("display wear").build();
-        Look hardHolder7 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.CLOTHES).look("fetish wear").build();
-        Look hardHolder8 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.CLOTHES).look("casual wear").build();
-        Look hardHolder9 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.CLOTHES).look("junta wear").build();
-        Look hardHolder10 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.FACE).look("strong face").build();
-        Look hardHolder11 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.FACE).look("stern face").build();
-        Look hardHolder12 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.FACE).look("cruel face").build();
-        Look hardHolder13 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.FACE).look("soft face").build();
-        Look hardHolder14 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.FACE).look("aristocratic face").build();
-        Look hardHolder15 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.FACE).look("gorgeous").build();
-        Look hardHolder16 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.EYES).look("cool eyes").build();
-        Look hardHolder17 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.EYES).look("commanding eyes").build();
-        Look hardHolder18 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.EYES).look("languid eyes").build();
-        Look hardHolder19 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.EYES).look("sharp eyes").build();
-        Look hardHolder20 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.EYES).look("forgiving eyes").build();
-        Look hardHolder21 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.EYES).look("generous eyes").build();
-        Look hardHolder22 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("massive body").build();
-        Look hardHolder23 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("soft body").build();
-        Look hardHolder24 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("wiry body").build();
-        Look hardHolder25 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("fat body").build();
-        Look hardHolder26 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("tall spare body").build();
-        Look hardHolder27 = Look.builder().playbookType(PlaybookType.HARDHOLDER).category(LookType.BODY).look("sensual body").build();
-
-        lookService.saveAll(List.of(hardHolder1, hardHolder2, hardHolder3, hardHolder4, hardHolder5, hardHolder6,
-                hardHolder7, hardHolder8, hardHolder9, hardHolder10, hardHolder11, hardHolder12, hardHolder13,
-                hardHolder14, hardHolder15, hardHolder16, hardHolder17, hardHolder18, hardHolder19, hardHolder20,
-                hardHolder21, hardHolder22, hardHolder23, hardHolder24, hardHolder25, hardHolder26, hardHolder27));
-
-        /* ----------------------------- HOCUS LOOKS --------------------------------- */
-        Look hocus1 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.GENDER).look("man").build();
-        Look hocus2 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.GENDER).look("woman").build();
-        Look hocus3 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.GENDER).look("ambiguous").build();
-        Look hocus4 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.GENDER).look("transgressing").build();
-        Look hocus5 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.GENDER).look("concealed").build();
-        Look hocus6 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.CLOTHES).look("tattered vestments").build();
-        Look hocus7 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.CLOTHES).look("formal vestments").build();
-        Look hocus8 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.CLOTHES).look("scrounge vestments").build();
-        Look hocus9 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.CLOTHES).look("fetish vestments").build();
-        Look hocus10 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.CLOTHES).look("tech vestments").build();
-        Look hocus11 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.FACE).look("innocent face").build();
-        Look hocus12 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.FACE).look("dirty face").build();
-        Look hocus13 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.FACE).look("determined face").build();
-        Look hocus14 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.FACE).look("open face").build();
-        Look hocus15 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.FACE).look("severe face").build();
-        Look hocus16 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.FACE).look("ascetic face").build();
-        Look hocus17 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("mesmerizing eyes").build();
-        Look hocus18 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("dazed eyes").build();
-        Look hocus19 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("forgiving eyes").build();
-        Look hocus20 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("suspicious eyes").build();
-        Look hocus21 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("clear eyes").build();
-        Look hocus22 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("burning eyes").build();
-        Look hocus23 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.EYES).look("bony body").build();
-        Look hocus24 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.BODY).look("lanky body").build();
-        Look hocus25 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.BODY).look("soft body").build();
-        Look hocus26 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.BODY).look("fit body").build();
-        Look hocus27 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.BODY).look("graceful body").build();
-        Look hocus28 = Look.builder().playbookType(PlaybookType.HOCUS).category(LookType.BODY).look("fat body").build();
-
-        lookService.saveAll(List.of(hocus1, hocus2, hocus3, hocus4, hocus5, hocus6, hocus7, hocus8, hocus9, hocus10,
-                hocus11, hocus12, hocus13, hocus14, hocus15, hocus16, hocus17, hocus18, hocus19, hocus20, hocus21,
-                hocus22, hocus23, hocus24, hocus25, hocus26, hocus27, hocus28));
-
-        /* ----------------------------- MAESTRO D' LOOKS --------------------------------- */
-        Look maestroD1 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("man").build();
-        Look maestroD2 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("woman").build();
-        Look maestroD3 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("ambiguous").build();
-        Look maestroD4 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.GENDER).look("transgressing").build();
-        Look maestroD5 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("casual wear").build();
-        Look maestroD30 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("display wear").build();
-        Look maestroD6 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("vintage wear").build();
-        Look maestroD7 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("butcher wear").build();
-        Look maestroD8 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("fetish wear").build();
-        Look maestroD9 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.CLOTHES).look("immaculate whites").build();
-        Look maestroD10 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("pinched face").build();
-        Look maestroD11 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("boyish face").build();
-        Look maestroD12 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("pretty face").build();
-        Look maestroD13 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("expressive face").build();
-        Look maestroD14 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("full face").build();
-        Look maestroD15 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("tattooed face").build();
-        Look maestroD16 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("porcelain face").build();
-        Look maestroD17 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.FACE).look("scarred face").build();
-        Look maestroD18 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("cool eyes").build();
-        Look maestroD19 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("bright eyes").build();
-        Look maestroD20 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("inquisitive eyes").build();
-        Look maestroD21 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("frank eyes").build();
-        Look maestroD22 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("mischievous eyes").build();
-        Look maestroD23 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.EYES).look("one eye").build();
-        Look maestroD24 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("fat body").build();
-        Look maestroD25 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("restless body").build();
-        Look maestroD26 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("stubby body").build();
-        Look maestroD27 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("curvy body").build();
-        Look maestroD28 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("unusual body").build();
-        Look maestroD29 = Look.builder().playbookType(PlaybookType.MAESTRO_D).category(LookType.BODY).look("lean body").build();
-
-        lookService.saveAll(List.of(maestroD1, maestroD2, maestroD3, maestroD4, maestroD5, maestroD6, maestroD7,
-                maestroD8, maestroD9, maestroD10, maestroD11, maestroD12, maestroD13, maestroD14, maestroD15,
-                maestroD16, maestroD17, maestroD18, maestroD19, maestroD20, maestroD21, maestroD22, maestroD23,
-                maestroD24, maestroD25, maestroD26, maestroD27, maestroD28, maestroD29, maestroD30));
-
-        /* ----------------------------- SAVVYHEAD LOOKS --------------------------------- */
-        Look savvyhead1 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.GENDER).look("man").build();
-        Look savvyhead2 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.GENDER).look("woman").build();
-        Look savvyhead3 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.GENDER).look("ambiguous").build();
-        Look savvyhead4 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.GENDER).look("transgressing").build();
-        Look savvyhead5 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.CLOTHES).look("utility wear plus tech").build();
-        Look savvyhead6 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.CLOTHES).look("scrounge wear plus tech").build();
-        Look savvyhead7 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.CLOTHES).look("vintage wear plus tech").build();
-        Look savvyhead8 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.CLOTHES).look("tech wear").build();
-        Look savvyhead9 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.FACE).look("plain face").build();
-        Look savvyhead10 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.FACE).look("pretty face").build();
-        Look savvyhead11 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.FACE).look("open face").build();
-        Look savvyhead12 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.FACE).look("expressive face").build();
-        Look savvyhead13 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.EYES).look("squinty eyes").build();
-        Look savvyhead14 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.EYES).look("calm eyes").build();
-        Look savvyhead15 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.EYES).look("dancing eyes").build();
-        Look savvyhead16 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.EYES).look("quick eyes").build();
-        Look savvyhead17 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.EYES).look("appraising eyes").build();
-        Look savvyhead18 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("fat body").build();
-        Look savvyhead19 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("slight body").build();
-        Look savvyhead20 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("hunched body").build();
-        Look savvyhead21 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("wiry body").build();
-        Look savvyhead22 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("stumpy body").build();
-        Look savvyhead23 = Look.builder().playbookType(PlaybookType.SAVVYHEAD).category(LookType.BODY).look("strange body").build();
-
-        lookService.saveAll(List.of(savvyhead1, savvyhead2, savvyhead3, savvyhead4, savvyhead5, savvyhead6, savvyhead7,
-                savvyhead8, savvyhead9, savvyhead10, savvyhead11, savvyhead12, savvyhead13, savvyhead14, savvyhead15,
-                savvyhead16, savvyhead17, savvyhead18, savvyhead19, savvyhead20, savvyhead21, savvyhead22, savvyhead23));
-
-        /* ----------------------------- SKINNER LOOKS --------------------------------- */
-        Look skinner1 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("man").build();
-        Look skinner2 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("woman").build();
-        Look skinner3 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("ambiguous").build();
-        Look skinner4 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("transgressing").build();
-        Look skinner5 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.GENDER).look("androgyne").build();
-        Look skinner6 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("display wear").build();
-        Look skinner7 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("showy scrounge wear").build();
-        Look skinner8 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("luxe wear").build();
-        Look skinner9 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("fetish wear").build();
-        Look skinner10 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.CLOTHES).look("casual wear").build();
-        Look skinner11 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("striking face").build();
-        Look skinner12 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("sweet face").build();
-        Look skinner13 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("strange face").build();
-        Look skinner14 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("cute face").build();
-        Look skinner15 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.FACE).look("beautiful face").build();
-        Look skinner16 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("laughing eyes").build();
-        Look skinner17 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("mocking eyes").build();
-        Look skinner18 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("dark eyes").build();
-        Look skinner19 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("shadowed eyes").build();
-        Look skinner20 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("troubled eyes").build();
-        Look skinner21 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("arresting eyes").build();
-        Look skinner22 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("bright eyes").build();
-        Look skinner23 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.EYES).look("cool eyes").build();
-        Look skinner24 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("slim body").build();
-        Look skinner25 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("toned body").build();
-        Look skinner26 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("fat body").build();
-        Look skinner27 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("unnatural body").build();
-        Look skinner28 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("young body").build();
-        Look skinner29 = Look.builder().playbookType(PlaybookType.SKINNER).category(LookType.BODY).look("lush body").build();
-
-        lookService.saveAll(List.of(skinner1, skinner2, skinner3, skinner4, skinner5, skinner6, skinner7, skinner8,
-                skinner9, skinner10, skinner11, skinner12, skinner13, skinner14, skinner15, skinner16, skinner17,
-                skinner18, skinner19, skinner20, skinner21, skinner22, skinner23, skinner24, skinner25, skinner26,
-                skinner27, skinner28, skinner29));
     }
 
     public void loadStatsOptions() {

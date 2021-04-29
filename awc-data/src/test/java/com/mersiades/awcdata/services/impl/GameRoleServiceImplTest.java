@@ -23,6 +23,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mersiades.awccontent.content.LooksContent.lookAngel9;
+import static com.mersiades.awccontent.content.LooksContent.lookBattlebabe1;
 import static com.mersiades.awccontent.content.MovesContent.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -298,22 +300,18 @@ class GameRoleServiceImplTest {
     @Test
     void shouldSetNewCharacterLook() {
         // Given
-        Look mockLook = Look.builder()
-                .id("mock-look-id")
-                .look("handsome face")
-                .category(LookType.FACE)
-                .build();
+
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
 
         // When
-        Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook);
-        Optional<Look> lookOptional = returnedCharacter.getLookByCategory(LookType.FACE);
+        Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), lookBattlebabe1);
+        Optional<Look> lookOptional = returnedCharacter.getLookByCategory(LookType.GENDER);
 
         // Then
         assertTrue(lookOptional.isPresent());
         Look savedLook = lookOptional.get();
-        assertEquals(mockLook, savedLook);
+        assertEquals(lookBattlebabe1, savedLook);
         verifyMockServices();
     }
 
@@ -321,19 +319,17 @@ class GameRoleServiceImplTest {
     void shouldUpdateCharacterLook() {
         // Given
         Look mockLook = Look.builder()
-                .id("mock-look-id")
+                .id(lookAngel9.getId())
                 .look("ugly face")
                 .category(LookType.FACE)
                 .build();
-        Look existingLook = Look.builder().id("mock-look-id").category(LookType.FACE).look("handsome face").build();
-        mockCharacter.getLooks().add(existingLook);
+        mockCharacter.getLooks().add(lookAngel9);
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService.setCharacterLook(MOCK_GAMEROLE_ID, mockCharacter.getId(), mockLook);
 
-        System.out.println("returnedCharacter = " + returnedCharacter);
         Optional<Look> lookOptional = returnedCharacter.getLookByCategory(LookType.FACE);
 
         // Then
