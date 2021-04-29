@@ -53,6 +53,16 @@ public class Character {
     // Min 0, max 16
     private int allowedImprovements;
 
+    // The number of playbook moves the Character can have
+    // Does not include default playbook moves
+    // Usually equal to PlaybookCreator.getMoveChoiceCount(),
+    // but can be increased by ADD_CHARACTER_MOVE improvements
+    private int allowedPlaybookMoves;
+
+    // The number of moves the character can have from other playbooks.
+    // Usually 0, but can be increased by ADD_OTHER_PB_MOVE improvements
+    private int allowedOtherPlaybookMoves;
+
     @Builder.Default
     private List<BattleVehicle> battleVehicles = new ArrayList<>();
 

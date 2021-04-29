@@ -165,6 +165,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .hasPlusOneForward(false)
                 .barter(-1)
                 .experience(0)
+                .allowedOtherPlaybookMoves(0)
                 .harm(harm).build();
         characterService.save(newCharacter);
         assert gameRole != null;
@@ -176,6 +177,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character setCharacterPlaybook(String gameRoleId, String characterId, PlaybookType playbookType) {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
+        PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(playbookType);
         assert gameRole != null;
         Character character = gameRole.getCharacters().stream()
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
@@ -191,6 +193,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setBattleVehicles(new ArrayList<>());
         character.setHasCompletedCharacterCreation(false);
         character.setExperience(0);
+        character.setAllowedOtherPlaybookMoves(0);
 
         // Set default Vehicle and BattleVehicle counts by PlaybookType
         if (List.of(PlaybookType.DRIVER, PlaybookType.CHOPPER).contains(playbookType)) {
@@ -206,6 +209,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
         // Set new playbook
         character.setPlaybook(playbookType);
+        character.setAllowedPlaybookMoves(playbookCreator.getMoveChoiceCount());
         characterService.save(character);
         gameRoleRepository.save(gameRole);
         return character;

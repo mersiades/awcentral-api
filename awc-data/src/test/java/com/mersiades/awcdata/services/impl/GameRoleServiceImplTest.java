@@ -92,6 +92,11 @@ class GameRoleServiceImplTest {
             .stat(null)
             .build();
 
+    PlaybookCreator mockPlaybookCreatorAngel = PlaybookCreator.builder()
+            .id("mock-angel-playbook-creator-id")
+            .moveChoiceCount(2)
+            .build();
+
 
     @BeforeEach
     public void setUp() {
@@ -262,6 +267,12 @@ class GameRoleServiceImplTest {
 
         // Then
         assertNotNull(returnedCharacter, "Null Character returned");
+        assertFalse(returnedCharacter.getHasCompletedCharacterCreation());
+        assertFalse(returnedCharacter.getHasPlusOneForward());
+        assertEquals(-1, returnedCharacter.getBarter());
+        assertEquals(0, returnedCharacter.getExperience());
+        assertEquals(0, returnedCharacter.getAllowedOtherPlaybookMoves());
+        assertEquals(0, returnedCharacter.getHarm().getValue());
         verifyMockServices();
     }
 
@@ -270,13 +281,16 @@ class GameRoleServiceImplTest {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
+        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(mockPlaybookCreatorAngel);
 
         // When
         Character returnedCharacter = gameRoleService.setCharacterPlaybook(MOCK_GAMEROLE_ID, mockCharacter.getId(), PlaybookType.BATTLEBABE);
 
         // Then
         assertEquals(PlaybookType.BATTLEBABE, returnedCharacter.getPlaybook());
+        assertEquals(mockPlaybookCreatorAngel.getMoveChoiceCount(), returnedCharacter.getAllowedPlaybookMoves());
         verifyMockServices();
+        verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
     }
 
     @Test

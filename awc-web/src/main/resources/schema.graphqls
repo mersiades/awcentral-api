@@ -640,6 +640,9 @@ type Character {
     battleVehicleCount: Int
     battleVehicles: [BattleVehicle]
     experience: Int!
+    allowedImprovements: Int!
+    allowedPlaybookMoves: Int!
+    allowedOtherPlaybookMoves: Int!
 }
 
 type GameRole {
