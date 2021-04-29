@@ -20,6 +20,7 @@ import static com.mersiades.awccontent.content.LooksContent.*;
 import static com.mersiades.awccontent.content.MovesContent.sufferVHarm;
 import static com.mersiades.awccontent.content.MovesContent.*;
 import static com.mersiades.awccontent.content.NamesContent.*;
+import static com.mersiades.awccontent.content.StatOptionsContent.*;
 
 @Component
 @Order(value = 0)
@@ -946,87 +947,52 @@ public class GameDataLoader implements CommandLineRunner {
 
     public void loadStatsOptions() {
         System.out.println("|| --- Loading playbook stats options --- ||");
-        /* ----------------------------- ANGEL STATS OPTIONS --------------------------------- */
-        StatsOption angel1 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(1).HARD(0).HOT(1).SHARP(2).WEIRD(-1).build(); // 3
-        StatsOption angel2 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(1).HARD(1).HOT(0).SHARP(2).WEIRD(-1).build(); // 3
-        StatsOption angel3 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(-1).HARD(1).HOT(0).SHARP(2).WEIRD(1).build(); // 3
-        StatsOption angel4 = StatsOption.builder().playbookType(PlaybookType.ANGEL).COOL(2).HARD(0).HOT(-1).SHARP(2).WEIRD(-1).build(); // 2
-        statsOptionService.saveAll(List.of(angel1, angel2, angel3, angel4));
-
-        /* ----------------------------- BATTLEBABE STATS OPTIONS --------------------------------- */
-        StatsOption battlebabe1 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build(); // 4
-        StatsOption battlebabe2 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(-1).HOT(2).SHARP(0).WEIRD(-1).build(); // 3
-        StatsOption battlebabe3 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(-2).HOT(1).SHARP(1).WEIRD(1).build(); // 4
-        StatsOption battlebabe4 = StatsOption.builder().playbookType(PlaybookType.BATTLEBABE).COOL(3).HARD(0).HOT(1).SHARP(1).WEIRD(-1).build(); // 3
-        statsOptionService.saveAll(List.of(battlebabe1, battlebabe2, battlebabe3, battlebabe4));
-
-        /* ----------------------------- BRAINER STATS OPTIONS --------------------------------- */
-        StatsOption brainer1 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(1).HARD(1).HOT(-2).SHARP(1).WEIRD(2).build(); // 3
-        StatsOption brainer2 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(0).HARD(0).HOT(1).SHARP(0).WEIRD(2).build(); // 3
-        StatsOption brainer3 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(1).HARD(-2).HOT(-1).SHARP(2).WEIRD(2).build(); // 2
-        StatsOption brainer4 = StatsOption.builder().playbookType(PlaybookType.BRAINER).COOL(2).HARD(-1).HOT(-1).SHARP(0).WEIRD(2).build(); // 2
-        statsOptionService.saveAll(List.of(brainer1, brainer2, brainer3, brainer4));
-
-        /* ----------------------------- CHOPPER STATS OPTIONS --------------------------------- */
-        StatsOption chopper1 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(-1).SHARP(1).WEIRD(0).build(); // 3
-        StatsOption chopper2 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(1).SHARP(0).WEIRD(1).build(); // 4
-        StatsOption chopper3 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(1).HARD(2).HOT(0).SHARP(1).WEIRD(1).build(); // 5
-        StatsOption chopper4 = StatsOption.builder().playbookType(PlaybookType.CHOPPER).COOL(2).HARD(2).HOT(-1).SHARP(0).WEIRD(1).build(); // 4
-        statsOptionService.saveAll(List.of(chopper1, chopper2, chopper3, chopper4));
-
-        /* ----------------------------- DRIVER STATS OPTIONS --------------------------------- */
-        StatsOption driver1 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-1).HOT(1).SHARP(1).WEIRD(0).build(); // 3
-        StatsOption driver2 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(0).HOT(1).SHARP(1).WEIRD(-1).build(); // 3
-        StatsOption driver3 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(1).HOT(-1).SHARP(0).WEIRD(1).build(); // 3
-        StatsOption driver4 = StatsOption.builder().playbookType(PlaybookType.DRIVER).COOL(2).HARD(-2).HOT(0).SHARP(2).WEIRD(1).build(); // 3
-        statsOptionService.saveAll(List.of(driver1, driver2, driver3, driver4));
-
-        /* ----------------------------- GUNLUGGER STATS OPTIONS --------------------------------- */
-        StatsOption gunlugger1 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(1).HARD(2).HOT(-1).SHARP(1).WEIRD(0).build(); // 3
-        StatsOption gunlugger2 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(-1).HARD(2).HOT(-2).SHARP(1).WEIRD(2).build(); // 2
-        StatsOption gunlugger3 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(1).HARD(2).HOT(-2).SHARP(2).WEIRD(-1).build(); // 2
-        StatsOption gunlugger4 = StatsOption.builder().playbookType(PlaybookType.GUNLUGGER).COOL(2).HARD(2).HOT(-2).SHARP(0).WEIRD(0).build(); // 2
-        statsOptionService.saveAll(List.of(gunlugger1, gunlugger2, gunlugger3, gunlugger4));
-
-        /* ----------------------------- HARDHOLDER STATS OPTIONS --------------------------------- */
-        StatsOption hardHolder1 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(-1).HARD(2).HOT(1).SHARP(1).WEIRD(0).build(); // 3
-        StatsOption hardHolder2 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(1).HARD(2).HOT(1).SHARP(1).WEIRD(-2).build(); // 3
-        StatsOption hardHolder3 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(-2).HARD(2).HOT(0).SHARP(2).WEIRD(0).build(); // 2
-        StatsOption hardHolder4 = StatsOption.builder().playbookType(PlaybookType.HARDHOLDER).COOL(0).HARD(2).HOT(1).SHARP(-1).WEIRD(1).build(); // 3
-
-        statsOptionService.saveAll(List.of(hardHolder1, hardHolder2, hardHolder3, hardHolder4));
-
-        /* ----------------------------- HOCUS STATS OPTIONS --------------------------------- */
-        StatsOption hocus1 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(0).HARD(1).HOT(-1).SHARP(1).WEIRD(2).build(); // 3
-        StatsOption hocus2 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(1).HARD(-1).HOT(1).SHARP(0).WEIRD(2).build(); // 3
-        StatsOption hocus3 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(-1).HARD(1).HOT(0).SHARP(1).WEIRD(2).build(); // 3
-        StatsOption hocus4 = StatsOption.builder().playbookType(PlaybookType.HOCUS).COOL(1).HARD(0).HOT(1).SHARP(-1).WEIRD(2).build(); // 3
-
-        statsOptionService.saveAll(List.of(hocus1, hocus2, hocus3, hocus4));
-
-        /* ----------------------------- MAESTRO D' STATS OPTIONS --------------------------------- */
-        StatsOption maestroD1 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(1).HARD(-1).HOT(2).SHARP(0).WEIRD(1).build(); // 3
-        StatsOption maestroD2 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(0).HARD(1).HOT(2).SHARP(1).WEIRD(-1).build(); // 3
-        StatsOption maestroD3 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(-1).HARD(2).HOT(2).SHARP(0).WEIRD(-1).build(); // 2
-        StatsOption maestroD4 = StatsOption.builder().playbookType(PlaybookType.MAESTRO_D).COOL(0).HARD(0).HOT(2).SHARP(1).WEIRD(0).build(); // 3
-
-        statsOptionService.saveAll(List.of(maestroD1, maestroD2, maestroD3, maestroD4));
-
-        /* ----------------------------- SAVVYHEAD STATS OPTIONS --------------------------------- */
-        StatsOption savvyhead1 = StatsOption.builder().playbookType(PlaybookType.SAVVYHEAD).COOL(-1).HARD(0).HOT(1).SHARP(1).WEIRD(2).build(); // 3
-        StatsOption savvyhead2 = StatsOption.builder().playbookType(PlaybookType.SAVVYHEAD).COOL(0).HARD(-1).HOT(-1).SHARP(2).WEIRD(2).build(); // 2
-        StatsOption savvyhead3 = StatsOption.builder().playbookType(PlaybookType.SAVVYHEAD).COOL(1).HARD(-1).HOT(0).SHARP(1).WEIRD(2).build(); // 3
-        StatsOption savvyhead4 = StatsOption.builder().playbookType(PlaybookType.SAVVYHEAD).COOL(1).HARD(1).HOT(-1).SHARP(0).WEIRD(2).build(); // 3
-
-        statsOptionService.saveAll(List.of(savvyhead1, savvyhead2, savvyhead3, savvyhead4));
-
-        /* ----------------------------- SKINNER STATS OPTIONS --------------------------------- */
-        StatsOption skinner1 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(1).HARD(-1).HOT(2).SHARP(1).WEIRD(0).build(); // 3
-        StatsOption skinner2 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(0).HARD(0).HOT(2).SHARP(0).WEIRD(1).build(); // 3
-        StatsOption skinner3 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(-1).HARD(0).HOT(2).SHARP(2).WEIRD(-1).build(); // 2
-        StatsOption skinner4 = StatsOption.builder().playbookType(PlaybookType.SKINNER).COOL(1).HARD(1).HOT(2).SHARP(1).WEIRD(-2).build(); // 3
-
-        statsOptionService.saveAll(List.of(skinner1, skinner2, skinner3, skinner4));
+        statsOptionService.saveAll(List.of(
+                statsOptionAngel1,
+                statsOptionAngel2,
+                statsOptionAngel3,
+                statsOptionAngel4,
+                statsOptionBattlebabe1,
+                statsOptionBattlebabe2,
+                statsOptionBattlebabe3,
+                statsOptionBattlebabe4,
+                statsOptionBrainer1,
+                statsOptionBrainer2,
+                statsOptionBrainer3,
+                statsOptionBrainer4,
+                statsOptionChopper1,
+                statsOptionChopper2,
+                statsOptionChopper3,
+                statsOptionChopper4,
+                statsOptionDriver1,
+                statsOptionDriver2,
+                statsOptionDriver3,
+                statsOptionDriver4,
+                statsOptionGunlugger1,
+                statsOptionGunlugger2,
+                statsOptionGunlugger3,
+                statsOptionGunlugger4,
+                statsOptionHardHolder1,
+                statsOptionHardHolder2,
+                statsOptionHardHolder3,
+                statsOptionHardHolder4,
+                statsOptionHocus1,
+                statsOptionHocus2,
+                statsOptionHocus3,
+                statsOptionHocus4,
+                statsOptionMaestroD1,
+                statsOptionMaestroD2,
+                statsOptionMaestroD3,
+                statsOptionMaestroD4,
+                statsOptionSavvyhead1,
+                statsOptionSavvyhead2,
+                statsOptionSavvyhead3,
+                statsOptionSavvyhead4,
+                statsOptionSkinner1,
+                statsOptionSkinner2,
+                statsOptionSkinner3,
+                statsOptionSkinner4
+        ));
     }
 
     public void loadPlaybookCreators() {

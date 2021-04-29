@@ -26,6 +26,8 @@ import java.util.Optional;
 import static com.mersiades.awccontent.content.LooksContent.lookAngel9;
 import static com.mersiades.awccontent.content.LooksContent.lookBattlebabe1;
 import static com.mersiades.awccontent.content.MovesContent.*;
+import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel1;
+import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel2;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -63,8 +65,6 @@ class GameRoleServiceImplTest {
 
     Character mockCharacter;
 
-    StatsOption mockStatsOption;
-
     PlaybookCreator mockPlaybookCreatorAngel;
 
     AngelKit mockAngelKit;
@@ -83,15 +83,6 @@ class GameRoleServiceImplTest {
         mockUser.getGameRoles().add(mockGameRole);
         gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, statsOptionService, moveService, playbookCreatorService, statModifierService);
         mockGameRole2 = new GameRole();
-        mockStatsOption = StatsOption.builder()
-                .id("mock-statsoption-id")
-                .COOL(2)
-                .HARD(2)
-                .HOT(2)
-                .SHARP(2)
-                .WEIRD(2)
-                .playbookType(PlaybookType.ANGEL)
-                .build();
 
         mockPlaybookCreatorAngel = PlaybookCreator.builder()
                 .id("mock-angel-playbook-creator-id")
@@ -344,21 +335,21 @@ class GameRoleServiceImplTest {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
-        when(statsOptionService.findById(anyString())).thenReturn(mockStatsOption);
+        when(statsOptionService.findById(anyString())).thenReturn(statsOptionAngel1);
 
         // When
-        Character returnedCharacter = gameRoleService.setCharacterStats(mockGameRole.getId(), mockCharacter.getId(), mockStatsOption.getId());
+        Character returnedCharacter = gameRoleService.setCharacterStats(mockGameRole.getId(), mockCharacter.getId(), statsOptionAngel1.getId());
 
         // Then
-        assertEquals(mockStatsOption.getCOOL(), returnedCharacter.getStatsBlock().getStats().stream()
+        assertEquals(statsOptionAngel1.getCOOL(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.COOL)).findFirst().orElseThrow().getValue());
-        assertEquals(mockStatsOption.getHARD(), returnedCharacter.getStatsBlock().getStats().stream()
+        assertEquals(statsOptionAngel1.getHARD(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.HARD)).findFirst().orElseThrow().getValue());
-        assertEquals(mockStatsOption.getHOT(), returnedCharacter.getStatsBlock().getStats().stream()
+        assertEquals(statsOptionAngel1.getHOT(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.HOT)).findFirst().orElseThrow().getValue());
-        assertEquals(mockStatsOption.getSHARP(), returnedCharacter.getStatsBlock().getStats().stream()
+        assertEquals(statsOptionAngel1.getSHARP(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue());
-        assertEquals(mockStatsOption.getWEIRD(), returnedCharacter.getStatsBlock().getStats().stream()
+        assertEquals(statsOptionAngel1.getWEIRD(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.WEIRD)).findFirst().orElseThrow().getValue());
 
         verify(statsOptionService, times(1)).findById(anyString());
@@ -385,22 +376,22 @@ class GameRoleServiceImplTest {
         mockCharacter.setStatsBlock(statsBlock);
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
-        when(statsOptionService.findById(anyString())).thenReturn(mockStatsOption);
+        when(statsOptionService.findById(anyString())).thenReturn(statsOptionAngel2);
 
         // When
         Character returnedCharacter = gameRoleService
-                .setCharacterStats(mockGameRole.getId(), mockCharacter.getId(), mockStatsOption.getId());
+                .setCharacterStats(mockGameRole.getId(), mockCharacter.getId(), statsOptionAngel2.getId());
 
         // Then
-        assertEquals(mockStatsOption.getCOOL(), returnedCharacter.getStatsBlock().getStats().stream()
+        assertEquals(statsOptionAngel2.getCOOL(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.COOL)).findFirst().orElseThrow().getValue());
-        assertEquals(mockStatsOption.getHARD(), returnedCharacter.getStatsBlock().getStats().stream()
+        assertEquals(statsOptionAngel2.getHARD(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.HARD)).findFirst().orElseThrow().getValue());
-        assertEquals(mockStatsOption.getHOT(), returnedCharacter.getStatsBlock().getStats().stream()
+        assertEquals(statsOptionAngel2.getHOT(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.HOT)).findFirst().orElseThrow().getValue());
-        assertEquals(mockStatsOption.getSHARP(), returnedCharacter.getStatsBlock().getStats().stream()
+        assertEquals(statsOptionAngel2.getSHARP(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue());
-        assertEquals(mockStatsOption.getWEIRD(), returnedCharacter.getStatsBlock().getStats().stream()
+        assertEquals(statsOptionAngel2.getWEIRD(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.WEIRD)).findFirst().orElseThrow().getValue());
 
         verify(statsOptionService, times(1)).findById(anyString());
