@@ -61,7 +61,6 @@ public class GameRepositoryTest {
     @Test
     public void shouldFindByGameRoles() {
         Game returnedGame = gameRepository.findByGameRoles(mockGameRole1);
-        System.out.println("returnedGame = " + returnedGame);
 //        StepVerifier.create(gameRepository.findByGameRoles(mockGameRole1))
 //                .expectSubscription()
 //                .expectNextCount(1)

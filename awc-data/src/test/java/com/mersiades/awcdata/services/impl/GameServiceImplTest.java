@@ -500,7 +500,6 @@ class GameServiceImplTest {
 
         // Then
         assert returnedGame != null;
-        System.out.println("returnedGame = " + returnedGame);
     }
 
     // ---------------------------------------------- MC stuff -------------------------------------------- //
