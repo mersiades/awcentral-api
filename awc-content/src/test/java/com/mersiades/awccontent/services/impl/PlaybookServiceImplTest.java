@@ -12,28 +12,21 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mersiades.awccontent.content.PlaybooksContent.angel;
+import static com.mersiades.awccontent.content.PlaybooksContent.battlebabe;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class PlaybookServiceImplTest {
-
-    public static final String MOCK_PLAYBOOK_ID_1 = "mock-playbook-id-1";
 
     @Mock
     PlaybookRepository playbookRepository;
 
     PlaybookService playbookService;
 
-    Playbook mockPlaybook1;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        mockPlaybook1 = Playbook.builder()
-                .id(MOCK_PLAYBOOK_ID_1)
-                .playbookType(PlaybookType.ANGEL)
-                .build();
 
         playbookService = new PlaybookServiceImpl(playbookRepository);
     }
@@ -41,8 +34,7 @@ class PlaybookServiceImplTest {
     @Test
     void shouldFindAllPlaybooks() {
         // Given
-        Playbook mockPlaybook2 = Playbook.builder().build();
-        when(playbookRepository.findAll()).thenReturn(List.of(mockPlaybook1, mockPlaybook2));
+        when(playbookRepository.findAll()).thenReturn(List.of(angel, battlebabe));
 
         // When
         List<Playbook> returnedPlaybooks = playbookService.findAll();
@@ -56,39 +48,38 @@ class PlaybookServiceImplTest {
     @Test
     void shouldFindPlaybookById() {
         // Given
-        when(playbookRepository.findById(anyString())).thenReturn(Optional.of(mockPlaybook1));
+        when(playbookRepository.findById(anyString())).thenReturn(Optional.of(angel));
 
         // When
-        Playbook returnedPlaybook = playbookService.findById(MOCK_PLAYBOOK_ID_1);
+        Playbook returnedPlaybook = playbookService.findById(angel.getId());
 
         // Then
         assert returnedPlaybook != null;
-        assertEquals(MOCK_PLAYBOOK_ID_1, returnedPlaybook.getId());
+        assertEquals(angel.getId(), returnedPlaybook.getId());
         verify(playbookRepository, times(1)).findById(anyString());
     }
 
     @Test
     void shouldSavePlaybook() {
         // Given
-        when(playbookRepository.save(any(Playbook.class))).thenReturn(mockPlaybook1);
+        when(playbookRepository.save(any(Playbook.class))).thenReturn(angel);
 
         // When
-        Playbook savedPlaybook = playbookService.save(mockPlaybook1);
+        Playbook savedPlaybook = playbookService.save(angel);
 
         // Then
         assert savedPlaybook != null;
-        assertEquals(mockPlaybook1.getId(), savedPlaybook.getId());
+        assertEquals(angel.getId(), savedPlaybook.getId());
         verify(playbookRepository, times(1)).save(any(Playbook.class));
     }
 
     @Test
     void shouldSaveAllPlaybooks() {
         // Given
-        Playbook mockPlaybook2 = Playbook.builder().build();
-        when(playbookRepository.saveAll(anyIterable())).thenReturn(List.of(mockPlaybook1, mockPlaybook2));
+        when(playbookRepository.saveAll(anyIterable())).thenReturn(List.of(angel, battlebabe));
 
         // When
-        List<Playbook> savedPlaybooks = playbookService.saveAll(List.of(mockPlaybook1,mockPlaybook2));
+        List<Playbook> savedPlaybooks = playbookService.saveAll(List.of(angel,battlebabe));
 
         // Then
         assert savedPlaybooks != null;
@@ -99,7 +90,7 @@ class PlaybookServiceImplTest {
     @Test
     void shouldDeletePlaybook() {
         // When
-        playbookService.delete(mockPlaybook1);
+        playbookService.delete(angel);
 
         // Then
         verify(playbookRepository, times(1)).delete(any(Playbook.class));
@@ -108,7 +99,7 @@ class PlaybookServiceImplTest {
     @Test
     void shouldDeletePlaybookById() {
         // When
-        playbookService.deleteById(MOCK_PLAYBOOK_ID_1);
+        playbookService.deleteById(angel.getId());
 
         // Then
         verify(playbookRepository, times(1)).deleteById(anyString());
@@ -117,7 +108,7 @@ class PlaybookServiceImplTest {
     @Test
     void shouldFindPlaybookByPlaybookType() {
         // Given
-        when(playbookRepository.findByPlaybookType(any(PlaybookType.class))).thenReturn(mockPlaybook1);
+        when(playbookRepository.findByPlaybookType(any(PlaybookType.class))).thenReturn(angel);
 
         // When
         Playbook returnedPlaybook = playbookService.findByPlaybookType(PlaybookType.ANGEL);
