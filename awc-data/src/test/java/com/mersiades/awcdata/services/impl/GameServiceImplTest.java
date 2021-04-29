@@ -1,9 +1,8 @@
 package com.mersiades.awcdata.services.impl;
 
-import com.mersiades.awccontent.constants.MoveNames;
-import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.enums.RoleType;
+import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awccontent.models.Move;
-import com.mersiades.awccontent.models.MoveAction;
 import com.mersiades.awccontent.services.MoveService;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
@@ -21,9 +20,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-import static com.mersiades.awccontent.constants.MoveNames.*;
+import static com.mersiades.awccontent.content.MovesContent.*;
 import static com.mersiades.awccontent.enums.StatType.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -76,63 +78,6 @@ class GameServiceImplTest {
     CharacterStat mockHot;
     CharacterStat mockSharp;
     CharacterStat mockWeird;
-
-    MoveAction suckerAction = MoveAction.builder()
-            .id(new ObjectId().toString())
-            .actionType(MoveActionType.PRINT)
-            .rollType(null)
-            .statToRollWith(null)
-            .build();
-
-    Move sucker = Move.builder()
-            .id(new ObjectId().toString())
-            .name(suckerSomeoneName)
-            .description("When you _**attack someone unsuspecting or helpless**_, ask the MC...")
-            .kind(MoveType.BASIC)
-            .moveAction(suckerAction)
-            .playbook(null)
-            .build();
-
-    MoveAction goAggroAction = MoveAction.builder()
-            .id(new ObjectId().toString())
-            .actionType(MoveActionType.ROLL)
-            .rollType(RollType.STAT)
-            .statToRollWith(HARD)
-            .build();
-    Move goAggro = Move.builder()
-            .id(new ObjectId().toString())
-            .name(MoveNames.goAggroName)
-            .description("When you _**go aggro on someone**_, make it clear...")
-            .kind(MoveType.BASIC)
-            .moveAction(goAggroAction)
-            .playbook(null)
-            .build();
-
-    MoveAction gunluggerSpecialAction = MoveAction.builder()
-            .id(new ObjectId().toString())
-            .actionType(MoveActionType.GUNLUGGER_SPECIAL)
-            .rollType(null)
-            .statToRollWith(null)
-            .build();
-    Move gunluggerSpecial = Move.builder()
-            .id(new ObjectId().toString())
-            .name(gunluggerSpecialName)
-            .description("If you and another character have sex, you take +1 forward. At your option, ...")
-            .kind(MoveType.DEFAULT_CHARACTER)
-            .moveAction(gunluggerSpecialAction)
-            .stat(null)
-            .playbook(PlaybookType.GUNLUGGER).build();
-    MoveAction justGiveMotiveAction = MoveAction.builder()
-            .id(new ObjectId().toString())
-            .actionType(MoveActionType.ROLL)
-            .rollType(RollType.CHOICE)
-            .build();
-    Move justGiveMotive = Move.builder()
-            .name(justGiveMotiveName)
-            .description("_**Just give me a motive**_: name somebody who might conceivably eat, ...")
-            .kind(MoveType.CHARACTER)
-            .moveAction(justGiveMotiveAction)
-            .playbook(PlaybookType.MAESTRO_D).build();
 
     @BeforeEach
     public void setUp()  {
@@ -595,7 +540,7 @@ class GameServiceImplTest {
     // ---------------------------------------------- Move categories -------------------------------------------- //
 
     @Test
-    void shouldPerformPrintMoveWithMove() {
+    void shouldPerformPrintMove_withMove() {
         // Given
         when(moveService.findById(anyString())).thenReturn(sucker);
         when(characterService.findById(anyString())).thenReturn(mockCharacter);
@@ -620,21 +565,8 @@ class GameServiceImplTest {
     }
 
     @Test
-    void shouldPerformPrintMoveWithCharacterMove() {
+    void shouldPerformPrintMove_withCharacterMove() {
         // Given
-        MoveAction combatDriverAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.PRINT)
-                .rollType(null)
-                .statToRollWith(null)
-                .build();
-        Move combatDriver = Move.builder()
-                .id(new ObjectId().toString())
-                .name("COMBAT DRIVER")
-                .description("_**Combat driver**_: when you use your vehicle as a weapon, inflict +1harm. When you inflict v-harm, add +1 to your target’s roll. When you suffer v-harm, take -1 to your roll.")
-                .kind(MoveType.CHARACTER)
-                .moveAction(combatDriverAction)
-                .playbook(PlaybookType.DRIVER).build();
         CharacterMove mockCharacterMove = CharacterMove.createFromMove(combatDriver);
         mockCharacter.getCharacterMoves().add(mockCharacterMove);
         when(characterService.findById(anyString())).thenReturn(mockCharacter);
@@ -687,20 +619,6 @@ class GameServiceImplTest {
     @Test
     void shouldPerformBarterMove() {
         // Given
-        MoveAction lifestyleAndGigsAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.BARTER)
-                .rollType(null)
-                .statToRollWith(null)
-                .build();
-        Move lifestyleAndGigs = Move.builder()
-                .id(new ObjectId().toString())
-                .name("LIFESTYLE AND GIGS")
-                .description("_**At the beginning of the session**_, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions. If you need jingle during a session, tell the MC you’d like to work a gig.")
-                .kind(MoveType.BASIC)
-                .moveAction(lifestyleAndGigsAction)
-                .playbook(null)
-                .build();
         mockCharacter.setBarter(3);
         int mockBarterSpent = 1;
         setUpMockServicesWithByMoveId(lifestyleAndGigs);
@@ -726,18 +644,6 @@ class GameServiceImplTest {
     @Test
     void shouldPerformStockMove() {
         // Given
-        MoveAction reviveSomeoneAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.STOCK)
-                .rollType(null)
-                .statToRollWith(null)
-                .build();
-        Move reviveSomeone = Move.builder()
-                .id(new ObjectId().toString())
-                .name(reviveSomeoneName).description("_**revive someone whose life has become untenable**_, spend 2-stock.")
-                .kind(MoveType.UNIQUE)
-                .moveAction(reviveSomeoneAction)
-                .playbook(PlaybookType.ANGEL).build();
         AngelKit mockAngelKit = AngelKit.builder()
                 .id(new ObjectId().toString())
                 .stock(6)
@@ -798,20 +704,6 @@ class GameServiceImplTest {
     @Test
     void shouldPerformStatRollMoveWithCharacterMove() {
         // Given
-        MoveAction dangerousAndSexyAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ROLL)
-                .rollType(RollType.STAT)
-                .statToRollWith(HOT)
-                .build();
-        Move dangerousAndSexy = Move.builder()
-                .id(new ObjectId().toString())
-                .name(dangerousAndSexyName)
-                .description("_**Dangerous & sexy**_: when you enter into a charged situation, roll+hot.")
-                .kind(MoveType.CHARACTER)
-                .moveAction(dangerousAndSexyAction)
-                .playbook(PlaybookType.BATTLEBABE)
-                .build();
         CharacterMove mockCharacterMove = CharacterMove.createFromMove(dangerousAndSexy);
         mockCharacter.getCharacterMoves().add(mockCharacterMove);
         setUpMockServices();
@@ -877,20 +769,6 @@ class GameServiceImplTest {
     void shouldPerformSpeedRollMove() {
         // Given
         int mockModifier = 2;
-        MoveAction outdistanceVehicleAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ROLL)
-                .rollType(RollType.SPEED)
-                .statToRollWith(COOL)
-                .build();
-        Move outdistanceAnotherVehicleMove = Move.builder()
-                .id(new ObjectId().toString())
-                .name(outdistanceVehicleName)
-                .description("When you try to outdistance another vehicle, roll+cool, ...")
-                .kind(MoveType.ROAD_WAR)
-                .moveAction(outdistanceVehicleAction)
-                .playbook(null)
-                .build();
 
         setUpMockServicesWithByMoveId(outdistanceAnotherVehicleMove);
 
@@ -916,19 +794,6 @@ class GameServiceImplTest {
     void shouldPerformWealthMove() {
         // Given
         int mockSurplus = 2;
-        MoveAction wealthAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ROLL)
-                .rollType(RollType.STAT)
-                .statToRollWith(HARD)
-                .build();
-        Move wealth = Move.builder()
-                .name(wealthName)
-                .description("_**Wealth**_: if your hold is secure ..."
-                )
-                .kind(MoveType.DEFAULT_CHARACTER)
-                .moveAction(wealthAction)
-                .playbook(PlaybookType.HARDHOLDER).build();
         Holding mockHolding = Holding.builder()
                 .id(new ObjectId().toString())
                 .surplus(mockSurplus)
@@ -965,18 +830,6 @@ class GameServiceImplTest {
     void shouldPerformFortunesMove() {
         // Given
         int mockSurplus = 2;
-        MoveAction fortunesAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ROLL)
-                .rollType(RollType.FORTUNE)
-                .build();
-        Move fortunes = Move.builder()
-                .id(new ObjectId().toString())
-                .name(fortunesName)
-                .description("_**Fortunes**: fortune, surplus and want all depend on your followers...")
-                .kind(MoveType.DEFAULT_CHARACTER)
-                .moveAction(fortunesAction)
-                .playbook(PlaybookType.HOCUS).build();
         Followers mockFollowers = Followers.builder()
                 .id(new ObjectId().toString())
                 .surplusBarter(mockSurplus)
@@ -1015,20 +868,6 @@ class GameServiceImplTest {
         // Given
         String mockCharacter2Id = "mock-character-2-id";
         int mockHxValue = 2;
-        MoveAction helpOrInterfereAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ROLL)
-                .rollType(RollType.HX)
-                .statToRollWith(null)
-                .build();
-        Move helpOrInterfere = Move.builder()
-                .id(new ObjectId().toString())
-                .name(helpOrInterfereName)
-                .description("When you _**help**_ or _**interfere**_ with someone who’s making a roll, roll+Hx...")
-                .kind(MoveType.BASIC)
-                .moveAction(helpOrInterfereAction)
-                .playbook(null)
-                .build();
         HxStat mockHxStat = HxStat.builder()
                 .id(new ObjectId().toString())
                 .characterId(mockCharacter2Id)
@@ -1059,19 +898,6 @@ class GameServiceImplTest {
     void shouldPerformMakeWantKnownMove() {
         // Given
         int mockBarterSpent = 1;
-        MoveAction makeWantKnownAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ROLL)
-                .rollType(RollType.BARTER)
-                .build();
-        Move makeWantKnown = Move.builder()
-                .id(new ObjectId().toString())
-                .name(makeWantKnownName)
-                .description("When you _**make known that you want a thing and drop jingle to speed it on its way**_")
-                .kind(MoveType.PERIPHERAL)
-                .moveAction(makeWantKnownAction)
-                .playbook(null)
-                .build();
         mockCharacter.setBarter(3);
         when(characterService.findById(anyString())).thenReturn(mockCharacter);
         when(moveService.findById(anyString())).thenReturn(makeWantKnown);
@@ -1110,19 +936,6 @@ class GameServiceImplTest {
     void shouldPerformSufferHarmMove() {
         // Given
         int mockHarmSuffered = 2;
-        MoveAction sufferHarmAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ROLL)
-                .rollType(RollType.HARM)
-                .build();
-        Move sufferHarm = Move.builder()
-                .id(new ObjectId().toString())
-                .name("SUFFER HARM")
-                .description("When you _**suffer harm**_, roll+harm suffered...")
-                .kind(MoveType.PERIPHERAL)
-                .moveAction(sufferHarmAction)
-                .playbook(null)
-                .build();
         setUpMockServicesWithByMoveId(sufferHarm);
 
         // When
@@ -1147,19 +960,6 @@ class GameServiceImplTest {
     void performSufferVHarmMove() {
         // Given
         int mockVHarmSuffered = 2;
-        MoveAction sufferVHarmAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ROLL)
-                .rollType(RollType.V_HARM)
-                .build();
-        Move sufferVHarm = Move.builder()
-                .id(new ObjectId().toString())
-                .name(MoveNames.sufferVHarm)
-                .description("When you _**suffer v-harm**_, roll+harm suffered...")
-                .kind(MoveType.PERIPHERAL)
-                .moveAction(sufferVHarmAction)
-                .playbook(null)
-                .build();
         mockGameRole.getCharacters().add(mockCharacter);
         when(moveService.findByName(anyString())).thenReturn(sufferVHarm);
         when(gameRoleService.findById(anyString())).thenReturn(mockGameRole);
@@ -1187,18 +987,6 @@ class GameServiceImplTest {
     void shouldPerformInflictHarmMove() {
         // Given
         int mockHarmInflicted = 1;
-
-        MoveAction inflictHarmAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ADJUST_HX)
-                .build();
-        Move inflictHarmMove = Move.builder()
-                .name(inflictHarmName)
-                .description("When you _**inflict harm on another player’s character**_, the other character...")
-                .kind(MoveType.PERIPHERAL)
-                .moveAction(inflictHarmAction)
-                .playbook(null)
-                .build();
         when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
         when(gameRoleService.findById(mockGameRole2.getId())).thenReturn(mockGameRole2);
         when(characterService.findById(mockCharacter.getId())).thenReturn(mockCharacter);
@@ -1239,18 +1027,6 @@ class GameServiceImplTest {
 
         mockHarm.setValue(3);
         mockCharacter2.setHarm(mockHarm);
-
-        MoveAction healPcHarmAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ADJUST_HX)
-                .build();
-        Move healPcHarm = Move.builder()
-                .name(healHarmName)
-                .description("When you _**heal another player’s character’s harm**_, you... ")
-                .kind(MoveType.PERIPHERAL)
-                .moveAction(healPcHarmAction)
-                .playbook(null)
-                .build();
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServicesWithOtherCharacter();
         when(moveService.findByName(anyString())).thenReturn(healPcHarm);
@@ -1279,21 +1055,6 @@ class GameServiceImplTest {
     void shouldPerformAngelSpecialMove() {
         // Given
         int mockInitialHxValue = 1;
-        MoveAction angelSpecialAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ADJUST_HX)
-                .rollType(null)
-                .statToRollWith(null)
-                .build();
-        Move angelSpecial = Move.builder()
-                .id(new ObjectId().toString())
-                .name(angelSpecialName)
-                .description("If you and another character have sex, your Hx with them...")
-                .kind(MoveType.DEFAULT_CHARACTER)
-                .moveAction(angelSpecialAction)
-                .playbook(PlaybookType.ANGEL)
-                .build();
-
         CharacterMove mockCharacterMove = CharacterMove.createFromMove(angelSpecial);
         mockCharacter.getCharacterMoves().add(mockCharacterMove);
         mockGameRole.getCharacters().add(mockCharacter);
@@ -1325,23 +1086,10 @@ class GameServiceImplTest {
     void shouldPerformChopperSpecialMove() {
         // Given
         int mockHxChange = 1;
-        MoveAction chopperSpecialAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ADJUST_HX)
-                .build();
-        Move chopperSpecial = Move.builder()
-                .id(new ObjectId().toString())
-                .name(chopperSpecialName)
-                .description("If you and another character have sex, they immediately...")
-                .kind(MoveType.DEFAULT_CHARACTER)
-                .moveAction(chopperSpecialAction)
-                .playbook(PlaybookType.CHOPPER).build();
-
         CharacterMove mockCharacterMove = CharacterMove.createFromMove(chopperSpecial);
         mockCharacter.getCharacterMoves().add(mockCharacterMove);
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServicesWithOtherCharacter();
-
 
         // When
         Game returnedGame = gameService.performChopperSpecialMove(mockGame1.getId(),
@@ -1436,19 +1184,6 @@ class GameServiceImplTest {
         // Given
         int mockStockSpent = 2;
         int startingStock = 6;
-        MoveAction stabilizeAndHealAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ROLL)
-                .rollType(RollType.STOCK)
-                .statToRollWith(null)
-                .build();
-        Move stabilizeAndHeal = Move.builder()
-                .id(new ObjectId().toString())
-                .name(stabilizeAndHealName)
-                .description("_**stabilize and heal someone at 9:00 or past**_: roll+stock spent...")
-                .kind(MoveType.UNIQUE)
-                .moveAction(stabilizeAndHealAction)
-                .playbook(PlaybookType.ANGEL).build();
         AngelKit mockAngelKit = AngelKit.builder()
                 .id(new ObjectId().toString())
                 .stock(startingStock)

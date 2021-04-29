@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.services.impl;
 
+import com.mersiades.awccontent.content.MovesContent;
 import com.mersiades.awccontent.enums.*;
 import com.mersiades.awccontent.models.*;
 import com.mersiades.awccontent.models.uniquecreators.AngelKitCreator;
@@ -13,7 +14,6 @@ import com.mersiades.awcdata.models.uniques.*;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
-import com.mersiades.awccontent.content.MovesContent;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
-import static com.mersiades.awccontent.constants.MoveNames.*;
+import static com.mersiades.awccontent.content.MovesContent.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -438,36 +438,6 @@ class GameRoleServiceImplTest {
         mockCharacter.setPlaybook(PlaybookType.ANGEL);
         mockGameRole.getCharacters().add(mockCharacter);
 
-        String moveId1 = "angel-special-id";
-        String moveId2 = "sixth-sense-id";
-        String moveId3 = "infirmary-id";
-
-        RollModifier sixthSenseMod = RollModifier.builder().id(new ObjectId().toString()).statToRollWith(StatType.SHARP).build();
-        Move angelSpecial = Move.builder()
-                .id(moveId1)
-                .name("ANGEL SPECIAL")
-                .description("If you and")
-                .stat(null)
-                .kind(MoveType.CHARACTER)
-                .playbook(PlaybookType.ANGEL)
-                .build();
-        Move sixthSense = Move.builder()
-                .id(moveId2)
-                .name("SIXTH SENSE")
-                .description("_**Sixth sense**_: ")
-                .rollModifier(sixthSenseMod)
-                .kind(MoveType.CHARACTER)
-                .playbook(PlaybookType.ANGEL)
-                .build();
-        Move infirmary = Move.builder()
-                .id(moveId3)
-                .name("INFIRMARY")
-                .description("_**Infirmary**_:")
-                .stat(null)
-                .kind(MoveType.CHARACTER)
-                .playbook(PlaybookType.ANGEL)
-                .build();
-
         List<Move> angelMoves = List.of(angelSpecial, sixthSense, infirmary);
 
         AngelKitCreator angelKitCreator = AngelKitCreator.builder()
@@ -520,16 +490,17 @@ class GameRoleServiceImplTest {
 
         // When
         Character returnedCharacter = gameRoleService
-                .setCharacterMoves(mockGameRole.getId(), mockCharacter.getId(), List.of(moveId1, moveId2, moveId3));
+                .setCharacterMoves(mockGameRole.getId(), mockCharacter.getId(),
+                        List.of(angelSpecial.getId(), sixthSense.getId(), infirmary.getId()));
 
         // Then
         assertEquals(3, returnedCharacter.getCharacterMoves().size());
         List<CharacterMove> returnedMoves = returnedCharacter.getCharacterMoves();
 
         returnedMoves.forEach(characterMove -> {
-            assertTrue(characterMove.getName().equals("ANGEL SPECIAL") ||
-                    characterMove.getName().equals("SIXTH SENSE") ||
-                    characterMove.getName().equals("INFIRMARY"));
+            assertTrue(characterMove.getName().equals(angelSpecial.getName()) ||
+                    characterMove.getName().equals(sixthSense.getName()) ||
+                    characterMove.getName().equals(infirmary.getName()));
         });
         verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
         verifyMockServices();
@@ -601,56 +572,8 @@ class GameRoleServiceImplTest {
     public void shouldSetAngelKit() {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
-
-        MoveAction stabilizeAndHealAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.ROLL)
-                .rollType(RollType.STOCK)
-                .statToRollWith(null)
-                .build();
-        Move stabilizeAndHeal = Move.builder().name(stabilizeAndHealName)
-                .description("_**stabilize and heal someone at 9:00")
-                .moveAction(stabilizeAndHealAction)
-                .playbook(PlaybookType.ANGEL)
-                .kind(MoveType.UNIQUE).build();
-        MoveAction speedTheRecoveryOfSomeoneAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.STOCK)
-                .rollType(null)
-                .statToRollWith(null)
-                .build();
-        Move speedTheRecoveryOfSomeone = Move.builder().name(speedRecoveryName)
-                .description("_**speed the recovery of someone at 3:00 or 6:0")
-                .playbook(PlaybookType.ANGEL)
-                .moveAction(speedTheRecoveryOfSomeoneAction)
-                .kind(MoveType.UNIQUE).build();
-        MoveAction reviveSomeoneAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.STOCK)
-                .rollType(null)
-                .statToRollWith(null)
-                .build();
-        Move reviveSomeone = Move.builder().name(reviveSomeoneName)
-                .description("_**revive someone whose life")
-                .playbook(PlaybookType.ANGEL)
-                .moveAction(reviveSomeoneAction)
-                .kind(MoveType.UNIQUE).build();
-        MoveAction treatAnNpcAction = MoveAction.builder()
-                .id(new ObjectId().toString())
-                .actionType(MoveActionType.STOCK)
-                .rollType(null)
-                .statToRollWith(null)
-                .build();
-        Move treatAnNpc = Move.builder().name(treatNpcName)
-                .description("_**treat an NPC ")
-                .playbook(PlaybookType.ANGEL)
-                .moveAction(treatAnNpcAction)
-                .kind(MoveType.UNIQUE).build();
-
         int stock = 6;
-
         Boolean hasSupplier = false;
-
         when(moveService.findAllByPlaybookAndKind(any(PlaybookType.class), any(MoveType.class)))
                 .thenReturn(List.of(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc));
         setupMockServices();
