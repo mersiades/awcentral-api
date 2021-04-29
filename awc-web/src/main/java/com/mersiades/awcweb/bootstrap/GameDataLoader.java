@@ -1237,6 +1237,10 @@ public class GameDataLoader implements CommandLineRunner {
                 .id(new ObjectId().toString())
                 .movesToModify(List.of(seduceOrManip))
                 .statToRollWith(StatType.WEIRD).build();
+        RollModifier brainReceptivityMod = RollModifier.builder()
+                .id(new ObjectId().toString())
+                .movesToModify(List.of(readAPerson))
+                .statToRollWith(StatType.WEIRD).build();
         StatModifier attunementMod = StatModifier.builder()
                 .id(new ObjectId().toString())
                 .statToModify(StatType.WEIRD)
@@ -1271,6 +1275,7 @@ public class GameDataLoader implements CommandLineRunner {
                 .description("_**Casual brain receptivity**_: when you read someone, roll+weird instead of roll+sharp. Your victim has to be able to see you, but you don’t have to interact.")
                 .kind(MoveType.CHARACTER)
                 .stat(null)
+                .rollModifier(brainReceptivityMod)
                 .playbook(PlaybookType.BRAINER).build();
         Move brainAttunement = Move.builder()
                 .name("PRETERNATURAL BRAIN ATTUNEMENT")

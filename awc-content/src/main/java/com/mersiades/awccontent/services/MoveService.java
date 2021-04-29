@@ -11,4 +11,6 @@ public interface MoveService extends CrudService<Move, String>{
     List<Move> findAllByPlaybookAndKind(PlaybookType playbookType, MoveType kind);
 
     Move findByName(String moveName);
+
+    List<Move> findOtherPlaybookMoves(PlaybookType playbookType);
 }
