@@ -26,6 +26,7 @@ import java.util.Optional;
 import static com.mersiades.awccontent.content.LooksContent.lookAngel9;
 import static com.mersiades.awccontent.content.LooksContent.lookBattlebabe1;
 import static com.mersiades.awccontent.content.MovesContent.*;
+import static com.mersiades.awccontent.content.PlaybookCreatorsContent.playbookCreatorAngel;
 import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel1;
 import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel2;
 import static org.junit.jupiter.api.Assertions.*;
@@ -65,8 +66,6 @@ class GameRoleServiceImplTest {
 
     Character mockCharacter;
 
-    PlaybookCreator mockPlaybookCreatorAngel;
-
     AngelKit mockAngelKit;
 
     PlaybookUnique mockPlaybookUnique;
@@ -83,11 +82,6 @@ class GameRoleServiceImplTest {
         mockUser.getGameRoles().add(mockGameRole);
         gameRoleService = new GameRoleServiceImpl(gameRoleRepository, characterService, statsOptionService, moveService, playbookCreatorService, statModifierService);
         mockGameRole2 = new GameRole();
-
-        mockPlaybookCreatorAngel = PlaybookCreator.builder()
-                .id("mock-angel-playbook-creator-id")
-                .moveChoiceCount(2)
-                .build();
 
         mockAngelKit = AngelKit.builder()
                 .id("mock-angel-kit-id")
@@ -261,14 +255,14 @@ class GameRoleServiceImplTest {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
-        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(mockPlaybookCreatorAngel);
+        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(playbookCreatorAngel);
 
         // When
         Character returnedCharacter = gameRoleService.setCharacterPlaybook(MOCK_GAMEROLE_ID, mockCharacter.getId(), PlaybookType.BATTLEBABE);
 
         // Then
         assertEquals(PlaybookType.BATTLEBABE, returnedCharacter.getPlaybook());
-        assertEquals(mockPlaybookCreatorAngel.getMoveChoiceCount(), returnedCharacter.getAllowedPlaybookMoves());
+        assertEquals(playbookCreatorAngel.getMoveChoiceCount(), returnedCharacter.getAllowedPlaybookMoves());
         verifyMockServices();
         verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
     }

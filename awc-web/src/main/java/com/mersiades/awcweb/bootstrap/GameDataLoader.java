@@ -12,12 +12,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.mersiades.awccontent.constants.MoveNames.*;
 import static com.mersiades.awccontent.content.LooksContent.*;
 import static com.mersiades.awccontent.content.McContentContent.mcContent;
-import static com.mersiades.awccontent.content.MovesContent.sufferVHarm;
 import static com.mersiades.awccontent.content.MovesContent.*;
 import static com.mersiades.awccontent.content.NamesContent.*;
 import static com.mersiades.awccontent.content.PlaybookCreatorsContent.*;
@@ -1002,102 +999,8 @@ public class GameDataLoader implements CommandLineRunner {
     public void loadPlaybookCreators() {
         System.out.println("|| --- Loading playbook creators --- ||");
 
-
-
-        // Grab common improvement moves
-        Move genericIncreaseStat = moveRepository.findByKind(MoveType.GENERIC_INCREASE_STAT);
-        Move retire = moveRepository.findByKind(MoveType.RETIRE);
-        Move addSecondCharacter = moveRepository.findByKind(MoveType.ADD_SECOND_CHARACTER);
-        Move changePlaybook = moveRepository.findByKind(MoveType.CHANGE_PLAYBOOK);
-        Move improveBasicMoves1 = moveRepository.findAllByKind(MoveType.IMPROVE_BASIC_MOVES).get(0);
-        Move improveBasicMoves2 = moveRepository.findAllByKind(MoveType.IMPROVE_BASIC_MOVES).get(1);
-        List<Move> improveStatMoves = moveRepository.findAllByKind(MoveType.IMPROVE_STAT);
-        List<Move> addOtherPlaybookMovesMoves = moveRepository.findAllByKind(MoveType.ADD_OTHER_PB_MOVE);
-
-        /* ----------------------------- ANGEL PLAYBOOK CREATOR --------------------------------- */
-        List<Move> angelOptionalMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.CHARACTER);
-
-        List<Move> angelDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.ANGEL, MoveType.DEFAULT_CHARACTER);
-
-        List<String> improveStatMovesAngel = List.of(sharpMax3Name, coolMax2Name, hardMax2Name, weirdMax2Name);
-
-        Move addCharMoveAngel1 = moveRepository.findByName(addAngelMove1Name);
-        Move addCharMoveAngel2 = moveRepository.findByName(addAngelMove2Name);
-        Move getSupplier = moveRepository.findByName(adjustAngelUnique1Name);
-
-        List<Move> improvementMovesAngel = improveStatMoves.stream()
-                .filter(move -> improveStatMovesAngel.contains(move.getName())).collect(Collectors.toList());
-
-        improvementMovesAngel.add(improveStatMoves.stream()
-                .filter(move -> move.getName().equals(hardMax2Name)).findFirst().orElseThrow());
-
-        improvementMovesAngel.addAll(List.of(addCharMoveAngel1, addCharMoveAngel2, getSupplier));
-        improvementMovesAngel.addAll(addOtherPlaybookMovesMoves);
-
-        ImprovementBlock improvementBlockAngel = ImprovementBlock.builder()
-                .playbookType(PlaybookType.ANGEL)
-                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
-                .futureImprovementMoves(List.of(genericIncreaseStat, retire, addSecondCharacter, changePlaybook,
-                        improveBasicMoves1, improveBasicMoves2))
-                .improvementMoves(improvementMovesAngel)
-                .build();
-        PlaybookCreator angelCreator = PlaybookCreator.builder()
-                .playbookType(PlaybookType.ANGEL)
-                .gearInstructions(angelGearInstructions)
-                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
-                .improvementBlock(improvementBlockAngel)
-                .movesInstructions("You get all the basic moves. Choose 2 angel moves.\n" +
-                        "\n" +
-                        "You can use all the battle moves, but when you get the chance, look up _**keeping an eye out**_, and _**baiting a trap**_, as well as the rules for harm.")
-                .hxInstructions(HX_INSTRUCTIONS_START +
-                        "Go around again for Hx. On your turn, ask 1, 2, or all 3:\n" +
-                        "\n" +
-                        "- *Which one of you do I figure is doomed to self-destruction?* Give that character -2 for Hx.\n" +
-                        "- *Which one of you put a hand in when it mattered, and helped me save a life?* Give that character +2 for Hx." +
-                        "- *Which one of you has been beside me all along, and has seen everything I’ve seen?* Give that character +3 for Hx.\n" +
-                        "\n" +
-                        "Give everyone else +1 for Hx. You keep your eyes open.\n" +
-                        HX_INSTRUCTIONS_END)
-                .playbookUniqueCreator(angelUniqueCreator)
-                .optionalMoves(angelOptionalMoves)
-                .defaultMoves(angelDefaultMoves)
-                .defaultMoveCount(1)
-                .moveChoiceCount(2)
-                .defaultVehicleCount(0)
-                .build();
-
-
         /* ----------------------------- BATTLEBABE PLAYBOOK CREATOR --------------------------------- */
-        List<Move> battlebabeOptionalMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.CHARACTER);
 
-        List<Move> battlebabeDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.DEFAULT_CHARACTER);
-
-        PlaybookCreator battlebabePlaybookCreator = PlaybookCreator.builder()
-                .playbookType(PlaybookType.BATTLEBABE)
-                .gearInstructions(battlebabeGearInstructions)
-                .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
-                        "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
-                .movesInstructions("You get all the basic moves. Choose 2 battlebabe moves.\n" +
-                        "You can use all the battle moves, but when you get the chance, look up _**standing overwatch**_, _**boarding a moving vehicle**_, and the _**subterfuge**_ moves.")
-                .hxInstructions(HX_INSTRUCTIONS_START +
-                        "Go around again for Hx. On your turn, ask the other players which of their characters you can trust.\n" +
-                        "\n" +
-                        "- *Give the characters you can trust -1 Hx.*\n" +
-                        "- *Give the characters you can’t trust +3 Hx.*\n" +
-                        "\n" +
-                        "You are indifferent to what is safe, and drawn to what is not.\n" +
-                        HX_INSTRUCTIONS_END)
-                .playbookUniqueCreator(battlebabeUniqueCreator)
-                .optionalMoves(battlebabeOptionalMoves)
-                .defaultMoves(battlebabeDefaultMoves)
-                .defaultMoveCount(1)
-                .moveChoiceCount(2)
-                .defaultVehicleCount(0)
-                .build();
 
         /* ----------------------------- BRAINER PLAYBOOK CREATOR --------------------------------- */
         List<Move> brainerOptionalMoves = moveRepository
@@ -1365,8 +1268,9 @@ public class GameDataLoader implements CommandLineRunner {
                 .defaultMoveCount(1)
                 .build();
 
-        playbookCreatorService.saveAll(List.of(angelCreator,
-                battlebabePlaybookCreator,
+        playbookCreatorService.saveAll(List.of(
+                playbookCreatorAngel,
+                playbookCreatorBattlebabe,
                 playbookCreatorBrainer,
                 playbookCreatorChopper,
                 playbookCreatorDriver,
