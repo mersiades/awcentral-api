@@ -2462,7 +2462,7 @@ public class MovesContent {
 
     public static final Move addGangLeadership = Move.builder()
             .id(new ObjectId().toString())
-            .name("ADD GANG AND LEADERSHIP")
+            .name(addGangLeadershipName)
             .description("get a gang (you detail) and _**leadership**_\n")
             .kind(MoveType.ADD_UNIQUE)
             .playbook(PlaybookType.HARDHOLDER)

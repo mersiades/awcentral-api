@@ -12,7 +12,7 @@ import org.springframework.data.annotation.Id;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlaybookUnique {
+public class PlaybookUniques {
 
     @Id
     private String id;

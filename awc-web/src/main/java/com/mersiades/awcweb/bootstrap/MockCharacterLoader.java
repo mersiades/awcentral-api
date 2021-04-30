@@ -122,7 +122,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .angelKitMoves(angelKitMoves)
                 .stock(2).build();
 
-        PlaybookUnique angelUnique = PlaybookUnique.builder()
+        PlaybookUniques angelUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .type(UniqueType.ANGEL_KIT)
                 .angelKit(angelKit)
@@ -149,7 +149,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .weapons(List.of("antique rifle (2-harm, load, valuable", "Ornate staff (1-harm, valuable)"))
                 .build();
 
-        PlaybookUnique battlebabeUnique = PlaybookUnique.builder()
+        PlaybookUniques battlebabeUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .type(UniqueType.CUSTOM_WEAPONS)
                 .customWeapons(customWeapons)
@@ -176,7 +176,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .brainerGear(List.of("brain relay", "violation glove"))
                 .build();
 
-        PlaybookUnique brainerUnique = PlaybookUnique.builder()
+        PlaybookUniques brainerUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .type(UniqueType.BRAINER_GEAR)
                 .brainerGear(brainerGear)
@@ -231,7 +231,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .weaknesses(List.of(gangOption3))
                 .build();
 
-        PlaybookUnique chopperUnique = PlaybookUnique.builder()
+        PlaybookUniques chopperUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .type(UniqueType.GANG)
                 .gang(gang)
@@ -328,7 +328,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .gear(List.of("Shotgun", "Rusty screwdriver"))
                 .statsBlock(angelStatsBlock1)
                 .barter(2)
-                .playbookUnique(angelUnique)
+                .playbookUniques(angelUnique)
                 .characterMoves(characterMoves)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(true)
@@ -345,7 +345,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .gear(List.of("Black leather boots", "Broken motorcycle helmet"))
                 .statsBlock(battlebabeStatsBlock)
                 .barter(2)
-                .playbookUnique(battlebabeUnique)
+                .playbookUniques(battlebabeUnique)
                 .characterMoves(characterMoves2)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(false)
@@ -362,7 +362,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .gear(List.of("Sharp kitchen knife", "Wireless radio"))
                 .statsBlock(brainerStatsBlock)
                 .barter(2)
-                .playbookUnique(brainerUnique)
+                .playbookUniques(brainerUnique)
                 .characterMoves(characterMoves3)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(false)
@@ -379,7 +379,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .gear(List.of("magnum (3-harm close reload loud)", "machete (3-harm hand messy"))
                 .statsBlock(chopperStatsBlock)
                 .barter(2)
-                .playbookUnique(chopperUnique)
+                .playbookUniques(chopperUnique)
                 .characterMoves(characterMoves5)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(false)

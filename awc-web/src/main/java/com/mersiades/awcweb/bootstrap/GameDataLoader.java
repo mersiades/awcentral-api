@@ -1065,7 +1065,7 @@ public class GameDataLoader implements CommandLineRunner {
 
         /* ----------------------------- DRIVER PLAYBOOK CREATOR --------------------------------- */
 
-        // Driver has no PlaybookUnique; hav Vehicles instead
+        // Driver has no PlaybookUniques; hav Vehicles instead
 
         List<Move> driverOptionalMoves = moveRepository
                 .findAllByPlaybookAndKind(PlaybookType.DRIVER, MoveType.CHARACTER);
