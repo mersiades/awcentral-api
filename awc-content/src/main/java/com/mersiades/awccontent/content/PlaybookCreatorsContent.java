@@ -1,13 +1,13 @@
 package com.mersiades.awccontent.content;
 
-import com.mersiades.awccontent.enums.GangSize;
-import com.mersiades.awccontent.enums.HoldingSize;
-import com.mersiades.awccontent.enums.UniqueType;
+import com.mersiades.awccontent.enums.*;
 import com.mersiades.awccontent.models.*;
 import com.mersiades.awccontent.models.uniquecreators.*;
 import org.bson.types.ObjectId;
 
 import java.util.List;
+
+import static com.mersiades.awccontent.content.MovesContent.*;
 
 public class PlaybookCreatorsContent {
 
@@ -28,6 +28,15 @@ public class PlaybookCreatorsContent {
             "On the others’ turns, answer their questions as you like.\n" +
             "\n" +
             "At the end, choose one of the characters with the highest Hx on your sheet. Ask that player which of your stats is most interesting, and highlight it. The MC will have you highlight a second stat too.";
+
+    public static final List<Move> futureImprovementMoves = List.of(
+            genericIncreaseStat,
+            retire,
+            addSecondCharacter,
+            changePlaybook,
+            improveBasicMoves1,
+            improveBasicMoves2
+    );
 
     /* ----------------------------- ANGEL PLAYBOOK CREATOR --------------------------------- */
 
@@ -60,6 +69,55 @@ public class PlaybookCreatorsContent {
                     "stun gun (s-harm hand reload)"))
             .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
             .startingBarter(2)
+            .build();
+
+    public static final List<Move> improvementMovesAngel = List.of(
+            sharpMax3,
+            coolMax2,
+            hardMax2,
+            hardMax2,
+            weirdMax2,
+            addAngelMove1,
+            addAngelMove2,
+            adjustAngelUnique1,
+            addOtherPBMove1,
+            addOtherPBMove2
+    );
+
+    public static final ImprovementBlock improvementBlockAngel = ImprovementBlock.builder()
+            .playbookType(PlaybookType.ANGEL)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
+            .futureImprovementMoves(futureImprovementMoves)
+            .improvementMoves(improvementMovesAngel)
+            .build();
+
+    public static final List<Move> angelOptionalMoves = List.of(sixthSense, infirmary, profCompassion, battlefieldGrace, healingTouch, touchedByDeath);
+
+    public static final List<Move> angelDefaultMoves = List.of(angelSpecial);
+
+    public static final PlaybookCreator playbookCreatorAngel = PlaybookCreator.builder()
+            .playbookType(PlaybookType.ANGEL)
+            .gearInstructions(angelGearInstructions)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+            .improvementBlock(improvementBlockAngel)
+            .movesInstructions("You get all the basic moves. Choose 2 angel moves.\n" +
+                    "\n" +
+                    "You can use all the battle moves, but when you get the chance, look up _**keeping an eye out**_, and _**baiting a trap**_, as well as the rules for harm.")
+            .hxInstructions(HX_INSTRUCTIONS_START +
+                    "Go around again for Hx. On your turn, ask 1, 2, or all 3:\n" +
+                    "\n" +
+                    "- *Which one of you do I figure is doomed to self-destruction?* Give that character -2 for Hx.\n" +
+                    "- *Which one of you put a hand in when it mattered, and helped me save a life?* Give that character +2 for Hx." +
+                    "- *Which one of you has been beside me all along, and has seen everything I’ve seen?* Give that character +3 for Hx.\n" +
+                    "\n" +
+                    "Give everyone else +1 for Hx. You keep your eyes open.\n" +
+                    HX_INSTRUCTIONS_END)
+            .playbookUniqueCreator(angelUniqueCreator)
+            .optionalMoves(angelOptionalMoves)
+            .defaultMoves(angelDefaultMoves)
+            .defaultMoveCount(1)
+            .moveChoiceCount(2)
+            .defaultVehicleCount(0)
             .build();
 
     /* ----------------------------- BATTLEBABE PLAYBOOK CREATOR --------------------------------- */
@@ -122,6 +180,54 @@ public class PlaybookCreatorsContent {
             .youGetItems(List.of("fashion suitable to your look, including at your option fashion worth 1-armor or body armor worth 2-armor (you detail)"))
             .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
             .startingBarter(4)
+            .build();
+
+    public static final List<Move> improvementMovesBattlebabe = List.of(
+            hardMax2,
+            hotMax2,
+            sharpMax2,
+            weirdMax2,
+            addBattleBabeMove1,
+            addBattleBabeMove2,
+            // TODO: Add move for getting an ally
+            addGangLeadership,
+            addOtherPBMove1,
+            addOtherPBMove2
+    );
+
+    public static final ImprovementBlock improvementBlockBattlebabe = ImprovementBlock.builder()
+            .playbookType(PlaybookType.BATTLEBABE)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
+            .futureImprovementMoves(futureImprovementMoves)
+            .improvementMoves(improvementMovesBattlebabe)
+            .build();
+
+    public static final List<Move> battlebabeOptionalMoves = List.of(dangerousAndSexy, iceCold, merciless, visionsOfDeath, perfectInstincts, impossibleReflexes);
+
+    public static final List<Move> battlebabeDefaultMoves = List.of(battlebabeSpecial);
+
+    public static final PlaybookCreator playbookCreatorBattlebabe = PlaybookCreator.builder()
+            .playbookType(PlaybookType.BATTLEBABE)
+            .gearInstructions(battlebabeGearInstructions)
+            .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
+                    "Each time you improve, choose one of the options. Check it off; you can’t choose it again.")
+            .movesInstructions("You get all the basic moves. Choose 2 battlebabe moves.\n" +
+                    "You can use all the battle moves, but when you get the chance, look up _**standing overwatch**_, _**boarding a moving vehicle**_, and the _**subterfuge**_ moves.")
+            .hxInstructions(HX_INSTRUCTIONS_START +
+                    "Go around again for Hx. On your turn, ask the other players which of their characters you can trust.\n" +
+                    "\n" +
+                    "- *Give the characters you can trust -1 Hx.*\n" +
+                    "- *Give the characters you can’t trust +3 Hx.*\n" +
+                    "\n" +
+                    "You are indifferent to what is safe, and drawn to what is not.\n" +
+                    HX_INSTRUCTIONS_END)
+            .playbookUniqueCreator(battlebabeUniqueCreator)
+            .optionalMoves(battlebabeOptionalMoves)
+            .defaultMoves(battlebabeDefaultMoves)
+            .defaultMoveCount(1)
+            .moveChoiceCount(2)
+            .defaultVehicleCount(0)
+            .improvementBlock(improvementBlockBattlebabe)
             .build();
 
     /* ----------------------------- BRAINER PLAYBOOK CREATOR --------------------------------- */
