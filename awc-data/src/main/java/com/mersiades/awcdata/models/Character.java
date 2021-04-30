@@ -28,7 +28,7 @@ public class Character {
 
     private PlaybookType playbook;
 
-    private PlaybookUnique playbookUnique;
+    private PlaybookUniques playbookUniques;
 
     private GameRole gameRole;
 

@@ -84,6 +84,7 @@ public class MoveNames {
     public static final String adjustMaestroDUnique2Name = "ADJUST MAESTRO D' UNIQUE 2";
     public static final String adjustSavvyheadUnique1Name = "ADJUST SAVVYHEAD UNIQUE 1";
     public static final String adjustSavvyheadUnique2Name = "ADJUST SAVVYHEAD UNIQUE 2";
+    public static final String addGangLeadershipName = "ADD GANG AND LEADERSHIP";
 
 
     // Moves that can earn holds

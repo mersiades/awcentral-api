@@ -647,11 +647,11 @@ class GameServiceImplTest {
                 .id(new ObjectId().toString())
                 .stock(6)
                 .build();
-        PlaybookUnique mockPlaybookUnique = PlaybookUnique.builder()
+        PlaybookUniques mockPlaybookUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .angelKit(mockAngelKit)
                 .build();
-        mockCharacter.setPlaybookUnique(mockPlaybookUnique);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
         mockGameRole.getCharacters().add(mockCharacter);
         int mockStockSpent = 2;
         setUpMockServices();
@@ -670,7 +670,7 @@ class GameServiceImplTest {
         Character savedCharacter = getSavedCharacter(returnedGame, mockGameRole.getId(), mockCharacter.getId());
         assertEquals(mockStockSpent, returnedGameMessage.getStockSpent());
         assertEquals(6 - mockStockSpent, returnedGameMessage.getCurrentStock());
-        assertEquals(6 - mockStockSpent, savedCharacter.getPlaybookUnique().getAngelKit().getStock());
+        assertEquals(6 - mockStockSpent, savedCharacter.getPlaybookUniques().getAngelKit().getStock());
         verify(moveService, times(1)).findByName(anyString());
         verifyMockServices();
     }
@@ -798,11 +798,11 @@ class GameServiceImplTest {
                 .surplus(mockSurplus)
                 .barter(0)
                 .build();
-        PlaybookUnique mockPlaybookUnique = PlaybookUnique.builder()
+        PlaybookUniques mockPlaybookUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .holding(mockHolding)
                 .build();
-        mockCharacter.setPlaybookUnique(mockPlaybookUnique);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
         CharacterMove mockCharacterMove = CharacterMove.createFromMove(wealth);
         mockCharacter.getCharacterMoves().add(mockCharacterMove);
         setUpMockServices();
@@ -818,9 +818,9 @@ class GameServiceImplTest {
         Character savedCharacter = getSavedCharacter(returnedGame, mockGameRole.getId(), mockCharacter.getId());
         assertTrue(returnedGameMessage.getContent().contains(wealth.getDescription()));
         if (returnedGameMessage.getRollResult() > 6) {
-            assertEquals(mockSurplus, savedCharacter.getPlaybookUnique().getHolding().getBarter());
+            assertEquals(mockSurplus, savedCharacter.getPlaybookUniques().getHolding().getBarter());
         } else {
-            assertEquals(0, savedCharacter.getPlaybookUnique().getHolding().getBarter());
+            assertEquals(0, savedCharacter.getPlaybookUniques().getHolding().getBarter());
         }
         verifyMockServices();
     }
@@ -834,11 +834,11 @@ class GameServiceImplTest {
                 .surplusBarter(mockSurplus)
                 .barter(0)
                 .build();
-        PlaybookUnique mockPlaybookUnique = PlaybookUnique.builder()
+        PlaybookUniques mockPlaybookUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .followers(mockFollowers)
                 .build();
-        mockCharacter.setPlaybookUnique(mockPlaybookUnique);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
         CharacterMove mockCharacterMove = CharacterMove.createFromMove(fortunes);
         mockCharacter.getCharacterMoves().add(mockCharacterMove);
         setUpMockServices();
@@ -855,9 +855,9 @@ class GameServiceImplTest {
 
         assertTrue(returnedGameMessage.getContent().contains(fortunes.getDescription()));
         if (returnedGameMessage.getRollResult() > 6) {
-            assertEquals(mockSurplus, savedCharacter.getPlaybookUnique().getFollowers().getBarter());
+            assertEquals(mockSurplus, savedCharacter.getPlaybookUniques().getFollowers().getBarter());
         } else {
-            assertEquals(0, savedCharacter.getPlaybookUnique().getFollowers().getBarter());
+            assertEquals(0, savedCharacter.getPlaybookUniques().getFollowers().getBarter());
         }
         verifyMockServices();
     }
@@ -1187,11 +1187,11 @@ class GameServiceImplTest {
                 .id(new ObjectId().toString())
                 .stock(startingStock)
                 .build();
-        PlaybookUnique mockPlaybookUnique = PlaybookUnique.builder()
+        PlaybookUniques mockPlaybookUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .angelKit(mockAngelKit)
                 .build();
-        mockCharacter.setPlaybookUnique(mockPlaybookUnique);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
         mockGameRole.getCharacters().add(mockCharacter);
         when(moveService.findByName(anyString())).thenReturn(stabilizeAndHeal);
         when(characterService.save(any(Character.class))).thenReturn(mockCharacter);
@@ -1212,7 +1212,7 @@ class GameServiceImplTest {
         Character savedCharacter = getSavedCharacter(returnedGame, mockGameRole.getId(), mockCharacter.getId());
 
         assertTrue(returnedGameMessage.getContent().contains(stabilizeAndHeal.getDescription()));
-        assertEquals(startingStock - mockStockSpent, savedCharacter.getPlaybookUnique().getAngelKit().getStock());
+        assertEquals(startingStock - mockStockSpent, savedCharacter.getPlaybookUniques().getAngelKit().getStock());
         verify(moveService, times(1)).findByName(anyString());
         verify(characterService, times(1)).save(any(Character.class));
         verify(gameRoleService, times(1)).findById(anyString());

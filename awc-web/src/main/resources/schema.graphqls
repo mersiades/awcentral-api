@@ -642,7 +642,7 @@ type Character {
     looks: [Look]
     statsBlock: StatsBlock
     hxBlock: [HxStat]
-    playbookUnique: PlaybookUnique
+    playbookUniques: PlaybookUniques
     characterMoves: [CharacterMove]
     barter: Int
     harm: CharacterHarm
@@ -682,7 +682,7 @@ type CharacterMove {
 
      ### ------------- Playbook Uniques ------------- ###
 
-type PlaybookUnique {
+type PlaybookUniques {
     id: ID!
     type: UniqueType
     brainerGear: BrainerGear

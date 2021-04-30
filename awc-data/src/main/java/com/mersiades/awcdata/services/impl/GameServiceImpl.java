@@ -570,8 +570,8 @@ public class GameServiceImpl implements GameService {
                 .stream().filter(character1 -> character1.getId().equals(characterId))
                 .findFirst().orElseThrow();
 
-        character.getPlaybookUnique().getAngelKit()
-                .setStock(character.getPlaybookUnique().getAngelKit().getStock() - stockSpent);
+        character.getPlaybookUniques().getAngelKit()
+                .setStock(character.getPlaybookUniques().getAngelKit().getStock() - stockSpent);
 
         characterService.save(character);
         gameRoleService.save(gameRole);
@@ -579,7 +579,7 @@ public class GameServiceImpl implements GameService {
         gameMessage.setContent(move.getDescription());
         gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), move.getName()).toUpperCase());
         gameMessage.setStockSpent(stockSpent);
-        gameMessage.setCurrentStock(userCharacter.getPlaybookUnique().getAngelKit().getStock());
+        gameMessage.setCurrentStock(userCharacter.getPlaybookUniques().getAngelKit().getStock());
 
         // Save message to Game and return game
         game.getGameMessages().add(gameMessage);
@@ -806,12 +806,12 @@ public class GameServiceImpl implements GameService {
 
         String content;
         if (gameMessage.getRollResult() > 6) {
-            int sessionBarter = character.getPlaybookUnique().getHolding().getSurplus();
-            character.getPlaybookUnique().getHolding().setBarter(sessionBarter);
+            int sessionBarter = character.getPlaybookUniques().getHolding().getSurplus();
+            character.getPlaybookUniques().getHolding().setBarter(sessionBarter);
             content = String.format("The holding's barter for the session is now **%s**\n" +
                     "\n", sessionBarter);
         } else {
-            character.getPlaybookUnique().getHolding().setBarter(0);
+            character.getPlaybookUniques().getHolding().setBarter(0);
             content = "The holding's barter for the session is now **0**\n" +
                     "\n";
         }
@@ -847,7 +847,7 @@ public class GameServiceImpl implements GameService {
         // If it doesn't find the move there, it searches the Moves collection in the db
         CharacterMove move = character.getCharacterMoves()
                 .stream().filter(characterMove -> characterMove.getName().equals(fortunesName)).findFirst().orElseThrow();
-        int modifier = character.getPlaybookUnique().getFollowers().getFortune();
+        int modifier = character.getPlaybookUniques().getFollowers().getFortune();
 
         gameMessage.setTitle(String.format("%s: %s", character.getName(), move.getName()).toUpperCase());
 
@@ -863,12 +863,12 @@ public class GameServiceImpl implements GameService {
 
         String content;
         if (gameMessage.getRollResult() > 6) {
-            int sessionBarter = character.getPlaybookUnique().getFollowers().getSurplusBarter();
-            character.getPlaybookUnique().getFollowers().setBarter(sessionBarter);
+            int sessionBarter = character.getPlaybookUniques().getFollowers().getSurplusBarter();
+            character.getPlaybookUniques().getFollowers().setBarter(sessionBarter);
             content = String.format("The followers' barter for the session is now **%s**\n" +
                     "\n", sessionBarter);
         } else {
-            character.getPlaybookUnique().getFollowers().setBarter(0);
+            character.getPlaybookUniques().getFollowers().setBarter(0);
             content = "The followers' barter for the session is now **0**\n" +
                     "\n";
         }
@@ -1488,15 +1488,15 @@ public class GameServiceImpl implements GameService {
         }
 
         // Adjust stock on user's Character
-        userCharacter.getPlaybookUnique().getAngelKit()
-                .setStock(userCharacter.getPlaybookUnique().getAngelKit().getStock() - stockSpent);
+        userCharacter.getPlaybookUniques().getAngelKit()
+                .setStock(userCharacter.getPlaybookUniques().getAngelKit().getStock() - stockSpent);
 
         if (userCharacter.getHasPlusOneForward()) {
             userCharacter.setHasPlusOneForward(false);
         }
 
         gameMessage.setStockSpent(stockSpent);
-        gameMessage.setCurrentStock(userCharacter.getPlaybookUnique().getAngelKit().getStock());
+        gameMessage.setCurrentStock(userCharacter.getPlaybookUniques().getAngelKit().getStock());
         game.getGameMessages().add(gameMessage);
 
         characterService.save(userCharacter);
