@@ -301,10 +301,13 @@ public class GameDataLoader implements CommandLineRunner {
                 hypnotic,
                 // Generic stat improvement moves
                 coolMax2,
+                secondCoolMax2,
                 hardMax2,
+                secondHardMax2,
                 hotMax2,
                 sharpMax2,
                 weirdMax2,
+                secondWeirdMax2,
                 coolMax3,
                 hardMax3,
                 hotMax3,

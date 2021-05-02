@@ -63,13 +63,21 @@ public class MoveServiceImpl implements MoveService {
     public List<Move> findOtherPlaybookMoves(PlaybookType playbookType) {
         List<Move> allMoves = this.findAll();
 
-        // Filter out moves from own playbook, and filter out all playbook default moves
-        List<Move> allCharacterMovesFromOtherPlaybooks = allMoves.stream()
-                .filter(move -> !move.getPlaybook().equals(playbookType) &&
-                        !move.getKind().equals(MoveType.DEFAULT_CHARACTER)).collect(Collectors.toList());
+        // Filter out all non-Playbook moves
+        List<Move> allCharacterMoves = allMoves.stream()
+                .filter(move -> move.getKind().equals(MoveType.CHARACTER)).collect(Collectors.toList());
+
+        // Filter out moves from own playbook
+        List<Move> allCharacterMovesFromOtherPlaybooks = allCharacterMoves.stream()
+                .filter(move -> !move.getPlaybook().equals(playbookType)).collect(Collectors.toList());
 
         // Filter out moves with no move action or roll modifier
         return allCharacterMovesFromOtherPlaybooks.stream()
                 .filter(move -> move.getMoveAction() != null || move.getRollModifier() != null).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Move> findAllById(List<String> moveIds) {
+        return (List<Move>) moveRepository.findAllById(moveIds);
     }
 }

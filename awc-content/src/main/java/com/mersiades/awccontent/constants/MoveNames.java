@@ -41,13 +41,17 @@ public class MoveNames {
     public static final String hypnoticName = "HYPNOTIC";
     public static final String justGiveMotiveName = "JUST GIVE ME A MOTIVE";
     public static final String sufferVHarm = "SUFFER V-HARM";
+    public static final String preparedForTheInevitableName = "PREPARED FOR THE INEVITABLE";
 
     // Improvement moves
     public static final String sharpMax2Name = "SHARP MAX 2";
     public static final String coolMax2Name = "COOL MAX 2";
+    public static final String secondCoolMax2Name = "SECOND COOL MAX 2";
     public static final String hardMax2Name = "HARD MAX 2";
+    public static final String secondHardMax2Name = "SECOND HARD MAX 2";
     public static final String hotMax2Name = "HOT MAX 2";
     public static final String weirdMax2Name = "WEIRD MAX 2";
+    public static final String secondWeirdMax2Name = "SECOND WEIRD MAX 2";
     public static final String sharpMax3Name = "SHARP MAX 3";
     public static final String coolMax3Name = "COOL MAX 3";
     public static final String hardMax3Name = "HARD MAX 3";
@@ -84,7 +88,15 @@ public class MoveNames {
     public static final String adjustMaestroDUnique2Name = "ADJUST MAESTRO D' UNIQUE 2";
     public static final String adjustSavvyheadUnique1Name = "ADJUST SAVVYHEAD UNIQUE 1";
     public static final String adjustSavvyheadUnique2Name = "ADJUST SAVVYHEAD UNIQUE 2";
+    public static final String addOtherPBMove1Name = "ADD MOVE FROM OTHER PLAYBOOK 1";
+    public static final String addOtherPBMove2Name = "ADD MOVE FROM OTHER PLAYBOOK 2";
     public static final String addGangLeadershipName = "ADD GANG AND LEADERSHIP";
+    public static final String genericIncreaseStatName = "GENERIC INCREASE STAT";
+    public static final String retireName = "RETIRE";
+    public static final String addSecondCharacterName = "ADD SECOND CHARACTER";
+    public static final String changePlaybookName = "CHANGE PLAYBOOK";
+    public static final String improveBasicMoves1Name = "IMPROVE BASIC MOVES 1";
+    public static final String improveBasicMoves2Name = "IMPROVE BASIC MOVES 2";
 
 
     // Moves that can earn holds

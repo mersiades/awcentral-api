@@ -11,9 +11,7 @@ import static com.mersiades.awccontent.content.MovesContent.*;
 
 public class PlaybookCreatorsContent {
 
-    public static final String IMPROVEMENT_INSTRUCTIONS_FOR_APP = "Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, an experience circle will be marked. When the 5th is marked, you can make an improvement.\n" +
-            "\n" +
-            "Each time you improve, choose one of the options. Check it off; you can’t choose it again.";
+    public static final String IMPROVEMENT_INSTRUCTIONS_FOR_APP = "Each time you improve, choose one of the options. Check it off; you can’t choose it again.";
 
     public static final String IMPROVEMENT_INSTRUCTIONS = "Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +
             "\n" +
@@ -71,11 +69,12 @@ public class PlaybookCreatorsContent {
             .startingBarter(2)
             .build();
 
+
     public static final List<Move> improvementMovesAngel = List.of(
             sharpMax3,
             coolMax2,
             hardMax2,
-            hardMax2,
+            secondHardMax2,
             weirdMax2,
             addAngelMove1,
             addAngelMove2,
@@ -85,6 +84,7 @@ public class PlaybookCreatorsContent {
     );
 
     public static final ImprovementBlock improvementBlockAngel = ImprovementBlock.builder()
+            .id(new ObjectId().toString())
             .playbookType(PlaybookType.ANGEL)
             .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
             .futureImprovementMoves(futureImprovementMoves)
@@ -96,6 +96,7 @@ public class PlaybookCreatorsContent {
     public static final List<Move> angelDefaultMoves = List.of(angelSpecial);
 
     public static final PlaybookCreator playbookCreatorAngel = PlaybookCreator.builder()
+            .id(new ObjectId().toString())
             .playbookType(PlaybookType.ANGEL)
             .gearInstructions(angelGearInstructions)
             .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
@@ -196,6 +197,7 @@ public class PlaybookCreatorsContent {
     );
 
     public static final ImprovementBlock improvementBlockBattlebabe = ImprovementBlock.builder()
+            .id(new ObjectId().toString())
             .playbookType(PlaybookType.BATTLEBABE)
             .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
             .futureImprovementMoves(futureImprovementMoves)
@@ -207,6 +209,7 @@ public class PlaybookCreatorsContent {
     public static final List<Move> battlebabeDefaultMoves = List.of(battlebabeSpecial);
 
     public static final PlaybookCreator playbookCreatorBattlebabe = PlaybookCreator.builder()
+            .id(new ObjectId().toString())
             .playbookType(PlaybookType.BATTLEBABE)
             .gearInstructions(battlebabeGearInstructions)
             .improvementInstructions("Whenever you roll a highlighted stat, and whenever you reset your Hx with someone, mark an experience circle. When you mark the 5th, improve and erase.\n" +

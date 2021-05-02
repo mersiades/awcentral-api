@@ -2,8 +2,7 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awccontent.content.MovesContent;
 import com.mersiades.awccontent.enums.*;
-import com.mersiades.awccontent.models.*;
-import com.mersiades.awccontent.models.uniquecreators.AngelKitCreator;
+import com.mersiades.awccontent.models.Look;
 import com.mersiades.awccontent.services.MoveService;
 import com.mersiades.awccontent.services.PlaybookCreatorService;
 import com.mersiades.awccontent.services.StatModifierService;
@@ -26,10 +25,10 @@ import java.util.Optional;
 import static com.mersiades.awccontent.content.LooksContent.lookAngel9;
 import static com.mersiades.awccontent.content.LooksContent.lookBattlebabe1;
 import static com.mersiades.awccontent.content.MovesContent.*;
-import static com.mersiades.awccontent.content.PlaybookCreatorsContent.gangCreator;
-import static com.mersiades.awccontent.content.PlaybookCreatorsContent.playbookCreatorAngel;
+import static com.mersiades.awccontent.content.PlaybookCreatorsContent.*;
 import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel1;
 import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel2;
+import static com.mersiades.awccontent.enums.UniqueType.CUSTOM_WEAPONS;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -263,7 +262,8 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(PlaybookType.BATTLEBABE, returnedCharacter.getPlaybook());
-        assertEquals(playbookCreatorAngel.getMoveChoiceCount(), returnedCharacter.getAllowedPlaybookMoves());
+        assertEquals(playbookCreatorBattlebabe.getMoveChoiceCount(), returnedCharacter.getAllowedPlaybookMoves());
+        assertEquals(CUSTOM_WEAPONS, returnedCharacter.getPlaybookUniques().getCustomWeapons().getUniqueType());
         verifyMockServices();
         verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
     }
@@ -420,35 +420,50 @@ class GameRoleServiceImplTest {
         mockCharacter.setPlaybook(PlaybookType.ANGEL);
         mockGameRole.getCharacters().add(mockCharacter);
 
-        List<Move> angelMoves = List.of(angelSpecial, sixthSense, infirmary);
-
-        AngelKitCreator angelKitCreator = AngelKitCreator.builder()
-                .id(new ObjectId().toString())
-                .angelKitInstructions("Your angel kit has...")
-                .startingStock(6)
+        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(StatType.COOL).value(1).build();
+        CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(1).build();
+        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(StatType.HOT).value(1).build();
+        CharacterStat mockCharacterStatSharp = CharacterStat.builder().stat(StatType.SHARP).value(1).build();
+        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(StatType.WEIRD).value(1).build();
+        StatsBlock statsBlock = StatsBlock.builder()
+                .id("mock-stats-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCharacterStatCool,
+                        mockCharacterStatHard,
+                        mockCharacterStatHot,
+                        mockCharacterStatSharp,
+                        mockCharacterStatWeird))
                 .build();
+        mockCharacter.setStatsBlock(statsBlock);
 
-        PlaybookUniqueCreator angelUniqueCreator = PlaybookUniqueCreator.builder()
-                .id(new ObjectId().toString())
-                .type(UniqueType.ANGEL_KIT)
-                .angelKitCreator(angelKitCreator)
-                .build();
+        when(moveService.findAllById(anyList())).thenReturn(List.of(angelSpecial, sixthSense, infirmary));
+        setupMockServices();
 
-        GearInstructions angelGearInstructions = GearInstructions.builder()
-                .id(new ObjectId().toString())
-                .build();
+        // When
+        Character returnedCharacter = gameRoleService
+                .setCharacterMoves(mockGameRole.getId(), mockCharacter.getId(),
+                        List.of(angelSpecial.getId(), sixthSense.getId(), infirmary.getId()));
 
-        PlaybookCreator angelCreator = PlaybookCreator.builder()
-                .playbookType(PlaybookType.ANGEL)
-                .gearInstructions(angelGearInstructions)
-                .improvementInstructions("Whenever you roll ")
-                .movesInstructions("You get all the basic moves.")
-                .hxInstructions("Everyone introduces their")
-                .playbookUniqueCreator(angelUniqueCreator)
-                .optionalMoves(angelMoves)
-                .defaultMoveCount(1)
-                .moveChoiceCount(2)
-                .build();
+        // Then
+        assertEquals(3, returnedCharacter.getCharacterMoves().size());
+        List<CharacterMove> returnedMoves = returnedCharacter.getCharacterMoves();
+
+        returnedMoves.forEach(characterMove -> {
+            assertTrue(characterMove.getName().equals(angelSpecial.getName()) ||
+                    characterMove.getName().equals(sixthSense.getName()) ||
+                    characterMove.getName().equals(infirmary.getName()));
+        });
+        verify(moveService, times(1)).findAllById(
+                anyList()
+        );
+        verifyMockServices();
+    }
+
+    @Test
+    public void shouldSetCharacterMoves_withSomeMovesFromOtherPlaybooks() {
+        // Given
+        mockCharacter.setPlaybook(PlaybookType.ANGEL);
+        mockGameRole.getCharacters().add(mockCharacter);
 
         CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(StatType.COOL).value(1).build();
         CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(1).build();
@@ -466,14 +481,13 @@ class GameRoleServiceImplTest {
                 .build();
         mockCharacter.setStatsBlock(statsBlock);
 
-        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(angelCreator);
+        when(moveService.findAllById(anyList())).thenReturn(List.of(angelSpecial, bonefeel, infirmary));
         setupMockServices();
-//        when(statModifierService.findById(anyString())).thenReturn();
 
         // When
         Character returnedCharacter = gameRoleService
                 .setCharacterMoves(mockGameRole.getId(), mockCharacter.getId(),
-                        List.of(angelSpecial.getId(), sixthSense.getId(), infirmary.getId()));
+                        List.of(angelSpecial.getId(), bonefeel.getId(), infirmary.getId()));
 
         // Then
         assertEquals(3, returnedCharacter.getCharacterMoves().size());
@@ -481,10 +495,12 @@ class GameRoleServiceImplTest {
 
         returnedMoves.forEach(characterMove -> {
             assertTrue(characterMove.getName().equals(angelSpecial.getName()) ||
-                    characterMove.getName().equals(sixthSense.getName()) ||
+                    characterMove.getName().equals(bonefeel.getName()) ||
                     characterMove.getName().equals(infirmary.getName()));
         });
-        verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
+        verify(moveService, times(1)).findAllById(
+                anyList()
+        );
         verifyMockServices();
     }
 
@@ -554,10 +570,7 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(mockCharacter);
         int stock = 6;
         Boolean hasSupplier = false;
-        when(moveService.findAllByPlaybookAndKind(any(PlaybookType.class), any(MoveType.class)))
-                .thenReturn(List.of(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc));
         setupMockServices();
-
 
         // When
         Character returnedCharacter = gameRoleService
@@ -567,7 +580,6 @@ class GameRoleServiceImplTest {
         assertEquals(List.of(stabilizeAndHeal, speedTheRecoveryOfSomeone, reviveSomeone, treatAnNpc),
                 returnedCharacter.getPlaybookUniques().getAngelKit().getAngelKitMoves());
 
-        verify(moveService, times(1)).findAllByPlaybookAndKind(any(PlaybookType.class), any(MoveType.class));
         verifyMockServices();
 
     }
