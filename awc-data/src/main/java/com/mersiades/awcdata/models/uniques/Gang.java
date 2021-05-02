@@ -1,6 +1,7 @@
 package com.mersiades.awcdata.models.uniques;
 
 import com.mersiades.awccontent.enums.GangSize;
+import com.mersiades.awccontent.enums.UniqueType;
 import com.mersiades.awccontent.models.GangOption;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,9 @@ public class Gang {
 
     @Id
     private String id;
+
+    @Builder.Default
+    private UniqueType uniqueType = UniqueType.GANG;
 
     private GangSize size;
 

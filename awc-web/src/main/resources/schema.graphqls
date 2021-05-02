@@ -634,26 +634,28 @@ type Hold {
 type Character {
     id: ID!
     name: String
-    gear: [String]
     playbook: PlaybookType
+    playbookUniques: PlaybookUniques
     hasCompletedCharacterCreation: Boolean
     hasPlusOneForward: Boolean
-    holds: [Hold]
-    looks: [Look]
-    statsBlock: StatsBlock
-    hxBlock: [HxStat]
-    playbookUniques: PlaybookUniques
-    characterMoves: [CharacterMove]
     barter: Int
+    statsBlock: StatsBlock
     harm: CharacterHarm
     vehicleCount: Int
-    vehicles: [Vehicle]
     battleVehicleCount: Int
-    battleVehicles: [BattleVehicle]
     experience: Int!
     allowedImprovements: Int!
     allowedPlaybookMoves: Int!
     allowedOtherPlaybookMoves: Int!
+    battleVehicles: [BattleVehicle]
+    vehicles: [Vehicle]
+    hxBlock: [HxStat]
+    gear: [String]
+    looks: [Look]
+    characterMoves: [CharacterMove]
+    improvementMoves: [CharacterMove]
+    futureImprovementMoves: [CharacterMove]
+    holds: [Hold]
 }
 
 type GameRole {
@@ -699,6 +701,7 @@ type PlaybookUniques {
 
 type AngelKit {
     id: ID!
+    uniqueType: UniqueType!
     description: String!
     stock: Int!
     angelKitMoves: [Move]
@@ -708,11 +711,13 @@ type AngelKit {
 
 type BrainerGear {
     id:ID!
+    uniqueType: UniqueType!
     brainerGear: [String]
 }
 
 type CustomWeapons {
     id: ID!
+    uniqueType: UniqueType!
     weapons: [String]!
 }
 
@@ -724,6 +729,7 @@ type CastCrew {
 
 type Establishment {
     id: ID!
+    uniqueType: UniqueType!
     mainAttraction: String!
     bestRegular: String!
     worstRegular: String!
@@ -740,6 +746,7 @@ type Establishment {
 
 type Followers {
     id: ID!
+    uniqueType: UniqueType!
     description: String!
     travelOption: String!
     characterization: String!
@@ -755,6 +762,7 @@ type Followers {
 
 type Gang {
     id: ID!
+    uniqueType: UniqueType!
     size: GangSize
     harm: Int
     armor: Int
@@ -765,6 +773,7 @@ type Gang {
 
 type Holding {
     id: ID!
+    uniqueType: UniqueType!
     holdingSize: HoldingSize!
     gangSize: GangSize!
     souls: String!
@@ -782,12 +791,14 @@ type Holding {
 
 type SkinnerGear {
     id: ID!
+    uniqueType: UniqueType!
     graciousWeapon: SkinnerGearItem!
     luxeGear: [SkinnerGearItem]!
 }
 
 type Weapons {
     id: ID!
+    uniqueType: UniqueType!
     weapons: [String]!
 }
 
@@ -799,6 +810,7 @@ type Project {
 
 type Workspace {
     id: ID!
+    uniqueType: UniqueType!
     workspaceInstructions: String!
     projectInstructions: String!
     workspaceItems: [String]!
@@ -1234,14 +1246,15 @@ type Mutation {
         characterId: String!,
         project: ProjectInput
     ): Character
-    adjustImprovements(gameRoleId: String!,
-        characterId: String!,
-        improvementIDs: [String]!,
-        futureImprovementIds: [String]
-    ): Character
     spendExperience(gameRoleId: String!,
         characterId: String!
     ): Character
+    adjustImprovements(gameRoleId: String!,
+        characterId: String!,
+        improvementIds: [String]!,
+        futureImprovementIds: [String]
+    ): Character
+
 
     #    Move categories
     performPrintMove(gameId: String!,

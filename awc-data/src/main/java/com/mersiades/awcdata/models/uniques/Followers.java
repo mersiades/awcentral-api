@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.models.uniques;
 
+import com.mersiades.awccontent.enums.UniqueType;
 import com.mersiades.awccontent.models.FollowersOption;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,9 @@ public class Followers {
 
     @Id
     private String id;
+
+    @Builder.Default
+    private UniqueType uniqueType = UniqueType.FOLLOWERS;
 
     private String description;
 

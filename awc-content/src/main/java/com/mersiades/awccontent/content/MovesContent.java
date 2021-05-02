@@ -1493,7 +1493,7 @@ public class MovesContent {
             .playbook(PlaybookType.GUNLUGGER).build();
     public static final Move preparedForTheInevitable = Move.builder()
             .id(new ObjectId().toString())
-            .name("PREPARED FOR THE INEVITABLE")
+            .name(preparedForTheInevitableName)
             .description("_**Prepared for the inevitable**_: you have a well-stocked and high-quality first aid kit. It counts as an angel kit (cf ) with a capacity of 2-stock.")
             .kind(MoveType.CHARACTER)
             .stat(null)
@@ -2063,6 +2063,15 @@ public class MovesContent {
             .stat(null)
             .build();
 
+    public static final Move secondCoolMax2 = Move.builder()
+            .id(new ObjectId().toString())
+            .name(secondCoolMax2Name)
+            .description("get +1cool (max sharp+2)\n")
+            .statModifier(coolMax2Mod)
+            .kind(MoveType.IMPROVE_STAT)
+            .stat(null)
+            .build();
+
     public static final StatModifier hardMax2Mod = StatModifier.builder()
             .id(new ObjectId().toString())
             .statToModify(StatType.HARD)
@@ -2073,6 +2082,15 @@ public class MovesContent {
     public static final Move hardMax2 = Move.builder()
             .id(new ObjectId().toString())
             .name(hardMax2Name)
+            .description("get +1hard (max hard+2)\n")
+            .statModifier(hardMax2Mod)
+            .kind(MoveType.IMPROVE_STAT)
+            .stat(null)
+            .build();
+
+    public static final Move secondHardMax2 = Move.builder()
+            .id(new ObjectId().toString())
+            .name(secondHardMax2Name)
             .description("get +1hard (max hard+2)\n")
             .statModifier(hardMax2Mod)
             .kind(MoveType.IMPROVE_STAT)
@@ -2105,6 +2123,15 @@ public class MovesContent {
     public static final Move weirdMax2 = Move.builder()
             .id(new ObjectId().toString())
             .name(weirdMax2Name)
+            .description("get +1weird (max weird+2)\n")
+            .statModifier(weirdMax2Mod)
+            .kind(MoveType.IMPROVE_STAT)
+            .stat(null)
+            .build();
+
+    public static final Move secondWeirdMax2 = Move.builder()
+            .id(new ObjectId().toString())
+            .name(secondWeirdMax2Name)
             .description("get +1weird (max weird+2)\n")
             .statModifier(weirdMax2Mod)
             .kind(MoveType.IMPROVE_STAT)
@@ -2446,14 +2473,14 @@ public class MovesContent {
 
     public static final Move addOtherPBMove1 = Move.builder()
             .id(new ObjectId().toString())
-            .name("ADD MOVE FROM OTHER PLAYBOOK 1")
+            .name(addOtherPBMove1Name)
             .description("get a move from another playbook\n")
             .kind(MoveType.ADD_OTHER_PB_MOVE)
             .build();
 
     public static final Move addOtherPBMove2 = Move.builder()
             .id(new ObjectId().toString())
-            .name("ADD MOVE FROM OTHER PLAYBOOK 2")
+            .name(addOtherPBMove2Name)
             .description("get a move from another playbook\n")
             .kind(MoveType.ADD_OTHER_PB_MOVE)
             .build();
@@ -2521,42 +2548,42 @@ public class MovesContent {
 
     public static final Move genericIncreaseStat = Move.builder()
             .id(new ObjectId().toString())
-            .name("GENERIC INCREASE STAT")
+            .name(genericIncreaseStatName)
             .description("get +1 to any stat (max stat+3)\n")
             .kind(MoveType.GENERIC_INCREASE_STAT)
             .build();
 
     public static final Move retire = Move.builder()
             .id(new ObjectId().toString())
-            .name("RETIRE")
+            .name(retireName)
             .description("retire your character to safety\n")
             .kind(MoveType.RETIRE)
             .build();
 
     public static final Move addSecondCharacter = Move.builder()
             .id(new ObjectId().toString())
-            .name("ADD SECOND CHARACTER")
+            .name(addSecondCharacterName)
             .description("create a second character to play\n")
             .kind(MoveType.ADD_SECOND_CHARACTER)
             .build();
 
     public static final Move changePlaybook = Move.builder()
             .id(new ObjectId().toString())
-            .name("CHANGE PLAYBOOK")
+            .name(changePlaybookName)
             .description("change your character to a new playbook\n")
             .kind(MoveType.CHANGE_PLAYBOOK)
             .build();
 
     public static final Move improveBasicMoves1 = Move.builder()
             .id(new ObjectId().toString())
-            .name("IMPROVE BASIC MOVES 1")
+            .name(improveBasicMoves1Name)
             .description("choose 3 basic moves and advance them\n")
             .kind(MoveType.IMPROVE_BASIC_MOVES)
             .build();
 
     public static final Move improveBasicMoves2 = Move.builder()
             .id(new ObjectId().toString())
-            .name("IMPROVE BASIC MOVES 2")
+            .name(improveBasicMoves2Name)
             .description("advance the other three basic moves\n")
             .kind(MoveType.IMPROVE_BASIC_MOVES)
             .build();
