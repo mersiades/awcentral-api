@@ -54,6 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/actuator/**"); // for health checks, such as AWS
         if (isDevOrTest()) {
             web.ignoring().antMatchers("/graphiql/**");
+            web.ignoring().antMatchers("/vendor/**");
+            web.ignoring().antMatchers("/graphql/**");
         }
     }
 
