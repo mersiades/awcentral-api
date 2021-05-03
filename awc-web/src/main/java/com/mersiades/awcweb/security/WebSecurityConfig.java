@@ -53,7 +53,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/actuator/**"); // for health checks, such as AWS
         if (isDevOrTest()) {
+            System.out.println("---------------------- IS IGNORING VENDOR -------------------");
             web.ignoring().antMatchers("/graphiql/**");
+            web.ignoring().antMatchers("/vendor/**");
+            web.ignoring().antMatchers("/graphql/**");
         }
     }
 
