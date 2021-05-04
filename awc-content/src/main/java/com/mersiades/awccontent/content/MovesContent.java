@@ -2505,7 +2505,7 @@ public class MovesContent {
 
     public static final Move addHolding = Move.builder()
             .id(new ObjectId().toString())
-            .name("ADD HOLDING")
+            .name(addHoldingName)
             .description("get a holding (you detail) and _**wealth**_\n")
             .kind(MoveType.ADD_UNIQUE)
             .playbook(PlaybookType.HARDHOLDER)

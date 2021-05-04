@@ -1418,6 +1418,8 @@ public class GameRoleServiceImpl implements GameRoleService {
     // Removes PlaybookUnique from Character on removal of ADD_UNIQUE improvement or the Gunlugger move
     private void removeUnique(Character character, String characterMoveName) {
 
+        List<CharacterMove> filteredMoves;
+
         switch (characterMoveName) {
             case preparedForTheInevitableName:
                 // Remove AngelKit
@@ -1425,11 +1427,21 @@ public class GameRoleServiceImpl implements GameRoleService {
                 break;
             case addGangLeadershipName:
                 // Remove leadership move
-                CharacterMove leadershipAsCM = CharacterMove.createFromMove(leadership);
-                character.getCharacterMoves().remove(leadershipAsCM);
+                filteredMoves = character.getCharacterMoves().stream()
+                        .filter(characterMove -> !characterMove.getName().equals(leadershipName)).collect(Collectors.toList());
+                character.setCharacterMoves(filteredMoves);
 
                 // Remove gang
                 character.getPlaybookUniques().setGang(null);
+                break;
+            case addHoldingName:
+                // Remove wealth move
+                filteredMoves = character.getCharacterMoves().stream()
+                        .filter(characterMove -> !characterMove.getName().equals(wealthName)).collect(Collectors.toList());
+                character.setCharacterMoves(filteredMoves);
+
+                // Remove holding
+                character.getPlaybookUniques().setHolding(null);
                 break;
             default:
                 // TODO: throw error
@@ -1466,6 +1478,28 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .tags(gangCreator.getDefaultTags())
                         .build();
                 character.getPlaybookUniques().setGang(gang);
+                break;
+            case addHoldingName:
+                // Add wealth move
+                CharacterMove wealthAsCM = CharacterMove.createFromMove(wealth);
+                wealthAsCM.setId(new ObjectId().toString());
+                character.getCharacterMoves().add(wealthAsCM);
+
+                // Add Holding with default settings
+                Holding holding = Holding.builder()
+                        .id(new ObjectId().toString())
+                        .uniqueType(UniqueType.HOLDING)
+                        .holdingSize(holdingCreator.getDefaultHoldingSize())
+                        .gigs(holdingCreator.getDefaultGigs())
+                        .wants(List.of(holdingCreator.getDefaultWant()))
+                        .gangDefenseArmorBonus(holdingCreator.getDefaultArmorBonus())
+                        .surplus(holdingCreator.getDefaultSurplus())
+                        .gangSize(holdingCreator.getDefaultGangSize())
+                        .gangHarm(holdingCreator.getDefaultGangHarm())
+                        .gangArmor(holdingCreator.getDefaultGangArmor())
+                        .gangTags(List.of(holdingCreator.getDefaultGangTag()))
+                        .build();
+                character.getPlaybookUniques().setHolding(holding);
                 break;
             default:
                 // TODO: throw error
