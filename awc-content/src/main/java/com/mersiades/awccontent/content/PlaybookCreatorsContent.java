@@ -786,6 +786,7 @@ public class PlaybookCreatorsContent {
                     "- a gang of about 40 violent bastards (2-harm gang medium unruly 1-armor).\n")
             .defaultGigs(List.of("hunting", "crude farming", "scavenging"))
             .defaultWant("hungry")
+            .defaultSouls("75-150 souls")
             .defaultArmorBonus(1)
             .defaultSurplus(1)
             .defaultVehiclesCount(4)
