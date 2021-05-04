@@ -1231,8 +1231,12 @@ public class GameRoleServiceImpl implements GameRoleService {
                             unModifyCharacterStat(character, characterMove);
                             break;
                         case ADD_CHARACTER_MOVE:
-                            // TODO: truncate character moves if there are too many
-                            character.setAllowedPlaybookMoves(character.getAllowedPlaybookMoves() - 1);
+                            int newAllowedMoves = character.getAllowedPlaybookMoves() - 1;
+                            List<CharacterMove> truncatedMoves = character.getCharacterMoves()
+                                    .stream().limit(newAllowedMoves).collect(Collectors.toList());
+
+                            character.setAllowedPlaybookMoves(newAllowedMoves);
+                            character.setCharacterMoves(truncatedMoves);
                             break;
                         case ADD_OTHER_PB_MOVE:
                             character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() - 1);
@@ -1647,8 +1651,8 @@ public class GameRoleServiceImpl implements GameRoleService {
                 character.getPlaybookUniques().getBrainerGear().setAllowedItemsCount(
                         brainerGearCreator.getDefaultItemCount()
                 );
-                List<String> existingItems = character.getPlaybookUniques().getBrainerGear().getBrainerGear();
-                List<String> truncatedItems = List.of(existingItems.get(0), existingItems.get(1));
+                List<String> truncatedItems = character.getPlaybookUniques().getBrainerGear().getBrainerGear()
+                        .stream().limit(brainerGearCreator.getDefaultItemCount()).collect(Collectors.toList());
                 character.getPlaybookUniques().getBrainerGear().setBrainerGear(truncatedItems);
                 break;
             default:

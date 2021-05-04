@@ -1461,10 +1461,14 @@ class GameRoleServiceImplTest {
                 .stats(List.of(mockCoolStat))
                 .build();
         mockCharacter.setStatsBlock(mockStatsBlock);
+        CharacterMove mockSixthSense = CharacterMove.createFromMove(sixthSense);
+        CharacterMove mockInfirmary = CharacterMove.createFromMove(infirmary);
+        CharacterMove mockProfCompassion = CharacterMove.createFromMove(profCompassion);
         CharacterMove mockAddAngelMoveAsCM = CharacterMove.createFromMove(MovesContent.addAngelMove1);
         mockCharacter.setAllowedImprovements(1);
         mockCharacter.setAllowedPlaybookMoves(initialAllowedPlaybookMoves);
         mockCharacter.setImprovementMoves(List.of(mockAddAngelMoveAsCM));
+        mockCharacter.setCharacterMoves(List.of(mockSixthSense, mockInfirmary, mockProfCompassion));
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
         when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
@@ -1475,6 +1479,7 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(initialAllowedPlaybookMoves - 1, returnedCharacter.getAllowedPlaybookMoves());
+        assertEquals(initialAllowedPlaybookMoves - 1, returnedCharacter.getCharacterMoves().size());
         assertFalse(returnedCharacter.getImprovementMoves().stream()
                 .anyMatch(characterMove -> characterMove.getName().equals(MovesContent.addAngelMove1.getName())));
         verifyMockServices();
