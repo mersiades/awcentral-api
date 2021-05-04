@@ -419,6 +419,53 @@ public class PlaybookCreatorsContent {
             .withMC("If you’d like to start play with a prosthetic, get with the MC.")
             .build();
 
+    public static final List<Move> improvementMovesChopper = List.of(
+            hardMax3,
+            coolMax2,
+            sharpMax2,
+            weirdMax2,
+            secondWeirdMax2,
+            adjustChopperUnique1,
+            adjustChopperUnique2,
+            addHolding,
+            addOtherPBMove1,
+            addOtherPBMove2
+    );
+
+    public static final ImprovementBlock improvementBlockChopper = ImprovementBlock.builder()
+            .id(new ObjectId().toString())
+            .playbookType(PlaybookType.CHOPPER)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
+            .futureImprovementMoves(futureImprovementMoves)
+            .improvementMoves(improvementMovesChopper)
+            .build();
+
+    public static final List<Move> chopperDefaultMoves = List.of(chopperSpecial, packAlpha, fuckingThieves);
+
+    public static final PlaybookCreator playbookCreatorChopper = PlaybookCreator.builder()
+            .playbookType(PlaybookType.CHOPPER)
+            .gearInstructions(chopperGearInstructions)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+            .movesInstructions("You get all the basic moves. You  get both chopper moves.\n" +
+                    "You can use all the battle moves, and probably will, but when you gotta start somewhere. When you get teh chance, look up _**seize by force**_, _**laying down fire**_, and the _**road war**_ moves, as well as the rules for how gangs inflict and suffer harm.")
+            .hxInstructions(HX_INSTRUCTIONS_START +
+                    "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                    "\n" +
+                    "- *Which one of you used to ride with my gang?* Give that character +1 for Hx.\n" +
+                    "- *Which one of you figures that you could take me out in a fight, if it came to it?* Give that character +2 for Hx.\n" +
+                    "- *Which one of you once stood up to me, gang and all?* Give that character +3 for Hx.\n" +
+                    "\n" +
+                    "Give everyone else -1 for Hx. You don't really care much about, y'know, people.\n" +
+                    HX_INSTRUCTIONS_END)
+            .playbookUniqueCreator(chopperUniqueCreator)
+            .improvementBlock(improvementBlockChopper)
+            .optionalMoves(List.of())
+            .defaultMoves(chopperDefaultMoves)
+            .defaultMoveCount(3)
+            .moveChoiceCount(0)
+            .defaultVehicleCount(1)
+            .build();
+
     /* ----------------------------- DRIVER PLAYBOOK CREATOR --------------------------------- */
 
     public static final GearInstructions driverGearInstructions = GearInstructions.builder()
@@ -437,6 +484,56 @@ public class PlaybookCreatorsContent {
             ))
             .startingBarter(4)
             .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+            .build();
+
+    public static final List<Move> driverOptionalMoves = List.of(combatDriver, eyeOnTheDoor, weatherEye, reputationMove, daredevil, collectorMove, myOtherCarIsATank);
+
+    public static final List<Move> driverDefaultMoves = List.of(driverSpecial);
+
+    public static final List<Move> improvementMovesDriver = List.of(
+            coolMax3,
+            hotMax2,
+            sharpMax2,
+            weirdMax2,
+            addDriverMove1,
+            addDriverMove2,
+            addVehicle,
+            addWorkspace,
+            addOtherPBMove1,
+            addOtherPBMove2
+    );
+
+    public static final ImprovementBlock improvementBlockDriver = ImprovementBlock.builder()
+            .id(new ObjectId().toString())
+            .playbookType(PlaybookType.DRIVER)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
+            .futureImprovementMoves(futureImprovementMoves)
+            .improvementMoves(improvementMovesDriver)
+            .build();
+
+    // Driver has no PlaybookUniques; has Vehicles instead
+
+    public static final PlaybookCreator playbookCreatorDriver = PlaybookCreator.builder()
+            .playbookType(PlaybookType.DRIVER)
+            .gearInstructions(driverGearInstructions)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+            .movesInstructions("You get all the basic moves. Choose 2 driver moves.\n" +
+                    "You can use all the battle moves, but when you get the chance, look up _**standing overwatch**_, the _**road war**_ moves, and the rules for how vehicles suffer harm")
+            .hxInstructions(HX_INSTRUCTIONS_START +
+                    "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                    "\n" +
+                    "- *Which one of you got me out of some serious shit?* Give that character +1 for Hx.\n" +
+                    "- *Which one of you has been with me for days on the road?* Give that character +2 for Hx.\n" +
+                    "- *Which one of you have I caught sometimes staring out at the horizon?* Give that character +3 for Hx.\n" +
+                    "\n" +
+                    "Give everyone else +1 for Hx. You aren't naturally inclined to get too close to too many people.\n" +
+                    HX_INSTRUCTIONS_END)
+            .optionalMoves(driverOptionalMoves)
+            .defaultMoves(driverDefaultMoves)
+            .improvementBlock(improvementBlockDriver)
+            .defaultMoveCount(1)
+            .moveChoiceCount(2)
+            .defaultVehicleCount(1)
             .build();
 
     /* ----------------------------- GUNLUGGER PLAYBOOK CREATOR --------------------------------- */
@@ -480,6 +577,55 @@ public class PlaybookCreatorsContent {
             .id(new ObjectId().toString())
             .type(UniqueType.WEAPONS)
             .weaponsCreator(weaponsCreator)
+            .build();
+
+    public static final List<Move> improvementMovesGunlugger = List.of(
+            coolMax2,
+            sharpMax2,
+            weirdMax2,
+            addGunluggerMove1,
+            addGunluggerMove2,
+            addVehicle,
+            addHolding,
+            addGangPackAlpha,
+            addOtherPBMove1,
+            addOtherPBMove2
+    );
+
+    public static final ImprovementBlock improvementBlockGunlugger = ImprovementBlock.builder()
+            .id(new ObjectId().toString())
+            .playbookType(PlaybookType.GUNLUGGER)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
+            .futureImprovementMoves(futureImprovementMoves)
+            .improvementMoves(improvementMovesGunlugger)
+            .build();
+
+    public static final List<Move> gunluggerOptionalMoves = List.of(battleHardened, fuckThisShit, battlefieldInstincts, insanoLikeDrano, preparedForTheInevitable, bloodcrazed, notToBeFuckedWith);
+
+    public static final List<Move> gunluggerDefaultMoves = List.of(gunluggerSpecial);
+
+    public static final PlaybookCreator playbookCreatorGunlugger = PlaybookCreator.builder()
+            .playbookType(PlaybookType.GUNLUGGER)
+            .gearInstructions(gearInstructionsGunlugger)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+            .movesInstructions("You get all the basic moves. Choose 3 gunlugger moves.\n" +
+                    "You can use all the battle moves, and probably will, but you gotta start somewhere. When you get the chance, look up _**seize by force**_ and  _**laying down fire**_.")
+            .hxInstructions(HX_INSTRUCTIONS_START +
+                    "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                    "\n" +
+                    "- *Which one of you left me bleeding, and did nothing for me?* Give that character -2 for Hx.\n" +
+                    "- *Which one of you has fought shoulder to shoulder with me?* Give that character +2 for Hx.\n" +
+                    "- *Which one of you is prettiest and/or smartest?* Give that character +3 for Hx.\n" +
+                    "\n" +
+                    "Give everyone else -1 for Hx. You find no particular need to understand most people.\n" +
+                    HX_INSTRUCTIONS_END)
+            .defaultMoves(gunluggerDefaultMoves)
+            .optionalMoves(gunluggerOptionalMoves)
+            .improvementBlock(improvementBlockGunlugger)
+            .playbookUniqueCreator(gunluggerUniqueCreator)
+            .defaultMoveCount(1)
+            .moveChoiceCount(3)
+            .defaultVehicleCount(0)
             .build();
 
     /* ----------------------------- HARDHOLDER PLAYBOOK CREATOR --------------------------------- */
@@ -809,6 +955,51 @@ public class PlaybookCreatorsContent {
             .holdingCreator(holdingCreator)
             .build();
 
+    public static final List<Move> improvementMovesHardholder = List.of(
+            hardMax3,
+            weirdMax2,
+            coolMax2,
+            hotMax2,
+            sharpMax2,
+            adjustHardHolderUnique1,
+            adjustHardHolderUnique2,
+            adjustHardHolderUnique3,
+            addOtherPBMove1,
+            addOtherPBMove2
+    );
+
+    public static final ImprovementBlock improvementBlockHardholder = ImprovementBlock.builder()
+            .id(new ObjectId().toString())
+            .playbookType(PlaybookType.HARDHOLDER)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
+            .futureImprovementMoves(futureImprovementMoves)
+            .improvementMoves(improvementMovesHardholder)
+            .build();
+
+    public static final List<Move> hardholderDefaultMoves = List.of(hardholderSpecial, leadership, wealth);
+
+    public static final PlaybookCreator playbookCreatorHardHolder = PlaybookCreator.builder()
+            .playbookType(PlaybookType.HARDHOLDER)
+            .gearInstructions(gearInstructionsHardholder)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+            .movesInstructions("You get all the basic moves. You get both hardholder moves.\n" +
+                    "You can use all the battle moves, and probably will, but you gotta start somewhere. When you get the chance, look up _**seize by force**_ and the rules for how gangs inflict and suffer harm.")
+            .hxInstructions(HX_INSTRUCTIONS_START +
+                    "Go around again for Hx. On your turn, ask either or both:\n" +
+                    "\n" +
+                    "- *Which one of you has been with me since before?* Give that character +2 for Hx.\n" +
+                    "- *Which one of you has betrayed or stolen from me?* Give that character +3 for Hx.\n" +
+                    "\n" +
+                    "Give everyone else +1 for Hx. It's in your interests to know everyone's business.\n" +
+                    HX_INSTRUCTIONS_END)
+            .playbookUniqueCreator(playbookUniqueCreatorHardHolder)
+            .defaultVehicleCount(4)
+            .defaultMoves(hardholderDefaultMoves)
+            .improvementBlock(improvementBlockHardholder)
+            .moveChoiceCount(0)
+            .defaultMoveCount(3)
+            .build();
+
     /* ----------------------------- HOCUS PLAYBOOK CREATOR --------------------------------- */
 
     public static final GearInstructions gearInstructionsHocus = GearInstructions.builder()
@@ -968,6 +1159,54 @@ public class PlaybookCreatorsContent {
             .followersCreator(followersCreator)
             .build();
 
+    public static final List<Move> improvementMovesHocus = List.of(
+            coolMax2,
+            hardMax2,
+            sharpMax2,
+            addHocusMove1,
+            addHocusMove2,
+            adjustHocusUnique1,
+            adjustHocusUnique2,
+            addHolding,
+            addOtherPBMove1,
+            addOtherPBMove2
+    );
+
+    public static final ImprovementBlock improvementBlockHocus = ImprovementBlock.builder()
+            .id(new ObjectId().toString())
+            .playbookType(PlaybookType.HOCUS)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
+            .futureImprovementMoves(futureImprovementMoves)
+            .improvementMoves(improvementMovesHocus)
+            .build();
+
+    public static final List<Move> hocusDefaultMoves = List.of(hocusSpecial, fortunes);
+
+    public static final List<Move> hocusMoves = List.of(frenzy, charismatic, fuckingWacknut, seeingSouls, divineProtection);
+
+    public static final PlaybookCreator playbookCreatorHocus = PlaybookCreator.builder()
+            .playbookType(PlaybookType.HOCUS)
+            .gearInstructions(gearInstructionsHocus)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+            .movesInstructions("You get all the basic moves. You get _**fortunes**_, and the choose 2 more hocus moves.\n" +
+                    "You can use all the battle moves, but when you get the chance, look up _**seize by force**_, _**keeping an eye out**_ and the rules for how gangs inflict and suffer harm.")
+            .hxInstructions(HX_INSTRUCTIONS_START +
+                    "Go around again for Hx. On your turn, ask either or both:\n" +
+                    "\n" +
+                    "- *Which one of you are my followers?* Give that character +2 for Hx.\n" +
+                    "- *One of you, I've seen your soul. Which one?* Give that character +3 for Hx.\n" +
+                    "\n" +
+                    "Give everyone else +1 for Hx. You're a good and quick judge of others.\n" +
+                    HX_INSTRUCTIONS_END)
+            .playbookUniqueCreator(playbookUniqueCreatorHocus)
+            .defaultVehicleCount(0)
+            .defaultMoves(hocusDefaultMoves)
+            .optionalMoves(hocusMoves)
+            .improvementBlock(improvementBlockHocus)
+            .moveChoiceCount(2)
+            .defaultMoveCount(2)
+            .build();
+
     /* ----------------------------- MAESTRO D' PLAYBOOK CREATOR --------------------------------- */
 
     public static final GearInstructions gearInstructionsMaestro = GearInstructions.builder()
@@ -1057,6 +1296,54 @@ public class PlaybookCreatorsContent {
             .establishmentCreator(establishmentCreator)
             .build();
 
+    public static final List<Move> improvementMovesMaestroD = List.of(
+            hotMax3,
+            coolMax2,
+            hardMax2,
+            weirdMax2,
+            addMaestroDMove1,
+            addMaestroDMove2,
+            adjustMaestroDUnique1,
+            adjustMaestroDUnique2,
+            addOtherPBMove1,
+            addOtherPBMove2
+    );
+
+    public static final ImprovementBlock improvementBlockMaestroD = ImprovementBlock.builder()
+            .id(new ObjectId().toString())
+            .playbookType(PlaybookType.MAESTRO_D)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
+            .futureImprovementMoves(futureImprovementMoves)
+            .improvementMoves(improvementMovesMaestroD)
+            .build();
+
+    public static final List<Move> maestroDefaultMoves = List.of(maestroSpecial);
+
+    public static final List<Move> maestroMoves = List.of(callThisHot, devilWithBlade, fingersInPie, everyBodyEats, justGiveMotive);
+
+    public static final PlaybookCreator playbookCreatorMaestro = PlaybookCreator.builder()
+            .playbookType(PlaybookType.MAESTRO_D)
+            .gearInstructions(gearInstructionsMaestro)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+            .movesInstructions("You get all the basic moves. Choose 2 maestro d' moves.\n" +
+                    "You can use all the battle moves, but when you get the chance, look up _**seize by force**_, _**baiting a trap**_ and _**turning the tables**_.")
+            .hxInstructions(HX_INSTRUCTIONS_START +
+                    "Go around again for Hx. On your turn, ask either or both:\n" +
+                    "\n" +
+                    "- *Which of you do I find most attractive?* Give that character +2 for Hx.\n" +
+                    "- *Which of you is my favorite?* Give that character +3 for Hx.\n" +
+                    "\n" +
+                    "Give everyone else +1 for Hx. It's your business to see people clearly.\n" +
+                    HX_INSTRUCTIONS_END)
+            .playbookUniqueCreator(playbookUniqueCreatorMaestro)
+            .defaultVehicleCount(0)
+            .defaultMoves(maestroDefaultMoves)
+            .optionalMoves(maestroMoves)
+            .improvementBlock(improvementBlockMaestroD)
+            .moveChoiceCount(2)
+            .defaultMoveCount(1)
+            .build();
+
     /* ----------------------------- SAVVYHEAD PLAYBOOK CREATOR --------------------------------- */
 
     public static final GearInstructions gearInstructionsSavvyhead = GearInstructions.builder()
@@ -1110,6 +1397,54 @@ public class PlaybookCreatorsContent {
             .id(new ObjectId().toString())
             .type(UniqueType.WORKSPACE)
             .workspaceCreator(workspaceCreator)
+            .build();
+
+    public static final List<Move> improvementMovesSavvyhead = List.of(
+            coolMax2,
+            hardMax2,
+            sharpMax2,
+            addSavvyheadMove1,
+            addSavvyheadMove2,
+            addGangLeadership,
+            adjustSavvyheadUnique1,
+            adjustSavvyheadUnique2,
+            addOtherPBMove1,
+            addOtherPBMove2
+    );
+
+    public static final ImprovementBlock improvementBlockSavvyhead = ImprovementBlock.builder()
+            .id(new ObjectId().toString())
+            .playbookType(PlaybookType.SAVVYHEAD)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
+            .futureImprovementMoves(futureImprovementMoves)
+            .improvementMoves(improvementMovesSavvyhead)
+            .build();
+
+    public static final List<Move> savvyheadDefaultMoves = List.of(savvyheadSpecial);
+
+    public static final List<Move> savvyheadMoves = List.of(thingsSpeak, bonefeel, oftenerRight, frayingEdge, spookyIntense, deepInsights);
+
+    public static final PlaybookCreator playbookCreatorSavvyhead = PlaybookCreator.builder()
+            .playbookType(PlaybookType.SAVVYHEAD)
+            .gearInstructions(gearInstructionsSavvyhead)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+            .movesInstructions("You get all the basic moves. Choose 2 savvyhead moves.\n" +
+                    "You can use all the battle moves, but when you get the chance, look up _**keep an eye out**_, _**baiting a trap**_ and _**turning the tables**_, as well as the rules for how vehicles suffer harm.")
+            .hxInstructions(HX_INSTRUCTIONS_START +
+                    "Go around again for Hx. On your turn, ask either or both:\n" +
+                    "\n" +
+                    "- *Which of you is most strange?* Give that character +1 for Hx.\n" +
+                    "- *Which one of you is the biggest potential problem?* Give that character +2 for Hx.\n" +
+                    "\n" +
+                    "Give everyone else -1 for Hx. You've got other stuff to do and other stuff to learn.\n" +
+                    HX_INSTRUCTIONS_END)
+            .playbookUniqueCreator(playbookUniqueCreatorSavvyhead)
+            .defaultVehicleCount(0)
+            .defaultMoves(savvyheadDefaultMoves)
+            .optionalMoves(savvyheadMoves)
+            .improvementBlock(improvementBlockSavvyhead)
+            .moveChoiceCount(2)
+            .defaultMoveCount(1)
             .build();
 
     /* ----------------------------- SKINNER PLAYBOOK CREATOR --------------------------------- */
@@ -1183,5 +1518,54 @@ public class PlaybookCreatorsContent {
             .id(new ObjectId().toString())
             .type(UniqueType.SKINNER_GEAR)
             .skinnerGearCreator(skinnerGearCreator)
+            .build();
+
+    public static final List<Move> improvementMovesSkinner = List.of(
+            coolMax2,
+            secondCoolMax2,
+            hardMax2,
+            sharpMax2,
+            addSkinnerMove1,
+            addSkinnerMove2,
+            addEstablishment,
+            addFollowers,
+            addOtherPBMove1,
+            addOtherPBMove2
+    );
+
+    public static final ImprovementBlock improvementBlockSkinner = ImprovementBlock.builder()
+            .id(new ObjectId().toString())
+            .playbookType(PlaybookType.SKINNER)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
+            .futureImprovementMoves(futureImprovementMoves)
+            .improvementMoves(improvementMovesSkinner)
+            .build();
+
+    public static final List<Move> skinnerOptionalMoves = List.of(breathtaking, lost, artful, anArrestingSkinner, hypnotic);
+
+    public static final List<Move> skinnerDefaultMoves = List.of(skinnerSpecial);
+
+    public static final PlaybookCreator playbookCreatorSkinner = PlaybookCreator.builder()
+            .playbookType(PlaybookType.SKINNER)
+            .gearInstructions(gearInstructionsSkinner)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+            .movesInstructions("You get all the basic moves. Choose 2 skinner moves.\n" +
+                    "You can use all the battle moves, but when you get the chance, look up _**standing overwatch**_, _**keeping an eye out**_, _**baiting a trap**_, and _**turning the tables**_.")
+            .hxInstructions(HX_INSTRUCTIONS_START +
+                    "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                    "\n" +
+                    "- *Which one of you is my friend?* Give that character +2 for Hx.\n" +
+                    "- *Which one of you is my lover?* Give that character +1 for Hx.\n" +
+                    "- *Which one of you is in love with me?* Give that character -1 for Hx.\n" +
+                    "\n" +
+                    "Give everyone else +1 or -1 for Hx, as you choose.\n" +
+                    HX_INSTRUCTIONS_END)
+            .playbookUniqueCreator(playbookUniqueCreatorSkinner)
+            .defaultVehicleCount(0)
+            .defaultMoves(skinnerDefaultMoves)
+            .optionalMoves(skinnerOptionalMoves)
+            .improvementBlock(improvementBlockSkinner)
+            .moveChoiceCount(2)
+            .defaultMoveCount(1)
             .build();
 }
