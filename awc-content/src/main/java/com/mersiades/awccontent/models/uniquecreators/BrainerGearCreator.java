@@ -18,6 +18,8 @@ public class BrainerGearCreator {
     @Id
     private String id;
 
+    private int defaultItemCount;
+
     @Builder.Default
     private List<String> gear = new ArrayList<>();
 }

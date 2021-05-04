@@ -527,10 +527,11 @@ public class GameRoleServiceImpl implements GameRoleService {
 
         BrainerGear brainerGear1 = BrainerGear.builder()
                 .id(new ObjectId().toString())
+                .allowedItemsCount(brainerGearCreator.getDefaultItemCount())
                 .brainerGear(brainerGear)
                 .build();
 
-        if (character.getPlaybookUniques() == null || character.getPlaybookUniques().getType() != UniqueType.BRAINER_GEAR) {
+        if (character.getPlaybookUniques() == null) {
             // make new brainerGear & set
             PlaybookUniques brainerUnique = PlaybookUniques.builder()
                     .id(new ObjectId().toString())
@@ -539,7 +540,9 @@ public class GameRoleServiceImpl implements GameRoleService {
                     .build();
 
             character.setPlaybookUniques(brainerUnique);
-        } else {
+        } else if (character.getPlaybookUniques() != null && character.getPlaybookUniques().getBrainerGear() == null) {
+            character.getPlaybookUniques().setBrainerGear(brainerGear1);
+        } else if (character.getPlaybookUniques() != null && character.getPlaybookUniques().getBrainerGear() != null) {
             character.getPlaybookUniques().setBrainerGear(brainerGear1);
         }
 
@@ -1228,6 +1231,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                             unModifyCharacterStat(character, characterMove);
                             break;
                         case ADD_CHARACTER_MOVE:
+                            // TODO: truncate character moves if there are too many
                             character.setAllowedPlaybookMoves(character.getAllowedPlaybookMoves() - 1);
                             break;
                         case ADD_OTHER_PB_MOVE:
@@ -1303,10 +1307,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                     character.getImprovementMoves().add(characterMove);
                 }
             });
-
-
         }
-
 
         // Save to db
         characterService.save(character);
@@ -1506,6 +1507,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 BrainerGear brainerGear = BrainerGear.builder()
                         .id(new ObjectId().toString())
                         .uniqueType(UniqueType.BRAINER_GEAR)
+                        .allowedItemsCount(brainerGearCreator.getDefaultItemCount())
                         .build();
                 PlaybookUniques playbookUniquesBrainer = PlaybookUniques.builder()
                         .id(new ObjectId().toString())
@@ -1641,6 +1643,14 @@ public class GameRoleServiceImpl implements GameRoleService {
             case adjustAngelUnique1Name:
                 character.getPlaybookUniques().getAngelKit().setHasSupplier(false);
                 break;
+            case adjustBrainerUnique1Name:
+                character.getPlaybookUniques().getBrainerGear().setAllowedItemsCount(
+                        brainerGearCreator.getDefaultItemCount()
+                );
+                List<String> existingItems = character.getPlaybookUniques().getBrainerGear().getBrainerGear();
+                List<String> truncatedItems = List.of(existingItems.get(0), existingItems.get(1));
+                character.getPlaybookUniques().getBrainerGear().setBrainerGear(truncatedItems);
+                break;
             default:
                 // TODO: throw error
         }
@@ -1650,6 +1660,9 @@ public class GameRoleServiceImpl implements GameRoleService {
         switch (characterMove.getName()) {
             case adjustAngelUnique1Name:
                 character.getPlaybookUniques().getAngelKit().setHasSupplier(true);
+                break;
+            case adjustBrainerUnique1Name:
+                character.getPlaybookUniques().getBrainerGear().setAllowedItemsCount(character.getPlaybookUniques().getBrainerGear().getAllowedItemsCount() + 2);
                 break;
             default:
                 // TODO: throw error

@@ -28,6 +28,7 @@ import static com.mersiades.awccontent.content.MovesContent.*;
 import static com.mersiades.awccontent.content.PlaybookCreatorsContent.*;
 import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel1;
 import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel2;
+import static com.mersiades.awccontent.enums.UniqueType.BRAINER_GEAR;
 import static com.mersiades.awccontent.enums.UniqueType.CUSTOM_WEAPONS;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -251,11 +252,11 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    void shouldSetCharacterPlaybook() {
+    void shouldSetCharacterPlaybook_Battlebabe() {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
-        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(playbookCreatorAngel);
+        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(playbookCreatorBattlebabe);
 
         // When
         Character returnedCharacter = gameRoleService.setCharacterPlaybook(MOCK_GAMEROLE_ID, mockCharacter.getId(), PlaybookType.BATTLEBABE);
@@ -264,6 +265,26 @@ class GameRoleServiceImplTest {
         assertEquals(PlaybookType.BATTLEBABE, returnedCharacter.getPlaybook());
         assertEquals(playbookCreatorBattlebabe.getMoveChoiceCount(), returnedCharacter.getAllowedPlaybookMoves());
         assertEquals(CUSTOM_WEAPONS, returnedCharacter.getPlaybookUniques().getCustomWeapons().getUniqueType());
+        verifyMockServices();
+        verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
+    }
+
+    @Test
+    void shouldSetCharacterPlaybook_Brainer() {
+        // Given
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(playbookCreatorBrainer);
+
+        // When
+        Character returnedCharacter = gameRoleService.setCharacterPlaybook(MOCK_GAMEROLE_ID, mockCharacter.getId(), PlaybookType.BRAINER);
+
+        // Then
+        assertEquals(PlaybookType.BRAINER, returnedCharacter.getPlaybook());
+        assertEquals(playbookCreatorBrainer.getMoveChoiceCount(), returnedCharacter.getAllowedPlaybookMoves());
+        assertEquals(BRAINER_GEAR, returnedCharacter.getPlaybookUniques().getBrainerGear().getUniqueType());
+        assertEquals(brainerGearCreator.getDefaultItemCount(), returnedCharacter.getPlaybookUniques().getBrainerGear().getAllowedItemsCount());
+        assertEquals(0, returnedCharacter.getPlaybookUniques().getBrainerGear().getBrainerGear().size());
         verifyMockServices();
         verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
     }
@@ -1571,6 +1592,68 @@ class GameRoleServiceImplTest {
         assertFalse(returnedCharacter.getPlaybookUniques().getAngelKit().isHasSupplier());
         assertFalse(returnedCharacter.getImprovementMoves().stream()
                 .anyMatch(characterMove -> characterMove.getName().equals(mockAdjustAngelUnique1.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldIncreaseBrainerGearItems_onAddCharacterImprovement() {
+        // Given
+        mockCharacter.setAllowedImprovements(1);
+        addPlaybookUniquesToCharacter(mockCharacter, UniqueType.BRAINER_GEAR);
+
+        BrainerGear brainerGear = BrainerGear.builder()
+                .id(new ObjectId().toString())
+                .allowedItemsCount(brainerGearCreator.getDefaultItemCount())
+                .brainerGear(List.of("item 1", "item 2"))
+                .build();
+        mockCharacter.getPlaybookUniques().setBrainerGear(brainerGear);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(adjustBrainerUnique1);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(adjustBrainerUnique1.getId()), List.of());
+
+        // Then
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(adjustBrainerUnique1.getName())));
+        assertEquals(brainerGearCreator.getDefaultItemCount() +2, returnedCharacter.getPlaybookUniques().getBrainerGear().getAllowedItemsCount());
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldDecreaseBrainerGearItems_onRemoveCharacterImprovement() {
+        // Given
+        addStatsBlockToCharacter(mockCharacter);
+        mockCharacter.setAllowedImprovements(1);
+        addPlaybookUniquesToCharacter(mockCharacter, UniqueType.BRAINER_GEAR);
+
+        BrainerGear brainerGear = BrainerGear.builder()
+                .id(new ObjectId().toString())
+                .allowedItemsCount(4)
+                .brainerGear(List.of("item 1", "item 2", "item 3", "item 4"))
+                .build();
+        mockCharacter.getPlaybookUniques().setBrainerGear(brainerGear);
+        CharacterMove mockAdjustBrainerUnique1 = CharacterMove.createFromMove(adjustBrainerUnique1);
+        mockCharacter.setImprovementMoves(List.of(mockAdjustBrainerUnique1));
+
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
+
+        // Then
+        assertEquals(2, returnedCharacter.getPlaybookUniques().getBrainerGear().getAllowedItemsCount());
+        assertEquals(2, returnedCharacter.getPlaybookUniques().getBrainerGear().getBrainerGear().size());
+
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(mockAdjustBrainerUnique1.getName())));
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
     }

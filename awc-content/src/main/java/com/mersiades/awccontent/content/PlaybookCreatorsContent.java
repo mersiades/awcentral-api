@@ -236,6 +236,7 @@ public class PlaybookCreatorsContent {
     /* ----------------------------- BRAINER PLAYBOOK CREATOR --------------------------------- */
     public static final BrainerGearCreator brainerGearCreator = BrainerGearCreator.builder()
             .id(new ObjectId().toString())
+            .defaultItemCount(2)
             .gear(List.of("implant syringe (tag hi-tech)" +
                             "_After you’ve tagged someone, if a brainer move allows you to inflict harm on them, inflict +1harm._",
                     "brain relay (area close hi-tech)" +
@@ -264,6 +265,55 @@ public class PlaybookCreatorsContent {
             .chooseableGear(List.of("silenced 9mm (2-harm close hi-tech)", "ornate dagger (2-harm hand valuable)", "hidden knives (2-harm hand infinite)", "scalpels (3-harm intimate hi-tech)", "antique handgun (2-harm close reload loud valuable)"))
             .startingBarter(8)
             .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")
+            .build();
+
+    public static final List<Move> improvementMovesBrainer = List.of(
+            coolMax2,
+            sharpMax2,
+            hardMax2,
+            secondHardMax2,
+            addBrainerMove1,
+            addBrainerMove2,
+            adjustBrainerUnique1,
+            addHolding,
+            addOtherPBMove1,
+            addOtherPBMove2
+    );
+
+    public static final ImprovementBlock improvementBlockBrainer = ImprovementBlock.builder()
+            .id(new ObjectId().toString())
+            .playbookType(PlaybookType.BRAINER)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS_FOR_APP)
+            .futureImprovementMoves(futureImprovementMoves)
+            .improvementMoves(improvementMovesBrainer)
+            .build();
+
+    public static final List<Move> brainerOptionalMoves = List.of(unnaturalLust, brainReceptivity, brainScan, whisperProjection, puppetStrings);
+
+    public static final List<Move> brainerDefaultMoves = List.of(brainerSpecial);
+
+    public static final PlaybookCreator playbookCreatorBrainer = PlaybookCreator.builder()
+            .playbookType(PlaybookType.BRAINER)
+            .gearInstructions(brainerGearInstructions)
+            .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
+            .movesInstructions("You get all the basic moves. Choose 2 brainer moves.\n" +
+                    "You can use all the battle moves, but when you get the chance, look up _**keeping an eye out**_, _**baiting a trap**_, and _**turning the tables**_.")
+            .hxInstructions(HX_INSTRUCTIONS_START +
+                    "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
+                    "\n" +
+                    "- *Which one of you has slept in my presence (knowingly or un-)?* Give that character +2 for Hx.\n" +
+                    "- *Which one of you have I been watching carefully, in secret?* Give that character +2 for Hx.\n" +
+                    "- *Which one of you most evidently dislikes and distrusts me?* Give that character +3 for Hx.\n" +
+                    "\n" +
+                    "Give everyone else +1 for Hx. You have weird insights into everyone.\n" +
+                    HX_INSTRUCTIONS_END)
+            .playbookUniqueCreator(brainerUniqueCreator)
+            .optionalMoves(brainerOptionalMoves)
+            .defaultMoves(brainerDefaultMoves)
+            .improvementBlock(improvementBlockBrainer)
+            .defaultMoveCount(1)
+            .moveChoiceCount(2)
+            .defaultVehicleCount(0)
             .build();
 
     /* ----------------------------- CHOPPER PLAYBOOK CREATOR --------------------------------- */

@@ -283,6 +283,7 @@ type AngelKitCreator {
 
 type BrainerGearCreator {
     id: ID!
+    defaultItemCount: Int!
     gear: [String]!
 }
 
@@ -712,7 +713,8 @@ type AngelKit {
 type BrainerGear {
     id:ID!
     uniqueType: UniqueType!
-    brainerGear: [String]
+    allowedItemsCount: Int!
+    brainerGear: [String]!
 }
 
 type CustomWeapons {

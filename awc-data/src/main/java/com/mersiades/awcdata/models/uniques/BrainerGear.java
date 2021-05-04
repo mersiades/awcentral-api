@@ -19,6 +19,8 @@ public class BrainerGear {
     @Id
     private String id;
 
+    private int allowedItemsCount;
+
     @Builder.Default
     private UniqueType uniqueType = UniqueType.BRAINER_GEAR;
 

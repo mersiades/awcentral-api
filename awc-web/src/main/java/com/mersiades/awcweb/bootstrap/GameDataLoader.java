@@ -1002,39 +1002,6 @@ public class GameDataLoader implements CommandLineRunner {
     public void loadPlaybookCreators() {
         System.out.println("|| --- Loading playbook creators --- ||");
 
-        /* ----------------------------- BATTLEBABE PLAYBOOK CREATOR --------------------------------- */
-
-
-        /* ----------------------------- BRAINER PLAYBOOK CREATOR --------------------------------- */
-        List<Move> brainerOptionalMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.CHARACTER);
-
-        List<Move> brainerDefaultMoves = moveRepository
-                .findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.DEFAULT_CHARACTER);
-
-        PlaybookCreator playbookCreatorBrainer = PlaybookCreator.builder()
-                .playbookType(PlaybookType.BRAINER)
-                .gearInstructions(brainerGearInstructions)
-                .improvementInstructions(IMPROVEMENT_INSTRUCTIONS)
-                .movesInstructions("You get all the basic moves. Choose 2 brainer moves.\n" +
-                        "You can use all the battle moves, but when you get the chance, look up _**keeping an eye out**_, _**baiting a trap**_, and _**turning the tables**_.")
-                .hxInstructions(HX_INSTRUCTIONS_START +
-                        "Go around again for Hx. On your turn, ask 1, 2 or all 3:\n" +
-                        "\n" +
-                        "- *Which one of you has slept in my presence (knowingly or un-)?* Give that character +2 for Hx.\n" +
-                        "- *Which one of you have I been watching carefully, in secret?* Give that character +2 for Hx.\n" +
-                        "- *Which one of you most evidently dislikes and distrusts me?* Give that character +3 for Hx.\n" +
-                        "\n" +
-                        "Give everyone else +1 for Hx. You have weird insights into everyone.\n" +
-                        HX_INSTRUCTIONS_END)
-                .playbookUniqueCreator(brainerUniqueCreator)
-                .optionalMoves(brainerOptionalMoves)
-                .defaultMoves(brainerDefaultMoves)
-                .defaultMoveCount(1)
-                .moveChoiceCount(2)
-                .defaultVehicleCount(0)
-                .build();
-
         /* ----------------------------- CHOPPER PLAYBOOK CREATOR --------------------------------- */
 
         List<Move> chopperOptionalMoves = moveRepository
