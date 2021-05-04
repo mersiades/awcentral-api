@@ -415,26 +415,12 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    public void shouldSetCharacterMoves() {
+    public void shouldSetCharacterMoves_Angel() {
         // Given
         mockCharacter.setPlaybook(PlaybookType.ANGEL);
         mockGameRole.getCharacters().add(mockCharacter);
 
-        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(StatType.COOL).value(1).build();
-        CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(1).build();
-        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(StatType.HOT).value(1).build();
-        CharacterStat mockCharacterStatSharp = CharacterStat.builder().stat(StatType.SHARP).value(1).build();
-        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(StatType.WEIRD).value(1).build();
-        StatsBlock statsBlock = StatsBlock.builder()
-                .id("mock-stats-block-id")
-                .statsOptionId("mock-stats-option-id")
-                .stats(List.of(mockCharacterStatCool,
-                        mockCharacterStatHard,
-                        mockCharacterStatHot,
-                        mockCharacterStatSharp,
-                        mockCharacterStatWeird))
-                .build();
-        mockCharacter.setStatsBlock(statsBlock);
+        addStatsBlockToCharacter(mockCharacter);
 
         when(moveService.findAllById(anyList())).thenReturn(List.of(angelSpecial, sixthSense, infirmary));
         setupMockServices();
@@ -460,26 +446,12 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    public void shouldSetCharacterMoves_withSomeMovesFromOtherPlaybooks() {
+    public void shouldSetCharacterMoves_Angel_withSomeMovesFromOtherPlaybooks() {
         // Given
         mockCharacter.setPlaybook(PlaybookType.ANGEL);
         mockGameRole.getCharacters().add(mockCharacter);
 
-        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(StatType.COOL).value(1).build();
-        CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(1).build();
-        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(StatType.HOT).value(1).build();
-        CharacterStat mockCharacterStatSharp = CharacterStat.builder().stat(StatType.SHARP).value(1).build();
-        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(StatType.WEIRD).value(1).build();
-        StatsBlock statsBlock = StatsBlock.builder()
-                .id("mock-stats-block-id")
-                .statsOptionId("mock-stats-option-id")
-                .stats(List.of(mockCharacterStatCool,
-                        mockCharacterStatHard,
-                        mockCharacterStatHot,
-                        mockCharacterStatSharp,
-                        mockCharacterStatWeird))
-                .build();
-        mockCharacter.setStatsBlock(statsBlock);
+        addStatsBlockToCharacter(mockCharacter);
 
         when(moveService.findAllById(anyList())).thenReturn(List.of(angelSpecial, bonefeel, infirmary));
         setupMockServices();
@@ -502,6 +474,124 @@ class GameRoleServiceImplTest {
                 anyList()
         );
         verifyMockServices();
+    }
+
+    @Test
+    public void shouldSetCharacterMoves_Gunlugger_withPreparedForTheInevitableMove() {
+        // Given
+        mockCharacter.setPlaybook(PlaybookType.GUNLUGGER);
+        mockGameRole.getCharacters().add(mockCharacter);
+
+        addStatsBlockToCharacter(mockCharacter);
+
+        addPlaybookUniquesToCharacter(mockCharacter, UniqueType.WEAPONS);
+
+        Weapons weapons = Weapons.builder()
+                .id(new ObjectId().toString())
+                .build();
+
+        mockCharacter.getPlaybookUniques().setWeapons(weapons);
+
+        when(moveService.findAllById(anyList())).thenReturn(List.of(gunluggerSpecial,
+                battleHardened,
+                preparedForTheInevitable,
+                battlefieldInstincts
+        ));
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .setCharacterMoves(mockGameRole.getId(), mockCharacter.getId(),
+                        List.of(gunluggerSpecial.getId(),
+                                battleHardened.getId(),
+                                preparedForTheInevitable.getId(),
+                                battlefieldInstincts.getId()));
+
+        // Then
+        assertEquals(4, returnedCharacter.getCharacterMoves().size());
+        List<CharacterMove> returnedMoves = returnedCharacter.getCharacterMoves();
+
+        returnedMoves.forEach(characterMove -> {
+            assertTrue(characterMove.getName().equals(gunluggerSpecial.getName()) ||
+                    characterMove.getName().equals(battleHardened.getName()) ||
+                    characterMove.getName().equals(preparedForTheInevitable.getName()) ||
+                    characterMove.getName().equals(battlefieldInstincts.getName()));
+        });
+
+        assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+        assertNotNull(returnedCharacter.getPlaybookUniques().getWeapons());
+
+        verify(moveService, times(1)).findAllById(
+                anyList()
+        );
+        verifyMockServices();
+    }
+
+    @Test
+    public void shouldRemoveAngelKit_Gunlugger_whenRemovingPreparedForTheInevitableMove() {
+        // Given
+        mockCharacter.setPlaybook(PlaybookType.GUNLUGGER);
+        mockGameRole.getCharacters().add(mockCharacter);
+
+        addStatsBlockToCharacter(mockCharacter);
+
+        addPlaybookUniquesToCharacter(mockCharacter, UniqueType.WEAPONS);
+
+        Weapons weapons = Weapons.builder()
+                .id(new ObjectId().toString())
+                .build();
+
+        AngelKit angelKit = AngelKit.builder().id(new ObjectId().toString()).build();
+
+        mockCharacter.getPlaybookUniques().setWeapons(weapons);
+        mockCharacter.getPlaybookUniques().setAngelKit(angelKit);
+
+        CharacterMove preparedForInevitableAsCM = CharacterMove.createFromMove(preparedForTheInevitable);
+
+        mockCharacter.setCharacterMoves(List.of(preparedForInevitableAsCM));
+
+        when(moveService.findAllById(anyList())).thenReturn(List.of(gunluggerSpecial,
+                battleHardened,
+                insanoLikeDrano,
+                battlefieldInstincts
+        ));
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .setCharacterMoves(mockGameRole.getId(), mockCharacter.getId(),
+                        List.of(gunluggerSpecial.getId(),
+                                battleHardened.getId(),
+                                insanoLikeDrano.getId(),
+                                battlefieldInstincts.getId()));
+
+        // Then
+        assertEquals(4, returnedCharacter.getCharacterMoves().size());
+        List<CharacterMove> returnedMoves = returnedCharacter.getCharacterMoves();
+
+        returnedMoves.forEach(characterMove -> {
+            assertTrue(characterMove.getName().equals(gunluggerSpecial.getName()) ||
+                    characterMove.getName().equals(battleHardened.getName()) ||
+                    characterMove.getName().equals(insanoLikeDrano.getName()) ||
+                    characterMove.getName().equals(battlefieldInstincts.getName()));
+        });
+
+        assertNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+        assertNotNull(returnedCharacter.getPlaybookUniques().getWeapons());
+
+        verify(moveService, times(1)).findAllById(
+                anyList()
+        );
+        verifyMockServices();
+    }
+
+    private void addPlaybookUniquesToCharacter(Character mockCharacter, UniqueType type) {
+        PlaybookUniques playbookUniques = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .type(type)
+                .build();
+
+        mockCharacter.setPlaybookUniques(playbookUniques);
     }
 
     @Test
@@ -1583,5 +1673,23 @@ class GameRoleServiceImplTest {
         when(gameRoleRepository.findById(anyString())).thenReturn(Optional.of(mockGameRole));
         when(characterService.save(any())).thenReturn(mockCharacter);
         when(gameRoleRepository.save(any())).thenReturn(mockGameRole);
+    }
+
+    private void addStatsBlockToCharacter(Character mockCharacter) {
+        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(StatType.COOL).value(1).build();
+        CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(1).build();
+        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(StatType.HOT).value(1).build();
+        CharacterStat mockCharacterStatSharp = CharacterStat.builder().stat(StatType.SHARP).value(1).build();
+        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(StatType.WEIRD).value(1).build();
+        StatsBlock statsBlock = StatsBlock.builder()
+                .id("mock-stats-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCharacterStatCool,
+                        mockCharacterStatHard,
+                        mockCharacterStatHot,
+                        mockCharacterStatSharp,
+                        mockCharacterStatWeird))
+                .build();
+        mockCharacter.setStatsBlock(statsBlock);
     }
 }

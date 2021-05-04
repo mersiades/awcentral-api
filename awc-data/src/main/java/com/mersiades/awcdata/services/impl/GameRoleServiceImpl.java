@@ -379,6 +379,7 @@ public class GameRoleServiceImpl implements GameRoleService {
             if (characterMove.getStatModifier() != null) {
                 modifyCharacterStat(character, characterMove);
             }
+
             // Give CharacterMove an id
             characterMove.setId(new ObjectId().toString());
         });
@@ -386,19 +387,37 @@ public class GameRoleServiceImpl implements GameRoleService {
         List<String> newCharacterMoveNames = characterMoves
                 .stream().map(Move::getName).collect(Collectors.toList());
 
+        // Add AngelKit if it's the preparedForTheInevitable move
+        if (newCharacterMoveNames.contains(preparedForTheInevitableName) &&
+                character.getPlaybookUniques().getAngelKit() == null &&
+                !previousCharacterMoveNames.contains(preparedForTheInevitableName)
+        ) {
+            addUnique(character, preparedForTheInevitableName);
+        }
+
+        // Remove AngelKit if preparedForTheInevitable move is being removed
+        if (previousCharacterMoveNames.contains(preparedForTheInevitableName)
+                && !newCharacterMoveNames.contains(preparedForTheInevitableName)) {
+            removeUnique(character, preparedForTheInevitableName);
+        }
+
         // Adjust vehicleCount and battleVehicleCount move for Driver
         if (character.getPlaybook().equals(PlaybookType.DRIVER)) {
-            if (newCharacterMoveNames.contains(collectorName) && !previousCharacterMoveNames.contains(collectorName)) {
+            if (newCharacterMoveNames.contains(collectorName)
+                    && !previousCharacterMoveNames.contains(collectorName)) {
                 character.setVehicleCount(character.getVehicleCount() + 2);
-            } else if (!newCharacterMoveNames.contains(collectorName) && previousCharacterMoveNames.contains(collectorName)) {
+            } else if (!newCharacterMoveNames.contains(collectorName)
+                    && previousCharacterMoveNames.contains(collectorName)) {
                 int newCount = character.getVehicleCount() - 2;
                 character.setVehicleCount(newCount);
                 character.setVehicles(character.getVehicles().subList(0, newCount));
             }
 
-            if (newCharacterMoveNames.contains(otherCarTankName) && !previousCharacterMoveNames.contains(otherCarTankName)) {
+            if (newCharacterMoveNames.contains(otherCarTankName)
+                    && !previousCharacterMoveNames.contains(otherCarTankName)) {
                 character.setBattleVehicleCount(character.getBattleVehicleCount() + 1);
-            } else if (!newCharacterMoveNames.contains(otherCarTankName) && previousCharacterMoveNames.contains(otherCarTankName)) {
+            } else if (!newCharacterMoveNames.contains(otherCarTankName)
+                    && previousCharacterMoveNames.contains(otherCarTankName)) {
                 int newCount = character.getBattleVehicleCount() - 1;
                 character.setBattleVehicleCount(newCount);
                 character.setBattleVehicles(character.getBattleVehicles().subList(0, newCount));
@@ -1218,7 +1237,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                             unAdjustUnique(character, characterMove);
                             break;
                         case ADD_UNIQUE:
-                            removeUnique(character, characterMove);
+                            removeUnique(character, characterMove.getName());
                             break;
                         default:
                             // TODO: throw exception
@@ -1275,7 +1294,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                             adjustUnique(character, characterMove);
                             break;
                         case ADD_UNIQUE:
-                            addUnique(character, characterMove);
+                            addUnique(character, characterMove.getName());
                             break;
                         default:
                             // TODO: throw exception
@@ -1303,7 +1322,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
         int currentExperience = character.getExperience();
 
-        if (currentExperience >= 5 ) {
+        if (currentExperience >= 5) {
             int allowedImprovementsIncrease = currentExperience / 5;
             int remainingExperience = currentExperience % 5;
             character.setExperience(remainingExperience);
@@ -1391,8 +1410,14 @@ public class GameRoleServiceImpl implements GameRoleService {
         statToBeModified.setModifier(null);
     }
 
-    private void removeUnique(Character character, CharacterMove characterMove) {
-        switch (characterMove.getName()) {
+    // Removes PlaybookUnique from Character on removal of ADD_UNIQUE improvement or the Gunlugger move
+    private void removeUnique(Character character, String characterMoveName) {
+
+        switch (characterMoveName) {
+            case preparedForTheInevitableName:
+                // Remove AngelKit
+                character.getPlaybookUniques().setAngelKit(null);
+                break;
             case addGangLeadershipName:
                 // Remove leadership move
                 CharacterMove leadershipAsCM = CharacterMove.createFromMove(leadership);
@@ -1407,8 +1432,8 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     // Adds PlaybookUnique with default options to Character on addition of ADD_UNIQUE improvement or the Gunlugger move
-    private void addUnique(Character character, CharacterMove characterMove) {
-        switch (characterMove.getName()) {
+    private void addUnique(Character character, String characterMoveName) {
+        switch (characterMoveName) {
             case preparedForTheInevitableName:
                 AngelKit angelKit = AngelKit.builder()
                         .id(new ObjectId().toString())
