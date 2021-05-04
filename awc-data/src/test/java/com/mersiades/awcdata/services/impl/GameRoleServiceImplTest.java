@@ -1424,7 +1424,7 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    void shouldIncreaseAllowedPlaybookMoves_onAddCharacterImprovement() {
+    void shouldIncreaseAllowedPlaybookMoves_by1_onAddCharacterImprovement() {
         // Given
         int initialAllowedPlaybookMoves = 2;
         mockCharacter.setAllowedImprovements(1);
@@ -1443,6 +1443,31 @@ class GameRoleServiceImplTest {
                 .anyMatch(characterMove -> characterMove.getName().equals(MovesContent.addAngelMove1.getName())));
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldIncreaseAllowedPlaybookMoves_by2_onAddCharacterImprovement() {
+        // Given
+        int initialAllowedPlaybookMoves = 2;
+        mockCharacter.setAllowedImprovements(2);
+        mockCharacter.setAllowedPlaybookMoves(initialAllowedPlaybookMoves);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(addAngelMove1.getId())).thenReturn(addAngelMove1);
+        when(moveService.findById(addAngelMove2.getId())).thenReturn(addAngelMove2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(addAngelMove1.getId(), addAngelMove2.getId()), List.of());
+
+        // Then
+        assertEquals(initialAllowedPlaybookMoves + 2, returnedCharacter.getAllowedPlaybookMoves());
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(addAngelMove1.getName())));
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(addAngelMove2.getName())));
+        verifyMockServices();
+        verify(moveService, times(2)).findById(anyString());
     }
 
     @Test
