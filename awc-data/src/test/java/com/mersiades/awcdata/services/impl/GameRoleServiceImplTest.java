@@ -22,8 +22,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
-import static com.mersiades.awccontent.content.LooksContent.lookAngel9;
-import static com.mersiades.awccontent.content.LooksContent.lookBattlebabe1;
+import static com.mersiades.awccontent.content.LooksContent.*;
 import static com.mersiades.awccontent.content.MovesContent.*;
 import static com.mersiades.awccontent.content.PlaybookCreatorsContent.*;
 import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel1;
@@ -60,17 +59,25 @@ class GameRoleServiceImplTest {
     GameRoleService gameRoleService;
 
     GameRole mockGameRole;
-
     GameRole mockGameRole2;
-
     User mockUser;
-
     Character mockCharacter;
-
     AngelKit mockAngelKit;
-
     PlaybookUniques mockPlaybookUnique;
-
+    CharacterHarm mockCharacterHarm;
+    CharacterStat mockCharacterStatCool;
+    CharacterStat mockCharacterStatHard;
+    CharacterStat mockCharacterStatHot;
+    CharacterStat mockCharacterStatSharp;
+    CharacterStat mockCharacterStatWeird;
+    StatsBlock mockStatsBlock;
+    BattleVehicle mockBattleVehicle;
+    Vehicle mockVehicle;
+    Character mockCharacter2;
+    Character mockCharacter3;
+    HxStat hxStat1;
+    HxStat hxStat2;
+    Hold mockHold;
 
     @BeforeEach
     public void setUp() {
@@ -92,6 +99,61 @@ class GameRoleServiceImplTest {
         mockPlaybookUnique = PlaybookUniques.builder()
                 .id("mock-playbook-unique-id")
                 .angelKit(mockAngelKit)
+                .build();
+
+        mockCharacterHarm = CharacterHarm.builder()
+                .id("mock-character-harm-id")
+                .value(3)
+                .isStabilized(true)
+                .build();
+
+        mockCharacterStatCool = CharacterStat.builder().stat(StatType.COOL).value(1).build();
+        mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(1).build();
+        mockCharacterStatHot = CharacterStat.builder().stat(StatType.HOT).value(1).build();
+        mockCharacterStatSharp = CharacterStat.builder().stat(StatType.SHARP).value(1).build();
+        mockCharacterStatWeird = CharacterStat.builder().stat(StatType.WEIRD).value(1).build();
+        mockStatsBlock = StatsBlock.builder()
+                .id("mock-stats-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCharacterStatCool,
+                        mockCharacterStatHard,
+                        mockCharacterStatHot,
+                        mockCharacterStatSharp,
+                        mockCharacterStatWeird))
+                .build();
+
+        mockBattleVehicle = BattleVehicle.builder().id("mock-battle-vehicle-id").build();
+        mockVehicle = Vehicle.builder().id("mock-vehicle-id").build();
+
+        mockCharacter2 = Character.builder()
+                .id("mock-character-2-id")
+                .name("Mock Character 2")
+                .playbook(PlaybookType.DRIVER)
+                .build();
+
+        mockCharacter3 = Character.builder()
+                .id("mock-character-3-id")
+                .name("Mock Character 3")
+                .playbook(PlaybookType.HARDHOLDER)
+                .build();
+
+        hxStat1 = HxStat.builder()
+                .characterId(mockCharacter2.getId())
+                .characterName(mockCharacter2.getName())
+                .hxValue(1)
+                .build();
+
+        hxStat2 = HxStat.builder()
+                .characterId(mockCharacter3.getId())
+                .characterName(mockCharacter3.getName())
+                .hxValue(-1)
+                .build();
+
+        mockHold = Hold.builder()
+                .id("mock-hold-id")
+                .rollResult(12)
+                .moveDescription("When you read a...")
+                .moveName("READ A PERSON")
                 .build();
     }
 
@@ -290,6 +352,81 @@ class GameRoleServiceImplTest {
     }
 
     @Test
+    void shouldResetAndChangePlaybook() {
+        // Given
+        CharacterMove angelSpecialAsCM = CharacterMove.createFromMove(angelSpecial);
+        CharacterMove sixthSenseAsCM = CharacterMove.createFromMove(sixthSense);
+        CharacterMove infirmaryAsCM = CharacterMove.createFromMove(infirmary);
+        CharacterMove professionalCompassionAsCM = CharacterMove.createFromMove(profCompassion);
+        CharacterMove addVehicleAsCM = CharacterMove.createFromMove(addVehicle);
+        CharacterMove retireAsCM = CharacterMove.createFromMove(retire);
+
+        mockCharacter.setName("mock-name");
+        mockCharacter.setPlaybook(PlaybookType.ANGEL);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockCharacter.setHasCompletedCharacterCreation(true);
+        mockCharacter.setHasPlusOneForward(true);
+        mockCharacter.setBarter(2);
+        mockCharacter.setHarm(mockCharacterHarm);
+        mockCharacter.setStatsBlock(mockStatsBlock);
+        mockCharacter.setVehicleCount(1);
+        mockCharacter.setBattleVehicleCount(1);
+        mockCharacter.setExperience(3);
+        mockCharacter.setAllowedImprovements(2);
+        mockCharacter.setAllowedPlaybookMoves(4);
+        mockCharacter.setAllowedOtherPlaybookMoves(1);
+        mockCharacter.setBattleVehicles(List.of(mockBattleVehicle));
+        mockCharacter.setVehicles(List.of(mockVehicle));
+        mockCharacter.setHxBlock(List.of(hxStat1, hxStat2));
+        mockCharacter.setGear(List.of("item1", "item2"));
+        mockCharacter.setLooks(List.of(lookBattlebabe1, lookBattlebabe2));
+        mockCharacter.setCharacterMoves(List.of(angelSpecialAsCM, sixthSenseAsCM, infirmaryAsCM, professionalCompassionAsCM));
+        mockCharacter.setImprovementMoves(List.of(addVehicleAsCM));
+        mockCharacter.setFutureImprovementMoves(List.of(retireAsCM));
+        mockCharacter.setHolds(List.of(mockHold));
+
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(playbookCreatorBrainer);
+        when(moveService.findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.DEFAULT_CHARACTER)).thenReturn(List.of(brainerSpecial));
+
+        // When
+        Character returnedCharacter = gameRoleService.setCharacterPlaybook(MOCK_GAMEROLE_ID, mockCharacter.getId(), PlaybookType.BRAINER);
+
+        // Then
+        assertNull(returnedCharacter.getName());
+        assertEquals(PlaybookType.BRAINER, returnedCharacter.getPlaybook());
+        assertFalse(returnedCharacter.getHasCompletedCharacterCreation());
+        assertFalse(returnedCharacter.getHasPlusOneForward());
+        assertEquals(-1, returnedCharacter.getBarter());
+        assertNull(returnedCharacter.getHarm());
+        assertNull(returnedCharacter.getStatsBlock());
+        assertEquals(0, returnedCharacter.getVehicleCount());
+        assertEquals(0, returnedCharacter.getBattleVehicleCount());
+        assertEquals(0, returnedCharacter.getExperience());
+        assertEquals(0, returnedCharacter.getAllowedImprovements());
+        assertEquals(playbookCreatorBrainer.getMoveChoiceCount(), returnedCharacter.getAllowedPlaybookMoves());
+        assertEquals(0, returnedCharacter.getAllowedOtherPlaybookMoves());
+        assertEquals(0, returnedCharacter.getBattleVehicles().size());
+        assertEquals(0, returnedCharacter.getVehicles().size());
+        assertEquals(0, returnedCharacter.getHxBlock().size());
+        assertEquals(0, returnedCharacter.getGear().size());
+        assertEquals(0, returnedCharacter.getLooks().size());
+        assertNotEquals(0, returnedCharacter.getCharacterMoves().size()); // Should have at least one default CharacterMove set
+        assertEquals(0, returnedCharacter.getImprovementMoves().size());
+        assertEquals(0, returnedCharacter.getFutureImprovementMoves().size());
+        assertEquals(0, returnedCharacter.getHolds().size());
+
+        assertEquals(0, returnedCharacter.getPlaybookUniques().getBrainerGear().getBrainerGear().size());
+        assertEquals(BRAINER_GEAR, returnedCharacter.getPlaybookUniques().getBrainerGear().getUniqueType());
+        assertEquals(brainerGearCreator.getDefaultItemCount(), returnedCharacter.getPlaybookUniques().getBrainerGear().getAllowedItemsCount());
+
+        verifyMockServices();
+        verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
+        verify(moveService, times(1)).findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.DEFAULT_CHARACTER);
+    }
+
+    @Test
     void shouldSetCharacterName() {
         // Given
         String mockCharacterName = "Mock Character Name";
@@ -375,21 +512,8 @@ class GameRoleServiceImplTest {
     @Test
     void shouldUpdateCharacterStat() {
         // Given
-        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(StatType.COOL).value(1).build();
-        CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(1).build();
-        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(StatType.HOT).value(1).build();
-        CharacterStat mockCharacterStatSharp = CharacterStat.builder().stat(StatType.SHARP).value(1).build();
-        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(StatType.WEIRD).value(1).build();
-        StatsBlock statsBlock = StatsBlock.builder()
-                .id("mock-stats-block-id")
-                .statsOptionId("mock-stats-option-id")
-                .stats(List.of(mockCharacterStatCool,
-                        mockCharacterStatHard,
-                        mockCharacterStatHot,
-                        mockCharacterStatSharp,
-                        mockCharacterStatWeird))
-                .build();
-        mockCharacter.setStatsBlock(statsBlock);
+
+        mockCharacter.setStatsBlock(mockStatsBlock);
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
         when(statsOptionService.findById(anyString())).thenReturn(statsOptionAngel2);
@@ -619,29 +743,7 @@ class GameRoleServiceImplTest {
     public void shouldSetCharacterHx() {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
-        Character mockCharacter2 = Character.builder()
-                .id("mock-character-2-id")
-                .name("Mock Character 2")
-                .playbook(PlaybookType.DRIVER)
-                .build();
 
-        Character mockCharacter3 = Character.builder()
-                .id("mock-character-3-id")
-                .name("Mock Character 3")
-                .playbook(PlaybookType.HARDHOLDER)
-                .build();
-
-        HxStat hxStat1 = HxStat.builder()
-                .characterId(mockCharacter2.getId())
-                .characterName(mockCharacter2.getName())
-                .hxValue(1)
-                .build();
-
-        HxStat hxStat2 = HxStat.builder()
-                .characterId(mockCharacter3.getId())
-                .characterName(mockCharacter3.getName())
-                .hxValue(-1)
-                .build();
 
         setupMockServices();
 
@@ -911,7 +1013,7 @@ class GameRoleServiceImplTest {
     @Test
     void shouldSetVehicle() {
         mockGameRole.getCharacters().add(mockCharacter);
-        Vehicle mockVehicle = Vehicle.builder().id("mock-vehicle-id").build();
+
 
         setupMockServices();
 
@@ -929,7 +1031,6 @@ class GameRoleServiceImplTest {
     @Test
     void shouldSetBattleVehicle() {
         mockGameRole.getCharacters().add(mockCharacter);
-        BattleVehicle mockBattleVehicle = BattleVehicle.builder().id("mock-battle-vehicle-id").build();
 
         setupMockServices();
 
@@ -1049,11 +1150,6 @@ class GameRoleServiceImplTest {
     @Test
     void shouldSetCharacterHarm() {
         mockGameRole.getCharacters().add(mockCharacter);
-        CharacterHarm mockCharacterHarm = CharacterHarm.builder()
-                .id("mock-character-harm-id")
-                .value(3)
-                .isStabilized(true)
-                .build();
 
         setupMockServices();
 
@@ -1689,6 +1785,120 @@ class GameRoleServiceImplTest {
     }
 
     @Test
+    void shouldIncreaseGangStrengthOptions_onAddCharacterImprovement() {
+        // Given
+        mockCharacter.setAllowedImprovements(1);
+        addPlaybookUniquesToCharacter(mockCharacter, UniqueType.GANG);
+
+        Gang gang = Gang.builder()
+                .id(new ObjectId().toString())
+                .allowedStrengths(gangCreator.getStrengthChoiceCount())
+                .build();
+        mockCharacter.getPlaybookUniques().setGang(gang);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(adjustChopperUnique1);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(adjustChopperUnique1.getId()), List.of());
+
+        // Then
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(adjustChopperUnique1.getName())));
+        assertEquals(gangCreator.getStrengthChoiceCount() + 1, returnedCharacter.getPlaybookUniques().getGang().getAllowedStrengths());
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldDecreaseGangStrengthOptions_onRemoveCharacterImprovement() {
+        // Given
+        addStatsBlockToCharacter(mockCharacter);
+        mockCharacter.setAllowedImprovements(1);
+        addPlaybookUniquesToCharacter(mockCharacter, UniqueType.GANG);
+
+        Gang gang = Gang.builder()
+                .id(new ObjectId().toString())
+                .allowedStrengths(gangCreator.getStrengthChoiceCount() + 1)
+                .strengths(List.of(gangOption1, gangOption2, gangOption3))
+                .build();
+        mockCharacter.getPlaybookUniques().setGang(gang);
+        CharacterMove mockAdjustChopperUnique1 = CharacterMove.createFromMove(adjustChopperUnique1);
+        mockCharacter.setImprovementMoves(List.of(mockAdjustChopperUnique1));
+
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
+
+        // Then
+        assertEquals(2, returnedCharacter.getPlaybookUniques().getGang().getAllowedStrengths());
+        assertEquals(2, returnedCharacter.getPlaybookUniques().getGang().getStrengths().size());
+
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(mockAdjustChopperUnique1.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldIncreaseVehiclesCount_onAddCharacterImprovement() {
+        // Given
+        mockCharacter.setAllowedImprovements(1);
+        mockCharacter.setVehicleCount(0);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(addVehicle);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(addVehicle.getId()), List.of());
+
+        // Then
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(addVehicle.getName())));
+        assertEquals(1, returnedCharacter.getVehicleCount());
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldDecreaseVehiclesCount_onRemoveCharacterImprovement() {
+        // Given
+        int initialVehiclesCount = 2;
+        addStatsBlockToCharacter(mockCharacter);
+        mockCharacter.setAllowedImprovements(1);
+        mockCharacter.setVehicleCount(initialVehiclesCount);
+        Vehicle mockVehicle1 = Vehicle.builder().id(new ObjectId().toString()).build();
+        Vehicle mockVehicle2 = Vehicle.builder().id(new ObjectId().toString()).build();
+        mockCharacter.setVehicles(List.of(mockVehicle1, mockVehicle2));
+
+        CharacterMove addVehicleAsCM = CharacterMove.createFromMove(addVehicle);
+        mockCharacter.setImprovementMoves(List.of(addVehicleAsCM));
+
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
+
+        // Then
+        assertEquals(initialVehiclesCount -1 , returnedCharacter.getVehicleCount());
+        assertEquals(initialVehiclesCount -1 , returnedCharacter.getVehicles().size());
+
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(addVehicleAsCM.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
     void shouldAddGangAndLeadership_onAddCharacterImprovement() {
         // Given
         CharacterMove addGangLeadershipAsCM = CharacterMove.createFromMove(addGangLeadership);
@@ -1826,12 +2036,7 @@ class GameRoleServiceImplTest {
 
     @Test
     void shouldRemoveHold() {
-        Hold mockHold = Hold.builder()
-                .id("mock-hold-id")
-                .rollResult(12)
-                .moveDescription("When you read a...")
-                .moveName("READ A PERSON")
-                .build();
+
         mockCharacter.getHolds().add(mockHold);
         mockGameRole.getCharacters().add(mockCharacter);
 

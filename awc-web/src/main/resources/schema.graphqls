@@ -765,12 +765,13 @@ type Followers {
 type Gang {
     id: ID!
     uniqueType: UniqueType!
-    size: GangSize
-    harm: Int
-    armor: Int
-    strengths: [GangOption]
-    weaknesses: [GangOption]
-    tags: [String]
+    size: GangSize!
+    harm: Int!
+    armor: Int!
+    allowedStrengths: Int!
+    strengths: [GangOption]!
+    weaknesses: [GangOption]!
+    tags: [String]!
 }
 
 type Holding {
@@ -960,12 +961,13 @@ input GangOptionInput {
 
 input GangInput {
     id: ID
-    size: GangSize
-    harm: Int
-    armor: Int
-    strengths: [GangOptionInput]
-    weaknesses: [GangOptionInput]
-    tags: [String]
+    size: GangSize!
+    harm: Int!
+    armor: Int!
+    allowedStrengths: Int!
+    strengths: [GangOptionInput]!
+    weaknesses: [GangOptionInput]!
+    tags: [String]!
 }
 
 input ThreatInput {

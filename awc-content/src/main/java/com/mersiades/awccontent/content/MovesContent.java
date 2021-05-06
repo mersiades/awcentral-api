@@ -2539,7 +2539,7 @@ public class MovesContent {
 
     public static final Move addVehicle = Move.builder()
             .id(new ObjectId().toString())
-            .name("ADD VEHICLE")
+            .name(addVehicleName)
             .description("get a vehicle (you detail)\n")
             .kind(MoveType.ADD_VEHICLE)
             .build();

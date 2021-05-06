@@ -92,6 +92,7 @@ public class MoveNames {
     public static final String addOtherPBMove2Name = "ADD MOVE FROM OTHER PLAYBOOK 2";
     public static final String addGangLeadershipName = "ADD GANG AND LEADERSHIP";
     public static final String addHoldingName = "ADD HOLDING";
+    public static final String addVehicleName = "ADD VEHICLE";
     public static final String genericIncreaseStatName = "GENERIC INCREASE STAT";
     public static final String retireName = "RETIRE";
     public static final String addSecondCharacterName = "ADD SECOND CHARACTER";

@@ -177,24 +177,33 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     @Override
     public Character setCharacterPlaybook(String gameRoleId, String characterId, PlaybookType playbookType) {
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
+        GameRole gameRole = getGameRole(gameRoleId);
         PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(playbookType);
-        assert gameRole != null;
-        Character character = gameRole.getCharacters().stream()
-                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+
+        Character character = getCharacterById(gameRole, characterId);
 
         // Reset fields if already filled
         character.setName(null);
-        character.getLooks().clear();
-        character.setStatsBlock(null);
-        character.getGear().clear();
         character.setPlaybookUniques(null);
-        character.setCharacterMoves(null);
-        character.setVehicles(new ArrayList<>());
-        character.setBattleVehicles(new ArrayList<>());
         character.setHasCompletedCharacterCreation(false);
+        character.setHasPlusOneForward(false);
+        character.setBarter(-1);
+        character.setHarm(null);
+        character.setStatsBlock(null);
+        character.setVehicleCount(0);
+        character.setBattleVehicleCount(0);
         character.setExperience(0);
+        character.setAllowedImprovements(0);
         character.setAllowedOtherPlaybookMoves(0);
+        character.setBattleVehicles(new ArrayList<>());
+        character.setVehicles(new ArrayList<>());
+        character.setHxBlock(new ArrayList<>());
+        character.setGear(new ArrayList<>());
+        character.setLooks(new ArrayList<>());
+        character.setCharacterMoves(new ArrayList<>());
+        character.setImprovementMoves(new ArrayList<>());
+        character.setFutureImprovementMoves(new ArrayList<>());
+        character.setHolds(new ArrayList<>());
 
         // Set default moves for playbook
         List<Move> defaultMoves = moveService.findAllByPlaybookAndKind(playbookType, MoveType.DEFAULT_CHARACTER);
@@ -1247,6 +1256,14 @@ public class GameRoleServiceImpl implements GameRoleService {
                         case ADD_UNIQUE:
                             removeUnique(character, characterMove.getName());
                             break;
+                        case ADD_VEHICLE:
+                            int newVehicleCount = character.getVehicleCount() - 1;
+                            List<Vehicle> truncatedVehicles = character.getVehicles()
+                                    .stream().limit(newVehicleCount).collect(Collectors.toList());
+
+                            character.setVehicles(truncatedVehicles);
+                            character.setVehicleCount(newVehicleCount);
+                            break;
                         default:
                             // TODO: throw exception
                     }
@@ -1303,6 +1320,9 @@ public class GameRoleServiceImpl implements GameRoleService {
                             break;
                         case ADD_UNIQUE:
                             addUnique(character, characterMove.getName());
+                            break;
+                        case ADD_VEHICLE:
+                            character.setVehicleCount(character.getVehicleCount() + 1);
                             break;
                         default:
                             // TODO: throw exception
@@ -1473,6 +1493,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .id(new ObjectId().toString())
                         .uniqueType(UniqueType.GANG)
                         .size(gangCreator.getDefaultSize())
+                        .allowedStrengths(gangCreator.getStrengthChoiceCount())
                         .harm(gangCreator.getDefaultHarm())
                         .armor(gangCreator.getDefaultArmor())
                         .tags(gangCreator.getDefaultTags())
@@ -1560,6 +1581,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 Gang gang = Gang.builder()
                         .id(new ObjectId().toString())
                         .uniqueType(UniqueType.GANG)
+                        .allowedStrengths(gangCreator.getStrengthChoiceCount())
                         .size(gangCreator.getDefaultSize())
                         .harm(gangCreator.getDefaultHarm())
                         .armor(gangCreator.getDefaultArmor())
@@ -1691,6 +1713,17 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .stream().limit(brainerGearCreator.getDefaultItemCount()).collect(Collectors.toList());
                 character.getPlaybookUniques().getBrainerGear().setBrainerGear(truncatedItems);
                 break;
+            case adjustChopperUnique1Name:
+                // Deliberately falls through
+            case adjustChopperUnique2Name:
+                int newAllowedStrengths = character.getPlaybookUniques().getGang().getAllowedStrengths() -1;
+                character.getPlaybookUniques().getGang()
+                        .setAllowedStrengths(newAllowedStrengths);
+
+                List<GangOption> truncatedStrengthOptions = character.getPlaybookUniques().getGang().getStrengths()
+                        .stream().limit(newAllowedStrengths).collect(Collectors.toList());
+                character.getPlaybookUniques().getGang().setStrengths(truncatedStrengthOptions);
+                break;
             default:
                 // TODO: throw error
         }
@@ -1702,7 +1735,14 @@ public class GameRoleServiceImpl implements GameRoleService {
                 character.getPlaybookUniques().getAngelKit().setHasSupplier(true);
                 break;
             case adjustBrainerUnique1Name:
-                character.getPlaybookUniques().getBrainerGear().setAllowedItemsCount(character.getPlaybookUniques().getBrainerGear().getAllowedItemsCount() + 2);
+                character.getPlaybookUniques().getBrainerGear()
+                        .setAllowedItemsCount(character.getPlaybookUniques().getBrainerGear().getAllowedItemsCount() + 2);
+                break;
+            case adjustChopperUnique1Name:
+                // Deliberately falls through
+            case adjustChopperUnique2Name:
+                character.getPlaybookUniques().getGang()
+                        .setAllowedStrengths(character.getPlaybookUniques().getGang().getAllowedStrengths() + 1);
                 break;
             default:
                 // TODO: throw error

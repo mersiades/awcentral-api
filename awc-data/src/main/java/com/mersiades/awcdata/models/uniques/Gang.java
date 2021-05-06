@@ -30,6 +30,8 @@ public class Gang {
 
     private int armor;
 
+    private int allowedStrengths;
+
     @Builder.Default
     private List<GangOption> strengths = new ArrayList<>();
 
