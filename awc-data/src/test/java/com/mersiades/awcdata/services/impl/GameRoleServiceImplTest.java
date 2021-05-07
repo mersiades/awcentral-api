@@ -5,6 +5,7 @@ import com.mersiades.awccontent.enums.*;
 import com.mersiades.awccontent.models.FollowersOption;
 import com.mersiades.awccontent.models.HoldingOption;
 import com.mersiades.awccontent.models.Look;
+import com.mersiades.awccontent.models.Move;
 import com.mersiades.awccontent.services.MoveService;
 import com.mersiades.awccontent.services.PlaybookCreatorService;
 import com.mersiades.awccontent.services.StatModifierService;
@@ -2161,330 +2162,97 @@ class GameRoleServiceImplTest {
 
     @Test
     void shouldAddGangAndLeadership_onAddCharacterImprovement() {
-        // Given
-        CharacterMove addGangLeadershipAsCM = CharacterMove.createFromMove(addGangLeadership);
-        mockCharacter.setAllowedImprovements(1);
-        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
-        mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(addGangLeadershipAsCM);
-
-        // When
-        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(addGangLeadershipAsCM.getId()), List.of());
-
-        // Then
+        Character returnedCharacter = checkAddedUniqueAndMove(addGangPackAlpha, packAlpha);
         assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
         assertEquals(gangCreator.getDefaultSize(), returnedCharacter.getPlaybookUniques().getGang().getSize());
-        assertTrue(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(addGangLeadership.getName())));
-        assertTrue(returnedCharacter.getCharacterMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(leadership.getName())));
-        verifyMockServices();
-        verify(moveService, times(1)).findById(anyString());
     }
 
     @Test
     void shouldRemoveGangAndLeadership_onRemoveCharacterImprovement() {
-        // Given
-        CharacterStat mockCoolStat = CharacterStat.builder()
-                .id("mock-cool-stat-id")
-                .stat(StatType.COOL)
-                .value(2)
-                .build();
-
-        StatsBlock mockStatsBlock = StatsBlock.builder()
-                .id("mock-stat-block-id")
-                .statsOptionId("mock-stats-option-id")
-                .stats(List.of(mockCoolStat))
-                .build();
-
         Gang mockGang = Gang.builder().id(new ObjectId().toString()).build();
-        mockCharacter.setStatsBlock(mockStatsBlock);
-        mockCharacter.setAllowedImprovements(1);
-        CharacterMove addGangLeadershipAsCM = CharacterMove.createFromMove(addGangLeadership);
-        CharacterMove leadershipAsCM = CharacterMove.createFromMove(leadership);
-        mockCharacter.setImprovementMoves(List.of(addGangLeadershipAsCM));
-        mockCharacter.setCharacterMoves(List.of(leadershipAsCM));
         mockPlaybookUnique.setGang(mockGang);
         mockCharacter.setPlaybookUniques(mockPlaybookUnique);
-        mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
-
-        // When
-        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
-
-        // Then
-        assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+        Character returnedCharacter = checkRemovedUniqueAndMove(addGangLeadership, leadership);
         assertNull(returnedCharacter.getPlaybookUniques().getGang());
-        assertFalse(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(addGangLeadership.getName())));
-        assertFalse(returnedCharacter.getCharacterMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(leadership.getName())));
-        verifyMockServices();
-        verify(moveService, times(1)).findById(anyString());
     }
 
     @Test
     void shouldAddGangAndPackAlpha_onAddCharacterImprovement() {
-        // Given
-        CharacterMove addGangPackAlphaAsCM = CharacterMove.createFromMove(addGangPackAlpha);
-        mockCharacter.setAllowedImprovements(1);
-        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
-        mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(addGangPackAlphaAsCM);
-
-        // When
-        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(addGangPackAlphaAsCM.getId()), List.of());
-
-        // Then
+        Character returnedCharacter = checkAddedUniqueAndMove(addGangPackAlpha, packAlpha);
         assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
         assertEquals(gangCreator.getDefaultSize(), returnedCharacter.getPlaybookUniques().getGang().getSize());
-        assertTrue(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(addGangPackAlpha.getName())));
-        assertTrue(returnedCharacter.getCharacterMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(packAlpha.getName())));
-        verifyMockServices();
-        verify(moveService, times(1)).findById(anyString());
     }
 
     @Test
     void shouldRemoveGangAndPackAlpha_onRemoveCharacterImprovement() {
-        // Given
-        CharacterStat mockCoolStat = CharacterStat.builder()
-                .id("mock-cool-stat-id")
-                .stat(StatType.COOL)
-                .value(2)
-                .build();
-
-        StatsBlock mockStatsBlock = StatsBlock.builder()
-                .id("mock-stat-block-id")
-                .statsOptionId("mock-stats-option-id")
-                .stats(List.of(mockCoolStat))
-                .build();
-
         Gang mockGang = Gang.builder().id(new ObjectId().toString()).build();
-        mockCharacter.setStatsBlock(mockStatsBlock);
-        mockCharacter.setAllowedImprovements(1);
-        CharacterMove addGangPackAlphaAsCM = CharacterMove.createFromMove(addGangPackAlpha);
-        CharacterMove packAlphaAsCM = CharacterMove.createFromMove(packAlpha);
-        mockCharacter.setImprovementMoves(List.of(addGangPackAlphaAsCM));
-        mockCharacter.setCharacterMoves(List.of(packAlphaAsCM));
         mockPlaybookUnique.setGang(mockGang);
         mockCharacter.setPlaybookUniques(mockPlaybookUnique);
-        mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
-
-        // When
-        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
-
-        // Then
-        assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+        Character returnedCharacter = checkRemovedUniqueAndMove(addGangPackAlpha, packAlpha);
         assertNull(returnedCharacter.getPlaybookUniques().getGang());
-        assertFalse(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(addGangPackAlpha.getName())));
-        assertFalse(returnedCharacter.getCharacterMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(packAlpha.getName())));
-        verifyMockServices();
-        verify(moveService, times(1)).findById(anyString());
     }
 
     @Test
     void shouldAddHoldingAndWealth_onAddCharacterImprovement() {
-        // Given
-        CharacterMove addHoldingAsCM = CharacterMove.createFromMove(addHolding);
-        mockCharacter.setAllowedImprovements(1);
-        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
-        mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(addHoldingAsCM);
-
-        // When
-        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(addHoldingAsCM.getId()), List.of());
-
-        // Then
+        Character returnedCharacter = checkAddedUniqueAndMove(addHolding, wealth);
         assertNotNull(returnedCharacter.getPlaybookUniques().getHolding());
         assertEquals(holdingCreator.getDefaultHoldingSize(), returnedCharacter.getPlaybookUniques().getHolding().getHoldingSize());
-        assertTrue(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(addHolding.getName())));
-        assertTrue(returnedCharacter.getCharacterMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(wealth.getName())));
-        verifyMockServices();
-        verify(moveService, times(1)).findById(anyString());
     }
 
     @Test
     void shouldRemoveHoldingAndWealth_onRemoveCharacterImprovement() {
-        // Given
-        CharacterStat mockCoolStat = CharacterStat.builder()
-                .id("mock-cool-stat-id")
-                .stat(StatType.COOL)
-                .value(2)
-                .build();
-
-        StatsBlock mockStatsBlock = StatsBlock.builder()
-                .id("mock-stat-block-id")
-                .statsOptionId("mock-stats-option-id")
-                .stats(List.of(mockCoolStat))
-                .build();
-
         Holding mockHolding = Holding.builder().id(new ObjectId().toString()).build();
-        mockCharacter.setStatsBlock(mockStatsBlock);
-        mockCharacter.setAllowedImprovements(1);
-        CharacterMove addHoldingAsCM = CharacterMove.createFromMove(addHolding);
-        CharacterMove wealthAsCM = CharacterMove.createFromMove(wealth);
-        mockCharacter.setImprovementMoves(List.of(addHoldingAsCM));
-        mockCharacter.setCharacterMoves(List.of(wealthAsCM));
         mockPlaybookUnique.setHolding(mockHolding);
         mockCharacter.setPlaybookUniques(mockPlaybookUnique);
-        mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
-
-        // When
-        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
-
-        // Then
-        assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+        Character returnedCharacter = checkRemovedUniqueAndMove(addGangPackAlpha, packAlpha);
         assertNull(returnedCharacter.getPlaybookUniques().getGang());
-        assertFalse(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(addHolding.getName())));
-        assertFalse(returnedCharacter.getCharacterMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(wealth.getName())));
-        verifyMockServices();
-        verify(moveService, times(1)).findById(anyString());
     }
 
     @Test
     void shouldAddWorkspace_onAddCharacterImprovement() {
-        // Given
-        CharacterMove addWorkspaceAsCM = CharacterMove.createFromMove(addWorkspace);
-        mockCharacter.setAllowedImprovements(1);
-        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
-        mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(addWorkspaceAsCM);
-
-        // When
-        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(addWorkspaceAsCM.getId()), List.of());
-
-        // Then
+        Character returnedCharacter = checkAddedUnique(addWorkspace);
         assertNotNull(returnedCharacter.getPlaybookUniques().getWorkspace());
         assertEquals(workspaceCreator.getWorkspaceInstructions(), returnedCharacter.getPlaybookUniques().getWorkspace().getWorkspaceInstructions());
         assertEquals(workspaceCreator.getProjectInstructions(), returnedCharacter.getPlaybookUniques().getWorkspace().getProjectInstructions());
-        assertTrue(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(addWorkspace.getName())));
-        verifyMockServices();
-        verify(moveService, times(1)).findById(anyString());
     }
 
     @Test
     void shouldRemoveWorkspace_onRemoveCharacterImprovement() {
-        // Given
-        CharacterStat mockCoolStat = CharacterStat.builder()
-                .id("mock-cool-stat-id")
-                .stat(StatType.COOL)
-                .value(2)
-                .build();
-
-        StatsBlock mockStatsBlock = StatsBlock.builder()
-                .id("mock-stat-block-id")
-                .statsOptionId("mock-stats-option-id")
-                .stats(List.of(mockCoolStat))
-                .build();
-
         Workspace mockWorkspace = Workspace.builder().id(new ObjectId().toString()).build();
-        mockCharacter.setStatsBlock(mockStatsBlock);
-        mockCharacter.setAllowedImprovements(1);
-        CharacterMove addHoldingAsCM = CharacterMove.createFromMove(addWorkspace);
-        mockCharacter.setImprovementMoves(List.of(addHoldingAsCM));
         mockPlaybookUnique.setWorkspace(mockWorkspace);
         mockCharacter.setPlaybookUniques(mockPlaybookUnique);
-        mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
-
-        // When
-        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
-
-        // Then
-        assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+        Character returnedCharacter = checkRemovedUnique(addWorkspace);
         assertNull(returnedCharacter.getPlaybookUniques().getWorkspace());
-        assertFalse(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(addWorkspace.getName())));
-        verifyMockServices();
-        verify(moveService, times(1)).findById(anyString());
     }
 
     @Test
     void shouldAddEstablishment_onAddCharacterImprovement() {
-        // Given
-        CharacterMove addEstablishmentAsCM = CharacterMove.createFromMove(addEstablishment);
-        mockCharacter.setAllowedImprovements(1);
-        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
-        mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(addEstablishmentAsCM);
-
-        // When
-        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(addEstablishmentAsCM.getId()), List.of());
-
-        // Then
+        Character returnedCharacter = checkAddedUnique(addEstablishment);
         assertNotNull(returnedCharacter.getPlaybookUniques().getEstablishment());
-        assertTrue(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(addEstablishment.getName())));
-        verifyMockServices();
-        verify(moveService, times(1)).findById(anyString());
     }
 
     @Test
     void shouldRemoveEstablishment_onRemoveCharacterImprovement() {
-        // Given
-        CharacterStat mockCoolStat = CharacterStat.builder()
-                .id("mock-cool-stat-id")
-                .stat(StatType.COOL)
-                .value(2)
-                .build();
-
-        StatsBlock mockStatsBlock = StatsBlock.builder()
-                .id("mock-stat-block-id")
-                .statsOptionId("mock-stats-option-id")
-                .stats(List.of(mockCoolStat))
-                .build();
-
         Establishment mockEstablishment = Establishment.builder().id(new ObjectId().toString()).build();
-        mockCharacter.setStatsBlock(mockStatsBlock);
-        mockCharacter.setAllowedImprovements(1);
-        CharacterMove addEstablishmentAsCM = CharacterMove.createFromMove(addEstablishment);
-        mockCharacter.setImprovementMoves(List.of(addEstablishmentAsCM));
         mockPlaybookUnique.setEstablishment(mockEstablishment);
         mockCharacter.setPlaybookUniques(mockPlaybookUnique);
-        mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServices();
-        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
-
-        // When
-        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
-                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
-
-        // Then
-        assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+        Character returnedCharacter = checkRemovedUnique(addEstablishment);
         assertNull(returnedCharacter.getPlaybookUniques().getEstablishment());
-        assertFalse(returnedCharacter.getImprovementMoves().stream()
-                .anyMatch(characterMove -> characterMove.getName().equals(addEstablishment.getName())));
-        verifyMockServices();
-        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldAddFollowersAndFortunes_onAddCharacterImprovement() {
+        Character returnedCharacter = checkAddedUniqueAndMove(addFollowers, fortunes);
+        assertNotNull(returnedCharacter.getPlaybookUniques().getFollowers());
+    }
+
+    @Test
+    void shouldRemoveFollowersAndFortunes_onRemoveCharacterImprovement() {
+        Followers mockFollowers = Followers.builder().id(new ObjectId().toString()).build();
+        mockPlaybookUnique.setFollowers(mockFollowers);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        Character returnedCharacter = checkRemovedUniqueAndMove(addFollowers, fortunes);
+        assertNull(returnedCharacter.getPlaybookUniques().getEstablishment());
     }
 
     @Test
@@ -2502,6 +2270,135 @@ class GameRoleServiceImplTest {
         // Then
         assertFalse(returnedCharacter.getHolds().contains(mockHold));
         verifyMockServices();
+    }
+
+    private Character checkAddedUnique(Move improvementMove ) {
+        // Given
+        CharacterMove improvementMoveAsCM = CharacterMove.createFromMove(improvementMove);
+        mockCharacter.setAllowedImprovements(1);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(improvementMoveAsCM);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(improvementMoveAsCM.getId()), List.of());
+
+        // Then
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(improvementMoveAsCM.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+        return returnedCharacter;
+    }
+
+    private Character checkRemovedUnique(Move improvementMove) {
+        // Given
+        CharacterStat mockCoolStat = CharacterStat.builder()
+                .id("mock-cool-stat-id")
+                .stat(StatType.COOL)
+                .value(2)
+                .build();
+
+        StatsBlock mockStatsBlock = StatsBlock.builder()
+                .id("mock-stat-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCoolStat))
+                .build();
+
+
+        mockCharacter.setStatsBlock(mockStatsBlock);
+        mockCharacter.setAllowedImprovements(1);
+        CharacterMove improvementMoveAsCM = CharacterMove.createFromMove(improvementMove);
+        mockCharacter.setImprovementMoves(List.of(improvementMoveAsCM));
+
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
+
+        // Then
+        assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(improvementMove.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+        return returnedCharacter;
+    }
+
+    private Character checkAddedUniqueAndMove(Move improvementMove, Move move) {
+        // Given
+        CharacterMove improvementMoveAsCM = CharacterMove.createFromMove(improvementMove);
+        mockCharacter.setAllowedImprovements(1);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(improvementMoveAsCM);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(improvementMoveAsCM.getId()), List.of());
+
+        // Then
+
+
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(improvementMove.getName())));
+        assertTrue(returnedCharacter.getCharacterMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(move.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+        return returnedCharacter;
+    }
+
+    private Character checkRemovedUniqueAndMove(Move improvementMove, Move move) {
+//        Gang mockGang = Gang.builder().id(new ObjectId().toString()).build();
+//        mockPlaybookUnique.setGang(mockGang);
+//        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        // Given
+        CharacterStat mockCoolStat = CharacterStat.builder()
+                .id("mock-cool-stat-id")
+                .stat(StatType.COOL)
+                .value(2)
+                .build();
+
+        StatsBlock mockStatsBlock = StatsBlock.builder()
+                .id("mock-stat-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCoolStat))
+                .build();
+
+        mockCharacter.setStatsBlock(mockStatsBlock);
+        mockCharacter.setAllowedImprovements(1);
+        CharacterMove improvementMoveAsCM = CharacterMove.createFromMove(improvementMove);
+        CharacterMove moveAsCM = CharacterMove.createFromMove(move);
+        mockCharacter.setImprovementMoves(List.of(improvementMoveAsCM));
+        mockCharacter.setCharacterMoves(List.of(moveAsCM));
+
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
+
+        // Then
+        assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(improvementMove.getName())));
+        assertFalse(returnedCharacter.getCharacterMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(move.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+        return returnedCharacter;
+//        assertNull(returnedCharacter.getPlaybookUniques().getGang());
     }
 
     private void verifyMockServices() {

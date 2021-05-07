@@ -641,18 +641,14 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character setFollowers(String gameRoleId, String characterId, Followers followers) {
 
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
-        assert gameRole != null;
-
-        // GameRoles can have multiple characters, so get the right character
-        Character character = gameRole.getCharacters().stream()
-                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
 
         if (followers.getId() == null) {
             followers.setId(new ObjectId().toString());
         }
 
-        if (character.getPlaybookUniques() == null || character.getPlaybookUniques().getType() != UniqueType.FOLLOWERS) {
+        if (character.getPlaybookUniques() == null) {
 
             PlaybookUniques playbookUniqueHardHolder = PlaybookUniques.builder()
                     .id(new ObjectId().toString())
@@ -1479,7 +1475,17 @@ public class GameRoleServiceImpl implements GameRoleService {
                 character.getPlaybookUniques().setWorkspace(null);
                 break;
             case addEstablishmentName:
+                // Remove Establishment
                 character.getPlaybookUniques().setEstablishment(null);
+                break;
+            case addFollowersName:
+                // Remove fortunes move
+                filteredMoves = character.getCharacterMoves().stream()
+                        .filter(characterMove -> !characterMove.getName().equals(fortunesName)).collect(Collectors.toList());
+                character.setCharacterMoves(filteredMoves);
+
+                // Remove Followers
+                character.getPlaybookUniques().setFollowers(null);
                 break;
             default:
                 // TODO: throw error
@@ -1584,6 +1590,26 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .build();
 
                 character.getPlaybookUniques().setEstablishment(establishment);
+                break;
+            case addFollowersName:
+                // Add fortunes move
+                CharacterMove fortunesAsCM = CharacterMove.createFromMove(fortunes);
+                fortunesAsCM.setId(new ObjectId().toString());
+                character.getCharacterMoves().add(fortunesAsCM);
+
+                // Add Followers with default settings
+                Followers followers = Followers.builder()
+                        .id(new ObjectId().toString())
+                        .uniqueType(UniqueType.FOLLOWERS)
+                        .followers(followersCreator.getDefaultNumberOfFollowers())
+                        .surplusBarter(followersCreator.getDefaultSurplusBarter())
+                        .fortune(followersCreator.getDefaultFortune())
+                        .wants(followersCreator.getDefaultWants())
+                        .strengthsCount(followersCreator.getDefaultStrengthsCount())
+                        .weaknessesCount(followersCreator.getDefaultWeaknessesCount())
+                        .build();
+
+                character.getPlaybookUniques().setFollowers(followers);
                 break;
             default:
                 // TODO: throw error
