@@ -4,6 +4,7 @@ import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.*;
 import com.mersiades.awccontent.repositories.*;
 import com.mersiades.awccontent.services.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -25,6 +26,7 @@ import static com.mersiades.awccontent.content.VehicleCreatorContent.vehicleCrea
 @Component
 @Order(value = 0)
 @Profile("!test")
+@Slf4j
 public class GameDataLoader implements CommandLineRunner {
 
     private final PlaybookCreatorService playbookCreatorService;
@@ -139,14 +141,14 @@ public class GameDataLoader implements CommandLineRunner {
         // 'Create if empty' conditionality is embedded in the createPlaybooks() method
         createPlaybooks();
 
-        System.out.println("Look count: " + lookRepository.count());
-        System.out.println("Move count: " + moveRepository.count());
-        System.out.println("Name count: " + nameRepository.count());
-        System.out.println("PlaybookCreator count: " + playbookCreatorRepository.count());
-        System.out.println("CarCreator count: " + vehicleCreatorRepository.count());
-        System.out.println("Playbook count: " + playbookRepository.count());
-        System.out.println("VehicleCreator count: " + vehicleCreatorRepository.count());
-        System.out.println("ThreatCreator count: " + threatCreatorRepository.count());
+        log.info("Look count: " + lookRepository.count());
+        log.info("Move count: " + moveRepository.count());
+        log.info("Name count: " + nameRepository.count());
+        log.info("PlaybookCreator count: " + playbookCreatorRepository.count());
+        log.info("CarCreator count: " + vehicleCreatorRepository.count());
+        log.info("Playbook count: " + playbookRepository.count());
+        log.info("VehicleCreator count: " + vehicleCreatorRepository.count());
+        log.info("ThreatCreator count: " + threatCreatorRepository.count());
     }
 
     private void loadMoves() {
@@ -370,7 +372,7 @@ public class GameDataLoader implements CommandLineRunner {
     }
 
     private void loadNames() {
-        System.out.println("|| --- Loading playbook names --- ||");
+        log.info("|| --- Loading playbook names --- ||");
 
         nameService.saveAll(List.of(
                 nameAngel1,
@@ -650,7 +652,7 @@ public class GameDataLoader implements CommandLineRunner {
     }
 
     private void loadLooks() {
-        System.out.println("|| --- Loading playbook looks --- ||");
+        log.info("|| --- Loading playbook looks --- ||");
         lookService.saveAll(List.of(
                 lookAngel1,
                 lookAngel2,
@@ -949,7 +951,7 @@ public class GameDataLoader implements CommandLineRunner {
     }
 
     public void loadStatsOptions() {
-        System.out.println("|| --- Loading playbook stats options --- ||");
+        log.info("|| --- Loading playbook stats options --- ||");
         statsOptionService.saveAll(List.of(
                 statsOptionAngel1,
                 statsOptionAngel2,
@@ -999,7 +1001,7 @@ public class GameDataLoader implements CommandLineRunner {
     }
 
     public void loadPlaybookCreators() {
-        System.out.println("|| --- Loading playbook creators --- ||");
+        log.info("|| --- Loading playbook creators --- ||");
 
         playbookCreatorService.saveAll(List.of(
                 playbookCreatorAngel,
@@ -1025,7 +1027,7 @@ public class GameDataLoader implements CommandLineRunner {
     }
 
     public void loadPlaybooks() {
-        System.out.println("|| --- Loading playbooks --- ||");
+        log.info("|| --- Loading playbooks --- ||");
 
         playbookService.saveAll(List.of(angel, battlebabe, brainer, chopper, driver, gunlugger, hardholder,
                 maestroD, hocus, savvyhead, skinner));

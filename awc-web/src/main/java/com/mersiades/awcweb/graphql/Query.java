@@ -8,12 +8,14 @@ import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
 @Component
+@Slf4j
 public class Query implements GraphQLQueryResolver {
 
     private final GameRoleService gameRoleService;
@@ -46,17 +48,17 @@ public class Query implements GraphQLQueryResolver {
 
     @CrossOrigin
     public List<GameRole> gameRolesByUserId(String id) {
-        System.out.println("Fetching GameRoles for user: " + id);
+        log.info("Fetching GameRoles for user: " + id);
         return gameRoleService.findAllByUserId(id);
     }
 
     public Game game(String gameId) {
-//        System.out.println("Fetching Game by id: " + gameId);
+        log.info("Fetching Game by id: " + gameId);
         return gameService.findById(gameId);
     }
 
     public Game gameForPlayer(String gameId, String userId) {
-        System.out.println("Fetching Game for player: " + gameId);
+        log.info("Fetching Game for player: " + gameId);
 
         // Get the Game
         Game game = gameService.findById(gameId);
@@ -76,7 +78,7 @@ public class Query implements GraphQLQueryResolver {
     }
 
     public List<Game> gamesForInvitee(String email) {
-        System.out.println("Fetching Games for invitee: " + email);
+        log.info("Fetching Games for invitee by email");
         return gameService.findAllByInvitee(email);
     }
 
