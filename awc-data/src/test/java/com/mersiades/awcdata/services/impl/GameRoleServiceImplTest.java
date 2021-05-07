@@ -2,6 +2,7 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awccontent.content.MovesContent;
 import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.models.HoldingOption;
 import com.mersiades.awccontent.models.Look;
 import com.mersiades.awccontent.services.MoveService;
 import com.mersiades.awccontent.services.PlaybookCreatorService;
@@ -804,7 +805,7 @@ class GameRoleServiceImplTest {
         String item1 = "Weird glove";
         String item2 = "Funny hat";
 
-            setupMockServices();
+        setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
@@ -814,7 +815,7 @@ class GameRoleServiceImplTest {
         assertEquals(2, returnedCharacter.getPlaybookUniques().getBrainerGear().getBrainerGear().size());
         assertTrue(returnedCharacter.getPlaybookUniques().getBrainerGear().getBrainerGear().contains(item1));
         assertTrue(returnedCharacter.getPlaybookUniques().getBrainerGear().getBrainerGear().contains(item2));
-            verifyMockServices();
+        verifyMockServices();
     }
 
     @Test
@@ -1405,7 +1406,7 @@ class GameRoleServiceImplTest {
         // Then
         assertEquals(mockSharpValue + 1, returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue()
-                );
+        );
         assertTrue(returnedCharacter.getImprovementMoves().stream()
                 .anyMatch(characterMove -> characterMove.getName().equals(MovesContent.sharpMax2.getName())));
         verifyMockServices();
@@ -1749,7 +1750,7 @@ class GameRoleServiceImplTest {
         // Then
         assertTrue(returnedCharacter.getImprovementMoves().stream()
                 .anyMatch(characterMove -> characterMove.getName().equals(adjustBrainerUnique1.getName())));
-        assertEquals(brainerGearCreator.getDefaultItemCount() +2, returnedCharacter.getPlaybookUniques().getBrainerGear().getAllowedItemsCount());
+        assertEquals(brainerGearCreator.getDefaultItemCount() + 2, returnedCharacter.getPlaybookUniques().getBrainerGear().getAllowedItemsCount());
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
     }
@@ -1893,11 +1894,189 @@ class GameRoleServiceImplTest {
                 mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
 
         // Then
-        assertEquals(initialVehiclesCount -1 , returnedCharacter.getVehicleCount());
-        assertEquals(initialVehiclesCount -1 , returnedCharacter.getVehicles().size());
+        assertEquals(initialVehiclesCount - 1, returnedCharacter.getVehicleCount());
+        assertEquals(initialVehiclesCount - 1, returnedCharacter.getVehicles().size());
 
         assertFalse(returnedCharacter.getImprovementMoves().stream()
                 .anyMatch(characterMove -> characterMove.getName().equals(addVehicleAsCM.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldIncreaseHoldingStrengthsCount_onAddCharacterImprovement() {
+        // Given
+        mockCharacter.setAllowedImprovements(1);
+        Holding mockHolding = Holding.builder()
+                .id(new ObjectId().toString())
+                .strengthsCount(holdingCreator.getDefaultStrengthsCount())
+                .weaknessesCount(holdingCreator.getDefaultWeaknessesCount())
+                .build();
+        mockPlaybookUnique.setHolding(mockHolding);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(adjustHardHolderUnique1);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(adjustHardHolderUnique1.getId()), List.of());
+
+        // Then
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(adjustHardHolderUnique1.getName())));
+        assertEquals(holdingCreator.getDefaultStrengthsCount() + 1, returnedCharacter.getPlaybookUniques().getHolding().getStrengthsCount());
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldIncreaseHoldingStrengthsCount_onAddCharacterImprovement_twoAtOnce() {
+        // Given
+        int initialStrengthsCount = holdingCreator.getDefaultStrengthsCount();
+        mockCharacter.setAllowedImprovements(2);
+        Holding mockHolding = Holding.builder()
+                .id(new ObjectId().toString())
+                .strengthsCount(initialStrengthsCount)
+                .weaknessesCount(holdingCreator.getDefaultWeaknessesCount())
+                .build();
+        mockPlaybookUnique.setHolding(mockHolding);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(adjustHardHolderUnique1.getId())).thenReturn(adjustHardHolderUnique1);
+        when(moveService.findById(adjustHardHolderUnique2.getId())).thenReturn(adjustHardHolderUnique2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(adjustHardHolderUnique1.getId(), adjustHardHolderUnique2.getId()), List.of());
+
+        // Then
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(adjustHardHolderUnique1.getName())));
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(adjustHardHolderUnique2.getName())));
+        assertEquals(initialStrengthsCount + 2, returnedCharacter.getPlaybookUniques().getHolding().getStrengthsCount());
+        verifyMockServices();
+        verify(moveService, times(2)).findById(anyString());
+    }
+
+    @Test
+    void shouldDecreaseHoldingStrengthsCount_onRemoveCharacterImprovement() {
+        // Given
+        int initialStrengthsCount = 5;
+        HoldingOption mockHoldingOption1 = HoldingOption.builder()
+                .id(new ObjectId().toString())
+                .description("item1")
+                .build();
+        HoldingOption mockHoldingOption2 = HoldingOption.builder()
+                .id(new ObjectId().toString())
+                .description("item2")
+                .build();
+        HoldingOption mockHoldingOption3 = HoldingOption.builder()
+                .id(new ObjectId().toString())
+                .description("item3")
+                .build();
+        HoldingOption mockHoldingOption4 = HoldingOption.builder()
+                .id(new ObjectId().toString())
+                .description("item4")
+                .build();
+        HoldingOption mockHoldingOption5 = HoldingOption.builder()
+                .id(new ObjectId().toString())
+                .description("item5")
+                .build();
+
+        addStatsBlockToCharacter(mockCharacter);
+        mockCharacter.setAllowedImprovements(1);
+        Holding mockHolding = Holding.builder()
+                .id(new ObjectId().toString())
+                .strengthsCount(initialStrengthsCount)
+                .weaknessesCount(holdingCreator.getDefaultWeaknessesCount())
+                .strengthsCount(initialStrengthsCount)
+                .selectedStrengths(List.of(mockHoldingOption1,
+                        mockHoldingOption2, mockHoldingOption3, mockHoldingOption4, mockHoldingOption5))
+                .build();
+        mockPlaybookUnique.setHolding(mockHolding);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+
+        CharacterMove adjustHardHolderUnique1AsCM = CharacterMove.createFromMove(adjustHardHolderUnique1);
+        mockCharacter.setImprovementMoves(List.of(adjustHardHolderUnique1AsCM));
+
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
+
+        // Then
+        assertEquals(initialStrengthsCount - 1, returnedCharacter.getPlaybookUniques().getHolding().getStrengthsCount());
+        assertEquals(initialStrengthsCount - 1, returnedCharacter.getPlaybookUniques().getHolding().getSelectedStrengths().size());
+
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(adjustHardHolderUnique1AsCM.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldDecreaseHoldingWeaknessesCount_onAddCharacterImprovement() {
+        // Given
+        int initialWeaknessesCount = holdingCreator.getDefaultWeaknessesCount();
+        mockCharacter.setAllowedImprovements(1);
+        Holding mockHolding = Holding.builder()
+                .id(new ObjectId().toString())
+                .strengthsCount(holdingCreator.getDefaultStrengthsCount())
+                .weaknessesCount(initialWeaknessesCount)
+                .build();
+        mockPlaybookUnique.setHolding(mockHolding);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(adjustHardHolderUnique3);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(adjustHardHolderUnique3.getId()), List.of());
+
+        // Then
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(adjustHardHolderUnique3.getName())));
+        assertEquals(initialWeaknessesCount - 1, returnedCharacter.getPlaybookUniques().getHolding().getWeaknessesCount());
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldIncreaseHoldingWeaknessesCount_onRemoveCharacterImprovement() {
+        // Given
+        int initialWeaknessesCount = 1;
+        addStatsBlockToCharacter(mockCharacter);
+        mockCharacter.setAllowedImprovements(1);
+        Holding mockHolding = Holding.builder()
+                .id(new ObjectId().toString())
+                .weaknessesCount(initialWeaknessesCount)
+                .build();
+        mockPlaybookUnique.setHolding(mockHolding);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+
+        CharacterMove adjustHardHolderUnique3AsCM = CharacterMove.createFromMove(adjustHardHolderUnique3);
+        mockCharacter.setImprovementMoves(List.of(adjustHardHolderUnique3AsCM));
+
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
+
+        // Then
+        assertEquals(initialWeaknessesCount + 1, returnedCharacter.getPlaybookUniques().getHolding().getWeaknessesCount());
+
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(adjustHardHolderUnique3AsCM.getName())));
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
     }

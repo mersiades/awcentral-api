@@ -47,9 +47,9 @@ public class HoldingCreator {
 
     private String defaultGangTag;
 
-    private int strengthCount;
+    private int defaultStrengthsCount;
 
-    private int weaknessCount;
+    private int defaultWeaknessesCount;
 
     @Builder.Default
     private List<String> defaultGigs = new ArrayList<>();

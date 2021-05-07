@@ -1548,6 +1548,8 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .gangSize(holdingCreator.getDefaultGangSize())
                         .gangHarm(holdingCreator.getDefaultGangHarm())
                         .gangArmor(holdingCreator.getDefaultGangArmor())
+                        .strengthsCount(holdingCreator.getDefaultStrengthsCount())
+                        .weaknessesCount(holdingCreator.getDefaultWeaknessesCount())
                         .gangTags(List.of(holdingCreator.getDefaultGangTag()))
                         .build();
                 character.getPlaybookUniques().setHolding(holding);
@@ -1676,6 +1678,8 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .gangHarm(holdingCreator.getDefaultGangHarm())
                         .gangArmor(holdingCreator.getDefaultGangArmor())
                         .gangTags(List.of(holdingCreator.getDefaultGangTag()))
+                        .strengthsCount(holdingCreator.getDefaultStrengthsCount())
+                        .weaknessesCount(holdingCreator.getDefaultWeaknessesCount())
                         .build();
                 PlaybookUniques playbookUniquesHardholder = PlaybookUniques.builder()
                         .id(new ObjectId().toString())
@@ -1776,6 +1780,22 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .stream().limit(newAllowedStrengths).collect(Collectors.toList());
                 character.getPlaybookUniques().getGang().setStrengths(truncatedStrengthOptions);
                 break;
+            case adjustHardHolderUnique1Name:
+                // Deliberately falls through
+            case adjustHardHolderUnique2Name:
+                int newStrengthsCount = character.getPlaybookUniques().getHolding().getStrengthsCount() -1;
+                character.getPlaybookUniques().getHolding().setStrengthsCount(newStrengthsCount);
+
+                List<HoldingOption> truncatedHoldingOptions = character.getPlaybookUniques().getHolding()
+                        .getSelectedStrengths().stream().limit(newStrengthsCount).collect(Collectors.toList());
+
+                character.getPlaybookUniques().getHolding().setSelectedStrengths(truncatedHoldingOptions);
+                break;
+            case adjustHardHolderUnique3Name:
+                character.getPlaybookUniques().getHolding().setWeaknessesCount(
+                        character.getPlaybookUniques().getHolding().getWeaknessesCount() + 1
+                );
+                break;
             default:
                 // TODO: throw error
         }
@@ -1795,6 +1815,18 @@ public class GameRoleServiceImpl implements GameRoleService {
             case adjustChopperUnique2Name:
                 character.getPlaybookUniques().getGang()
                         .setAllowedStrengths(character.getPlaybookUniques().getGang().getAllowedStrengths() + 1);
+                break;
+            case adjustHardHolderUnique1Name:
+                // Deliberately falls through
+            case adjustHardHolderUnique2Name:
+                character.getPlaybookUniques().getHolding().setStrengthsCount(
+                        character.getPlaybookUniques().getHolding().getStrengthsCount() + 1
+                );
+                break;
+            case adjustHardHolderUnique3Name:
+                character.getPlaybookUniques().getHolding().setWeaknessesCount(
+                        character.getPlaybookUniques().getHolding().getWeaknessesCount() - 1
+                );
                 break;
             default:
                 // TODO: throw error

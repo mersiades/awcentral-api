@@ -395,8 +395,8 @@ type HoldingCreator {
     defaultGangHarm: Int!
     defaultGangArmor: Int!
     defaultGangTag: String!
-    strengthCount: Int!
-    weaknessCount: Int!
+    defaultStrengthsCount: Int!
+    defaultWeaknessesCount: Int!
     strengthOptions: [HoldingOption]!
     weaknessOptions: [HoldingOption]!
 }
@@ -788,6 +788,8 @@ type Holding {
     wants: [String]!
     gigs: [String]!
     gangTags: [String]!
+    strengthsCount: Int!
+    weaknessesCount: Int!
     selectedStrengths: [HoldingOption]!
     selectedWeaknesses: [HoldingOption]!
 }
@@ -1013,6 +1015,8 @@ input HoldingInput {
     wants: [String]!
     gigs: [String]!
     gangTags: [String]!
+    strengthsCount: Int!
+    weaknessesCount: Int!
     selectedStrengths: [HoldingOptionInput]!
     selectedWeaknesses: [HoldingOptionInput]!
 }

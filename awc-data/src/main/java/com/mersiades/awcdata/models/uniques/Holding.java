@@ -44,6 +44,10 @@ public class Holding {
 
     private int gangDefenseArmorBonus;
 
+    private int strengthsCount;
+
+    private int weaknessesCount;
+
     // The vehicles and battleVehicles, battleVehiclesCount and vehiclesCount
     // will be on the Character model directly
 

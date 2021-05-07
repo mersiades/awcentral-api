@@ -941,8 +941,8 @@ public class PlaybookCreatorsContent {
             .defaultGangHarm(2)
             .defaultGangArmor(1)
             .defaultGangTag("unruly")
-            .strengthCount(4)
-            .weaknessCount(2)
+            .defaultStrengthsCount(4)
+            .defaultWeaknessesCount(2)
             .strengthOptions(List.of(holdingOption1, holdingOption2, holdingOption3, holdingOption4, holdingOption5,
                     holdingOption6, holdingOption7, holdingOption8, holdingOption9, holdingOption10, holdingOption11))
             .weaknessOptions(List.of(holdingOption12, holdingOption13, holdingOption14, holdingOption15,
