@@ -732,16 +732,16 @@ type CastCrew {
 type Establishment {
     id: ID!
     uniqueType: UniqueType!
-    mainAttraction: String!
-    bestRegular: String!
-    worstRegular: String!
-    wantsInOnIt: String!
-    oweForIt: String!
-    wantsItGone: String!
+    mainAttraction: String
+    bestRegular: String
+    worstRegular: String
+    wantsInOnIt: String
+    oweForIt: String
+    wantsItGone: String
     sideAttractions: [String]!
     atmospheres: [String]!
-    regulars: [String]!
-    interestedParties: [String]!
+    regulars: [String!]!
+    interestedParties: [String!]!
     securityOptions: [SecurityOption]!
     castAndCrew: [CastCrew]!
 }
@@ -799,7 +799,7 @@ type Holding {
 type SkinnerGear {
     id: ID!
     uniqueType: UniqueType!
-    graciousWeapon: SkinnerGearItem!
+    graciousWeapon: SkinnerGearItem
     luxeGear: [SkinnerGearItem]!
 }
 

@@ -13,6 +13,7 @@ import com.mersiades.awcdata.models.uniques.Gang;
 import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -30,16 +31,11 @@ import static com.mersiades.awcweb.bootstrap.MockUserLoader.*;
 @Component
 @Order(value = 2)
 @Profile("dev")
+@Slf4j
 public class MockCharacterLoader implements CommandLineRunner {
 
     final String KEYCLOAK_ID_1 = System.getenv("DAVE_ID");
     final String KEYCLOAK_ID_2 = System.getenv("SARA_ID");
-
-//    final String SARA_AS_PLAYER_ID = "be6b09af-9c96-452a-8b05-922be820c88f";
-//    final String JOHN_AS_PLAYER_ID = "5ffe67b72e21523778660910)";
-//    final String MAYA_AS_PLAYER_ID = "5ffe67b72e21523778660911)";
-//    final String AHMAD_AS_PLAYER_ID = "5ffe67b72e21523778660912)";
-//    final String TAKESHI_AS_PLAYER_ID = "5ffe67b72e21523778660913)";
 
     private final GameRoleService gameRoleService;
     private final LookService lookService;
@@ -80,7 +76,7 @@ public class MockCharacterLoader implements CommandLineRunner {
             loadNpcs(); // characterCount is serving as a proxy for npcCount here
         }
 
-        System.out.println("Character count: " + characterRepository.count());
+        log.info("Character count: " + characterRepository.count());
     }
 
     private void loadMockCharacters() {

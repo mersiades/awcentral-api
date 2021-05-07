@@ -611,25 +611,21 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character setEstablishment(String gameRoleId, String characterId, Establishment establishment) {
 
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
-        assert gameRole != null;
-
-        // GameRoles can have multiple characters, so get the right character
-        Character character = gameRole.getCharacters().stream()
-                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
 
         if (establishment.getId() == null) {
             establishment.setId(new ObjectId().toString());
         }
 
-        if (character.getPlaybookUniques() == null || character.getPlaybookUniques().getType() != UniqueType.ESTABLISHMENT) {
-            PlaybookUniques gangUnique = PlaybookUniques.builder()
+        if (character.getPlaybookUniques() == null) {
+            PlaybookUniques establishmentUnique = PlaybookUniques.builder()
                     .id(new ObjectId().toString())
                     .type(UniqueType.ESTABLISHMENT)
                     .establishment(establishment)
                     .build();
 
-            character.setPlaybookUniques(gangUnique);
+            character.setPlaybookUniques(establishmentUnique);
         } else {
             // Update existing Establishment
             character.getPlaybookUniques().setEstablishment(establishment);
@@ -1482,6 +1478,9 @@ public class GameRoleServiceImpl implements GameRoleService {
                 // Remove Workspace
                 character.getPlaybookUniques().setWorkspace(null);
                 break;
+            case addEstablishmentName:
+                character.getPlaybookUniques().setEstablishment(null);
+                break;
             default:
                 // TODO: throw error
         }
@@ -1574,6 +1573,17 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .build();
 
                 character.getPlaybookUniques().setWorkspace(workspace);
+                break;
+            case addEstablishmentName:
+                // Add Establishment with default settings
+                Establishment establishment = Establishment.builder()
+                        .id(new ObjectId().toString())
+                        .uniqueType(UniqueType.ESTABLISHMENT)
+                        .regulars(establishmentCreator.getRegularsNames())
+                        .interestedParties(establishmentCreator.getInterestedPartyNames())
+                        .build();
+
+                character.getPlaybookUniques().setEstablishment(establishment);
                 break;
             default:
                 // TODO: throw error
@@ -1716,6 +1726,8 @@ public class GameRoleServiceImpl implements GameRoleService {
                 Establishment establishment = Establishment.builder()
                         .id(new ObjectId().toString())
                         .uniqueType(UniqueType.ESTABLISHMENT)
+                        .regulars(establishmentCreator.getRegularsNames())
+                        .interestedParties(establishmentCreator.getInterestedPartyNames())
                         .build();
                 PlaybookUniques playbookUniquesMaestroD = PlaybookUniques.builder()
                         .id(new ObjectId().toString())

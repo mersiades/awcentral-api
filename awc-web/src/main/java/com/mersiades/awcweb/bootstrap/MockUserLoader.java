@@ -8,6 +8,7 @@ import com.mersiades.awcdata.repositories.*;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcdata.services.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +21,7 @@ import java.util.List;
 @Component
 @Order(value = 1)
 @Profile("dev")
+@Slf4j
 public class MockUserLoader implements CommandLineRunner {
 
     private final GameService gameService;
@@ -80,9 +82,9 @@ public class MockUserLoader implements CommandLineRunner {
     public void run(String... args) {
         loadMockData();
 
-        System.out.println("Game count: " + gameRepository.count());
-        System.out.println("GameRole count: " + gameRoleRepository.count());
-        System.out.println("User count: " + userRepository.count());
+        log.info("Game count: " + gameRepository.count());
+        log.info("GameRole count: " + gameRoleRepository.count());
+        log.info("User count: " + userRepository.count());
     }
 
     private void loadMockData() {

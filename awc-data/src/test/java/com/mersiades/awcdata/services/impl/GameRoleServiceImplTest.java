@@ -2427,6 +2427,67 @@ class GameRoleServiceImplTest {
     }
 
     @Test
+    void shouldAddEstablishment_onAddCharacterImprovement() {
+        // Given
+        CharacterMove addEstablishmentAsCM = CharacterMove.createFromMove(addEstablishment);
+        mockCharacter.setAllowedImprovements(1);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(addEstablishmentAsCM);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(addEstablishmentAsCM.getId()), List.of());
+
+        // Then
+        assertNotNull(returnedCharacter.getPlaybookUniques().getEstablishment());
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(addEstablishment.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldRemoveEstablishment_onRemoveCharacterImprovement() {
+        // Given
+        CharacterStat mockCoolStat = CharacterStat.builder()
+                .id("mock-cool-stat-id")
+                .stat(StatType.COOL)
+                .value(2)
+                .build();
+
+        StatsBlock mockStatsBlock = StatsBlock.builder()
+                .id("mock-stat-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCoolStat))
+                .build();
+
+        Establishment mockEstablishment = Establishment.builder().id(new ObjectId().toString()).build();
+        mockCharacter.setStatsBlock(mockStatsBlock);
+        mockCharacter.setAllowedImprovements(1);
+        CharacterMove addEstablishmentAsCM = CharacterMove.createFromMove(addEstablishment);
+        mockCharacter.setImprovementMoves(List.of(addEstablishmentAsCM));
+        mockPlaybookUnique.setEstablishment(mockEstablishment);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
+
+        // Then
+        assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+        assertNull(returnedCharacter.getPlaybookUniques().getEstablishment());
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(addEstablishment.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
     void shouldRemoveHold() {
 
         mockCharacter.getHolds().add(mockHold);

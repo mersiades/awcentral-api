@@ -2521,7 +2521,7 @@ public class MovesContent {
 
     public static final Move addFollowers = Move.builder()
             .id(new ObjectId().toString())
-            .name("ADD FOLLOWERS")
+            .name(addFollowersName)
             .description("get followers (you detail) and _**fortunes**_\n")
             .kind(MoveType.ADD_UNIQUE)
             .playbook(PlaybookType.HOCUS)
@@ -2529,7 +2529,7 @@ public class MovesContent {
 
     public static final Move addEstablishment = Move.builder()
             .id(new ObjectId().toString())
-            .name("ADD ESTABLISHMENT")
+            .name(addEstablishmentName)
             .description("get an establishment (you detail)\n")
             .kind(MoveType.ADD_UNIQUE)
             .playbook(PlaybookType.HOCUS)
@@ -2544,7 +2544,7 @@ public class MovesContent {
             .kind(MoveType.ADD_VEHICLE)
             .build();
 
-    /* ----------------------------- UNGIVEN FUTURE IMPROVEMENT MOVES --------------------------------- */
+    /* ----------------------------- FUTURE IMPROVEMENT MOVES --------------------------------- */
 
     public static final Move genericIncreaseStat = Move.builder()
             .id(new ObjectId().toString())

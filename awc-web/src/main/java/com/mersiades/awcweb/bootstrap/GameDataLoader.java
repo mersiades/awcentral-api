@@ -372,7 +372,7 @@ public class GameDataLoader implements CommandLineRunner {
     }
 
     private void loadNames() {
-        log.info("|| --- Loading playbook names --- ||");
+        log.info("Loading playbook names");
 
         nameService.saveAll(List.of(
                 nameAngel1,
@@ -652,7 +652,7 @@ public class GameDataLoader implements CommandLineRunner {
     }
 
     private void loadLooks() {
-        log.info("|| --- Loading playbook looks --- ||");
+        log.info("Loading playbook looks");
         lookService.saveAll(List.of(
                 lookAngel1,
                 lookAngel2,
@@ -951,7 +951,7 @@ public class GameDataLoader implements CommandLineRunner {
     }
 
     public void loadStatsOptions() {
-        log.info("|| --- Loading playbook stats options --- ||");
+        log.info("Loading playbook stats options");
         statsOptionService.saveAll(List.of(
                 statsOptionAngel1,
                 statsOptionAngel2,
@@ -1001,7 +1001,7 @@ public class GameDataLoader implements CommandLineRunner {
     }
 
     public void loadPlaybookCreators() {
-        log.info("|| --- Loading playbook creators --- ||");
+        log.info("Loading playbook creators");
 
         playbookCreatorService.saveAll(List.of(
                 playbookCreatorAngel,
@@ -1027,7 +1027,7 @@ public class GameDataLoader implements CommandLineRunner {
     }
 
     public void loadPlaybooks() {
-        log.info("|| --- Loading playbooks --- ||");
+        log.info("Loading playbooks");
 
         playbookService.saveAll(List.of(angel, battlebabe, brainer, chopper, driver, gunlugger, hardholder,
                 maestroD, hocus, savvyhead, skinner));
