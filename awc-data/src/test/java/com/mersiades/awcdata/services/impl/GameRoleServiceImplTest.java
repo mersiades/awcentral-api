@@ -2,6 +2,7 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awccontent.content.MovesContent;
 import com.mersiades.awccontent.enums.*;
+import com.mersiades.awccontent.models.FollowersOption;
 import com.mersiades.awccontent.models.HoldingOption;
 import com.mersiades.awccontent.models.Look;
 import com.mersiades.awccontent.services.MoveService;
@@ -2077,6 +2078,83 @@ class GameRoleServiceImplTest {
 
         assertFalse(returnedCharacter.getImprovementMoves().stream()
                 .anyMatch(characterMove -> characterMove.getName().equals(adjustHardHolderUnique3AsCM.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldIncreaseFollowersStrengthsCount_onAddCharacterImprovement() {
+        // Given
+        int initialStrengthsCount = followersCreator.getDefaultStrengthsCount();
+        mockCharacter.setAllowedImprovements(1);
+        Followers mockFollowers = Followers.builder()
+                .id(new ObjectId().toString())
+                .strengthsCount(initialStrengthsCount)
+                .build();
+        mockPlaybookUnique.setFollowers(mockFollowers);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(adjustHocusUnique1);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(adjustHocusUnique1.getId()), List.of());
+
+        // Then
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(adjustHocusUnique1.getName())));
+        assertEquals(initialStrengthsCount + 1, returnedCharacter.getPlaybookUniques().getFollowers().getStrengthsCount());
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldDecreaseFollowersStrengthsCount_onRemoveCharacterImprovement() {
+        // Given
+        int initialStrengthsCount = 3;
+        FollowersOption mockOption1 = FollowersOption.builder()
+                .id(new ObjectId().toString())
+                .description("item1")
+                .build();
+
+        FollowersOption mockOption2 = FollowersOption.builder()
+                .id(new ObjectId().toString())
+                .description("item2")
+                .build();
+
+        FollowersOption mockOption3 = FollowersOption.builder()
+                .id(new ObjectId().toString())
+                .description("item3")
+                .build();
+
+        addStatsBlockToCharacter(mockCharacter);
+        mockCharacter.setAllowedImprovements(1);
+        Followers mockFollowers = Followers.builder()
+                .id(new ObjectId().toString())
+                .selectedStrengths(List.of(mockOption1, mockOption2, mockOption3))
+                .strengthsCount(initialStrengthsCount)
+                .build();
+        mockPlaybookUnique.setFollowers(mockFollowers);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+
+        CharacterMove adjustHocusUnique1AsCM = CharacterMove.createFromMove(adjustHocusUnique1);
+        mockCharacter.setImprovementMoves(List.of(adjustHocusUnique1AsCM));
+
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
+
+        // Then
+        assertEquals(initialStrengthsCount - 1, returnedCharacter.getPlaybookUniques().getFollowers().getStrengthsCount());
+        assertEquals(initialStrengthsCount - 1, returnedCharacter.getPlaybookUniques().getFollowers().getSelectedStrengths().size());
+
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(adjustHocusUnique1AsCM.getName())));
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
     }

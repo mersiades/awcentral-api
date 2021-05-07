@@ -1700,6 +1700,8 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .surplusBarter(followersCreator.getDefaultSurplusBarter())
                         .fortune(followersCreator.getDefaultFortune())
                         .wants(followersCreator.getDefaultWants())
+                        .strengthsCount(followersCreator.getDefaultStrengthsCount())
+                        .weaknessesCount(followersCreator.getDefaultWeaknessesCount())
                         .build();
 
                 PlaybookUniques playbookUniquesHocus = PlaybookUniques.builder()
@@ -1783,11 +1785,11 @@ public class GameRoleServiceImpl implements GameRoleService {
             case adjustHardHolderUnique1Name:
                 // Deliberately falls through
             case adjustHardHolderUnique2Name:
-                int newStrengthsCount = character.getPlaybookUniques().getHolding().getStrengthsCount() -1;
-                character.getPlaybookUniques().getHolding().setStrengthsCount(newStrengthsCount);
+                int newHoldingStrengthsCount = character.getPlaybookUniques().getHolding().getStrengthsCount() -1;
+                character.getPlaybookUniques().getHolding().setStrengthsCount(newHoldingStrengthsCount);
 
                 List<HoldingOption> truncatedHoldingOptions = character.getPlaybookUniques().getHolding()
-                        .getSelectedStrengths().stream().limit(newStrengthsCount).collect(Collectors.toList());
+                        .getSelectedStrengths().stream().limit(newHoldingStrengthsCount).collect(Collectors.toList());
 
                 character.getPlaybookUniques().getHolding().setSelectedStrengths(truncatedHoldingOptions);
                 break;
@@ -1795,6 +1797,17 @@ public class GameRoleServiceImpl implements GameRoleService {
                 character.getPlaybookUniques().getHolding().setWeaknessesCount(
                         character.getPlaybookUniques().getHolding().getWeaknessesCount() + 1
                 );
+                break;
+            case adjustHocusUnique1Name:
+                // Deliberately falls through
+            case adjustHocusUnique2Name:
+                int newFollowersStrengthsCount = character.getPlaybookUniques().getFollowers().getStrengthsCount() - 1;
+                character.getPlaybookUniques().getFollowers().setStrengthsCount(newFollowersStrengthsCount);
+
+                List<FollowersOption> truncatedFollowersStrengths = character.getPlaybookUniques().getFollowers().getSelectedStrengths()
+                        .stream().limit(newFollowersStrengthsCount).collect(Collectors.toList());
+
+                character.getPlaybookUniques().getFollowers().setSelectedStrengths(truncatedFollowersStrengths);
                 break;
             default:
                 // TODO: throw error
@@ -1826,6 +1839,13 @@ public class GameRoleServiceImpl implements GameRoleService {
             case adjustHardHolderUnique3Name:
                 character.getPlaybookUniques().getHolding().setWeaknessesCount(
                         character.getPlaybookUniques().getHolding().getWeaknessesCount() - 1
+                );
+                break;
+            case adjustHocusUnique1Name:
+                // Deliberately falls through
+            case adjustHocusUnique2Name:
+                character.getPlaybookUniques().getFollowers().setStrengthsCount(
+                        character.getPlaybookUniques().getFollowers().getStrengthsCount() + 1
                 );
                 break;
             default:

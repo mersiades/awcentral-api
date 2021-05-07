@@ -337,8 +337,8 @@ type FollowersCreator {
     defaultNumberOfFollowers: Int!
     defaultSurplusBarter: Int!
     defaultFortune: Int!
-    strengthCount: Int!
-    weaknessCount: Int!
+    defaultStrengthsCount: Int!
+    defaultWeaknessesCount: Int!
     travelOptions: [String]!
     characterizationOptions: [String]!
     defaultWants: [String]!
@@ -749,13 +749,15 @@ type Establishment {
 type Followers {
     id: ID!
     uniqueType: UniqueType!
-    description: String!
-    travelOption: String!
-    characterization: String!
+    description: String
+    travelOption: String
+    characterization: String
     followers: Int!
-    fortune: Int!
-    barter: Int!
     surplusBarter: Int!
+    fortune: Int!
+    barter: Int
+    strengthsCount: Int!
+    weaknessesCount: Int!
     surplus: [String]!
     wants: [String]!
     selectedStrengths: [FollowersOption]!
@@ -1040,6 +1042,8 @@ input FollowersInput {
     fortune: Int!
     barter: Int!
     surplusBarter: Int!
+    strengthsCount: Int!
+    weaknessesCount: Int!
     surplus: [String]!
     wants: [String]!
     selectedStrengths: [FollowersOptionInput]!

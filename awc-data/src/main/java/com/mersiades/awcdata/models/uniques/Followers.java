@@ -37,6 +37,10 @@ public class Followers {
 
     private int surplusBarter;
 
+    private int strengthsCount;
+
+    private int weaknessesCount;
+
     @Builder.Default
     private List<String> surplus = new ArrayList<>();
 
