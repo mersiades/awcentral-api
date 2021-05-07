@@ -1971,6 +1971,74 @@ class GameRoleServiceImplTest {
     }
 
     @Test
+    void shouldAddGangAndPackAlpha_onAddCharacterImprovement() {
+        // Given
+        CharacterMove addGangPackAlphaAsCM = CharacterMove.createFromMove(addGangPackAlpha);
+        mockCharacter.setAllowedImprovements(1);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(addGangPackAlphaAsCM);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(addGangPackAlphaAsCM.getId()), List.of());
+
+        // Then
+        assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+        assertEquals(gangCreator.getDefaultSize(), returnedCharacter.getPlaybookUniques().getGang().getSize());
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(addGangPackAlpha.getName())));
+        assertTrue(returnedCharacter.getCharacterMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(packAlpha.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldRemoveGangAndPackAlpha_onRemoveCharacterImprovement() {
+        // Given
+        CharacterStat mockCoolStat = CharacterStat.builder()
+                .id("mock-cool-stat-id")
+                .stat(StatType.COOL)
+                .value(2)
+                .build();
+
+        StatsBlock mockStatsBlock = StatsBlock.builder()
+                .id("mock-stat-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCoolStat))
+                .build();
+
+        Gang mockGang = Gang.builder().id(new ObjectId().toString()).build();
+        mockCharacter.setStatsBlock(mockStatsBlock);
+        mockCharacter.setAllowedImprovements(1);
+        CharacterMove addGangPackAlphaAsCM = CharacterMove.createFromMove(addGangPackAlpha);
+        CharacterMove packAlphaAsCM = CharacterMove.createFromMove(packAlpha);
+        mockCharacter.setImprovementMoves(List.of(addGangPackAlphaAsCM));
+        mockCharacter.setCharacterMoves(List.of(packAlphaAsCM));
+        mockPlaybookUnique.setGang(mockGang);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
+
+        // Then
+        assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+        assertNull(returnedCharacter.getPlaybookUniques().getGang());
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(addGangPackAlpha.getName())));
+        assertFalse(returnedCharacter.getCharacterMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(packAlpha.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
     void shouldAddHoldingAndWealth_onAddCharacterImprovement() {
         // Given
         CharacterMove addHoldingAsCM = CharacterMove.createFromMove(addHolding);

@@ -1460,6 +1460,15 @@ public class GameRoleServiceImpl implements GameRoleService {
                 // Remove gang
                 character.getPlaybookUniques().setGang(null);
                 break;
+            case addGangPackAlphaName:
+                // Remove pack alpha move
+                filteredMoves = character.getCharacterMoves().stream()
+                        .filter(characterMove -> !characterMove.getName().equals(packAlphaName)).collect(Collectors.toList());
+                character.setCharacterMoves(filteredMoves);
+
+                // Remove gang
+                character.getPlaybookUniques().setGang(null);
+                break;
             case addHoldingName:
                 // Remove wealth move
                 filteredMoves = character.getCharacterMoves().stream()
@@ -1481,6 +1490,16 @@ public class GameRoleServiceImpl implements GameRoleService {
     // Adds PlaybookUnique with default options to Character on addition of ADD_UNIQUE improvement or the Gunlugger move
     private void addUnique(Character character, String characterMoveName) {
 
+        Gang gang = Gang.builder()
+                .id(new ObjectId().toString())
+                .uniqueType(UniqueType.GANG)
+                .size(gangCreator.getDefaultSize())
+                .allowedStrengths(gangCreator.getStrengthChoiceCount())
+                .harm(gangCreator.getDefaultHarm())
+                .armor(gangCreator.getDefaultArmor())
+                .tags(gangCreator.getDefaultTags())
+                .build();
+
         switch (characterMoveName) {
             case preparedForTheInevitableName:
                 AngelKit angelKit = AngelKit.builder()
@@ -1500,15 +1519,14 @@ public class GameRoleServiceImpl implements GameRoleService {
                 character.getCharacterMoves().add(leadershipAsCM);
 
                 // Add gang
-                Gang gang = Gang.builder()
-                        .id(new ObjectId().toString())
-                        .uniqueType(UniqueType.GANG)
-                        .size(gangCreator.getDefaultSize())
-                        .allowedStrengths(gangCreator.getStrengthChoiceCount())
-                        .harm(gangCreator.getDefaultHarm())
-                        .armor(gangCreator.getDefaultArmor())
-                        .tags(gangCreator.getDefaultTags())
-                        .build();
+                character.getPlaybookUniques().setGang(gang);
+                break;
+            case addGangPackAlphaName:
+                // Add pack alpha move
+                CharacterMove packAlphaAsCM = CharacterMove.createFromMove(packAlpha);
+                packAlphaAsCM.setId(new ObjectId().toString());
+                character.getCharacterMoves().add(packAlphaAsCM);
+
                 character.getPlaybookUniques().setGang(gang);
                 break;
             case addHoldingName:

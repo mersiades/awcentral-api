@@ -391,7 +391,7 @@ public class PlaybookCreatorsContent {
             .defaultHarm(2)
             .strengthChoiceCount(2)
             .weaknessChoiceCount(1)
-            .defaultTags(List.of("+savage"))
+            .defaultTags(List.of("savage"))
             .strengths(List.of(gangOption1, gangOption2, gangOption3, gangOption4, gangOption5, gangOption6))
             .weaknesses(List.of(gangOption7, gangOption8, gangOption9, gangOption10, gangOption11))
             .build();

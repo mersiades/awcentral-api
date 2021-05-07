@@ -1275,7 +1275,7 @@ public class MovesContent {
             .build();
     public static final Move packAlpha = Move.builder()
             .id(new ObjectId().toString())
-            .name("PACK ALPHA")
+            .name(packAlphaName)
             .description("_**Pack alpha**_: when you try to impose your will on your gang, roll+hard.\n" +
                     "\n" +
                     "On a 10+, all 3. On a 7–9, choose 1:\n" +
@@ -2497,7 +2497,7 @@ public class MovesContent {
 
     public static final Move addGangPackAlpha = Move.builder()
             .id(new ObjectId().toString())
-            .name("ADD GANG AND LEADERSHIP")
+            .name(addGangPackAlphaName)
             .description("get a gang (you detail) and _**pack alpha**_\n")
             .kind(MoveType.ADD_UNIQUE)
             .playbook(PlaybookType.CHOPPER)

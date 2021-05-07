@@ -34,6 +34,7 @@ public class MoveNames {
     public static final String dealWithTerrainName = "DEAL WITH BAD TERRAIN";
     public static final String leadershipName = "LEADERSHIP";
     public static final String wealthName = "WEALTH";
+    public static final String packAlphaName = "PACK ALPHA";
     public static final String manipulateName = "SEDUCE OR MANIPULATE SOMEONE";
     public static final String fortunesName = "FORTUNES";
     public static final String lostName = "LOST";
@@ -91,6 +92,7 @@ public class MoveNames {
     public static final String addOtherPBMove1Name = "ADD MOVE FROM OTHER PLAYBOOK 1";
     public static final String addOtherPBMove2Name = "ADD MOVE FROM OTHER PLAYBOOK 2";
     public static final String addGangLeadershipName = "ADD GANG AND LEADERSHIP";
+    public static final String addGangPackAlphaName = "ADD GANG AND PACK ALPHA";
     public static final String addHoldingName = "ADD HOLDING";
     public static final String addVehicleName = "ADD VEHICLE";
     public static final String addWorkspaceName = "ADD WORKSPACE";
