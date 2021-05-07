@@ -1090,6 +1090,7 @@ input ProjectInput {
 
 input WorkspaceInput {
     id: ID
+    uniqueType: UniqueType!
     workspaceInstructions: String!
     projectInstructions: String!
     workspaceItems: [String]!

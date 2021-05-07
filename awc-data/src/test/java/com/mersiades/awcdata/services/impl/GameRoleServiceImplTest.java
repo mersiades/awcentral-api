@@ -27,8 +27,7 @@ import static com.mersiades.awccontent.content.MovesContent.*;
 import static com.mersiades.awccontent.content.PlaybookCreatorsContent.*;
 import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel1;
 import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel2;
-import static com.mersiades.awccontent.enums.UniqueType.BRAINER_GEAR;
-import static com.mersiades.awccontent.enums.UniqueType.CUSTOM_WEAPONS;
+import static com.mersiades.awccontent.enums.UniqueType.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -399,7 +398,7 @@ class GameRoleServiceImplTest {
         assertFalse(returnedCharacter.getHasCompletedCharacterCreation());
         assertFalse(returnedCharacter.getHasPlusOneForward());
         assertEquals(-1, returnedCharacter.getBarter());
-        assertNull(returnedCharacter.getHarm());
+        assertEquals(0, returnedCharacter.getHarm().getValue());
         assertNull(returnedCharacter.getStatsBlock());
         assertEquals(0, returnedCharacter.getVehicleCount());
         assertEquals(0, returnedCharacter.getBattleVehicleCount());
@@ -961,7 +960,10 @@ class GameRoleServiceImplTest {
     @Test
     void shouldSetWorkspace() {
         mockGameRole.getCharacters().add(mockCharacter);
-        Workspace mockWorkspace = Workspace.builder().id("mock-workspace-id").build();
+        Workspace mockWorkspace = Workspace.builder().id("mock-workspace-id")
+                .workspaceInstructions(workspaceCreator.getWorkspaceInstructions())
+                .uniqueType(WORKSPACE)
+                .build();
 
         setupMockServices();
 
@@ -971,6 +973,8 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(mockWorkspace.getId(), returnedCharacter.getPlaybookUniques().getWorkspace().getId());
+        assertEquals(workspaceCreator.getWorkspaceInstructions(), returnedCharacter.getPlaybookUniques().getWorkspace().getWorkspaceInstructions());
+        assertEquals(WORKSPACE, returnedCharacter.getPlaybookUniques().getWorkspace().getUniqueType());
         verifyMockServices();
     }
 
@@ -2030,6 +2034,69 @@ class GameRoleServiceImplTest {
                 .anyMatch(characterMove -> characterMove.getName().equals(addHolding.getName())));
         assertFalse(returnedCharacter.getCharacterMoves().stream()
                 .anyMatch(characterMove -> characterMove.getName().equals(wealth.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldAddWorkspace_onAddCharacterImprovement() {
+        // Given
+        CharacterMove addWorkspaceAsCM = CharacterMove.createFromMove(addWorkspace);
+        mockCharacter.setAllowedImprovements(1);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(addWorkspaceAsCM);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(addWorkspaceAsCM.getId()), List.of());
+
+        // Then
+        assertNotNull(returnedCharacter.getPlaybookUniques().getWorkspace());
+        assertEquals(workspaceCreator.getWorkspaceInstructions(), returnedCharacter.getPlaybookUniques().getWorkspace().getWorkspaceInstructions());
+        assertEquals(workspaceCreator.getProjectInstructions(), returnedCharacter.getPlaybookUniques().getWorkspace().getProjectInstructions());
+        assertTrue(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(addWorkspace.getName())));
+        verifyMockServices();
+        verify(moveService, times(1)).findById(anyString());
+    }
+
+    @Test
+    void shouldRemoveWorkspace_onRemoveCharacterImprovement() {
+        // Given
+        CharacterStat mockCoolStat = CharacterStat.builder()
+                .id("mock-cool-stat-id")
+                .stat(StatType.COOL)
+                .value(2)
+                .build();
+
+        StatsBlock mockStatsBlock = StatsBlock.builder()
+                .id("mock-stat-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCoolStat))
+                .build();
+
+        Workspace mockWorkspace = Workspace.builder().id(new ObjectId().toString()).build();
+        mockCharacter.setStatsBlock(mockStatsBlock);
+        mockCharacter.setAllowedImprovements(1);
+        CharacterMove addHoldingAsCM = CharacterMove.createFromMove(addWorkspace);
+        mockCharacter.setImprovementMoves(List.of(addHoldingAsCM));
+        mockPlaybookUnique.setWorkspace(mockWorkspace);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+        when(moveService.findById(anyString())).thenReturn(MovesContent.coolMax2);
+
+        // When
+        Character returnedCharacter = gameRoleService.adjustImprovements(mockGameRole.getGameId(),
+                mockCharacter.getId(), List.of(MovesContent.coolMax2.getId()), List.of());
+
+        // Then
+        assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
+        assertNull(returnedCharacter.getPlaybookUniques().getWorkspace());
+        assertFalse(returnedCharacter.getImprovementMoves().stream()
+                .anyMatch(characterMove -> characterMove.getName().equals(addWorkspace.getName())));
         verifyMockServices();
         verify(moveService, times(1)).findById(anyString());
     }

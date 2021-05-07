@@ -2513,7 +2513,7 @@ public class MovesContent {
 
     public static final Move addWorkspace = Move.builder()
             .id(new ObjectId().toString())
-            .name("ADD WORKSPACE")
+            .name(addWorkspaceName)
             .description("get a garage (workspace, you detail) and crew\n")
             .kind(MoveType.ADD_UNIQUE)
             .playbook(PlaybookType.SAVVYHEAD)

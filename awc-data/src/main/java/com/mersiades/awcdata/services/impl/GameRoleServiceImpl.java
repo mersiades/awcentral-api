@@ -182,13 +182,23 @@ public class GameRoleServiceImpl implements GameRoleService {
 
         Character character = getCharacterById(gameRole, characterId);
 
+        CharacterHarm harm = CharacterHarm.builder()
+                .id(new ObjectId().toString())
+                .hasChangedPlaybook(false)
+                .hasComeBackHard(false)
+                .hasComeBackWeird(false)
+                .hasDied(false)
+                .isStabilized(false)
+                .value(0)
+                .build();
+
         // Reset fields if already filled
         character.setName(null);
         character.setPlaybookUniques(null);
         character.setHasCompletedCharacterCreation(false);
         character.setHasPlusOneForward(false);
         character.setBarter(-1);
-        character.setHarm(null);
+        character.setHarm(harm);
         character.setStatsBlock(null);
         character.setVehicleCount(0);
         character.setBattleVehicleCount(0);
@@ -816,25 +826,21 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character setWorkspace(String gameRoleId, String characterId, Workspace workspace) {
 
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
-        assert gameRole != null;
-
-        // GameRoles can have multiple characters, so get the right character
-        Character character = gameRole.getCharacters().stream()
-                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
 
         if (workspace.getId() == null) {
             workspace.setId(new ObjectId().toString());
         }
 
-        if (character.getPlaybookUniques() == null || character.getPlaybookUniques().getType() != UniqueType.WORKSPACE) {
-            PlaybookUniques gangUnique = PlaybookUniques.builder()
+        if (character.getPlaybookUniques() == null) {
+            PlaybookUniques workspaceUnique = PlaybookUniques.builder()
                     .id(new ObjectId().toString())
                     .type(UniqueType.WORKSPACE)
                     .workspace(workspace)
                     .build();
 
-            character.setPlaybookUniques(gangUnique);
+            character.setPlaybookUniques(workspaceUnique);
         } else {
             // Update existing Establishment
             character.getPlaybookUniques().setWorkspace(workspace);
@@ -1463,6 +1469,10 @@ public class GameRoleServiceImpl implements GameRoleService {
                 // Remove holding
                 character.getPlaybookUniques().setHolding(null);
                 break;
+            case addWorkspaceName:
+                // Remove Workspace
+                character.getPlaybookUniques().setWorkspace(null);
+                break;
             default:
                 // TODO: throw error
         }
@@ -1470,6 +1480,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     // Adds PlaybookUnique with default options to Character on addition of ADD_UNIQUE improvement or the Gunlugger move
     private void addUnique(Character character, String characterMoveName) {
+
         switch (characterMoveName) {
             case preparedForTheInevitableName:
                 AngelKit angelKit = AngelKit.builder()
@@ -1522,6 +1533,27 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .gangTags(List.of(holdingCreator.getDefaultGangTag()))
                         .build();
                 character.getPlaybookUniques().setHolding(holding);
+                break;
+            case addWorkspaceName:
+                // Driver may not have a PlaybookUniques at this point, so conditionally add
+                if (character.getPlaybookUniques() == null) {
+                    PlaybookUniques playbookUniques = PlaybookUniques.builder()
+                            .id(new ObjectId().toString())
+                            // The only Unique a Driver can get is WORKSPACE
+                            .type(UniqueType.WORKSPACE)
+                            .build();
+                    character.setPlaybookUniques(playbookUniques);
+                }
+
+                // Add Workspace with default settings
+                Workspace workspace = Workspace.builder()
+                        .id(new ObjectId().toString())
+                        .uniqueType(UniqueType.WORKSPACE)
+                        .projectInstructions(workspaceCreator.getProjectInstructions())
+                        .workspaceInstructions(workspaceCreator.getWorkspaceInstructions())
+                        .build();
+
+                character.getPlaybookUniques().setWorkspace(workspace);
                 break;
             default:
                 // TODO: throw error
@@ -1673,6 +1705,8 @@ public class GameRoleServiceImpl implements GameRoleService {
                 Workspace workspace = Workspace.builder()
                         .id(new ObjectId().toString())
                         .uniqueType(UniqueType.WORKSPACE)
+                        .projectInstructions(workspaceCreator.getProjectInstructions())
+                        .workspaceInstructions(workspaceCreator.getWorkspaceInstructions())
                         .build();
                 PlaybookUniques playbookUniquesSavvyhead = PlaybookUniques.builder()
                         .id(new ObjectId().toString())
