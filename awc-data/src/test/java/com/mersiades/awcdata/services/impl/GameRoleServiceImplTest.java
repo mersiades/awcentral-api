@@ -15,6 +15,7 @@ import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -538,7 +539,7 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    public void shouldSetCharacterGear() {
+    void shouldSetCharacterGear() {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
 
@@ -559,7 +560,7 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    public void shouldSetCharacterMoves_Angel() {
+    void shouldSetCharacterMoves_Angel() {
         // Given
         mockCharacter.setPlaybook(PlaybookType.ANGEL);
         mockGameRole.getCharacters().add(mockCharacter);
@@ -589,8 +590,55 @@ class GameRoleServiceImplTest {
         verifyMockServices();
     }
 
+    @Disabled // Fix this when converting the setCharacterMoves mutation to use moves names instead of ids
     @Test
-    public void shouldSetCharacterMoves_Angel_withSomeMovesFromOtherPlaybooks() {
+    void shouldSetCharacterMoves_whenHaveGainedAdditionalMovesFromAddingUnique() {
+        // Given
+        // Brainer has gained a Holding and the Wealth move through an improvement
+        mockCharacter.setPlaybook(PlaybookType.BRAINER);
+        addPlaybookUniquesToCharacter(mockCharacter, BRAINER_GEAR);
+        BrainerGear mockBrainerGear = BrainerGear.builder().id(new ObjectId().toString()).build();
+        Holding mockHolding = Holding.builder().id(new ObjectId().toString()).build();
+        mockCharacter.getPlaybookUniques().setBrainerGear(mockBrainerGear);
+        mockCharacter.getPlaybookUniques().setHolding(mockHolding);
+        // Brainer has the standard two CharacterMoves
+        CharacterMove unnaturalLustAsCM = CharacterMove.createFromMove(unnaturalLust, true);
+        CharacterMove brainReceptivityAsCM = CharacterMove.createFromMove(brainReceptivity, true);
+        CharacterMove wealthAsCM = CharacterMove.createFromMove(wealth, true);
+        mockCharacter.setCharacterMoves(List.of(unnaturalLustAsCM, brainReceptivityAsCM, wealthAsCM));
+        // Brainer has the improvement for getting the Holding and Wealth move
+        CharacterMove addHoldingAsCM = CharacterMove.createFromMove(addHolding, true);
+        mockCharacter.setImprovementMoves(List.of(addHoldingAsCM));
+        addStatsBlockToCharacter(mockCharacter);
+        mockGameRole.getCharacters().add(mockCharacter);
+        when(moveService.findAllById(anyList())).thenReturn(List.of(unnaturalLust, brainReceptivity, brainScan));
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .setCharacterMoves(mockGameRole.getId(), mockCharacter.getId(),
+                        List.of(unnaturalLust.getId(), brainReceptivity.getId(), brainScan.getId()));
+
+        // Then
+        assertEquals(4, returnedCharacter.getCharacterMoves().size());
+        List<CharacterMove> returnedMoves = returnedCharacter.getCharacterMoves();
+
+        returnedMoves.forEach(characterMove -> {
+            assertTrue(characterMove.getName().equals(unnaturalLust.getName()) ||
+                    characterMove.getName().equals(brainReceptivity.getName()) ||
+                    characterMove.getName().equals(wealth.getName()) ||
+                    characterMove.getName().equals(brainScan.getName())
+                    );
+        });
+
+        verify(moveService, times(1)).findAllById(
+                anyList()
+        );
+        verifyMockServices();
+    }
+
+    @Test
+    void shouldSetCharacterMoves_Angel_withSomeMovesFromOtherPlaybooks() {
         // Given
         mockCharacter.setPlaybook(PlaybookType.ANGEL);
         mockGameRole.getCharacters().add(mockCharacter);
@@ -621,7 +669,7 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    public void shouldSetCharacterMoves_Gunlugger_withPreparedForTheInevitableMove() {
+    void shouldSetCharacterMoves_Gunlugger_withPreparedForTheInevitableMove() {
         // Given
         mockCharacter.setPlaybook(PlaybookType.GUNLUGGER);
         mockGameRole.getCharacters().add(mockCharacter);
@@ -672,7 +720,7 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    public void shouldRemoveAngelKit_Gunlugger_whenRemovingPreparedForTheInevitableMove() {
+    void shouldRemoveAngelKit_Gunlugger_whenRemovingPreparedForTheInevitableMove() {
         // Given
         mockCharacter.setPlaybook(PlaybookType.GUNLUGGER);
         mockGameRole.getCharacters().add(mockCharacter);
@@ -739,7 +787,7 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    public void shouldSetCharacterHx() {
+    void shouldSetCharacterHx() {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
 
@@ -758,7 +806,7 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    public void shouldFinishCharacterCreation() {
+    void shouldFinishCharacterCreation() {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
 
@@ -777,7 +825,7 @@ class GameRoleServiceImplTest {
     // --------------------------------------- Setting Playbook Uniques ------------------------------------- //
 
     @Test
-    public void shouldSetAngelKit() {
+    void shouldSetAngelKit() {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
         int stock = 6;
@@ -818,7 +866,7 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    public void shouldSetCustomWeapons() {
+    void shouldSetCustomWeapons() {
         // Given
         mockGameRole.getCharacters().add(mockCharacter);
         String weapon1 = "Crossbow with scope";
@@ -1944,7 +1992,7 @@ class GameRoleServiceImplTest {
         addPlaybookUniquesToCharacter(mockCharacter, WORKSPACE);
         Workspace mockWorkSpace = Workspace.builder()
                 .id(new ObjectId().toString())
-                .workspaceItems(List.of("item1","item2","item3","item4","item5"))
+                .workspaceItems(List.of("item1", "item2", "item3", "item4", "item5"))
                 .itemsCount(initialItemsCount)
                 .build();
         mockCharacter.getPlaybookUniques().setWorkspace(mockWorkSpace);
@@ -1962,7 +2010,7 @@ class GameRoleServiceImplTest {
         Workspace mockWorkSpace = Workspace.builder()
                 .id(new ObjectId().toString())
                 .itemsCount(initialItemsCount)
-                .workspaceItems(List.of("item1","item2","item3"))
+                .workspaceItems(List.of("item1", "item2", "item3"))
                 .build();
         mockCharacter.getPlaybookUniques().setWorkspace(mockWorkSpace);
         Character returnedCharacter = checkAdjustedUnique(adjustSavvyheadUnique2);
@@ -1979,7 +2027,7 @@ class GameRoleServiceImplTest {
         addPlaybookUniquesToCharacter(mockCharacter, WORKSPACE);
         Workspace mockWorkSpace = Workspace.builder()
                 .id(new ObjectId().toString())
-                .workspaceItems(List.of("item1","item2","item3", WORKSPACE_LIFE_SUPPORT_ITEM))
+                .workspaceItems(List.of("item1", "item2", "item3", WORKSPACE_LIFE_SUPPORT_ITEM))
                 .itemsCount(initialItemsCount)
                 .build();
         mockCharacter.getPlaybookUniques().setWorkspace(mockWorkSpace);
@@ -2024,7 +2072,7 @@ class GameRoleServiceImplTest {
                 .build();
         Establishment mockEstablishment = Establishment.builder()
                 .id(new ObjectId().toString())
-                .securityOptions(List.of(mockSecurityOption1,mockSecurityOption2,mockSecurityOption3))
+                .securityOptions(List.of(mockSecurityOption1, mockSecurityOption2, mockSecurityOption3))
                 .securitiesCount(initialSecuritiesCount)
                 .build();
         mockCharacter.getPlaybookUniques().setEstablishment(mockEstablishment);
@@ -2220,7 +2268,7 @@ class GameRoleServiceImplTest {
         verifyMockServices();
     }
 
-    private Character checkAddedUnique(Move improvementMove ) {
+    private Character checkAddedUnique(Move improvementMove) {
         // Given
         CharacterMove improvementMoveAsCM = CharacterMove.createFromMove(improvementMove);
         mockCharacter.setAllowedImprovements(1);

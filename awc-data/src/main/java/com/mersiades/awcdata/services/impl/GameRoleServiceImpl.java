@@ -562,7 +562,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         } else if (character.getPlaybookUniques() != null && character.getPlaybookUniques().getBrainerGear() == null) {
             character.getPlaybookUniques().setBrainerGear(brainerGear1);
         } else if (character.getPlaybookUniques() != null && character.getPlaybookUniques().getBrainerGear() != null) {
-            character.getPlaybookUniques().setBrainerGear(brainerGear1);
+            character.getPlaybookUniques().getBrainerGear().setBrainerGear(brainerGear);
         }
 
         // Save to db
@@ -583,9 +583,10 @@ public class GameRoleServiceImpl implements GameRoleService {
         Character character = gameRole.getCharacters().stream()
                 .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
 
-        if (character.getPlaybookUniques() == null || character.getPlaybookUniques().getType() != UniqueType.CUSTOM_WEAPONS) {
+        if (character.getPlaybookUniques() == null) {
             // Create new PlaybookUniques for Battlebabe
-            CustomWeapons customWeapons = CustomWeapons.builder().id(new ObjectId().toString())
+            CustomWeapons customWeapons = CustomWeapons.builder()
+                    .id(new ObjectId().toString())
                     .weapons(weapons)
                     .build();
 
@@ -679,10 +680,7 @@ public class GameRoleServiceImpl implements GameRoleService {
             gang.setId(new ObjectId().toString());
         }
 
-        if (character.getPlaybookUniques() != null) {
-            // Will overwrite existing gang
-            character.getPlaybookUniques().setGang(gang);
-        } else {
+        if (character.getPlaybookUniques() == null) {
             // Defensive coding, probably not necessary
             PlaybookUniques gangUnique = PlaybookUniques.builder()
                     .id(new ObjectId().toString())
@@ -691,6 +689,9 @@ public class GameRoleServiceImpl implements GameRoleService {
                     .build();
 
             character.setPlaybookUniques(gangUnique);
+        } else {
+            // Will overwrite existing gang
+            character.getPlaybookUniques().setGang(gang);
         }
 
         // Save to db
@@ -703,18 +704,14 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character setHolding(String gameRoleId, String characterId, Holding holding, int vehicleCount, int battleVehicleCount) {
 
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
-        assert gameRole != null;
-
-        // GameRoles can have multiple characters, so get the right character
-        Character character = gameRole.getCharacters().stream()
-                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
 
         if (holding.getId() == null) {
             holding.setId(new ObjectId().toString());
         }
 
-        if (character.getPlaybookUniques() == null || character.getPlaybookUniques().getType() != UniqueType.HOLDING) {
+        if (character.getPlaybookUniques() == null) {
 
             PlaybookUniques playbookUniqueHardHolder = PlaybookUniques.builder()
                     .id(new ObjectId().toString())
@@ -748,19 +745,15 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     @Override
     public Character setSkinnerGear(String gameRoleId, String characterId, SkinnerGear skinnerGear) {
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
-        assert gameRole != null;
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
 
         if (skinnerGear.getId() == null) {
             skinnerGear.setId(new ObjectId().toString());
         }
 
-        // GameRoles can have multiple characters, so get the right character
-        Character character = gameRole.getCharacters().stream()
-                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
-
-        if (character.getPlaybookUniques() == null || character.getPlaybookUniques().getType() != UniqueType.SKINNER_GEAR) {
-            // Create new PlaybookUniques for Battlebabe
+        if (character.getPlaybookUniques() == null) {
+            // Create new PlaybookUniques for Skinner
             PlaybookUniques playbookUniqueSkinner = PlaybookUniques.builder()
                     .id(new ObjectId().toString())
                     .type(UniqueType.SKINNER_GEAR)
@@ -782,15 +775,11 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     @Override
     public Character setWeapons(String gameRoleId, String characterId, List<String> weapons) {
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
-        assert gameRole != null;
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
 
-        // GameRoles can have multiple characters, so get the right character
-        Character character = gameRole.getCharacters().stream()
-                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
-
-        if (character.getPlaybookUniques() == null || character.getPlaybookUniques().getType() != UniqueType.WEAPONS) {
-            // Create new PlaybookUniques for Battlebabe
+        if (character.getPlaybookUniques() == null) {
+            // Create new PlaybookUniques for Gunlugger
             Weapons newWeapons = Weapons.builder()
                     .id(new ObjectId().toString())
                     .weapons(weapons)
