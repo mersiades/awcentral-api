@@ -11,7 +11,7 @@
 
     <groupId>com.mersiades</groupId>
     <artifactId>awcentral</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -85,7 +85,7 @@
     <scm>
         <developerConnection>scm:git:https://github.com/mersiades/awcentral.git</developerConnection>
         <url>https://github.com/mersiades/awcentral</url>
-      <tag>awcentral-0.0.6</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <build>
