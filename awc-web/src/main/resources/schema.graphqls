@@ -311,6 +311,7 @@ type EstablishmentCreator {
     id: ID!
     mainAttractionCount: Int!
     sideAttractionCount: Int!
+    defaultSecuritiesCount: Int!
     attractions: [String]!
     atmospheres: [String]!
     atmosphereCount: [Int]!
@@ -738,6 +739,7 @@ type Establishment {
     wantsInOnIt: String
     oweForIt: String
     wantsItGone: String
+    securitiesCount: Int!
     sideAttractions: [String]!
     atmospheres: [String]!
     regulars: [String!]!
@@ -1083,6 +1085,7 @@ input EstablishmentInput {
     wantsInOnIt: String!
     oweForIt: String!
     wantsItGone: String!
+    securitiesCount: Int!
     sideAttractions: [String]!
     atmospheres: [String]!
     regulars: [String]!

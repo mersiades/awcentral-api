@@ -1586,6 +1586,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 Establishment establishment = Establishment.builder()
                         .id(new ObjectId().toString())
                         .uniqueType(UniqueType.ESTABLISHMENT)
+                        .securitiesCount(establishmentCreator.getDefaultSecuritiesCount())
                         .regulars(establishmentCreator.getRegularsNames())
                         .interestedParties(establishmentCreator.getInterestedPartyNames())
                         .build();
@@ -1753,6 +1754,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 Establishment establishment = Establishment.builder()
                         .id(new ObjectId().toString())
                         .uniqueType(UniqueType.ESTABLISHMENT)
+                        .securitiesCount(establishmentCreator.getDefaultSecuritiesCount())
                         .regulars(establishmentCreator.getRegularsNames())
                         .interestedParties(establishmentCreator.getInterestedPartyNames())
                         .build();
@@ -1849,6 +1851,15 @@ public class GameRoleServiceImpl implements GameRoleService {
 
                 character.getPlaybookUniques().getFollowers().setSelectedStrengths(truncatedFollowersStrengths);
                 break;
+            case adjustMaestroDUnique1Name:
+                int newSecuritiesCount = character.getPlaybookUniques().getEstablishment().getSecuritiesCount() -1;
+                character.getPlaybookUniques().getEstablishment().setSecuritiesCount(newSecuritiesCount);
+
+                List<SecurityOption> truncatedSecurityOptions = character.getPlaybookUniques().getEstablishment().getSecurityOptions()
+                        .stream().limit(newSecuritiesCount).collect(Collectors.toList());
+
+                character.getPlaybookUniques().getEstablishment().setSecurityOptions(truncatedSecurityOptions);
+                break;
             case adjustSavvyheadUnique1Name:
                 int newWorkspaceItemsCount = character.getPlaybookUniques().getWorkspace().getItemsCount() - 2;
                 character.getPlaybookUniques().getWorkspace().setItemsCount(newWorkspaceItemsCount);
@@ -1904,6 +1915,11 @@ public class GameRoleServiceImpl implements GameRoleService {
             case adjustHocusUnique2Name:
                 character.getPlaybookUniques().getFollowers().setStrengthsCount(
                         character.getPlaybookUniques().getFollowers().getStrengthsCount() + 1
+                );
+                break;
+            case adjustMaestroDUnique1Name:
+                character.getPlaybookUniques().getEstablishment().setSecuritiesCount(
+                        character.getPlaybookUniques().getEstablishment().getSecuritiesCount() + 1
                 );
                 break;
             case adjustSavvyheadUnique1Name:

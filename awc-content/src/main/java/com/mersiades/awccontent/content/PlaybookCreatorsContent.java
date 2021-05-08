@@ -1271,6 +1271,7 @@ public class PlaybookCreatorsContent {
             .id(new ObjectId().toString())
             .mainAttractionCount(1)
             .sideAttractionCount(2)
+            .defaultSecuritiesCount(2)
             .attractions(List.of("luxury food", "music", "fashion", "lots of food", "sex", "spectacle", "easy food",
                     "games", "art", "drinks", "coffee", "drugs", "sports", "fights", "scene (see and be)"))
             .atmospheres(List.of("bustle", "intimacy", "smoke", "shadows", "perfume", "slime", "velvet", "fantasy",

@@ -25,6 +25,8 @@ public class EstablishmentCreator {
 
     private int sideAttractionCount;
 
+    private int defaultSecuritiesCount;
+
     @Builder.Default
     private List<String> attractions = new ArrayList<>();
 

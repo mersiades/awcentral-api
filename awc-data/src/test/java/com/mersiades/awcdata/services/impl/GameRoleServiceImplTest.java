@@ -2,10 +2,7 @@ package com.mersiades.awcdata.services.impl;
 
 import com.mersiades.awccontent.content.MovesContent;
 import com.mersiades.awccontent.enums.*;
-import com.mersiades.awccontent.models.FollowersOption;
-import com.mersiades.awccontent.models.HoldingOption;
-import com.mersiades.awccontent.models.Look;
-import com.mersiades.awccontent.models.Move;
+import com.mersiades.awccontent.models.*;
 import com.mersiades.awccontent.services.MoveService;
 import com.mersiades.awccontent.services.PlaybookCreatorService;
 import com.mersiades.awccontent.services.StatModifierService;
@@ -1930,7 +1927,7 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    void shouldLifeSupportToWorkspace_onAddCharacterImprovement() {
+    void shouldAddLifeSupportToWorkspace_onAddCharacterImprovement() {
         int initialItemsCount = workspaceCreator.getDefaultItemsCount();
         addPlaybookUniquesToCharacter(mockCharacter, WORKSPACE);
         Workspace mockWorkSpace = Workspace.builder()
@@ -1964,6 +1961,49 @@ class GameRoleServiceImplTest {
                 returnedCharacter.getPlaybookUniques().getWorkspace().getWorkspaceItems().size());
         assertFalse(returnedCharacter.getPlaybookUniques().getWorkspace().getWorkspaceItems().contains(WORKSPACE_LIFE_SUPPORT_ITEM));
 
+    }
+
+    @Test
+    void shouldIncreaseEstablishmentSecurities_onAddCharacterImprovement() {
+        int initialSecuritiesCount = establishmentCreator.getDefaultSecuritiesCount();
+        addPlaybookUniquesToCharacter(mockCharacter, ESTABLISHMENT);
+        Establishment mockEstablishment = Establishment.builder()
+                .id(new ObjectId().toString())
+                .securitiesCount(initialSecuritiesCount)
+                .build();
+        mockCharacter.getPlaybookUniques().setEstablishment(mockEstablishment);
+        Character returnedCharacter = checkAdjustedUnique(adjustMaestroDUnique1);
+        assertEquals(initialSecuritiesCount + 1,
+                returnedCharacter.getPlaybookUniques().getEstablishment().getSecuritiesCount());
+    }
+
+    @Test
+    void shouldDecreaseEstablishmentSecurities_onRemoveCharacterImprovement() {
+        int initialSecuritiesCount = 3;
+        addPlaybookUniquesToCharacter(mockCharacter, ESTABLISHMENT);
+        SecurityOption mockSecurityOption1 = SecurityOption.builder()
+                .id(new ObjectId().toString())
+                .description("security-option-1")
+                .build();
+        SecurityOption mockSecurityOption2 = SecurityOption.builder()
+                .id(new ObjectId().toString())
+                .description("security-option-1")
+                .build();
+        SecurityOption mockSecurityOption3 = SecurityOption.builder()
+                .id(new ObjectId().toString())
+                .description("security-option-1")
+                .build();
+        Establishment mockEstablishment = Establishment.builder()
+                .id(new ObjectId().toString())
+                .securityOptions(List.of(mockSecurityOption1,mockSecurityOption2,mockSecurityOption3))
+                .securitiesCount(initialSecuritiesCount)
+                .build();
+        mockCharacter.getPlaybookUniques().setEstablishment(mockEstablishment);
+        Character returnedCharacter = checkUnadjustedUnique(adjustMaestroDUnique1);
+        assertEquals(initialSecuritiesCount - 1,
+                returnedCharacter.getPlaybookUniques().getEstablishment().getSecuritiesCount());
+        assertEquals(initialSecuritiesCount - 1,
+                returnedCharacter.getPlaybookUniques().getEstablishment().getSecurityOptions().size());
     }
 
     @Test

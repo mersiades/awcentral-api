@@ -33,6 +33,8 @@ public class Establishment {
     private String oweForIt;
     private String wantsItGone;
 
+    private int securitiesCount;
+
     @Builder.Default
     List<String> sideAttractions = new ArrayList<>();
 
