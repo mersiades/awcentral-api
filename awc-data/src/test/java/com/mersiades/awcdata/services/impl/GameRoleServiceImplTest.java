@@ -1930,6 +1930,43 @@ class GameRoleServiceImplTest {
     }
 
     @Test
+    void shouldLifeSupportToWorkspace_onAddCharacterImprovement() {
+        int initialItemsCount = workspaceCreator.getDefaultItemsCount();
+        addPlaybookUniquesToCharacter(mockCharacter, WORKSPACE);
+        Workspace mockWorkSpace = Workspace.builder()
+                .id(new ObjectId().toString())
+                .itemsCount(initialItemsCount)
+                .workspaceItems(List.of("item1","item2","item3"))
+                .build();
+        mockCharacter.getPlaybookUniques().setWorkspace(mockWorkSpace);
+        Character returnedCharacter = checkAdjustedUnique(adjustSavvyheadUnique2);
+        assertEquals(initialItemsCount + 1,
+                returnedCharacter.getPlaybookUniques().getWorkspace().getItemsCount());
+        assertEquals(initialItemsCount + 1,
+                returnedCharacter.getPlaybookUniques().getWorkspace().getWorkspaceItems().size());
+        assertTrue(returnedCharacter.getPlaybookUniques().getWorkspace().getWorkspaceItems().contains(WORKSPACE_LIFE_SUPPORT_ITEM));
+    }
+
+    @Test
+    void shouldRemoveLifeSupportFromWorkspace_onRemoveCharacterImprovement() {
+        int initialItemsCount = 4;
+        addPlaybookUniquesToCharacter(mockCharacter, WORKSPACE);
+        Workspace mockWorkSpace = Workspace.builder()
+                .id(new ObjectId().toString())
+                .workspaceItems(List.of("item1","item2","item3", WORKSPACE_LIFE_SUPPORT_ITEM))
+                .itemsCount(initialItemsCount)
+                .build();
+        mockCharacter.getPlaybookUniques().setWorkspace(mockWorkSpace);
+        Character returnedCharacter = checkUnadjustedUnique(adjustSavvyheadUnique2);
+        assertEquals(initialItemsCount - 1,
+                returnedCharacter.getPlaybookUniques().getWorkspace().getItemsCount());
+        assertEquals(initialItemsCount - 1,
+                returnedCharacter.getPlaybookUniques().getWorkspace().getWorkspaceItems().size());
+        assertFalse(returnedCharacter.getPlaybookUniques().getWorkspace().getWorkspaceItems().contains(WORKSPACE_LIFE_SUPPORT_ITEM));
+
+    }
+
+    @Test
     void shouldIncreaseVehiclesCount_onAddCharacterImprovement() {
         // Given
         mockCharacter.setAllowedImprovements(1);

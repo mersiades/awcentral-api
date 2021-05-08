@@ -1858,6 +1858,15 @@ public class GameRoleServiceImpl implements GameRoleService {
 
                 character.getPlaybookUniques().getWorkspace().setWorkspaceItems(truncatedWorkspaceItems);
                 break;
+            case adjustSavvyheadUnique2Name:
+                int newWorkspaceItemsCount2 = character.getPlaybookUniques().getWorkspace().getItemsCount() - 1;
+                character.getPlaybookUniques().getWorkspace().setItemsCount(newWorkspaceItemsCount2);
+
+                List<String> filteredWorkspaceItems = character.getPlaybookUniques().getWorkspace().getWorkspaceItems()
+                        .stream().filter(item -> !item.equals(WORKSPACE_LIFE_SUPPORT_ITEM)).collect(Collectors.toList());
+
+                character.getPlaybookUniques().getWorkspace().setWorkspaceItems(filteredWorkspaceItems);
+                break;
             default:
                 // TODO: throw error
         }
@@ -1901,6 +1910,16 @@ public class GameRoleServiceImpl implements GameRoleService {
                 character.getPlaybookUniques().getWorkspace().setItemsCount(
                         character.getPlaybookUniques().getWorkspace().getItemsCount() + 2
                 );
+                break;
+            case adjustSavvyheadUnique2Name:
+                character.getPlaybookUniques().getWorkspace().setItemsCount(
+                        character.getPlaybookUniques().getWorkspace().getItemsCount() + 1
+                );
+
+                List<String> newItems = new ArrayList<>();
+                newItems.add(WORKSPACE_LIFE_SUPPORT_ITEM);
+                newItems.addAll(character.getPlaybookUniques().getWorkspace().getWorkspaceItems());
+                character.getPlaybookUniques().getWorkspace().setWorkspaceItems(newItems);
                 break;
             default:
                 // TODO: throw error

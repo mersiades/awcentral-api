@@ -1447,6 +1447,8 @@ public class PlaybookCreatorsContent {
             .defaultMoveCount(1)
             .build();
 
+    public static final String WORKSPACE_LIFE_SUPPORT_ITEM = "a life support unit";
+
     /* ----------------------------- SKINNER PLAYBOOK CREATOR --------------------------------- */
 
     public static final GearInstructions gearInstructionsSkinner = GearInstructions.builder()
