@@ -845,6 +845,26 @@ public class GameRoleServiceImpl implements GameRoleService {
         return character;
     }
 
+    @Override
+    public Character resolveEstablishmentInterest(String gameRoleId,
+                                                  String characterId,
+                                                  String oweForIt,
+                                                  String wantsInOnIt,
+                                                  String wantsItGone) {
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
+
+        character.getPlaybookUniques().getEstablishment().setOweForIt(oweForIt.equals("") ? null : oweForIt);
+        character.getPlaybookUniques().getEstablishment().setWantsInOnIt(wantsInOnIt.equals("") ? null : wantsInOnIt);
+        character.getPlaybookUniques().getEstablishment().setWantsItGone(wantsItGone.equals("") ? null : wantsItGone);
+
+        // Save to db
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
+
+        return character;
+    }
+
     // ------------------------------------------ Setting Vehicles ---------------------------------------- //
 
     @Override

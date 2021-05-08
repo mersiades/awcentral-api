@@ -980,6 +980,35 @@ class GameRoleServiceImplTest {
 
     // TODO: shouldUpdateWorkspace
 
+    @Test
+    void shouldResolveEstablishmentInterest() {
+        // Given
+        String wantsInOnItName = "Rolfball";
+        String oweForItName = "Gams";
+        Establishment mockEstablishment = Establishment.builder()
+                .id("mock-establishment-id")
+                .wantsInOnIt(wantsInOnItName)
+                .oweForIt(oweForItName)
+                .wantsItGone("Been")
+                .build();
+        addPlaybookUniquesToCharacter(mockCharacter, ESTABLISHMENT);
+        mockCharacter.getPlaybookUniques().setEstablishment(mockEstablishment);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService
+                .resolveEstablishmentInterest(mockGameRole.getId(), mockCharacter.getId(), oweForItName, wantsInOnItName, "");
+
+        // Then
+        assertEquals(mockEstablishment.getId(), returnedCharacter.getPlaybookUniques().getEstablishment().getId());
+        assertEquals(wantsInOnItName, returnedCharacter.getPlaybookUniques().getEstablishment().getWantsInOnIt());
+        assertEquals(oweForItName, returnedCharacter.getPlaybookUniques().getEstablishment().getOweForIt());
+        assertNull(returnedCharacter.getPlaybookUniques().getEstablishment().getWantsItGone());
+
+        verifyMockServices();
+    }
+
     // ------------------------------------------ Setting Vehicles ---------------------------------------- //
 
     @Test
@@ -2004,6 +2033,26 @@ class GameRoleServiceImplTest {
                 returnedCharacter.getPlaybookUniques().getEstablishment().getSecuritiesCount());
         assertEquals(initialSecuritiesCount - 1,
                 returnedCharacter.getPlaybookUniques().getEstablishment().getSecurityOptions().size());
+    }
+
+    @Test
+    void shouldEnableEstablishmentInterestResolution_onAddCharacterImprovement() {
+        addPlaybookUniquesToCharacter(mockCharacter, ESTABLISHMENT);
+        Establishment mockEstablishment = Establishment.builder()
+                .id(new ObjectId().toString())
+                .build();
+        mockCharacter.getPlaybookUniques().setEstablishment(mockEstablishment);
+        checkAdjustedUnique(adjustMaestroDUnique2);
+    }
+
+    @Test
+    void shouldRestoreEstablishmentInterest_onRemoveCharacterImprovement() {
+        addPlaybookUniquesToCharacter(mockCharacter, ESTABLISHMENT);
+        Establishment mockEstablishment = Establishment.builder()
+                .id(new ObjectId().toString())
+                .build();
+        mockCharacter.getPlaybookUniques().setEstablishment(mockEstablishment);
+        checkUnadjustedUnique(adjustMaestroDUnique2);
     }
 
     @Test

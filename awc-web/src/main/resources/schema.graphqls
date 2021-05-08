@@ -1222,6 +1222,11 @@ type Mutation {
     setWorkspace(gameRoleId: String!,
         characterId: String!,
         workspace: WorkspaceInput! ): Character
+    resolveEstablishmentInterest(gameRoleId: String!,
+        characterId: String!,
+        oweForIt: String,
+        wantsInOnIt: String,
+        wantsItGone: String ): Character
 
     ### Setting Vehicles
     setVehicleCount(gameRoleId: String!,

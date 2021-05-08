@@ -193,6 +193,15 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setWorkspace(gameRoleId, characterId, workspace);
     }
 
+    public Character resolveEstablishmentInterest(String gameRoleId,
+                                                  String characterId,
+                                                  String oweForIt,
+                                                  String wantsInOnIt,
+                                                  String wantsItGone) {
+        log.info("Resolving interests for Character: " + characterId);
+        return gameRoleService.resolveEstablishmentInterest(gameRoleId, characterId, oweForIt, wantsInOnIt, wantsItGone);
+    }
+
     // ------------------------------------------ Setting Vehicles ---------------------------------------- //
 
     public Character setVehicleCount(String gameRoleId, String characterId, int vehicleCount) {
