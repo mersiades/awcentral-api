@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.models.uniques;
 
+import com.mersiades.awccontent.enums.UniqueType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,9 @@ public class AngelKit {
 
     @Id
     private String id;
+
+    @Builder.Default
+    private UniqueType uniqueType = UniqueType.ANGEL_KIT;
 
     @Builder.Default
     private String description = "Your angel kit has all kinds of crap in it: scissors, rags, tape, needles, clamps, gloves, chill coils, wipes, alcohol, injectable tourniquets & bloodslower, instant blood packets (coffee reddener), tubes of meatmesh, bonepins & site injectors, biostabs, chemostabs, narcostabs (chillstabs) in quantity, and a roll of heart jumpshock patches for when it comes to that. It’s big enough to fill the trunk of a car.\n" +

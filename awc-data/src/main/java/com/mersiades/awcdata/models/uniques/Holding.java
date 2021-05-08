@@ -2,6 +2,7 @@ package com.mersiades.awcdata.models.uniques;
 
 import com.mersiades.awccontent.enums.GangSize;
 import com.mersiades.awccontent.enums.HoldingSize;
+import com.mersiades.awccontent.enums.UniqueType;
 import com.mersiades.awccontent.models.HoldingOption;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,9 @@ public class Holding {
     @Id
     private String id;
 
+    @Builder.Default
+    private UniqueType uniqueType = UniqueType.HOLDING;
+
     private HoldingSize holdingSize;
 
     private GangSize gangSize;
@@ -39,6 +43,10 @@ public class Holding {
     private int gangArmor;
 
     private int gangDefenseArmorBonus;
+
+    private int strengthsCount;
+
+    private int weaknessesCount;
 
     // The vehicles and battleVehicles, battleVehiclesCount and vehiclesCount
     // will be on the Character model directly

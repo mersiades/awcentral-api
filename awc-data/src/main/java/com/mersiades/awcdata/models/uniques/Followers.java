@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.models.uniques;
 
+import com.mersiades.awccontent.enums.UniqueType;
 import com.mersiades.awccontent.models.FollowersOption;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,9 @@ public class Followers {
     @Id
     private String id;
 
+    @Builder.Default
+    private UniqueType uniqueType = UniqueType.FOLLOWERS;
+
     private String description;
 
     private String travelOption;
@@ -32,6 +36,10 @@ public class Followers {
     private int barter;
 
     private int surplusBarter;
+
+    private int strengthsCount;
+
+    private int weaknessesCount;
 
     @Builder.Default
     private List<String> surplus = new ArrayList<>();

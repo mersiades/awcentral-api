@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.models.uniques;
 
+import com.mersiades.awccontent.enums.UniqueType;
 import com.mersiades.awcdata.models.Project;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,9 +20,14 @@ public class Workspace {
     @Id
     private String id;
 
+    @Builder.Default
+    private UniqueType uniqueType = UniqueType.WORKSPACE;
+
     private String workspaceInstructions;
 
     private String projectInstructions;
+
+    private int itemsCount;
 
     @Builder.Default
     List<String> workspaceItems = new ArrayList<>();

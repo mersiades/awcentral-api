@@ -13,6 +13,7 @@ import com.mersiades.awcdata.models.uniques.Gang;
 import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -22,7 +23,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.mersiades.awcweb.bootstrap.MockUserLoader.*;
@@ -31,16 +31,11 @@ import static com.mersiades.awcweb.bootstrap.MockUserLoader.*;
 @Component
 @Order(value = 2)
 @Profile("dev")
+@Slf4j
 public class MockCharacterLoader implements CommandLineRunner {
 
     final String KEYCLOAK_ID_1 = System.getenv("DAVE_ID");
     final String KEYCLOAK_ID_2 = System.getenv("SARA_ID");
-
-//    final String SARA_AS_PLAYER_ID = "be6b09af-9c96-452a-8b05-922be820c88f";
-//    final String JOHN_AS_PLAYER_ID = "5ffe67b72e21523778660910)";
-//    final String MAYA_AS_PLAYER_ID = "5ffe67b72e21523778660911)";
-//    final String AHMAD_AS_PLAYER_ID = "5ffe67b72e21523778660912)";
-//    final String TAKESHI_AS_PLAYER_ID = "5ffe67b72e21523778660913)";
 
     private final GameRoleService gameRoleService;
     private final LookService lookService;
@@ -81,7 +76,7 @@ public class MockCharacterLoader implements CommandLineRunner {
             loadNpcs(); // characterCount is serving as a proxy for npcCount here
         }
 
-        System.out.println("Character count: " + characterRepository.count());
+        log.info("Character count: " + characterRepository.count());
     }
 
     private void loadMockCharacters() {
@@ -109,6 +104,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         assert vehicleCreator != null;
 
         // -------------------------------- Set up Sara's Angel ----------------------------------- //
+        PlaybookCreator playbookCreatorAngel = playbookCreatorService.findByPlaybookType(PlaybookType.ANGEL);
         List<Look> angelLooks = getLooks(PlaybookType.ANGEL);
 
         StatsBlock angelStatsBlock1 = getStatsBlock(PlaybookType.ANGEL);
@@ -122,7 +118,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .angelKitMoves(angelKitMoves)
                 .stock(2).build();
 
-        PlaybookUnique angelUnique = PlaybookUnique.builder()
+        PlaybookUniques angelUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .type(UniqueType.ANGEL_KIT)
                 .angelKit(angelKit)
@@ -139,6 +135,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         List<CharacterMove> characterMoves = createAndMergeCharacterMoves(angelMoves, angelDefaultMoves);
 
         // -------------------------------- Set up John's Battlebabe ----------------------------------- //
+        PlaybookCreator playbookCreatorBattlebabe = playbookCreatorService.findByPlaybookType(PlaybookType.BATTLEBABE);
         List<Look> battlebabeLooks = getLooks(PlaybookType.BATTLEBABE);
 
         StatsBlock battlebabeStatsBlock = getStatsBlock(PlaybookType.BATTLEBABE);
@@ -148,7 +145,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .weapons(List.of("antique rifle (2-harm, load, valuable", "Ornate staff (1-harm, valuable)"))
                 .build();
 
-        PlaybookUnique battlebabeUnique = PlaybookUnique.builder()
+        PlaybookUniques battlebabeUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .type(UniqueType.CUSTOM_WEAPONS)
                 .customWeapons(customWeapons)
@@ -165,6 +162,7 @@ public class MockCharacterLoader implements CommandLineRunner {
         List<CharacterMove> characterMoves2 = createAndMergeCharacterMoves(battlebabeMoves, battlebabeDefaultMoves);
 
         // -------------------------------- Set up Maya's Brainer ----------------------------------- //
+        PlaybookCreator playbookCreatorBrainer = playbookCreatorService.findByPlaybookType(PlaybookType.BRAINER);
         List<Look> brainerLooks = getLooks(PlaybookType.BRAINER);
 
         StatsBlock brainerStatsBlock = getStatsBlock(PlaybookType.BRAINER);
@@ -174,7 +172,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .brainerGear(List.of("brain relay", "violation glove"))
                 .build();
 
-        PlaybookUnique brainerUnique = PlaybookUnique.builder()
+        PlaybookUniques brainerUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .type(UniqueType.BRAINER_GEAR)
                 .brainerGear(brainerGear)
@@ -191,8 +189,8 @@ public class MockCharacterLoader implements CommandLineRunner {
         List<CharacterMove> characterMoves3 = createAndMergeCharacterMoves(brainerMoves, brainerDefaultMoves);
 
         // -------------------------------- Set up Takeshi's's Chopper ----------------------------------- //
-        GangCreator gangCreator = Objects.requireNonNull(playbookCreatorService.findByPlaybookType(PlaybookType.CHOPPER)
-                ).getPlaybookUniqueCreator().getGangCreator();
+        PlaybookCreator playbookCreatorChopper = playbookCreatorService.findByPlaybookType(PlaybookType.CHOPPER);
+        GangCreator gangCreator = playbookCreatorChopper.getPlaybookUniqueCreator().getGangCreator();
 
         GangOption gangOption1 = gangCreator.getStrengths().get(0);
         GangOption gangOption2 = gangCreator.getStrengths().get(1);
@@ -229,7 +227,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .weaknesses(List.of(gangOption3))
                 .build();
 
-        PlaybookUnique chopperUnique = PlaybookUnique.builder()
+        PlaybookUniques chopperUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .type(UniqueType.GANG)
                 .gang(gang)
@@ -257,8 +255,8 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         List<CharacterMove> characterMoves4 = createAndMergeCharacterMoves(driverMoves, driverDefaultMoves);
 
-        PlaybookCreator driverCreator = playbookCreatorService.findByPlaybookType(PlaybookType.DRIVER);
-        assert driverCreator != null;
+        PlaybookCreator playbookCreatorDriver = playbookCreatorService.findByPlaybookType(PlaybookType.DRIVER);
+        assert playbookCreatorDriver != null;
 
 
         Vehicle car1 = Vehicle.builder()
@@ -326,12 +324,13 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .gear(List.of("Shotgun", "Rusty screwdriver"))
                 .statsBlock(angelStatsBlock1)
                 .barter(2)
-                .playbookUnique(angelUnique)
+                .playbookUniques(angelUnique)
                 .characterMoves(characterMoves)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(true)
                 .vehicleCount(0)
                 .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorAngel.getMoveChoiceCount())
                 .build();
 
         // -------------------------------- Create John's Battlebabe ----------------------------------- //
@@ -342,12 +341,13 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .gear(List.of("Black leather boots", "Broken motorcycle helmet"))
                 .statsBlock(battlebabeStatsBlock)
                 .barter(2)
-                .playbookUnique(battlebabeUnique)
+                .playbookUniques(battlebabeUnique)
                 .characterMoves(characterMoves2)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(false)
                 .vehicleCount(0)
                 .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorBattlebabe.getMoveChoiceCount())
                 .build();
 
         // -------------------------------- Create Maya's Brainer ----------------------------------- //
@@ -358,12 +358,13 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .gear(List.of("Sharp kitchen knife", "Wireless radio"))
                 .statsBlock(brainerStatsBlock)
                 .barter(2)
-                .playbookUnique(brainerUnique)
+                .playbookUniques(brainerUnique)
                 .characterMoves(characterMoves3)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(false)
                 .vehicleCount(0)
                 .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorBrainer.getMoveChoiceCount())
                 .build();
 
         // -------------------------------- Create Takeshi's Chopper ----------------------------------- //
@@ -374,13 +375,14 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .gear(List.of("magnum (3-harm close reload loud)", "machete (3-harm hand messy"))
                 .statsBlock(chopperStatsBlock)
                 .barter(2)
-                .playbookUnique(chopperUnique)
+                .playbookUniques(chopperUnique)
                 .characterMoves(characterMoves5)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(false)
                 .vehicleCount(1)
                 .battleVehicleCount(0)
                 .vehicles(List.of(chopperBike))
+                .allowedPlaybookMoves(playbookCreatorChopper.getMoveChoiceCount())
                 .build();
 
         // -------------------------------- Create Ahmad's Driver ----------------------------------- //
@@ -397,6 +399,7 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .vehicleCount(3)
                 .battleVehicleCount(0)
                 .vehicles(List.of(car1, car2, bike))
+                .allowedPlaybookMoves(playbookCreatorDriver.getMoveChoiceCount())
                 .build();
 
         // ----------------------- Add Characters to players and save ----------------------------- //
@@ -655,6 +658,7 @@ public class MockCharacterLoader implements CommandLineRunner {
             harm.setId(new ObjectId().toString());
             character.setHarm(harm);
             character.setExperience(0);
+            character.setAllowedOtherPlaybookMoves(0);
             gameRole.getCharacters().add(character);
             characterService.save(character);
             gameRoleService.save(gameRole);

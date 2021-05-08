@@ -61,6 +61,8 @@ public interface GameRoleService extends CrudService<GameRole, String> {
 
     Character setWorkspace(String gameRoleId, String characterId, Workspace workspace);
 
+    Character resolveEstablishmentInterest(String gameRoleId, String characterId, String oweForIt, String wantsInOnIt, String wantsItGone);
+
     // ------------------------------------------ Setting Vehicles ---------------------------------------- //
 
     Character setVehicleCount(String gameRoleId, String characterId, int vehicleCount);
@@ -90,4 +92,8 @@ public interface GameRoleService extends CrudService<GameRole, String> {
     Character removeProject(String gameRoleId, String characterId, Project project);
 
     Character removeHold(String gameRoleId, String characterId, Hold hold);
+
+    Character adjustImprovements(String gameRoleId, String characterId, List<String> improvementIDs, List<String> futureImprovementIDs);
+
+    Character spendExperience(String gameRoleId, String characterId);
 }

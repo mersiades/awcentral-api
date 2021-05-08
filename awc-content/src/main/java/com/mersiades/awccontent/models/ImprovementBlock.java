@@ -1,6 +1,6 @@
-package com.mersiades.awcdata.models.uniques;
+package com.mersiades.awccontent.models;
 
-import com.mersiades.awccontent.enums.UniqueType;
+import com.mersiades.awccontent.enums.PlaybookType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,16 +14,18 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BrainerGear {
+public class ImprovementBlock {
 
     @Id
     private String id;
 
-    private int allowedItemsCount;
+    private PlaybookType playbookType;
+
+    private String improvementInstructions;
 
     @Builder.Default
-    private UniqueType uniqueType = UniqueType.BRAINER_GEAR;
+    private List<Move> improvementMoves = new ArrayList<>();
 
     @Builder.Default
-    private List<String> brainerGear = new ArrayList<>();
+    private List<Move> futureImprovementMoves = new ArrayList<>();
 }

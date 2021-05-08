@@ -27,9 +27,9 @@ public class FollowersCreator {
 
     private int defaultFortune;
 
-    private int strengthCount;
+    private int defaultStrengthsCount;
 
-    private int weaknessCount;
+    private int defaultWeaknessesCount;
 
     @Builder.Default
     private List<String> travelOptions = new ArrayList<>();

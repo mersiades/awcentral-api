@@ -3,6 +3,8 @@ package com.mersiades.awccontent.services.impl;
 import com.mersiades.awccontent.enums.MoveType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Move;
+import com.mersiades.awccontent.models.MoveAction;
+import com.mersiades.awccontent.models.RollModifier;
 import com.mersiades.awccontent.repositories.MoveRepository;
 import com.mersiades.awccontent.services.MoveService;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +15,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.mersiades.awccontent.constants.MoveNames.angelSpecialName;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class MoveServiceImplTest {
@@ -25,7 +28,15 @@ class MoveServiceImplTest {
 
     MoveService moveService;
 
-    Move mockMove1;
+    Move mockBasicMove1;
+
+    Move mockIceColdMove; // Battlebabe
+    Move mockMercilessMove; // Battlebabe
+    Move mockAngelSpecialMove; // Angel, is default move
+    Move mockHealingTouchMove; // Angel, has move action
+    Move mockBrainReceptivity; // Brainer, has roll modifier
+    Move mockBrainAttunement; // Brainer, has no move action or roll modifier
+
 
     @BeforeEach
     void setUp() {
@@ -33,20 +44,33 @@ class MoveServiceImplTest {
 
         moveService = new MoveServiceImpl(moveRepository);
 
-        mockMove1 = Move.builder()
+        mockBasicMove1 = Move.builder()
                 .id(MOCK_MOVE_ID_1)
                 .name("Mock move name")
                 .description("Description of a mock move")
                 .stat(null)
                 .kind(MoveType.BASIC)
                 .playbook(null).build();
+
+        mockIceColdMove = Move.builder().name("ICE COLD").description("_**Ice cold**_: when ...")
+                .kind(MoveType.CHARACTER).playbook(PlaybookType.BATTLEBABE).build();
+        mockMercilessMove = Move.builder().name("MERCILESS").description("_**Merciless**_: when ...")
+                .kind(MoveType.CHARACTER).playbook(PlaybookType.BATTLEBABE).build();
+        mockAngelSpecialMove = Move.builder().name(angelSpecialName).description("If you and another character have sex, ...")
+                .kind(MoveType.DEFAULT_CHARACTER).playbook(PlaybookType.ANGEL).moveAction(MoveAction.builder().build()).build();
+        mockHealingTouchMove = Move.builder().name("HEALING TOUCH").description("_**Healing touch**_: when you put your hands...")
+                .kind(MoveType.CHARACTER).playbook(PlaybookType.ANGEL).moveAction(MoveAction.builder().build()).build();
+        mockBrainReceptivity = Move.builder().name("CASUAL BRAIN RECEPTIVITY").description("_**Casual brain receptivity**_: when you read someone...")
+                .kind(MoveType.CHARACTER).playbook(PlaybookType.BRAINER).rollModifier(RollModifier.builder().build()).build();
+        mockBrainAttunement = Move.builder().name("PRETERNATURAL BRAIN ATTUNEMENT").description("_**Preternatural at-will brain attunement**_: you get...")
+                .kind(MoveType.CHARACTER).playbook(PlaybookType.BRAINER).build();
     }
 
     @Test
     void shouldFindAllMoves() {
         // Given
         Move mockMove2 = Move.builder().build();
-        when(moveRepository.findAll()).thenReturn(List.of(mockMove1, mockMove2));
+        when(moveRepository.findAll()).thenReturn(List.of(mockBasicMove1, mockMove2));
 
         // When
         List<Move> returnedMoves = moveService.findAll();
@@ -60,7 +84,7 @@ class MoveServiceImplTest {
     @Test
     void shouldFindMoveById() {
         // Given
-        when(moveRepository.findById(anyString())).thenReturn(Optional.of(mockMove1));
+        when(moveRepository.findById(anyString())).thenReturn(Optional.of(mockBasicMove1));
 
         // When
         Move returnedMove = moveService.findById(MOCK_MOVE_ID_1);
@@ -74,10 +98,10 @@ class MoveServiceImplTest {
     @Test
     void shouldSaveMove() {
         // Given
-        when(moveRepository.save(any(Move.class))).thenReturn(mockMove1);
+        when(moveRepository.save(any(Move.class))).thenReturn(mockBasicMove1);
 
         // When
-        Move savedMove = moveService.save(mockMove1);
+        Move savedMove = moveService.save(mockBasicMove1);
 
         // Then
         assert savedMove != null;
@@ -89,10 +113,10 @@ class MoveServiceImplTest {
     void shouldSaveAllMoves() {
         // Given
         Move mockMove2 = Move.builder().build();
-        when(moveRepository.saveAll(anyIterable())).thenReturn(List.of(mockMove1, mockMove2));
+        when(moveRepository.saveAll(anyIterable())).thenReturn(List.of(mockBasicMove1, mockMove2));
 
         // When
-        List<Move> savedMoves = moveService.saveAll(List.of(mockMove1,mockMove2));
+        List<Move> savedMoves = moveService.saveAll(List.of(mockBasicMove1,mockMove2));
 
         // Then
         assert savedMoves != null;
@@ -103,7 +127,7 @@ class MoveServiceImplTest {
     @Test
     void shouldDeleteMove() {
         // When
-        moveService.delete(mockMove1);
+        moveService.delete(mockBasicMove1);
 
         // Then
         verify(moveRepository, times(1)).delete(any(Move.class));
@@ -121,9 +145,8 @@ class MoveServiceImplTest {
     @Test
     void shouldFindAllMovesByPlaybookAndKind() {
         // Given
-        Move iceCold = Move.builder().name("ICE COLD").description("_**Ice cold**_: when ...").kind(MoveType.CHARACTER).playbook(PlaybookType.BATTLEBABE).build();
-        Move merciless = Move.builder().name("MERCILESS").description("_**Merciless**_: when ...").kind(MoveType.CHARACTER).playbook(PlaybookType.BATTLEBABE).build();
-        when(moveRepository.findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.CHARACTER)).thenReturn(List.of(iceCold, merciless));
+
+        when(moveRepository.findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.CHARACTER)).thenReturn(List.of(mockIceColdMove, mockMercilessMove));
 
         // When
         List<Move> returnedMoves = moveService.findAllByPlaybookAndKind(PlaybookType.BATTLEBABE, MoveType.CHARACTER);
@@ -140,14 +163,31 @@ class MoveServiceImplTest {
     @Test
     void shouldFindMoveByName() {
         // Given
-        when(moveRepository.findByName(anyString())).thenReturn(mockMove1);
+        when(moveRepository.findByName(anyString())).thenReturn(mockBasicMove1);
 
         // When
-        Move returnedMove = moveService.findByName(mockMove1.getName());
+        Move returnedMove = moveService.findByName(mockBasicMove1.getName());
 
         // Then
         assert returnedMove != null;
-        assertEquals(returnedMove.getName(), mockMove1.getName());
-        verify(moveRepository, times(1)).findByName(mockMove1.getName());
+        assertEquals(returnedMove.getName(), mockBasicMove1.getName());
+        verify(moveRepository, times(1)).findByName(mockBasicMove1.getName());
+    }
+
+    @Test
+    void shouldReturnAllAppropriateOtherPlaybookMoves() {
+        // Given
+        when(moveService.findAll()).thenReturn(List.of(mockIceColdMove, mockMercilessMove, mockAngelSpecialMove,
+                mockHealingTouchMove, mockBrainReceptivity, mockBrainAttunement));
+
+        // When
+        List<Move> returnedMoves = moveService.findOtherPlaybookMoves(PlaybookType.BATTLEBABE);
+
+        // Then
+        assert returnedMoves != null;
+        assertEquals(2, returnedMoves.size());
+        assertFalse(returnedMoves.stream().anyMatch(move -> move.getPlaybook().equals(PlaybookType.BATTLEBABE)));
+        assertFalse(returnedMoves.stream().anyMatch(move -> move.getKind().equals(MoveType.DEFAULT_CHARACTER)));
+        assertFalse(returnedMoves.stream().anyMatch(move -> move.getMoveAction() == null && move.getRollModifier() == null));
     }
 }

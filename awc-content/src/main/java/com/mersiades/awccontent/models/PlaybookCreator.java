@@ -31,6 +31,8 @@ public class PlaybookCreator {
 
     private PlaybookUniqueCreator playbookUniqueCreator;
 
+    private ImprovementBlock improvementBlock;
+
     private int defaultVehicleCount;
 
     @Builder.Default

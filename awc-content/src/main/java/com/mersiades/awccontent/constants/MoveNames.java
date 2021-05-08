@@ -34,6 +34,7 @@ public class MoveNames {
     public static final String dealWithTerrainName = "DEAL WITH BAD TERRAIN";
     public static final String leadershipName = "LEADERSHIP";
     public static final String wealthName = "WEALTH";
+    public static final String packAlphaName = "PACK ALPHA";
     public static final String manipulateName = "SEDUCE OR MANIPULATE SOMEONE";
     public static final String fortunesName = "FORTUNES";
     public static final String lostName = "LOST";
@@ -41,6 +42,69 @@ public class MoveNames {
     public static final String hypnoticName = "HYPNOTIC";
     public static final String justGiveMotiveName = "JUST GIVE ME A MOTIVE";
     public static final String sufferVHarm = "SUFFER V-HARM";
+    public static final String preparedForTheInevitableName = "PREPARED FOR THE INEVITABLE";
+
+    // Improvement moves
+    public static final String sharpMax2Name = "SHARP MAX 2";
+    public static final String coolMax2Name = "COOL MAX 2";
+    public static final String secondCoolMax2Name = "SECOND COOL MAX 2";
+    public static final String hardMax2Name = "HARD MAX 2";
+    public static final String secondHardMax2Name = "SECOND HARD MAX 2";
+    public static final String hotMax2Name = "HOT MAX 2";
+    public static final String weirdMax2Name = "WEIRD MAX 2";
+    public static final String secondWeirdMax2Name = "SECOND WEIRD MAX 2";
+    public static final String sharpMax3Name = "SHARP MAX 3";
+    public static final String coolMax3Name = "COOL MAX 3";
+    public static final String hardMax3Name = "HARD MAX 3";
+    public static final String hotMax3Name = "HOT MAX 3";
+    public static final String weirdMax3Name = "WEIRD MAX 3";
+    public static final String addAngelMove1Name = "ADD ANGEL MOVE 1";
+    public static final String addAngelMove2Name = "ADD ANGEL MOVE 2";
+    public static final String addBattleBabeMove1Name = "ADD BATTLEBABE MOVE 1";
+    public static final String addBattleBabeMove2Name = "ADD BATTLEBABE MOVE 2";
+    public static final String addBrainerMove1Name = "ADD BRAINER MOVE 1";
+    public static final String addBrainerMove2Name = "ADD BRAINER MOVE 2";
+    public static final String addDriverMove1Name = "ADD DRIVER MOVE 1";
+    public static final String addDriverMove2Name = "ADD DRIVER MOVE 2";
+    public static final String addGunluggerMove1Name = "ADD GUNLUGGER MOVE 1";
+    public static final String addGunluggerMove2Name = "ADD GUNLUGGER MOVE 2";
+    public static final String addHocusMove1Name = "ADD HOCUS MOVE 1";
+    public static final String addHocusMove2Name = "ADD HOCUS MOVE 2";
+    public static final String addMaestroDMove1Name = "ADD MAESTRO D MOVE 1";
+    public static final String addMaestroDMove2Name = "ADD MAESTRO D MOVE 2";
+    public static final String addSavvyheadMove1Name = "ADD SAVVYHEAD MOVE 1";
+    public static final String addSavvyheadMove2Name = "ADD SAVVYHEAD MOVE 2";
+    public static final String addSkinnerMove1Name = "ADD SKINNER MOVE 1";
+    public static final String addSkinnerMove2Name = "ADD SKINNER MOVE 2";
+    public static final String adjustAngelUnique1Name = "ADJUST ANGEL UNIQUE 1";
+    public static final String adjustBrainerUnique1Name = "ADJUST BRAINER UNIQUE 1";
+    public static final String adjustChopperUnique1Name = "ADJUST CHOPPER UNIQUE 1";
+    public static final String adjustChopperUnique2Name = "ADJUST CHOPPER UNIQUE 2";
+    public static final String adjustHardHolderUnique1Name = "ADJUST HARDHOLDER UNIQUE 1";
+    public static final String adjustHardHolderUnique2Name = "ADJUST HARDHOLDER UNIQUE 2";
+    public static final String adjustHardHolderUnique3Name = "ADJUST HARDHOLDER UNIQUE 3";
+    public static final String adjustHocusUnique1Name = "ADJUST HOCUS UNIQUE 1";
+    public static final String adjustHocusUnique2Name = "ADJUST HOCUS UNIQUE 2";
+    public static final String adjustMaestroDUnique1Name = "ADJUST MAESTRO D' UNIQUE 1";
+    public static final String adjustMaestroDUnique2Name = "ADJUST MAESTRO D' UNIQUE 2";
+    public static final String adjustSavvyheadUnique1Name = "ADJUST SAVVYHEAD UNIQUE 1";
+    public static final String adjustSavvyheadUnique2Name = "ADJUST SAVVYHEAD UNIQUE 2";
+    public static final String addOtherPBMove1Name = "ADD MOVE FROM OTHER PLAYBOOK 1";
+    public static final String addOtherPBMove2Name = "ADD MOVE FROM OTHER PLAYBOOK 2";
+    public static final String addGangLeadershipName = "ADD GANG AND LEADERSHIP";
+    public static final String addGangPackAlphaName = "ADD GANG AND PACK ALPHA";
+    public static final String addHoldingName = "ADD HOLDING";
+    public static final String addVehicleName = "ADD VEHICLE";
+    public static final String addWorkspaceName = "ADD WORKSPACE";
+    public static final String addEstablishmentName = "ADD ESTABLISHMENT";
+    public static final String addFollowersName = "ADD FOLLOWERS";
+    public static final String genericIncreaseStatName = "GENERIC INCREASE STAT";
+    public static final String retireName = "RETIRE";
+    public static final String addSecondCharacterName = "ADD SECOND CHARACTER";
+    public static final String changePlaybookName = "CHANGE PLAYBOOK";
+    public static final String improveBasicMoves1Name = "IMPROVE BASIC MOVES 1";
+    public static final String improveBasicMoves2Name = "IMPROVE BASIC MOVES 2";
+
 
     // Moves that can earn holds
     public static final String readPersonName = "READ A PERSON";

@@ -12,10 +12,14 @@ import org.springframework.data.annotation.Id;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlaybookUnique {
+public class PlaybookUniques {
 
     @Id
     private String id;
+
+    // This really should be converted to
+    // private List<Object> uniques = new ArrayList<Object>()
+    // but that will be a very big change
 
     private UniqueType type;
 

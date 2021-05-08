@@ -11,21 +11,17 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mersiades.awccontent.content.VehicleCreatorContent.vehicleCreator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class VehicleCreatorServiceImplTest {
-
-    public static final String MOCK_VEHICLE_CREATOR_ID_1 = "mock-vehicle-creator-id-1";
 
     @Mock
     VehicleCreatorRepository vehicleCreatorRepository;
 
     VehicleCreatorService vehicleCreatorService;
 
-    VehicleCreator mockVehicleCreator1;
-
-    VehicleCreator mockVehicleCreator2;
 
     @BeforeEach
     void setUp() {
@@ -33,72 +29,70 @@ class VehicleCreatorServiceImplTest {
 
         vehicleCreatorService = new VehicleCreatorServiceImpl(vehicleCreatorRepository);
 
-        mockVehicleCreator1 = VehicleCreator.builder()
-                .id(MOCK_VEHICLE_CREATOR_ID_1).build();
-
-        mockVehicleCreator2 = VehicleCreator.builder().build();
     }
 
+    // There is only one VehicleCreator
     @Test
     void shouldFindAllVehicleCreators() {
         // Given
-        when(vehicleCreatorRepository.findAll()).thenReturn(List.of(mockVehicleCreator1, mockVehicleCreator2));
+        when(vehicleCreatorRepository.findAll()).thenReturn(List.of(vehicleCreator));
 
         // When
         List<VehicleCreator> returnedVehicleCreators = vehicleCreatorService.findAll();
 
         // Then
         assert returnedVehicleCreators != null;
-        assertEquals(2, returnedVehicleCreators.size());
+        assertEquals(1, returnedVehicleCreators.size());
         verify(vehicleCreatorRepository, times(1)).findAll();
     }
 
     @Test
     void shouldFindVehicleCreatorById() {
         // Given
-        when(vehicleCreatorRepository.findById(anyString())).thenReturn(Optional.of(mockVehicleCreator1));
+        when(vehicleCreatorRepository.findById(anyString())).thenReturn(Optional.of(vehicleCreator));
 
         // When
-        VehicleCreator returnedVehicleCreator = vehicleCreatorService.findById(MOCK_VEHICLE_CREATOR_ID_1);
+        VehicleCreator returnedVehicleCreator = vehicleCreatorService.findById(vehicleCreator.getId());
 
         // Then
         assert returnedVehicleCreator != null;
-        assertEquals(MOCK_VEHICLE_CREATOR_ID_1, returnedVehicleCreator.getId());
+        assertEquals(vehicleCreator.getId(), returnedVehicleCreator.getId());
         verify(vehicleCreatorRepository, times(1)).findById(anyString());
     }
 
     @Test
     void shouldSaveVehicleCreator() {
         // Given
-        when(vehicleCreatorService.save(any(VehicleCreator.class))).thenReturn(mockVehicleCreator1);
+        when(vehicleCreatorService.save(any(VehicleCreator.class))).thenReturn(vehicleCreator);
 
         // When
-        VehicleCreator savedVehicleCreator = vehicleCreatorService.save(mockVehicleCreator1);
+        VehicleCreator savedVehicleCreator = vehicleCreatorService.save(vehicleCreator);
 
         // Then
         assert savedVehicleCreator != null;
-        assertEquals(MOCK_VEHICLE_CREATOR_ID_1, savedVehicleCreator.getId());
+        assertEquals(vehicleCreator.getId(), savedVehicleCreator.getId());
         verify(vehicleCreatorRepository, times(1)).save(any(VehicleCreator.class));
     }
 
+    // There is only one VehicleCreator
     @Test
     void shouldSaveAllVehicleCreators() {
         // Given
-        when(vehicleCreatorRepository.saveAll(anyIterable())).thenReturn(List.of(mockVehicleCreator1, mockVehicleCreator2));
+        when(vehicleCreatorRepository.saveAll(anyIterable())).thenReturn(List.of(vehicleCreator));
 
         // When
-        List<VehicleCreator> savedVehicleCreators = vehicleCreatorService.saveAll(List.of(mockVehicleCreator1, mockVehicleCreator2));
+        List<VehicleCreator> savedVehicleCreators = vehicleCreatorService.saveAll(List.of(vehicleCreator));
 
         // Then
         assert savedVehicleCreators != null;
-        assertEquals(2, savedVehicleCreators.size());
+        assertEquals(1, savedVehicleCreators.size());
         verify(vehicleCreatorRepository, times(1)).saveAll(anyIterable());
     }
 
     @Test
     void shouldDeleteVehicleCreator() {
         // When
-        vehicleCreatorService.delete(mockVehicleCreator1);
+        vehicleCreatorService.delete(vehicleCreator);
 
         // Then
         verify(vehicleCreatorRepository, times(1)).delete(any(VehicleCreator.class));
@@ -107,7 +101,7 @@ class VehicleCreatorServiceImplTest {
     @Test
     void shouldDeleteVehicleCreatorById() {
         // When
-        vehicleCreatorService.deleteById(MOCK_VEHICLE_CREATOR_ID_1);
+        vehicleCreatorService.deleteById(vehicleCreator.getId());
 
         // Then
         verify(vehicleCreatorRepository, times(1)).deleteById(anyString());

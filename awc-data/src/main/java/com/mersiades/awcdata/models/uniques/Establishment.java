@@ -1,5 +1,6 @@
 package com.mersiades.awcdata.models.uniques;
 
+import com.mersiades.awccontent.enums.UniqueType;
 import com.mersiades.awccontent.models.SecurityOption;
 import com.mersiades.awcdata.models.CastCrew;
 import lombok.AllArgsConstructor;
@@ -22,12 +23,17 @@ public class Establishment {
     @Id
     private String id;
 
+    @Builder.Default
+    private UniqueType uniqueType = UniqueType.ESTABLISHMENT;
+
     private String mainAttraction;
     private String bestRegular;
     private String worstRegular;
     private String wantsInOnIt;
     private String oweForIt;
     private String wantsItGone;
+
+    private int securitiesCount;
 
     @Builder.Default
     List<String> sideAttractions = new ArrayList<>();

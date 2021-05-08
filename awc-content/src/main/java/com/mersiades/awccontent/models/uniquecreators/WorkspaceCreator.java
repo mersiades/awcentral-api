@@ -18,7 +18,7 @@ public class WorkspaceCreator {
     @Id
     private String id;
 
-    private int itemsCount;
+    private int defaultItemsCount;
 
     private String workspaceInstructions;
 
