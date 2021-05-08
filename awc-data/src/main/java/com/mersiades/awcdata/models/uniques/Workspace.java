@@ -27,6 +27,8 @@ public class Workspace {
 
     private String projectInstructions;
 
+    private int itemsCount;
+
     @Builder.Default
     List<String> workspaceItems = new ArrayList<>();
 

@@ -1576,6 +1576,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .uniqueType(UniqueType.WORKSPACE)
                         .projectInstructions(workspaceCreator.getProjectInstructions())
                         .workspaceInstructions(workspaceCreator.getWorkspaceInstructions())
+                        .itemsCount(workspaceCreator.getDefaultItemsCount())
                         .build();
 
                 character.getPlaybookUniques().setWorkspace(workspace);
@@ -1769,6 +1770,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .uniqueType(UniqueType.WORKSPACE)
                         .projectInstructions(workspaceCreator.getProjectInstructions())
                         .workspaceInstructions(workspaceCreator.getWorkspaceInstructions())
+                        .itemsCount(workspaceCreator.getDefaultItemsCount())
                         .build();
                 PlaybookUniques playbookUniquesSavvyhead = PlaybookUniques.builder()
                         .id(new ObjectId().toString())
@@ -1847,6 +1849,15 @@ public class GameRoleServiceImpl implements GameRoleService {
 
                 character.getPlaybookUniques().getFollowers().setSelectedStrengths(truncatedFollowersStrengths);
                 break;
+            case adjustSavvyheadUnique1Name:
+                int newWorkspaceItemsCount = character.getPlaybookUniques().getWorkspace().getItemsCount() - 2;
+                character.getPlaybookUniques().getWorkspace().setItemsCount(newWorkspaceItemsCount);
+
+                List<String> truncatedWorkspaceItems = character.getPlaybookUniques().getWorkspace().getWorkspaceItems()
+                        .stream().limit(newWorkspaceItemsCount).collect(Collectors.toList());
+
+                character.getPlaybookUniques().getWorkspace().setWorkspaceItems(truncatedWorkspaceItems);
+                break;
             default:
                 // TODO: throw error
         }
@@ -1884,6 +1895,11 @@ public class GameRoleServiceImpl implements GameRoleService {
             case adjustHocusUnique2Name:
                 character.getPlaybookUniques().getFollowers().setStrengthsCount(
                         character.getPlaybookUniques().getFollowers().getStrengthsCount() + 1
+                );
+                break;
+            case adjustSavvyheadUnique1Name:
+                character.getPlaybookUniques().getWorkspace().setItemsCount(
+                        character.getPlaybookUniques().getWorkspace().getItemsCount() + 2
                 );
                 break;
             default:

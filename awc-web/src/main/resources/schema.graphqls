@@ -427,7 +427,7 @@ type WeaponsCreator {
 
 type WorkspaceCreator {
     id: ID!
-    itemsCount: Int!
+    defaultItemsCount: Int!
     workspaceInstructions: String!
     projectInstructions: String!
     workspaceItems: [String]!
@@ -820,6 +820,7 @@ type Workspace {
     uniqueType: UniqueType!
     workspaceInstructions: String!
     projectInstructions: String!
+    itemsCount: Int!
     workspaceItems: [String]!
     projects: [Project]
 }
@@ -1101,6 +1102,7 @@ input WorkspaceInput {
     uniqueType: UniqueType!
     workspaceInstructions: String!
     projectInstructions: String!
+    itemsCount: Int!
     workspaceItems: [String]!
     projects: [ProjectInput]
 }

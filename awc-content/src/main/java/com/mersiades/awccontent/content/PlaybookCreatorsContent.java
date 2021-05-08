@@ -1355,7 +1355,7 @@ public class PlaybookCreatorsContent {
 
     public static final WorkspaceCreator workspaceCreator = WorkspaceCreator.builder()
             .id(new ObjectId().toString())
-            .itemsCount(3)
+            .defaultItemsCount(3)
             .workspaceInstructions("When you go into your workspace and dedicate yourself to making a thing, or to getting to the bottom of some shit, decide what an tell the MC.\n" +
                     "\n" +
                     "The MC will tell you 'sure, no problem, but...' and then 1 to 4 of the following things:\n" +
