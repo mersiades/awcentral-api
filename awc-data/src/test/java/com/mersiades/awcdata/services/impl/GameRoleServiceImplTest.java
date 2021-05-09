@@ -2160,6 +2160,7 @@ class GameRoleServiceImplTest {
         Character returnedCharacter = checkAddedUniqueAndMove(addGangPackAlpha, packAlpha);
         assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
         assertEquals(gangCreator.getDefaultSize(), returnedCharacter.getPlaybookUniques().getGang().getSize());
+        assertEquals(1, returnedCharacter.getAllowedOtherPlaybookMoves());
     }
 
     @Test
@@ -2167,8 +2168,10 @@ class GameRoleServiceImplTest {
         Gang mockGang = Gang.builder().id(new ObjectId().toString()).build();
         mockPlaybookUnique.setGang(mockGang);
         mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockCharacter.setAllowedOtherPlaybookMoves(1);
         Character returnedCharacter = checkRemovedUniqueAndMove(addGangLeadership, leadership);
         assertNull(returnedCharacter.getPlaybookUniques().getGang());
+        assertEquals(0, returnedCharacter.getAllowedOtherPlaybookMoves());
     }
 
     @Test
@@ -2176,6 +2179,7 @@ class GameRoleServiceImplTest {
         Character returnedCharacter = checkAddedUniqueAndMove(addGangPackAlpha, packAlpha);
         assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
         assertEquals(gangCreator.getDefaultSize(), returnedCharacter.getPlaybookUniques().getGang().getSize());
+        assertEquals(1, returnedCharacter.getAllowedOtherPlaybookMoves());
     }
 
     @Test
@@ -2183,15 +2187,19 @@ class GameRoleServiceImplTest {
         Gang mockGang = Gang.builder().id(new ObjectId().toString()).build();
         mockPlaybookUnique.setGang(mockGang);
         mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockCharacter.setAllowedOtherPlaybookMoves(1);
         Character returnedCharacter = checkRemovedUniqueAndMove(addGangPackAlpha, packAlpha);
         assertNull(returnedCharacter.getPlaybookUniques().getGang());
+        assertEquals(0, returnedCharacter.getAllowedOtherPlaybookMoves());
     }
 
     @Test
     void shouldAddHoldingAndWealth_onAddCharacterImprovement() {
         Character returnedCharacter = checkAddedUniqueAndMove(addHolding, wealth);
         assertNotNull(returnedCharacter.getPlaybookUniques().getHolding());
-        assertEquals(holdingCreator.getDefaultHoldingSize(), returnedCharacter.getPlaybookUniques().getHolding().getHoldingSize());
+        assertEquals(holdingCreator.getDefaultHoldingSize(),
+                returnedCharacter.getPlaybookUniques().getHolding().getHoldingSize());
+        assertEquals(1, returnedCharacter.getAllowedOtherPlaybookMoves());
     }
 
     @Test
@@ -2199,8 +2207,10 @@ class GameRoleServiceImplTest {
         Holding mockHolding = Holding.builder().id(new ObjectId().toString()).build();
         mockPlaybookUnique.setHolding(mockHolding);
         mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockCharacter.setAllowedOtherPlaybookMoves(1);
         Character returnedCharacter = checkRemovedUniqueAndMove(addGangPackAlpha, packAlpha);
         assertNull(returnedCharacter.getPlaybookUniques().getGang());
+        assertEquals(0, returnedCharacter.getAllowedOtherPlaybookMoves());
     }
 
     @Test
@@ -2239,6 +2249,7 @@ class GameRoleServiceImplTest {
     void shouldAddFollowersAndFortunes_onAddCharacterImprovement() {
         Character returnedCharacter = checkAddedUniqueAndMove(addFollowers, fortunes);
         assertNotNull(returnedCharacter.getPlaybookUniques().getFollowers());
+        assertEquals(1, returnedCharacter.getAllowedOtherPlaybookMoves());
     }
 
     @Test
@@ -2246,8 +2257,10 @@ class GameRoleServiceImplTest {
         Followers mockFollowers = Followers.builder().id(new ObjectId().toString()).build();
         mockPlaybookUnique.setFollowers(mockFollowers);
         mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        mockCharacter.setAllowedOtherPlaybookMoves(1);
         Character returnedCharacter = checkRemovedUniqueAndMove(addFollowers, fortunes);
         assertNull(returnedCharacter.getPlaybookUniques().getEstablishment());
+        assertEquals(0, returnedCharacter.getAllowedOtherPlaybookMoves());
     }
 
     @Test
