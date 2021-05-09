@@ -1132,6 +1132,7 @@ type Query {
     vehicleCreator: VehicleCreator
     threatCreator: ThreatCreator
     mcContent: McContent
+    deathMoves: [Move!]!
 }
 
 # --------------------------------------------- MUTATIONS -------------------------------------------- #

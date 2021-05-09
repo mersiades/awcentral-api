@@ -210,4 +210,19 @@ class MoveServiceImplTest {
         assertTrue(returnedMoves.stream().anyMatch(move -> move.getName().equals(angelSpecial.getName())));
         assertTrue(returnedMoves.stream().anyMatch(move -> move.getName().equals(healingTouch.getName())));
     }
+
+    @Test
+    void shouldFindAllDeathMoves() {
+        // Given
+        when(moveRepository.findAllByKind(any(MoveType.class))).thenReturn(List.of(hardMinus1, deathWeirdMax3, deathChangePlaybook, die));
+        // When
+        List<Move> returnedMoves = moveService.findDeathMoves();
+
+        // Then
+        assertEquals(4, returnedMoves.size());
+        assertTrue(returnedMoves.stream().anyMatch(move -> move.getName().equals(hardMinus1.getName())));
+        assertTrue(returnedMoves.stream().anyMatch(move -> move.getName().equals(deathWeirdMax3.getName())));
+        assertTrue(returnedMoves.stream().anyMatch(move -> move.getName().equals(deathChangePlaybook.getName())));
+        assertTrue(returnedMoves.stream().anyMatch(move -> move.getName().equals(die.getName())));
+    }
 }

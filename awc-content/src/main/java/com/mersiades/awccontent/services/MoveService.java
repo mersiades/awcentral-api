@@ -17,4 +17,6 @@ public interface MoveService extends CrudService<Move, String>{
     List<Move> findAllById(List<String> moveIds);
 
     List<Move> findAllByName(List<String> moveNames);
+
+    List<Move> findDeathMoves();
 }
