@@ -46,6 +46,7 @@ enum MoveType {
     ADD_SECOND_CHARACTER
     CHANGE_PLAYBOOK
     IMPROVE_BASIC_MOVES
+    DEATH
 }
 
 enum MoveActionType {
@@ -649,6 +650,7 @@ type Character {
     allowedImprovements: Int!
     allowedPlaybookMoves: Int!
     allowedOtherPlaybookMoves: Int!
+    isDead: Boolean!
     battleVehicles: [BattleVehicle]
     vehicles: [Vehicle]
     hxBlock: [HxStat]
@@ -657,6 +659,7 @@ type Character {
     characterMoves: [CharacterMove]
     improvementMoves: [CharacterMove]
     futureImprovementMoves: [CharacterMove]
+    deathMoves: [CharacterMove]
     holds: [Hold]
 }
 
@@ -1361,6 +1364,9 @@ type Mutation {
     spendHold(gameId: String!, gameRoleId: String!, characterId: String!, hold: HoldInput!): Game
     removeHold(gameRoleId: String!, characterId: String!, hold: HoldInput!): Character
     playXCard(gameId: String!): Game
+    setDeathMoves(
+        gameRoleId: String!, characterId: String!, moveNames: [String]!
+    ): Character!
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

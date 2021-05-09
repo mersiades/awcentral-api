@@ -9,7 +9,10 @@ public class MoveNames {
     public static final String inflictHarmName = "INFLICT HARM ON PC";
     public static final String healHarmName = "HEAL PC HARM";
     public static final String angelSpecialName = "ANGEL SPECIAL";
+    public static final String battlebabeSpecialName = "BATTLEBABE SPECIAL";
+    public static final String brainerSpecialName = "BRAINER SPECIAL";
     public static final String chopperSpecialName = "CHOPPER SPECIAL";
+    public static final String driverSpecialName = "DRIVER SPECIAL";
     public static final String gunluggerSpecialName = "GUNLUGGER SPECIAL";
     public static final String hardholderSpecialName = "HARDHOLDER SPECIAL";
     public static final String hocusSpecialName = "HOCUS SPECIAL";
@@ -43,6 +46,7 @@ public class MoveNames {
     public static final String justGiveMotiveName = "JUST GIVE ME A MOTIVE";
     public static final String sufferVHarm = "SUFFER V-HARM";
     public static final String preparedForTheInevitableName = "PREPARED FOR THE INEVITABLE";
+    public static final String fuckingThievesName = "FUCKING THIEVES";
 
     // Improvement moves
     public static final String sharpMax2Name = "SHARP MAX 2";

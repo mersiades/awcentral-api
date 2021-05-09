@@ -87,6 +87,7 @@ public class Query implements GraphQLQueryResolver {
     }
 
     public List<Move> deathMoves() {
+        log.info("fetching death moves");
         return moveService.findDeathMoves();
     }
 

@@ -2280,6 +2280,214 @@ class GameRoleServiceImplTest {
         verifyMockServices();
     }
 
+    @Test
+    void shouldDecreaseHard_onAddDeathMove() {
+        // Given
+        addStatsBlockToCharacter(mockCharacter);
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService.setDeathMoves(mockGameRole.getId(),
+                mockCharacter.getId(),
+                List.of(hardMinus1.getName()));
+
+        // Then
+        CharacterStat hardStat = returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(StatType.HARD)).findFirst().orElseThrow();
+        assertEquals(0, hardStat.getValue());
+        assertTrue(returnedCharacter.getDeathMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(hardMinus1.getName())));
+        verifyMockServices();
+    }
+
+    @Test
+    void shouldIncreaseHardAndIncreaseWeird_onSwapDeathMove() {
+        // Given
+        CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(0).build();
+        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(StatType.WEIRD).value(1).build();
+        StatsBlock statsBlock = StatsBlock.builder()
+                .id("mock-stats-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCharacterStatHard, mockCharacterStatWeird))
+                .build();
+        mockCharacter.setStatsBlock(statsBlock);
+        CharacterMove hardMinus1AsCM = CharacterMove.createFromMove(hardMinus1, true);
+        mockCharacter.setDeathMoves(List.of(hardMinus1AsCM));
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService.setDeathMoves(mockGameRole.getId(),
+                mockCharacter.getId(),
+                List.of(deathWeirdMax3.getName()));
+
+        // Then
+        CharacterStat hardStat = returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(StatType.HARD)).findFirst().orElseThrow();
+        CharacterStat weirdStat = returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(StatType.WEIRD)).findFirst().orElseThrow();
+        assertEquals(1, hardStat.getValue());
+        assertEquals(2, weirdStat.getValue());
+        assertFalse(returnedCharacter.getDeathMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(hardMinus1.getName())));
+        assertTrue(returnedCharacter.getDeathMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(deathWeirdMax3.getName())));
+        verifyMockServices();
+    }
+
+    @Test
+    void shouldDecreaseWeirdAndKillCharacter_onSwapDeathMove() {
+        // Given
+        CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(StatType.WEIRD).value(2).build();
+        StatsBlock statsBlock = StatsBlock.builder()
+                .id("mock-stats-block-id")
+                .statsOptionId("mock-stats-option-id")
+                .stats(List.of(mockCharacterStatWeird))
+                .build();
+        mockCharacter.setStatsBlock(statsBlock);
+        CharacterMove deathWeirdMax3AsCM = CharacterMove.createFromMove(deathWeirdMax3, true);
+        mockCharacter.setDeathMoves(List.of(deathWeirdMax3AsCM));
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService.setDeathMoves(mockGameRole.getId(),
+                mockCharacter.getId(),
+                List.of(die.getName()));
+
+        // Then
+        CharacterStat weirdStat = returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(StatType.WEIRD)).findFirst().orElseThrow();
+        assertEquals(1, weirdStat.getValue());
+        assertTrue(returnedCharacter.getIsDead());
+        assertFalse(returnedCharacter.getDeathMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(deathWeirdMax3.getName())));
+        assertTrue(returnedCharacter.getDeathMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(die.getName())));
+        verifyMockServices();
+    }
+
+    @Test
+    void shouldReviveCharacterAndResetGunluggerPlaybook_onSwapDeathMove() {
+        // Given
+        mockCharacter.setIsDead(true);
+        mockCharacter.setPlaybook(PlaybookType.GUNLUGGER);
+        Holding mockHolding = Holding.builder().id(new ObjectId().toString()).build();
+        Gang mockGang = Gang.builder().id(new ObjectId().toString()).build();
+        Weapons mockWeapons = Weapons.builder().id(new ObjectId().toString()).build();
+        mockPlaybookUnique.setHolding(mockHolding);
+        mockPlaybookUnique.setGang(mockGang);
+        mockPlaybookUnique.setWeapons(mockWeapons);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        CharacterMove dieAsCM = CharacterMove.createFromMove(die, true);
+        CharacterMove addGangPackAlphaAsCM = CharacterMove.createFromMove(addGangPackAlpha, true);
+        CharacterMove addHoldingAsCM = CharacterMove.createFromMove(addHolding, true);
+        CharacterMove packAlphaAsCM = CharacterMove.createFromMove(packAlpha, true);
+        CharacterMove wealthAsCM = CharacterMove.createFromMove(wealth, true);
+        CharacterMove gunluggerSpecialAsCM = CharacterMove.createFromMove(gunluggerSpecial, true);
+
+        mockCharacter.setImprovementMoves(List.of(addGangPackAlphaAsCM, addHoldingAsCM));
+        mockCharacter.setCharacterMoves(List.of(packAlphaAsCM,wealthAsCM, gunluggerSpecialAsCM ));
+        mockCharacter.setDeathMoves(List.of(dieAsCM));
+        mockCharacter.setGear(List.of("item1", "item2"));
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService.setDeathMoves(mockGameRole.getId(),
+                mockCharacter.getId(),
+                List.of(deathChangePlaybook.getName()));
+
+        // Then
+        // Check the playbook's Unique has been removed
+        assertNull(returnedCharacter.getPlaybookUniques().getWeapons());
+
+        // Check that Uniques gained through improvements are still there
+        assertNotNull(returnedCharacter.getPlaybookUniques().getHolding());
+        assertNotNull(returnedCharacter.getPlaybookUniques().getGang());
+
+        // Check the Gunlugger's special move has been removed
+        assertFalse(returnedCharacter.getCharacterMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(gunluggerSpecial.getName())));
+
+        // Check that moves gained by gaining Uniques through improvements are still there
+        assertTrue(returnedCharacter.getCharacterMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(wealth.getName())));
+        assertTrue(returnedCharacter.getCharacterMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(packAlpha.getName())));
+
+        // Check that gear has been reset
+        assertEquals(0, returnedCharacter.getGear().size());
+
+        // Check character is no longer dead
+        assertFalse(returnedCharacter.getIsDead());
+
+        assertFalse(returnedCharacter.getDeathMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(die.getName())));
+        assertTrue(returnedCharacter.getDeathMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(deathChangePlaybook.getName())));
+        verifyMockServices();
+    }
+
+    @Test
+    void shouldNOTUnResetPlaybookButShouldDecreaseHard_onSwapDeathMove() {
+        // Given
+        addStatsBlockToCharacter(mockCharacter);
+        mockCharacter.setPlaybook(PlaybookType.GUNLUGGER);
+        Holding mockHolding = Holding.builder().id(new ObjectId().toString()).build();
+        Gang mockGang = Gang.builder().id(new ObjectId().toString()).build();
+        Weapons mockWeapons = Weapons.builder().id(new ObjectId().toString()).build();
+        mockPlaybookUnique.setHolding(mockHolding);
+        mockPlaybookUnique.setGang(mockGang);
+        mockPlaybookUnique.setWeapons(mockWeapons);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        CharacterMove deathChangePlaybookAsCM = CharacterMove.createFromMove(deathChangePlaybook, true);
+        CharacterMove addGangPackAlphaAsCM = CharacterMove.createFromMove(addGangPackAlpha, true);
+        CharacterMove addHoldingAsCM = CharacterMove.createFromMove(addHolding, true);
+        CharacterMove packAlphaAsCM = CharacterMove.createFromMove(packAlpha, true);
+        CharacterMove wealthAsCM = CharacterMove.createFromMove(wealth, true);
+        CharacterMove gunluggerSpecialAsCM = CharacterMove.createFromMove(gunluggerSpecial, true);
+        mockCharacter.setImprovementMoves(List.of(addGangPackAlphaAsCM, addHoldingAsCM));
+        mockCharacter.setCharacterMoves(List.of(packAlphaAsCM,wealthAsCM, gunluggerSpecialAsCM ));
+        mockCharacter.setDeathMoves(List.of(deathChangePlaybookAsCM));
+        mockCharacter.setGear(List.of("item1", "item2"));
+        mockGameRole.getCharacters().add(mockCharacter);
+        setupMockServices();
+
+        // When
+        Character returnedCharacter = gameRoleService.setDeathMoves(mockGameRole.getId(),
+                mockCharacter.getId(),
+                List.of(hardMinus1.getName()));
+
+        // Then
+        // Check the playbook's Unique is still there
+        assertNotNull(returnedCharacter.getPlaybookUniques().getWeapons());
+
+        // Check the Gunlugger's special move is still there
+        assertTrue(returnedCharacter.getCharacterMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(gunluggerSpecial.getName())));
+
+        // Check that gear has NOT been reset
+        assertNotEquals(0, returnedCharacter.getGear().size());
+
+        CharacterStat hardStat = returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(StatType.HARD)).findFirst().orElseThrow();
+        assertEquals(0, hardStat.getValue());
+
+        assertFalse(returnedCharacter.getDeathMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(deathChangePlaybook.getName())));
+        assertTrue(returnedCharacter.getDeathMoves()
+                .stream().anyMatch(characterMove -> characterMove.getName().equals(hardMinus1.getName())));
+        verifyMockServices();
+    }
+
+    @Test
+    void shouldKillCharacter_onAddDeathMove() {}
+
+    @Test
+    void shouldReviveCharacter_onRemoveDeathMove() {}
+
     private Character checkAddedUnique(Move improvementMove) {
         // Given
         CharacterMove improvementMoveAsCM = CharacterMove.createFromMove(improvementMove);
@@ -2353,8 +2561,6 @@ class GameRoleServiceImplTest {
                 mockCharacter.getId(), List.of(improvementMoveAsCM.getId()), List.of());
 
         // Then
-
-
         assertTrue(returnedCharacter.getImprovementMoves().stream()
                 .anyMatch(characterMove -> characterMove.getName().equals(improvementMove.getName())));
         assertTrue(returnedCharacter.getCharacterMoves().stream()

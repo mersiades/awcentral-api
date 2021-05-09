@@ -15,6 +15,7 @@ import com.mersiades.awcdata.models.uniques.*;
 import com.mersiades.awcdata.repositories.GameRoleRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ import static com.mersiades.awccontent.constants.MoveNames.*;
 import static com.mersiades.awccontent.content.MovesContent.*;
 import static com.mersiades.awccontent.content.PlaybookCreatorsContent.*;
 
+@Slf4j
 @Service
 public class GameRoleServiceImpl implements GameRoleService {
 
@@ -1369,6 +1371,168 @@ public class GameRoleServiceImpl implements GameRoleService {
         return character;
     }
 
+    @Override
+    public Character setDeathMoves(String gameRoleId, String characterId, List<String> moveNames) {
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
+
+        List<String> previousCharacterMoveNames = character.getDeathMoves()
+                .stream().map(Move::getName).collect(Collectors.toList());
+
+        List<Move> deathMoves = List.of(hardMinus1, deathWeirdMax3, deathChangePlaybook, die);
+
+        deathMoves.forEach(deathMove -> {
+            switch (deathMove.getName()) {
+                case hardMinus1Name:
+                    CharacterMove hardMinus1AsCM = CharacterMove.createFromMove(hardMinus1, true);
+                    if (previousCharacterMoveNames.contains(deathMove.getName()) &&
+                            !moveNames.contains(deathMove.getName())
+                    ) {
+
+                        // Increase hard
+                        unModifyCharacterStat(character, hardMinus1AsCM);
+                        // Remove move
+                        List<CharacterMove> newDeathMoves = character.getDeathMoves()
+                                .stream().filter(characterMove -> !characterMove.getName().equals(hardMinus1Name)).collect(Collectors.toList());
+                        character.setDeathMoves(newDeathMoves);
+                    } else if (!previousCharacterMoveNames.contains(deathMove.getName()) &&
+                            moveNames.contains(deathMove.getName())
+                    ) {
+                        // Decrease hard
+                        modifyCharacterStat(character, hardMinus1AsCM);
+                        // Add move
+                        List<CharacterMove> currentDeathMoves = new ArrayList<>(character.getDeathMoves());
+                        currentDeathMoves.add(hardMinus1AsCM);
+                        character.setDeathMoves(currentDeathMoves);
+                    }
+                    break;
+                case deathWeirdMax3Name:
+                    CharacterMove deathWeirdMax3AsCM = CharacterMove.createFromMove(deathWeirdMax3, true);
+                    if (previousCharacterMoveNames.contains(deathMove.getName()) &&
+                            !moveNames.contains(deathMove.getName())
+                    ) {
+                        // Decrease weird
+                        unModifyCharacterStat(character, deathWeirdMax3AsCM);
+                        // Remove move
+                        List<CharacterMove> newDeathMoves = character.getDeathMoves()
+                                .stream().filter(characterMove -> !characterMove.getName().equals(deathWeirdMax3Name)).collect(Collectors.toList());
+                        character.setDeathMoves(newDeathMoves);
+                    } else if (!previousCharacterMoveNames.contains(deathMove.getName()) &&
+                            moveNames.contains(deathMove.getName())
+                    ) {
+                        // Decrease hard
+                        modifyCharacterStat(character, deathWeirdMax3AsCM);
+                        // Add move
+                        List<CharacterMove> currentDeathMoves = new ArrayList<>(character.getDeathMoves());
+                        currentDeathMoves.add(deathWeirdMax3AsCM);
+                        character.setDeathMoves(currentDeathMoves);
+                    }
+                    break;
+                case deathChangePlaybookName:
+                    CharacterMove deathChangePlaybookAsCM = CharacterMove.createFromMove(deathChangePlaybook, true);
+                    if (previousCharacterMoveNames.contains(deathMove.getName()) &&
+                            !moveNames.contains(deathMove.getName())
+                    ) {
+                        log.warn("Unable to undo changed Playbook for Character: " + characterId);
+                        // Remove move
+                        List<CharacterMove> newDeathMoves = character.getDeathMoves()
+                                .stream().filter(characterMove -> !characterMove.getName().equals(deathChangePlaybookName)).collect(Collectors.toList());
+                        character.setDeathMoves(newDeathMoves);
+                    } else if (!previousCharacterMoveNames.contains(deathMove.getName()) &&
+                            moveNames.contains(deathMove.getName())
+                    ) {
+                        //  ----- Reset playbook ----- //
+                        // Remove uniques (and related moves)
+                        switch (character.getPlaybook()) {
+                            case ANGEL:
+                                character.getPlaybookUniques().setAngelKit(null);
+                                removeDefaultMoves(character, List.of(angelSpecialName));
+                                break;
+                            case BATTLEBABE:
+                                character.getPlaybookUniques().setCustomWeapons(null);
+                                removeDefaultMoves(character, List.of(battlebabeSpecialName));
+                                break;
+                            case BRAINER:
+                                character.getPlaybookUniques().setBrainerGear(null);
+                                removeDefaultMoves(character, List.of(brainerSpecialName));
+                                break;
+                            case CHOPPER:
+                                character.getPlaybookUniques().setGang(null);
+                                removeDefaultMoves(character, List.of(packAlphaName, chopperSpecialName, fuckingThievesName));
+                                break;
+                            case DRIVER:
+                                removeDefaultMoves(character, List.of(driverSpecialName));
+                                break;
+                            case GUNLUGGER:
+                                character.getPlaybookUniques().setWeapons(null);
+                                removeDefaultMoves(character, List.of(gunluggerSpecialName));
+                                break;
+                            case HARDHOLDER:
+                                character.getPlaybookUniques().setHolding(null);
+                                removeDefaultMoves(character, List.of(wealthName,leadershipName, hardholderSpecialName ));
+                                break;
+                            case HOCUS:
+                                character.getPlaybookUniques().setFollowers(null);
+                                removeDefaultMoves(character, List.of(fortunesName, hocusSpecialName));
+                                break;
+                            case MAESTRO_D:
+                                character.getPlaybookUniques().setEstablishment(null);
+                                removeDefaultMoves(character, List.of(maestroDSpecialName));
+                                break;
+                            case SAVVYHEAD:
+                                character.getPlaybookUniques().setWorkspace(null);
+                                removeDefaultMoves(character, List.of(savvyheadSpecialName));
+                                break;
+                            case SKINNER:
+                                character.getPlaybookUniques().setSkinnerGear(null);
+                                removeDefaultMoves(character, List.of(skinnerSpecialName));
+                                break;
+                            default:
+                                // Do nothing
+                                break;
+                        }
+
+                        // Remove gear
+                        character.setGear(new ArrayList<>());
+                        // Add move
+                        List<CharacterMove> currentDeathMoves = new ArrayList<>(character.getDeathMoves());
+                        currentDeathMoves.add(deathChangePlaybookAsCM);
+                        character.setDeathMoves(currentDeathMoves);
+                    }
+                    break;
+                case dieName:
+                    CharacterMove dieAsCM = CharacterMove.createFromMove(die, true);
+                    if (previousCharacterMoveNames.contains(deathMove.getName()) &&
+                            !moveNames.contains(deathMove.getName())
+                    ) {
+                        // Set isDead to false
+                        character.setIsDead(false);
+                        // Remove move
+                        List<CharacterMove> newDeathMoves = character.getDeathMoves()
+                                .stream().filter(characterMove -> !characterMove.getName().equals(dieName)).collect(Collectors.toList());
+                        character.setDeathMoves(newDeathMoves);
+                    } else if (!previousCharacterMoveNames.contains(deathMove.getName()) &&
+                            moveNames.contains(deathMove.getName())
+                    ) {
+                        // Set isDead to true
+                        character.setIsDead(true);
+                        // Add move
+                        character.getDeathMoves().add(dieAsCM);
+                    }
+                    break;
+                default:
+                    // Do nothing
+            }
+        });
+
+
+        // Save to db
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
+
+        return character;
+    }
+
 
     private void createOrUpdateCharacterStat(Character character, StatsOption statsOption, StatType stat) {
         int value;
@@ -1833,7 +1997,7 @@ public class GameRoleServiceImpl implements GameRoleService {
             case adjustChopperUnique1Name:
                 // Deliberately falls through
             case adjustChopperUnique2Name:
-                int newAllowedStrengths = character.getPlaybookUniques().getGang().getAllowedStrengths() -1;
+                int newAllowedStrengths = character.getPlaybookUniques().getGang().getAllowedStrengths() - 1;
                 character.getPlaybookUniques().getGang()
                         .setAllowedStrengths(newAllowedStrengths);
 
@@ -1844,7 +2008,7 @@ public class GameRoleServiceImpl implements GameRoleService {
             case adjustHardHolderUnique1Name:
                 // Deliberately falls through
             case adjustHardHolderUnique2Name:
-                int newHoldingStrengthsCount = character.getPlaybookUniques().getHolding().getStrengthsCount() -1;
+                int newHoldingStrengthsCount = character.getPlaybookUniques().getHolding().getStrengthsCount() - 1;
                 character.getPlaybookUniques().getHolding().setStrengthsCount(newHoldingStrengthsCount);
 
                 List<HoldingOption> truncatedHoldingOptions = character.getPlaybookUniques().getHolding()
@@ -1869,7 +2033,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 character.getPlaybookUniques().getFollowers().setSelectedStrengths(truncatedFollowersStrengths);
                 break;
             case adjustMaestroDUnique1Name:
-                int newSecuritiesCount = character.getPlaybookUniques().getEstablishment().getSecuritiesCount() -1;
+                int newSecuritiesCount = character.getPlaybookUniques().getEstablishment().getSecuritiesCount() - 1;
                 character.getPlaybookUniques().getEstablishment().setSecuritiesCount(newSecuritiesCount);
 
                 List<SecurityOption> truncatedSecurityOptions = character.getPlaybookUniques().getEstablishment().getSecurityOptions()
@@ -1957,5 +2121,14 @@ public class GameRoleServiceImpl implements GameRoleService {
             default:
                 // TODO: throw error
         }
+    }
+
+    private void removeDefaultMoves(Character character, List<String> moveNames) {
+        moveNames.forEach(name -> {
+            List<CharacterMove> filteredMoves = character.getCharacterMoves()
+                    .stream().filter(characterMove -> !characterMove.getName().equals(name)
+                    ).collect(Collectors.toList());
+            character.setCharacterMoves(filteredMoves);
+        });
     }
 }

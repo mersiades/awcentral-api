@@ -408,4 +408,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.playXCard(gameId);
     }
 
+    public Character setDeathMoves(String gameRoleId, String characterId, List<String> moveNames) {
+        log.info("Setting death moves for Character: " + characterId);
+        return gameRoleService.setDeathMoves(gameRoleId, characterId, moveNames);
+    }
+
 }

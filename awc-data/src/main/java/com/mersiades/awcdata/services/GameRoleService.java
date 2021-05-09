@@ -96,4 +96,6 @@ public interface GameRoleService extends CrudService<GameRole, String> {
     Character adjustImprovements(String gameRoleId, String characterId, List<String> improvementIDs, List<String> futureImprovementIDs);
 
     Character spendExperience(String gameRoleId, String characterId);
+
+    Character setDeathMoves(String gameRoleId, String characterId, List<String> moveNames);
 }

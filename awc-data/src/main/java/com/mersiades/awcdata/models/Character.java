@@ -46,6 +46,8 @@ public class Character {
 
     private int battleVehicleCount;
 
+
+
 //    @Size(max = 5, message = "Experience must be between 0 and 5")
 //    @NotNull
     private int experience;
@@ -62,6 +64,9 @@ public class Character {
     // The number of moves the character can have from other playbooks.
     // Usually 0, but can be increased by ADD_OTHER_PB_MOVE improvements
     private int allowedOtherPlaybookMoves;
+
+    @Builder.Default
+    private Boolean isDead = false;
 
     @Builder.Default
     private List<BattleVehicle> battleVehicles = new ArrayList<>();
@@ -86,6 +91,9 @@ public class Character {
 
     @Builder.Default
     private List<CharacterMove> futureImprovementMoves = new ArrayList<>();
+
+    @Builder.Default
+    private List<CharacterMove> deathMoves = new ArrayList<>();
 
     @Builder.Default
     private List<Hold> holds = new ArrayList<>();
