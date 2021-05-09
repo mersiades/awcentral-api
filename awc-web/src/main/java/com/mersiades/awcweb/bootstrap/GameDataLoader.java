@@ -361,13 +361,18 @@ public class GameDataLoader implements CommandLineRunner {
                 addEstablishment,
                 // Add vehicle improvement move
                 addVehicle,
-                // Ungiven future improvement moves
+                // Future improvement moves
                 genericIncreaseStat,
                 retire,
                 addSecondCharacter,
                 changePlaybook,
                 improveBasicMoves1,
-                improveBasicMoves2
+                improveBasicMoves2,
+                // Death moves
+                hardMinus1,
+                deathWeirdMax3,
+                deathChangePlaybook,
+                die
         ));
     }
 

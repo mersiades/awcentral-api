@@ -2587,4 +2587,45 @@ public class MovesContent {
             .description("advance the other three basic moves\n")
             .kind(MoveType.IMPROVE_BASIC_MOVES)
             .build();
+
+    /* ----------------------------- DEATH MOVES --------------------------------- */
+
+    public static final StatModifier hardMinus1Mod = StatModifier.builder()
+            .id(new ObjectId().toString())
+            .statToModify(HARD)
+            .modification(-1)
+            .maxLimit(2)
+            .build();
+
+    public static final Move hardMinus1 = Move.builder()
+            .id(new ObjectId().toString())
+            .name(hardMinus1Name)
+            .description("come back with -1hard\n")
+            .statModifier(hardMinus1Mod)
+            .kind(MoveType.DEATH)
+            .stat(null)
+            .build();
+
+    public static final Move deathWeirdMax3 = Move.builder()
+            .id(new ObjectId().toString())
+            .name(deathWeirdMax3Name)
+            .description("come back with +1weird (max+3)\n")
+            .statModifier(weirdMax3Mod)
+            .kind(MoveType.DEATH)
+            .stat(null)
+            .build();
+
+    public static final Move deathChangePlaybook = Move.builder()
+            .id(new ObjectId().toString())
+            .name(deathChangePlaybookName)
+            .description("change to a new playbook\n")
+            .kind(MoveType.DEATH)
+            .build();
+
+    public static final Move die = Move.builder()
+            .id(new ObjectId().toString())
+            .name(dieName)
+            .description("die\n")
+            .kind(MoveType.DEATH)
+            .build();
 }

@@ -114,4 +114,10 @@ public class MoveNames {
     public static final String puppetStringsName = "IN BRAIN PUPPET STRINGS";
     public static final String bonefeelName = "BONEFEEL";
 
+    // Death moves
+    public static final String hardMinus1Name = "HARD MINUS 1";
+    public static final String deathWeirdMax3Name = "DEATH WEIRD MAX 3";
+    public static final String deathChangePlaybookName = "DEATH CHANGE PLAYBOOK";
+    public static final String dieName = "DIE";
+
 }

@@ -61,7 +61,10 @@ public enum MoveType {
     CHANGE_PLAYBOOK("CHANGE_PLAYBOOK"),
 
     // Two state moves that allow the player to advance 3 of the 6 basic moves
-    IMPROVE_BASIC_MOVES("IMPROVE_BASIC_MOVES");
+    IMPROVE_BASIC_MOVES("IMPROVE_BASIC_MOVES"),
+
+    // Four state moves that the player can choose 'when life becomes untenable'
+    DEATH("DEATH");
 
     private String code;
 
