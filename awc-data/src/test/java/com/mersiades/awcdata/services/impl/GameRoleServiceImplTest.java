@@ -359,6 +359,7 @@ class GameRoleServiceImplTest {
         CharacterMove professionalCompassionAsCM = CharacterMove.createFromMove(profCompassion);
         CharacterMove addVehicleAsCM = CharacterMove.createFromMove(addVehicle);
         CharacterMove retireAsCM = CharacterMove.createFromMove(retire);
+        CharacterMove dieAsCM = CharacterMove.createFromMove(die);
 
         mockCharacter.setName("mock-name");
         mockCharacter.setPlaybook(PlaybookType.ANGEL);
@@ -374,6 +375,7 @@ class GameRoleServiceImplTest {
         mockCharacter.setAllowedImprovements(2);
         mockCharacter.setAllowedPlaybookMoves(4);
         mockCharacter.setAllowedOtherPlaybookMoves(1);
+        mockCharacter.setIsDead(true);
         mockCharacter.setBattleVehicles(List.of(mockBattleVehicle));
         mockCharacter.setVehicles(List.of(mockVehicle));
         mockCharacter.setHxBlock(List.of(hxStat1, hxStat2));
@@ -382,6 +384,7 @@ class GameRoleServiceImplTest {
         mockCharacter.setCharacterMoves(List.of(angelSpecialAsCM, sixthSenseAsCM, infirmaryAsCM, professionalCompassionAsCM));
         mockCharacter.setImprovementMoves(List.of(addVehicleAsCM));
         mockCharacter.setFutureImprovementMoves(List.of(retireAsCM));
+        mockCharacter.setDeathMoves(List.of(dieAsCM));
         mockCharacter.setHolds(List.of(mockHold));
 
         mockGameRole.getCharacters().add(mockCharacter);
@@ -414,7 +417,9 @@ class GameRoleServiceImplTest {
         assertNotEquals(0, returnedCharacter.getCharacterMoves().size()); // Should have at least one default CharacterMove set
         assertEquals(0, returnedCharacter.getImprovementMoves().size());
         assertEquals(0, returnedCharacter.getFutureImprovementMoves().size());
+        assertEquals(0, returnedCharacter.getDeathMoves().size());
         assertEquals(0, returnedCharacter.getHolds().size());
+        assertFalse(returnedCharacter.getIsDead());
 
         assertEquals(0, returnedCharacter.getPlaybookUniques().getBrainerGear().getBrainerGear().size());
         assertEquals(BRAINER_GEAR, returnedCharacter.getPlaybookUniques().getBrainerGear().getUniqueType());

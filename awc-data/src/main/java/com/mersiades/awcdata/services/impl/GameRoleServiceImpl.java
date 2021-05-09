@@ -207,6 +207,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setExperience(0);
         character.setAllowedImprovements(0);
         character.setAllowedOtherPlaybookMoves(0);
+        character.setIsDead(false);
         character.setBattleVehicles(new ArrayList<>());
         character.setVehicles(new ArrayList<>());
         character.setHxBlock(new ArrayList<>());
@@ -215,6 +216,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setCharacterMoves(new ArrayList<>());
         character.setImprovementMoves(new ArrayList<>());
         character.setFutureImprovementMoves(new ArrayList<>());
+        character.setDeathMoves(new ArrayList<>());
         character.setHolds(new ArrayList<>());
 
         // Set default moves for playbook
@@ -1385,6 +1387,7 @@ public class GameRoleServiceImpl implements GameRoleService {
             switch (deathMove.getName()) {
                 case hardMinus1Name:
                     CharacterMove hardMinus1AsCM = CharacterMove.createFromMove(hardMinus1, true);
+                    hardMinus1AsCM.setPlaybook(character.getPlaybook());
                     if (previousCharacterMoveNames.contains(deathMove.getName()) &&
                             !moveNames.contains(deathMove.getName())
                     ) {
@@ -1408,6 +1411,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                     break;
                 case deathWeirdMax3Name:
                     CharacterMove deathWeirdMax3AsCM = CharacterMove.createFromMove(deathWeirdMax3, true);
+                    deathWeirdMax3AsCM.setPlaybook(character.getPlaybook());
                     if (previousCharacterMoveNames.contains(deathMove.getName()) &&
                             !moveNames.contains(deathMove.getName())
                     ) {
@@ -1430,6 +1434,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                     break;
                 case deathChangePlaybookName:
                     CharacterMove deathChangePlaybookAsCM = CharacterMove.createFromMove(deathChangePlaybook, true);
+                    deathChangePlaybookAsCM.setPlaybook(character.getPlaybook());
                     if (previousCharacterMoveNames.contains(deathMove.getName()) &&
                             !moveNames.contains(deathMove.getName())
                     ) {
@@ -1502,6 +1507,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                     break;
                 case dieName:
                     CharacterMove dieAsCM = CharacterMove.createFromMove(die, true);
+                    dieAsCM.setPlaybook(character.getPlaybook());
                     if (previousCharacterMoveNames.contains(deathMove.getName()) &&
                             !moveNames.contains(deathMove.getName())
                     ) {
@@ -1589,9 +1595,12 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .filter(characterStat -> characterStat.getStat().equals(characterMove.getStatModifier().getStatToModify()))
                 .findFirst().orElseThrow();
 
+        int modification = characterMove.getStatModifier().getModification();
+
         // Only increase stat if under the limit
-        if (statToBeModified.getValue() < characterMove.getStatModifier().getMaxLimit()) {
-            statToBeModified.setValue(statToBeModified.getValue() + characterMove.getStatModifier().getModification());
+        // Some stat modifications have a negative value, hence the second condition
+        if (statToBeModified.getValue() < characterMove.getStatModifier().getMaxLimit() || modification == -1) {
+            statToBeModified.setValue(statToBeModified.getValue() + modification);
             statToBeModified.setModifier(characterMove.getStatModifier().getId());
         }
     }
