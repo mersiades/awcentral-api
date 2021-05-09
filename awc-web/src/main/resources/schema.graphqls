@@ -1179,7 +1179,7 @@ type Mutation {
         gear: [String]! ): Character
     setCharacterMoves(gameRoleId: String!,
         characterId: String!,
-        moveIds: [String]!): Character
+        moveNames: [String]!): Character
     setCharacterHx(gameRoleId: String!,
         characterId: String!,
         hxStats: [HxInput]!): Character

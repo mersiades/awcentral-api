@@ -5,18 +5,21 @@ import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Move;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
 @Disabled
 @ExtendWith({SpringExtension.class})
+//@DataMongoTest(useDefaultFilters = false)
+@SpringBootTest(classes={Move.class, MoveRepository.class, MoveType.class, PlaybookType.class})
+//@RequiredArgsConstructor
 //@SpringBootApplication
 public class MoveRepositoryTest {
 
-    @Autowired
     private MoveRepository moveRepository;
 
     @BeforeEach
@@ -28,10 +31,6 @@ public class MoveRepositoryTest {
 
         moveRepository.deleteAll();
         moveRepository.saveAll(List.of(iceCold,merciless, profCompassion, battlefieldGrace));
-//                .thenMany(Flux.just(iceCold,merciless, profCompassion, battlefieldGrace))
-//                .flatMap(moveRepository::save)
-//                .doOnNext(System.out::println)
-//                .blockLast();
     }
 
 //    @Test
@@ -42,12 +41,13 @@ public class MoveRepositoryTest {
 //                .verifyComplete();
 //    }
 //
-//    @Test
-//    public void shouldFindMoveByMoveName() {
+    @Test
+    public void shouldFindMoveByMoveName() {
+        System.out.println("ummm");
 //        StepVerifier.create(moveRepository.findByName("MERCILESS"))
 //                .expectSubscription()
 //                .expectNextMatches(move -> move.getDescription().equals("_**Merciless**_: when ..."))
 //                .verifyComplete();
-//    }
+    }
 
 }

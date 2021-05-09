@@ -364,7 +364,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
-    public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
+    public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveNames) {
 
         GameRole gameRole = getGameRole(gameRoleId);
         Character character = getCharacterById(gameRole, characterId);
@@ -373,7 +373,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .stream().map(Move::getName).collect(Collectors.toList());
 
         // Get selected moves from db
-        List<Move> selectedMoves = moveService.findAllById(moveIds);
+        List<Move> selectedMoves = moveService.findAllByName(moveNames);
 
         // Convert Moves to CharacterMoves
         List<CharacterMove> characterMoves = selectedMoves.stream()
@@ -1457,6 +1457,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 filteredMoves = character.getCharacterMoves().stream()
                         .filter(characterMove -> !characterMove.getName().equals(leadershipName)).collect(Collectors.toList());
                 character.setCharacterMoves(filteredMoves);
+                character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() - 1);
 
                 // Remove gang
                 character.getPlaybookUniques().setGang(null);
@@ -1466,6 +1467,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 filteredMoves = character.getCharacterMoves().stream()
                         .filter(characterMove -> !characterMove.getName().equals(packAlphaName)).collect(Collectors.toList());
                 character.setCharacterMoves(filteredMoves);
+                character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() - 1);
 
                 // Remove gang
                 character.getPlaybookUniques().setGang(null);
@@ -1475,6 +1477,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 filteredMoves = character.getCharacterMoves().stream()
                         .filter(characterMove -> !characterMove.getName().equals(wealthName)).collect(Collectors.toList());
                 character.setCharacterMoves(filteredMoves);
+                character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() - 1);
 
                 // Remove holding
                 character.getPlaybookUniques().setHolding(null);
@@ -1492,6 +1495,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 filteredMoves = character.getCharacterMoves().stream()
                         .filter(characterMove -> !characterMove.getName().equals(fortunesName)).collect(Collectors.toList());
                 character.setCharacterMoves(filteredMoves);
+                character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() - 1);
 
                 // Remove Followers
                 character.getPlaybookUniques().setFollowers(null);
@@ -1531,6 +1535,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 CharacterMove leadershipAsCM = CharacterMove.createFromMove(leadership);
                 leadershipAsCM.setId(new ObjectId().toString());
                 character.getCharacterMoves().add(leadershipAsCM);
+                character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() + 1);
 
                 // Add gang
                 character.getPlaybookUniques().setGang(gang);
@@ -1540,6 +1545,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 CharacterMove packAlphaAsCM = CharacterMove.createFromMove(packAlpha);
                 packAlphaAsCM.setId(new ObjectId().toString());
                 character.getCharacterMoves().add(packAlphaAsCM);
+                character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() + 1);
 
                 character.getPlaybookUniques().setGang(gang);
                 break;
@@ -1548,6 +1554,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 CharacterMove wealthAsCM = CharacterMove.createFromMove(wealth);
                 wealthAsCM.setId(new ObjectId().toString());
                 character.getCharacterMoves().add(wealthAsCM);
+                character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() + 1);
 
                 // Add Holding with default settings
                 Holding holding = Holding.builder()
@@ -1607,6 +1614,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 CharacterMove fortunesAsCM = CharacterMove.createFromMove(fortunes);
                 fortunesAsCM.setId(new ObjectId().toString());
                 character.getCharacterMoves().add(fortunesAsCM);
+                character.setAllowedOtherPlaybookMoves(character.getAllowedOtherPlaybookMoves() + 1);
 
                 // Add Followers with default settings
                 Followers followers = Followers.builder()
