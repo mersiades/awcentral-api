@@ -126,9 +126,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCharacterGear(gameRoleId, characterId, gear);
     }
 
-    public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
+    public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveNames) {
         log.info("Setting Moves for Character: " + characterId);
-        return gameRoleService.setCharacterMoves(gameRoleId, characterId, moveIds);
+        return gameRoleService.setCharacterMoves(gameRoleId, characterId, moveNames);
     }
 
     public Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats) {

@@ -15,7 +15,6 @@ import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -567,13 +566,13 @@ class GameRoleServiceImplTest {
 
         addStatsBlockToCharacter(mockCharacter);
 
-        when(moveService.findAllById(anyList())).thenReturn(List.of(angelSpecial, sixthSense, infirmary));
+        when(moveService.findAllByName(anyList())).thenReturn(List.of(angelSpecial, sixthSense, infirmary));
         setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
                 .setCharacterMoves(mockGameRole.getId(), mockCharacter.getId(),
-                        List.of(angelSpecial.getId(), sixthSense.getId(), infirmary.getId()));
+                        List.of(angelSpecial.getName(), sixthSense.getName(), infirmary.getName()));
 
         // Then
         assertEquals(3, returnedCharacter.getCharacterMoves().size());
@@ -584,13 +583,13 @@ class GameRoleServiceImplTest {
                     characterMove.getName().equals(sixthSense.getName()) ||
                     characterMove.getName().equals(infirmary.getName()));
         });
-        verify(moveService, times(1)).findAllById(
+        verify(moveService, times(1)).findAllByName(
                 anyList()
         );
         verifyMockServices();
     }
 
-    @Disabled // Fix this when converting the setCharacterMoves mutation to use moves names instead of ids
+//    @Disabled // Fix this when converting the setCharacterMoves mutation to use moves names instead of ids
     @Test
     void shouldSetCharacterMoves_whenHaveGainedAdditionalMovesFromAddingUnique() {
         // Given
@@ -611,13 +610,13 @@ class GameRoleServiceImplTest {
         mockCharacter.setImprovementMoves(List.of(addHoldingAsCM));
         addStatsBlockToCharacter(mockCharacter);
         mockGameRole.getCharacters().add(mockCharacter);
-        when(moveService.findAllById(anyList())).thenReturn(List.of(unnaturalLust, brainReceptivity, brainScan));
+        when(moveService.findAllByName(anyList())).thenReturn(List.of(unnaturalLust, brainReceptivity, wealth, brainScan));
         setupMockServices();
 
         // When
         Character returnedCharacter = gameRoleService
                 .setCharacterMoves(mockGameRole.getId(), mockCharacter.getId(),
-                        List.of(unnaturalLust.getId(), brainReceptivity.getId(), brainScan.getId()));
+                        List.of(unnaturalLust.getName(), brainReceptivity.getName(), brainScan.getName(), wealth.getName()));
 
         // Then
         assertEquals(4, returnedCharacter.getCharacterMoves().size());
@@ -631,7 +630,7 @@ class GameRoleServiceImplTest {
                     );
         });
 
-        verify(moveService, times(1)).findAllById(
+        verify(moveService, times(1)).findAllByName(
                 anyList()
         );
         verifyMockServices();
@@ -645,7 +644,7 @@ class GameRoleServiceImplTest {
 
         addStatsBlockToCharacter(mockCharacter);
 
-        when(moveService.findAllById(anyList())).thenReturn(List.of(angelSpecial, bonefeel, infirmary));
+        when(moveService.findAllByName(anyList())).thenReturn(List.of(angelSpecial, bonefeel, infirmary));
         setupMockServices();
 
         // When
@@ -662,7 +661,7 @@ class GameRoleServiceImplTest {
                     characterMove.getName().equals(bonefeel.getName()) ||
                     characterMove.getName().equals(infirmary.getName()));
         });
-        verify(moveService, times(1)).findAllById(
+        verify(moveService, times(1)).findAllByName(
                 anyList()
         );
         verifyMockServices();
@@ -684,7 +683,7 @@ class GameRoleServiceImplTest {
 
         mockCharacter.getPlaybookUniques().setWeapons(weapons);
 
-        when(moveService.findAllById(anyList())).thenReturn(List.of(gunluggerSpecial,
+        when(moveService.findAllByName(anyList())).thenReturn(List.of(gunluggerSpecial,
                 battleHardened,
                 preparedForTheInevitable,
                 battlefieldInstincts
@@ -713,7 +712,7 @@ class GameRoleServiceImplTest {
         assertNotNull(returnedCharacter.getPlaybookUniques().getAngelKit());
         assertNotNull(returnedCharacter.getPlaybookUniques().getWeapons());
 
-        verify(moveService, times(1)).findAllById(
+        verify(moveService, times(1)).findAllByName(
                 anyList()
         );
         verifyMockServices();
@@ -742,7 +741,7 @@ class GameRoleServiceImplTest {
 
         mockCharacter.setCharacterMoves(List.of(preparedForInevitableAsCM));
 
-        when(moveService.findAllById(anyList())).thenReturn(List.of(gunluggerSpecial,
+        when(moveService.findAllByName(anyList())).thenReturn(List.of(gunluggerSpecial,
                 battleHardened,
                 insanoLikeDrano,
                 battlefieldInstincts
@@ -771,7 +770,7 @@ class GameRoleServiceImplTest {
         assertNull(returnedCharacter.getPlaybookUniques().getAngelKit());
         assertNotNull(returnedCharacter.getPlaybookUniques().getWeapons());
 
-        verify(moveService, times(1)).findAllById(
+        verify(moveService, times(1)).findAllByName(
                 anyList()
         );
         verifyMockServices();

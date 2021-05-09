@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.mersiades.awccontent.constants.MoveNames.angelSpecialName;
+import static com.mersiades.awccontent.content.MovesContent.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -189,5 +190,24 @@ class MoveServiceImplTest {
         assertFalse(returnedMoves.stream().anyMatch(move -> move.getPlaybook().equals(PlaybookType.BATTLEBABE)));
         assertFalse(returnedMoves.stream().anyMatch(move -> move.getKind().equals(MoveType.DEFAULT_CHARACTER)));
         assertFalse(returnedMoves.stream().anyMatch(move -> move.getMoveAction() == null && move.getRollModifier() == null));
+    }
+
+    @Test
+    void shouldFindAllByName() {
+        // Given
+        when(moveService.findAll()).thenReturn(List.of(iceCold, merciless, angelSpecial, healingTouch, dangerousAndSexy, battleHardened));
+        // When
+        List<Move> returnedMoves = moveService.findAllByName(List.of(
+                iceCold.getName(),
+                merciless.getName(),
+                angelSpecial.getName(),
+                healingTouch.getName()));
+
+        // Then
+        assertEquals(4, returnedMoves.size());
+        assertTrue(returnedMoves.stream().anyMatch(move -> move.getName().equals(iceCold.getName())));
+        assertTrue(returnedMoves.stream().anyMatch(move -> move.getName().equals(merciless.getName())));
+        assertTrue(returnedMoves.stream().anyMatch(move -> move.getName().equals(angelSpecial.getName())));
+        assertTrue(returnedMoves.stream().anyMatch(move -> move.getName().equals(healingTouch.getName())));
     }
 }

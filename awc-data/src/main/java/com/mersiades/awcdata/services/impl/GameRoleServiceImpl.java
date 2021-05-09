@@ -364,7 +364,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
-    public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds) {
+    public Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveNames) {
 
         GameRole gameRole = getGameRole(gameRoleId);
         Character character = getCharacterById(gameRole, characterId);
@@ -373,7 +373,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                 .stream().map(Move::getName).collect(Collectors.toList());
 
         // Get selected moves from db
-        List<Move> selectedMoves = moveService.findAllById(moveIds);
+        List<Move> selectedMoves = moveService.findAllByName(moveNames);
 
         // Convert Moves to CharacterMoves
         List<CharacterMove> characterMoves = selectedMoves.stream()

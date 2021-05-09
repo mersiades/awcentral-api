@@ -33,7 +33,7 @@ public interface GameRoleService extends CrudService<GameRole, String> {
 
     Character setCharacterGear(String gameRoleId, String characterId, List<String> gear);
 
-    Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveIds);
+    Character setCharacterMoves(String gameRoleId, String characterId, List<String> moveNames);
 
     Character setCharacterHx(String gameRoleId, String characterId, List<HxStat> hxStats);
 

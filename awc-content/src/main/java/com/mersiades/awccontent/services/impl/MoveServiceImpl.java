@@ -7,6 +7,7 @@ import com.mersiades.awccontent.repositories.MoveRepository;
 import com.mersiades.awccontent.services.MoveService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,5 +80,20 @@ public class MoveServiceImpl implements MoveService {
     @Override
     public List<Move> findAllById(List<String> moveIds) {
         return (List<Move>) moveRepository.findAllById(moveIds);
+    }
+
+    @Override
+    public List<Move> findAllByName(List<String> moveNames) {
+        List<Move> allMoves = this.findAll();
+
+        List<Move> moves = new ArrayList<>();
+
+        allMoves.forEach(move -> {
+            if (moveNames.contains(move.getName())) {
+                moves.add(move);
+            }
+        });
+
+        return moves;
     }
 }
