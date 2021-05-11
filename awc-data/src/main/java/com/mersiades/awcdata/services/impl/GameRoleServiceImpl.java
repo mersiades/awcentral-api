@@ -249,6 +249,26 @@ public class GameRoleServiceImpl implements GameRoleService {
     }
 
     @Override
+    public Character changePlaybook(String gameRoleId, String characterId, PlaybookType playbookType) {
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
+
+        character.setPlaybook(playbookType);
+        addUnique(character, playbookType); // need to change this method
+        character.setMustChangePlaybook(false);
+
+        StatsOption statsOption = getStatsOptionForPlaybook(playbookType);
+        assert statsOption != null;
+        setStatsBlock(character, statsOption.getId());
+
+        // Save to db
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
+
+        return character;
+    }
+
+    @Override
     public Character setCharacterName(String gameRoleId, String characterId, String name) {
         GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
         assert gameRole != null;
@@ -1510,27 +1530,6 @@ public class GameRoleServiceImpl implements GameRoleService {
 
         return character;
     }
-
-    @Override
-    public Character changePlaybook(String gameRoleId, String characterId, PlaybookType playbookType) {
-        GameRole gameRole = getGameRole(gameRoleId);
-        Character character = getCharacterById(gameRole, characterId);
-
-        character.setPlaybook(playbookType);
-        addUnique(character, playbookType); // need to change this method
-        character.setMustChangePlaybook(false);
-
-        StatsOption statsOption = getStatsOptionForPlaybook(playbookType);
-        assert statsOption != null;
-        setStatsBlock(character, statsOption.getId());
-
-        // Save to db
-        characterService.save(character);
-        gameRoleRepository.save(gameRole);
-
-        return character;
-    }
-
 
     private void createOrUpdateCharacterStat(Character character, StatsOption statsOption, StatType stat) {
         int value;

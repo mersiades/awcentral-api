@@ -1170,6 +1170,9 @@ type Mutation {
     setCharacterPlaybook(gameRoleId: String!,
         characterId: String!,
         playbookType: PlaybookType!): Character
+    changePlaybook(
+        gameRoleId: String!, characterId: String!, playbookType: PlaybookType!
+    ): Character!
     setCharacterName(gameRoleId: String!,
         characterId: String!,
         name: String!): Character
@@ -1282,6 +1285,9 @@ type Mutation {
         improvementIds: [String]!,
         futureImprovementIds: [String]
     ): Character
+    setDeathMoves(
+        gameRoleId: String!, characterId: String!, moveNames: [String]!
+    ): Character!
 
 
     #    Move categories
@@ -1365,9 +1371,6 @@ type Mutation {
     spendHold(gameId: String!, gameRoleId: String!, characterId: String!, hold: HoldInput!): Game
     removeHold(gameRoleId: String!, characterId: String!, hold: HoldInput!): Character
     playXCard(gameId: String!): Game
-    setDeathMoves(
-        gameRoleId: String!, characterId: String!, moveNames: [String]!
-    ): Character!
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #

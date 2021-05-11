@@ -25,6 +25,8 @@ public interface GameRoleService extends CrudService<GameRole, String> {
 
     Character setCharacterPlaybook(String gameRoleId, String characterId, PlaybookType playbookType);
 
+    Character changePlaybook(String gameRoleId, String characterId, PlaybookType playbookType);
+
     Character setCharacterName(String gameRoleId, String characterId, String name);
 
     Character setCharacterLook(String gameRoleId, String characterId, Look look);
@@ -98,6 +100,4 @@ public interface GameRoleService extends CrudService<GameRole, String> {
     Character spendExperience(String gameRoleId, String characterId);
 
     Character setDeathMoves(String gameRoleId, String characterId, List<String> moveNames);
-
-    Character changePlaybook(String gameRoleId, String characterId, PlaybookType playbookType);
 }

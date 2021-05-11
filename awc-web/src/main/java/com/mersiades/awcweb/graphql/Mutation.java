@@ -106,6 +106,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.setCharacterPlaybook(gameRoleId, characterId, playbookType);
     }
 
+    public Character changePlaybook(String gameRoleId, String characterId, PlaybookType playbookType) {
+        log.info("Setting changed playbook for Character: " + characterId);
+        return gameRoleService.changePlaybook(gameRoleId, characterId, playbookType);
+    }
+
     public Character setCharacterName(String gameRoleId, String characterId, String name) {
         log.info("Setting name for for Character: " + characterId);
         return gameRoleService.setCharacterName(gameRoleId, characterId, name);
@@ -277,6 +282,11 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.spendExperience(gameRoleId, characterId);
     }
 
+    public Character setDeathMoves(String gameRoleId, String characterId, List<String> moveNames) {
+        log.info("Setting death moves for Character: " + characterId);
+        return gameRoleService.setDeathMoves(gameRoleId, characterId, moveNames);
+    }
+
     // ------------------------------------------ Move Categories --------------------------------------- //
 
     public Game performPrintMove(String gameId, String gameroleId, String characterId, String moveId, boolean isGangMove) {
@@ -382,19 +392,19 @@ public class Mutation implements GraphQLMutationResolver {
 
 
     public Game performStabilizeAndHealMove(String gameId, String gameroleId, String characterId, int stockSpent) {
-        log.info("Performing SUFFER HARM move for Character: " + characterId);
+        log.info("Performing STABILIZE AND HEAL move for Character: " + characterId);
         return gameService.performStabilizeAndHealMove(gameId, gameroleId, characterId, stockSpent);
     }
 
     public Game performJustGiveMotivationMove(String gameId, String gameroleId, String characterId, String targetId) {
-        log.info("Performing SUFFER HARM move for Character: " + characterId);
+        log.info("Performing JUST GIVE MOTIVATION move for Character: " + characterId);
         return gameService.performJustGiveMotivationMove(gameId, gameroleId, characterId, targetId);
     }
 
     // ------------------------------------------ Other --------------------------------------- //
 
     public Game spendHold(String gameId, String gameroleId, String characterId, Hold hold) {
-        log.info("Spending hold for Character: " + characterId);
+        log.info("Spending Hold for Character: " + characterId);
         return gameService.spendHold(gameId, gameroleId, characterId, hold);
     }
 
@@ -406,11 +416,6 @@ public class Mutation implements GraphQLMutationResolver {
     public Game playXCard(String gameId) {
         log.info("Playing X card in Game: " + gameId);
         return gameService.playXCard(gameId);
-    }
-
-    public Character setDeathMoves(String gameRoleId, String characterId, List<String> moveNames) {
-        log.info("Setting death moves for Character: " + characterId);
-        return gameRoleService.setDeathMoves(gameRoleId, characterId, moveNames);
     }
 
 }
