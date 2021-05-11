@@ -69,6 +69,9 @@ public class Character {
     private Boolean isDead = false;
 
     @Builder.Default
+    private Boolean mustChangePlaybook = false;
+
+    @Builder.Default
     private List<BattleVehicle> battleVehicles = new ArrayList<>();
 
     @Builder.Default

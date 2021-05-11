@@ -19,14 +19,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static com.mersiades.awccontent.content.LooksContent.*;
 import static com.mersiades.awccontent.content.MovesContent.*;
 import static com.mersiades.awccontent.content.PlaybookCreatorsContent.*;
-import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel1;
-import static com.mersiades.awccontent.content.StatOptionsContent.statsOptionAngel2;
+import static com.mersiades.awccontent.content.StatOptionsContent.*;
+import static com.mersiades.awccontent.enums.PlaybookType.BATTLEBABE;
+import static com.mersiades.awccontent.enums.StatType.*;
 import static com.mersiades.awccontent.enums.UniqueType.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -106,9 +108,9 @@ class GameRoleServiceImplTest {
                 .isStabilized(true)
                 .build();
 
-        mockCharacterStatCool = CharacterStat.builder().stat(StatType.COOL).value(1).build();
+        mockCharacterStatCool = CharacterStat.builder().stat(COOL).value(1).build();
         mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(1).build();
-        mockCharacterStatHot = CharacterStat.builder().stat(StatType.HOT).value(1).build();
+        mockCharacterStatHot = CharacterStat.builder().stat(HOT).value(1).build();
         mockCharacterStatSharp = CharacterStat.builder().stat(StatType.SHARP).value(1).build();
         mockCharacterStatWeird = CharacterStat.builder().stat(StatType.WEIRD).value(1).build();
         mockStatsBlock = StatsBlock.builder()
@@ -320,10 +322,10 @@ class GameRoleServiceImplTest {
         when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(playbookCreatorBattlebabe);
 
         // When
-        Character returnedCharacter = gameRoleService.setCharacterPlaybook(MOCK_GAMEROLE_ID, mockCharacter.getId(), PlaybookType.BATTLEBABE);
+        Character returnedCharacter = gameRoleService.setCharacterPlaybook(MOCK_GAMEROLE_ID, mockCharacter.getId(), BATTLEBABE);
 
         // Then
-        assertEquals(PlaybookType.BATTLEBABE, returnedCharacter.getPlaybook());
+        assertEquals(BATTLEBABE, returnedCharacter.getPlaybook());
         assertEquals(playbookCreatorBattlebabe.getMoveChoiceCount(), returnedCharacter.getAllowedPlaybookMoves());
         assertEquals(CUSTOM_WEAPONS, returnedCharacter.getPlaybookUniques().getCustomWeapons().getUniqueType());
         verifyMockServices();
@@ -499,11 +501,11 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(statsOptionAngel1.getCOOL(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(StatType.COOL)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(COOL)).findFirst().orElseThrow().getValue());
         assertEquals(statsOptionAngel1.getHARD(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.HARD)).findFirst().orElseThrow().getValue());
         assertEquals(statsOptionAngel1.getHOT(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(StatType.HOT)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(HOT)).findFirst().orElseThrow().getValue());
         assertEquals(statsOptionAngel1.getSHARP(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue());
         assertEquals(statsOptionAngel1.getWEIRD(), returnedCharacter.getStatsBlock().getStats().stream()
@@ -528,11 +530,11 @@ class GameRoleServiceImplTest {
 
         // Then
         assertEquals(statsOptionAngel2.getCOOL(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(StatType.COOL)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(COOL)).findFirst().orElseThrow().getValue());
         assertEquals(statsOptionAngel2.getHARD(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.HARD)).findFirst().orElseThrow().getValue());
         assertEquals(statsOptionAngel2.getHOT(), returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(StatType.HOT)).findFirst().orElseThrow().getValue());
+                .filter(characterStat -> characterStat.getStat().equals(HOT)).findFirst().orElseThrow().getValue());
         assertEquals(statsOptionAngel2.getSHARP(), returnedCharacter.getStatsBlock().getStats().stream()
                 .filter(characterStat -> characterStat.getStat().equals(StatType.SHARP)).findFirst().orElseThrow().getValue());
         assertEquals(statsOptionAngel2.getWEIRD(), returnedCharacter.getStatsBlock().getStats().stream()
@@ -1253,7 +1255,7 @@ class GameRoleServiceImplTest {
         CharacterStat mockCool = CharacterStat.builder()
                 .isHighlighted(false)
                 .value(1)
-                .stat(StatType.COOL)
+                .stat(COOL)
                 .build();
         CharacterStat mockHard = CharacterStat.builder()
                 .isHighlighted(false)
@@ -1263,7 +1265,7 @@ class GameRoleServiceImplTest {
         CharacterStat mockHot = CharacterStat.builder()
                 .isHighlighted(false)
                 .value(1)
-                .stat(StatType.HOT)
+                .stat(HOT)
                 .build();
         CharacterStat mockSharp = CharacterStat.builder()
                 .isHighlighted(false)
@@ -1287,11 +1289,11 @@ class GameRoleServiceImplTest {
 
         // When
         Character returnedCharacter = gameRoleService
-                .toggleStatHighlight(mockGameRole.getId(), mockCharacter.getId(), StatType.COOL);
+                .toggleStatHighlight(mockGameRole.getId(), mockCharacter.getId(), COOL);
 
         // Then
         assertTrue(returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(StatType.COOL))
+                .filter(characterStat -> characterStat.getStat().equals(COOL))
                 .findFirst().orElseThrow().getIsHighlighted());
         verifyMockServices();
     }
@@ -1505,7 +1507,7 @@ class GameRoleServiceImplTest {
 
         CharacterStat mockCoolStat = CharacterStat.builder()
                 .id("mock-cool-stat-id")
-                .stat(StatType.COOL)
+                .stat(COOL)
                 .value(mockSharpValue)
                 .build();
 
@@ -1657,7 +1659,7 @@ class GameRoleServiceImplTest {
         int initialAllowedPlaybookMoves = 3;
         CharacterStat mockCoolStat = CharacterStat.builder()
                 .id("mock-cool-stat-id")
-                .stat(StatType.COOL)
+                .stat(COOL)
                 .value(2)
                 .build();
 
@@ -1720,7 +1722,7 @@ class GameRoleServiceImplTest {
         int initialAllowedOtherPlaybookMoves = 1;
         CharacterStat mockCoolStat = CharacterStat.builder()
                 .id("mock-cool-stat-id")
-                .stat(StatType.COOL)
+                .stat(COOL)
                 .value(2)
                 .build();
 
@@ -2286,27 +2288,6 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    void shouldDecreaseHard_onAddDeathMove() {
-        // Given
-        addStatsBlockToCharacter(mockCharacter);
-        mockGameRole.getCharacters().add(mockCharacter);
-        setupMockServices();
-
-        // When
-        Character returnedCharacter = gameRoleService.setDeathMoves(mockGameRole.getId(),
-                mockCharacter.getId(),
-                List.of(hardMinus1.getName()));
-
-        // Then
-        CharacterStat hardStat = returnedCharacter.getStatsBlock().getStats().stream()
-                .filter(characterStat -> characterStat.getStat().equals(StatType.HARD)).findFirst().orElseThrow();
-        assertEquals(0, hardStat.getValue());
-        assertTrue(returnedCharacter.getDeathMoves()
-                .stream().anyMatch(characterMove -> characterMove.getName().equals(hardMinus1.getName())));
-        verifyMockServices();
-    }
-
-    @Test
     void shouldIncreaseHardAndIncreaseWeird_onSwapDeathMove() {
         // Given
         CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(0).build();
@@ -2374,7 +2355,7 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    void shouldReviveCharacterAndResetGunluggerPlaybook_onSwapDeathMove() {
+    void shouldReviveCharacterAndChangePlaybook_onSwapDeathMove() {
         // Given
         mockCharacter.setIsDead(true);
         mockCharacter.setPlaybook(PlaybookType.GUNLUGGER);
@@ -2407,6 +2388,9 @@ class GameRoleServiceImplTest {
         // Then
         // Check the playbook's Unique has been removed
         assertNull(returnedCharacter.getPlaybookUniques().getWeapons());
+        assertNull(returnedCharacter.getPlaybook());
+        assertNull(returnedCharacter.getStatsBlock());
+        assertTrue(returnedCharacter.getMustChangePlaybook());
 
         // Check that Uniques gained through improvements are still there
         assertNotNull(returnedCharacter.getPlaybookUniques().getHolding());
@@ -2436,7 +2420,7 @@ class GameRoleServiceImplTest {
     }
 
     @Test
-    void shouldNOTUnResetPlaybookButShouldDecreaseHard_onSwapDeathMove() {
+    void shouldNOTUnChangePlaybookButShouldDecreaseHard_onSwapDeathMove() {
         // Given
         addStatsBlockToCharacter(mockCharacter);
         mockCharacter.setPlaybook(PlaybookType.GUNLUGGER);
@@ -2487,11 +2471,118 @@ class GameRoleServiceImplTest {
         verifyMockServices();
     }
 
-    @Test
-    void shouldKillCharacter_onAddDeathMove() {}
 
     @Test
-    void shouldReviveCharacter_onRemoveDeathMove() {}
+    void shouldSetPlaybook_onChangePlaybook_fromGunluggerToBattlebabe() {
+        int initialBarter = 3;
+        int initialVehicleCount = 1;
+        int initialBattleVehicleCount = 1;
+        int initialExperience = 27;
+        int initialAllowedImprovements = 5;
+        int initialAllowedOtherPlaybookMoves = 3;
+
+        String initialName = "name from previous playbook";
+
+        List<Look> initialLooks = List.of(lookGunlugger1, lookGunlugger6, lookGunlugger12, lookGunlugger18, lookGunlugger24);
+
+        Holding mockHolding = Holding.builder().id(new ObjectId().toString()).build();
+        Gang mockGang = Gang.builder().id(new ObjectId().toString()).build();
+        BattleVehicle mockBattleVehicle = BattleVehicle.builder().id(new ObjectId().toString()).build();
+        Vehicle mockVehicle = Vehicle.builder().id(new ObjectId().toString()).build();
+
+        CharacterMove dangerousAndSexyAsCM = CharacterMove.createFromMove(dangerousAndSexy, true);
+        CharacterMove packAlphaAsCM = CharacterMove.createFromMove(packAlpha, true);
+        CharacterMove wealthAsCM = CharacterMove.createFromMove(wealth, true);
+        List<CharacterMove> initialCharacterMoves = List.of(packAlphaAsCM, wealthAsCM, dangerousAndSexyAsCM);
+
+        CharacterMove addGangPackAlphaAsCM = CharacterMove.createFromMove(addGangPackAlpha, true);
+        CharacterMove addHoldingAsCM = CharacterMove.createFromMove(addHolding, true);
+        CharacterMove coolMax2AsCM = CharacterMove.createFromMove(coolMax2, true);
+        CharacterMove sharpMax2AsCM = CharacterMove.createFromMove(sharpMax2, true);
+        CharacterMove addOtherPBMove1AsCM = CharacterMove.createFromMove(addOtherPBMove1, true);
+        List<CharacterMove> initialImprovementMoves = List.of(addGangPackAlphaAsCM, addHoldingAsCM, coolMax2AsCM, sharpMax2AsCM, addOtherPBMove1AsCM);
+
+        CharacterMove deathChangePlaybookAsCM = CharacterMove.createFromMove(deathChangePlaybook, true);
+        List<CharacterMove> initialDeathMoves = List.of(deathChangePlaybookAsCM);
+
+        mockPlaybookUnique.setHolding(mockHolding);
+        mockPlaybookUnique.setGang(mockGang);
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        Character resetCharacter = Character.builder()
+                .id(new ObjectId().toString())
+                .name(initialName)
+                .playbook(null)
+                .playbookUniques(mockPlaybookUnique)
+                .hasCompletedCharacterCreation(true)
+                .hasPlusOneForward(true)
+                .barter(initialBarter)
+                .harm(mockCharacterHarm)
+                .statsBlock(null)
+                .vehicleCount(initialVehicleCount)
+                .battleVehicleCount(initialBattleVehicleCount)
+                .experience(initialExperience)
+                .allowedImprovements(initialAllowedImprovements)
+                .allowedOtherPlaybookMoves(initialAllowedOtherPlaybookMoves)
+                .isDead(false)
+                .mustChangePlaybook(true)
+                .battleVehicles(List.of(mockBattleVehicle))
+                .vehicles(List.of(mockVehicle))
+                .gear(new ArrayList<>())
+                .looks(initialLooks)
+                .characterMoves(initialCharacterMoves)
+                .improvementMoves(initialImprovementMoves)
+                .deathMoves(initialDeathMoves)
+                .holds(new ArrayList<>())
+                .build();
+
+        mockGameRole.getCharacters().add(resetCharacter);
+        setupMockServices();
+        when(statsOptionService.findById(anyString())).thenReturn(statsOptionBattlebabe1);
+
+        // When
+        Character returnedCharacter = gameRoleService.changePlaybook(mockGameRole.getId(),
+                resetCharacter.getId(),
+                BATTLEBABE);
+
+        // Check old character properties have been maintained
+        assertEquals(initialName, returnedCharacter.getName());
+        assertEquals(initialBarter, returnedCharacter.getBarter());
+        assertEquals(initialExperience, returnedCharacter.getExperience());
+        assertEquals(initialVehicleCount, returnedCharacter.getVehicleCount());
+        assertEquals(initialVehicleCount, returnedCharacter.getVehicles().size());
+        assertEquals(initialBattleVehicleCount, returnedCharacter.getBattleVehicleCount());
+        assertEquals(initialBattleVehicleCount, returnedCharacter.getBattleVehicles().size());
+        assertEquals(initialLooks, returnedCharacter.getLooks());
+        assertEquals(initialCharacterMoves, returnedCharacter.getCharacterMoves());
+        assertEquals(initialImprovementMoves, returnedCharacter.getImprovementMoves());
+        assertEquals(initialDeathMoves, returnedCharacter.getDeathMoves());
+
+        assertNotNull(returnedCharacter.getPlaybookUniques().getHolding());
+        assertNotNull(returnedCharacter.getPlaybookUniques().getGang());
+        assertNotNull(returnedCharacter.getHarm());
+
+        assertTrue(returnedCharacter.getHasCompletedCharacterCreation());
+        assertTrue(returnedCharacter.getHasPlusOneForward());
+
+        assertFalse(returnedCharacter.getIsDead());
+
+
+        // Check the new character properties have been added
+        assertEquals(BATTLEBABE, returnedCharacter.getPlaybook());
+        assertNotNull(returnedCharacter.getPlaybookUniques().getCustomWeapons());
+        assertFalse(returnedCharacter.getMustChangePlaybook());
+        // At this stage, a new StatsBlock has been assigned with the playbooks first StatsOption, with bonuses added
+        // Cool has a +1 modifier, but since it is already at 3 it can't increase any more
+        assertEquals(statsOptionBattlebabe1.getCOOL(), returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(COOL)).findFirst().orElseThrow().getValue());
+        assertEquals(statsOptionBattlebabe1.getSHARP() + 1, returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(SHARP)).findFirst().orElseThrow().getValue());
+        assertEquals(statsOptionBattlebabe1.getHOT(), returnedCharacter.getStatsBlock().getStats().stream()
+                .filter(characterStat -> characterStat.getStat().equals(HOT)).findFirst().orElseThrow().getValue());
+
+        verifyMockServices();
+        verify(statsOptionService, times(1)).findById(anyString());
+    }
 
     private Character checkAddedUnique(Move improvementMove) {
         // Given
@@ -2518,7 +2609,7 @@ class GameRoleServiceImplTest {
         // Given
         CharacterStat mockCoolStat = CharacterStat.builder()
                 .id("mock-cool-stat-id")
-                .stat(StatType.COOL)
+                .stat(COOL)
                 .value(2)
                 .build();
 
@@ -2582,7 +2673,7 @@ class GameRoleServiceImplTest {
         // Given
         CharacterStat mockCoolStat = CharacterStat.builder()
                 .id("mock-cool-stat-id")
-                .stat(StatType.COOL)
+                .stat(COOL)
                 .value(2)
                 .build();
 
@@ -2676,9 +2767,9 @@ class GameRoleServiceImplTest {
     }
 
     private void addStatsBlockToCharacter(Character mockCharacter) {
-        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(StatType.COOL).value(1).build();
+        CharacterStat mockCharacterStatCool = CharacterStat.builder().stat(COOL).value(1).build();
         CharacterStat mockCharacterStatHard = CharacterStat.builder().stat(StatType.HARD).value(1).build();
-        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(StatType.HOT).value(1).build();
+        CharacterStat mockCharacterStatHot = CharacterStat.builder().stat(HOT).value(1).build();
         CharacterStat mockCharacterStatSharp = CharacterStat.builder().stat(StatType.SHARP).value(1).build();
         CharacterStat mockCharacterStatWeird = CharacterStat.builder().stat(StatType.WEIRD).value(1).build();
         StatsBlock statsBlock = StatsBlock.builder()

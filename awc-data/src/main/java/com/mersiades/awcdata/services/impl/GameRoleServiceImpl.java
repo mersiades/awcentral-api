@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 import static com.mersiades.awccontent.constants.MoveNames.*;
 import static com.mersiades.awccontent.content.MovesContent.*;
 import static com.mersiades.awccontent.content.PlaybookCreatorsContent.*;
+import static com.mersiades.awccontent.content.StatOptionsContent.*;
+import static com.mersiades.awccontent.enums.UniqueType.*;
 
 @Slf4j
 @Service
@@ -302,44 +304,10 @@ public class GameRoleServiceImpl implements GameRoleService {
     @Override
     public Character setCharacterStats(String gameRoleId, String characterId, String statsOptionId) {
 
-        GameRole gameRole = gameRoleRepository.findById(gameRoleId).orElseThrow(NoSuchElementException::new);
-        assert gameRole != null;
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
 
-        // GameRoles can have multiple characters, so get the right character
-        Character character = gameRole.getCharacters().stream()
-                .filter(character1 -> character1.getId().equals(characterId)).findFirst().orElseThrow();
-
-        // Get statsOption from db
-        StatsOption statsOption = statsOptionService.findById(statsOptionId);
-        assert statsOption != null;
-
-        StatsBlock statsBlock = StatsBlock.builder()
-                .id(new ObjectId().toString())
-                .statsOptionId(statsOptionId)
-                .build();
-
-        character.setStatsBlock(statsBlock);
-
-        // Create or update each CharacterStat in the StatsBlock
-        Arrays.asList(StatType.values().clone()).forEach(stat -> {
-            if (!stat.equals(StatType.HX)) {
-                createOrUpdateCharacterStat(character, statsOption, stat);
-            }
-        });
-
-        // Adjust CharacterStat if Character has a Move with a StatModifier
-        if (character.getCharacterMoves() != null) {
-            character.getCharacterMoves().forEach(characterMove -> {
-                if (characterMove.getStatModifier() != null) {
-                    character.getStatsBlock().getStats().forEach(characterStat -> {
-                        if (characterStat.getStat().equals(characterMove.getStatModifier().getStatToModify())) {
-                            characterStat.setValue(characterStat.getValue() + characterMove.getStatModifier().getModification());
-                            characterStat.setModifier(characterMove.getStatModifier().getId());
-                        }
-                    });
-                }
-            });
-        }
+        setStatsBlock(character, statsOptionId);
 
         // Save to db
         characterService.save(character);
@@ -528,7 +496,7 @@ public class GameRoleServiceImpl implements GameRoleService {
 
             PlaybookUniques angelUnique = PlaybookUniques.builder()
                     .id(new ObjectId().toString())
-                    .type(UniqueType.ANGEL_KIT)
+                    .type(ANGEL_KIT)
                     .angelKit(angelKit)
                     .build();
 
@@ -1499,6 +1467,10 @@ public class GameRoleServiceImpl implements GameRoleService {
 
                         // Remove gear
                         character.setGear(new ArrayList<>());
+                        // Remove PlaybookType
+                        character.setPlaybook(null);
+                        character.setStatsBlock(null);
+                        character.setMustChangePlaybook(true);
                         // Add move
                         List<CharacterMove> currentDeathMoves = new ArrayList<>(character.getDeathMoves());
                         currentDeathMoves.add(deathChangePlaybookAsCM);
@@ -1531,6 +1503,26 @@ public class GameRoleServiceImpl implements GameRoleService {
             }
         });
 
+
+        // Save to db
+        characterService.save(character);
+        gameRoleRepository.save(gameRole);
+
+        return character;
+    }
+
+    @Override
+    public Character changePlaybook(String gameRoleId, String characterId, PlaybookType playbookType) {
+        GameRole gameRole = getGameRole(gameRoleId);
+        Character character = getCharacterById(gameRole, characterId);
+
+        character.setPlaybook(playbookType);
+        addUnique(character, playbookType); // need to change this method
+        character.setMustChangePlaybook(false);
+
+        StatsOption statsOption = getStatsOptionForPlaybook(playbookType);
+        assert statsOption != null;
+        setStatsBlock(character, statsOption.getId());
 
         // Save to db
         characterService.save(character);
@@ -1695,7 +1687,7 @@ public class GameRoleServiceImpl implements GameRoleService {
             case preparedForTheInevitableName:
                 AngelKit angelKit = AngelKit.builder()
                         .id(new ObjectId().toString())
-                        .uniqueType(UniqueType.ANGEL_KIT)
+                        .uniqueType(ANGEL_KIT)
                         .hasSupplier(false)
                         .angelKitMoves(List.of(treatAnNpc, reviveSomeone, speedTheRecoveryOfSomeone, stabilizeAndHeal))
                         .stock(2)
@@ -1810,24 +1802,26 @@ public class GameRoleServiceImpl implements GameRoleService {
 
     // Adds PlaybookUnique with default options to Character when creating a new Playbook/Character
     private void addUnique(Character character, PlaybookType playbookType) {
+        PlaybookUniques playbookUniques = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .build();
         switch (playbookType) {
             case ANGEL:
                 AngelKit angelKit = AngelKit.builder()
                         .id(new ObjectId().toString())
-                        .uniqueType(UniqueType.ANGEL_KIT)
+                        .uniqueType(ANGEL_KIT)
                         .hasSupplier(false)
                         .angelKitMoves(List.of(treatAnNpc, reviveSomeone, speedTheRecoveryOfSomeone, stabilizeAndHeal))
                         .stock(angelKitCreator.getStartingStock())
                         .description(angelKitCreator.getAngelKitInstructions())
                         .build();
 
-                PlaybookUniques playbookUniquesAngel = PlaybookUniques.builder()
-                        .id(new ObjectId().toString())
-                        .type(UniqueType.ANGEL_KIT)
-                        .angelKit(angelKit)
-                        .build();
-
-                character.setPlaybookUniques(playbookUniquesAngel);
+                if (character.getPlaybookUniques() != null) {
+                    character.getPlaybookUniques().setAngelKit(angelKit);
+                } else {
+                    playbookUniques.setAngelKit(angelKit);
+                    character.setPlaybookUniques(playbookUniques);
+                }
                 break;
             case BATTLEBABE:
                 CustomWeapons customWeapons = CustomWeapons.builder()
@@ -1835,13 +1829,12 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .uniqueType(UniqueType.CUSTOM_WEAPONS)
                         .build();
 
-                PlaybookUniques playbookUniquesBattlebabe = PlaybookUniques.builder()
-                        .id(new ObjectId().toString())
-                        .type(UniqueType.CUSTOM_WEAPONS)
-                        .customWeapons(customWeapons)
-                        .build();
-
-                character.setPlaybookUniques(playbookUniquesBattlebabe);
+                if (character.getPlaybookUniques() != null) {
+                    character.getPlaybookUniques().setCustomWeapons(customWeapons);
+                } else {
+                    playbookUniques.setCustomWeapons(customWeapons);
+                    character.setPlaybookUniques(playbookUniques);
+                }
                 break;
             case BRAINER:
                 BrainerGear brainerGear = BrainerGear.builder()
@@ -1849,13 +1842,13 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .uniqueType(UniqueType.BRAINER_GEAR)
                         .allowedItemsCount(brainerGearCreator.getDefaultItemCount())
                         .build();
-                PlaybookUniques playbookUniquesBrainer = PlaybookUniques.builder()
-                        .id(new ObjectId().toString())
-                        .type(UniqueType.BRAINER_GEAR)
-                        .brainerGear(brainerGear)
-                        .build();
 
-                character.setPlaybookUniques(playbookUniquesBrainer);
+                if (character.getPlaybookUniques() != null) {
+                    character.getPlaybookUniques().setBrainerGear(brainerGear);
+                } else {
+                    playbookUniques.setBrainerGear(brainerGear);
+                    character.setPlaybookUniques(playbookUniques);
+                }
                 break;
             case CHOPPER:
                 Gang gang = Gang.builder()
@@ -1868,13 +1861,12 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .tags(gangCreator.getDefaultTags())
                         .build();
 
-                PlaybookUniques playbookUniquesChopper = PlaybookUniques.builder()
-                        .id(new ObjectId().toString())
-                        .type(UniqueType.GANG)
-                        .gang(gang)
-                        .build();
-
-                character.setPlaybookUniques(playbookUniquesChopper);
+                if (character.getPlaybookUniques() != null) {
+                    character.getPlaybookUniques().setGang(gang);
+                } else {
+                    playbookUniques.setGang(gang);
+                    character.setPlaybookUniques(playbookUniques);
+                }
                 break;
             case DRIVER:
                 // Driver has no PlaybookUnique
@@ -1884,13 +1876,13 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .id(new ObjectId().toString())
                         .uniqueType(UniqueType.WEAPONS)
                         .build();
-                PlaybookUniques playbookUniquesGunlugger = PlaybookUniques.builder()
-                        .id(new ObjectId().toString())
-                        .type(UniqueType.WEAPONS)
-                        .weapons(weapons)
-                        .build();
 
-                character.setPlaybookUniques(playbookUniquesGunlugger);
+                if (character.getPlaybookUniques() != null) {
+                    character.getPlaybookUniques().setWeapons(weapons);
+                } else {
+                    playbookUniques.setWeapons(weapons);
+                    character.setPlaybookUniques(playbookUniques);
+                }
                 break;
             case HARDHOLDER:
                 Holding holding = Holding.builder()
@@ -1909,16 +1901,16 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .strengthsCount(holdingCreator.getDefaultStrengthsCount())
                         .weaknessesCount(holdingCreator.getDefaultWeaknessesCount())
                         .build();
-                PlaybookUniques playbookUniquesHardholder = PlaybookUniques.builder()
-                        .id(new ObjectId().toString())
-                        .type(UniqueType.HOLDING)
-                        .holding(holding)
-                        .build();
 
                 character.setVehicleCount(holdingCreator.getDefaultVehiclesCount());
                 character.setBattleVehicleCount(holdingCreator.getDefaultBattleVehicleCount());
 
-                character.setPlaybookUniques(playbookUniquesHardholder);
+                if (character.getPlaybookUniques() != null) {
+                    character.getPlaybookUniques().setHolding(holding);
+                } else {
+                    playbookUniques.setHolding(holding);
+                    character.setPlaybookUniques(playbookUniques);
+                }
                 break;
             case HOCUS:
                 Followers followers = Followers.builder()
@@ -1932,13 +1924,12 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .weaknessesCount(followersCreator.getDefaultWeaknessesCount())
                         .build();
 
-                PlaybookUniques playbookUniquesHocus = PlaybookUniques.builder()
-                        .id(new ObjectId().toString())
-                        .type(UniqueType.FOLLOWERS)
-                        .followers(followers)
-                        .build();
-
-                character.setPlaybookUniques(playbookUniquesHocus);
+                if (character.getPlaybookUniques() != null) {
+                    character.getPlaybookUniques().setFollowers(followers);
+                } else {
+                    playbookUniques.setFollowers(followers);
+                    character.setPlaybookUniques(playbookUniques);
+                }
                 break;
             case MAESTRO_D:
                 Establishment establishment = Establishment.builder()
@@ -1948,13 +1939,13 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .regulars(establishmentCreator.getRegularsNames())
                         .interestedParties(establishmentCreator.getInterestedPartyNames())
                         .build();
-                PlaybookUniques playbookUniquesMaestroD = PlaybookUniques.builder()
-                        .id(new ObjectId().toString())
-                        .type(UniqueType.ESTABLISHMENT)
-                        .establishment(establishment)
-                        .build();
 
-                character.setPlaybookUniques(playbookUniquesMaestroD);
+                if (character.getPlaybookUniques() != null) {
+                    character.getPlaybookUniques().setEstablishment(establishment);
+                } else {
+                    playbookUniques.setEstablishment(establishment);
+                    character.setPlaybookUniques(playbookUniques);
+                }
                 break;
             case SAVVYHEAD:
                 Workspace workspace = Workspace.builder()
@@ -1964,26 +1955,26 @@ public class GameRoleServiceImpl implements GameRoleService {
                         .workspaceInstructions(workspaceCreator.getWorkspaceInstructions())
                         .itemsCount(workspaceCreator.getDefaultItemsCount())
                         .build();
-                PlaybookUniques playbookUniquesSavvyhead = PlaybookUniques.builder()
-                        .id(new ObjectId().toString())
-                        .type(UniqueType.WORKSPACE)
-                        .workspace(workspace)
-                        .build();
 
-                character.setPlaybookUniques(playbookUniquesSavvyhead);
+                if (character.getPlaybookUniques() != null) {
+                    character.getPlaybookUniques().setWorkspace(workspace);
+                } else {
+                    playbookUniques.setWorkspace(workspace);
+                    character.setPlaybookUniques(playbookUniques);
+                }
                 break;
             case SKINNER:
                 SkinnerGear skinnerGear = SkinnerGear.builder()
                         .id(new ObjectId().toString())
                         .uniqueType(UniqueType.SKINNER_GEAR)
                         .build();
-                PlaybookUniques playbookUniquesSkinner = PlaybookUniques.builder()
-                        .id(new ObjectId().toString())
-                        .type(UniqueType.SKINNER_GEAR)
-                        .skinnerGear(skinnerGear)
-                        .build();
 
-                character.setPlaybookUniques(playbookUniquesSkinner);
+                if (character.getPlaybookUniques() != null) {
+                    character.getPlaybookUniques().setSkinnerGear(skinnerGear);
+                } else {
+                    playbookUniques.setSkinnerGear(skinnerGear);
+                    character.setPlaybookUniques(playbookUniques);
+                }
                 break;
             default:
                 // TODO: throw error
@@ -2139,5 +2130,72 @@ public class GameRoleServiceImpl implements GameRoleService {
                     ).collect(Collectors.toList());
             character.setCharacterMoves(filteredMoves);
         });
+    }
+
+    private StatsOption getStatsOptionForPlaybook(PlaybookType playbookType) {
+        switch (playbookType) {
+            case ANGEL:
+                return statsOptionAngel1;
+            case BATTLEBABE:
+                return statsOptionBattlebabe1;
+            case BRAINER:
+                return statsOptionBrainer1;
+            case CHOPPER:
+                return statsOptionChopper1;
+            case DRIVER:
+                return statsOptionDriver1;
+            case GUNLUGGER:
+                return statsOptionGunlugger1;
+            case HARDHOLDER:
+                return statsOptionHardHolder1;
+            case HOCUS:
+                return statsOptionHocus1;
+            case MAESTRO_D:
+                return statsOptionMaestroD1;
+            case SAVVYHEAD:
+                return statsOptionSavvyhead1;
+            case SKINNER:
+                return statsOptionSkinner1;
+            default:
+                return null;
+        }
+    }
+
+    private void setStatsBlock(Character character, String statsOptionId) {
+        // Get statsOption from db
+        StatsOption statsOption = statsOptionService.findById(statsOptionId);
+        assert statsOption != null;
+
+        StatsBlock statsBlock = StatsBlock.builder()
+                .id(new ObjectId().toString())
+                .statsOptionId(statsOptionId)
+                .build();
+
+        character.setStatsBlock(statsBlock);
+
+        // Create or update each CharacterStat in the StatsBlock
+        Arrays.asList(StatType.values().clone()).forEach(stat -> {
+            if (!stat.equals(StatType.HX)) {
+                createOrUpdateCharacterStat(character, statsOption, stat);
+            }
+        });
+
+        // Adjust CharacterStat if Character has a Character Move with a StatModifier
+        if (character.getCharacterMoves() != null) {
+            character.getCharacterMoves().forEach(characterMove -> {
+                if (characterMove.getStatModifier() != null) {
+                    modifyCharacterStat(character, characterMove);
+                }
+            });
+        }
+
+        // Adjust CharacterStat if Character has an improvement Move with a StatModifier
+        if (character.getImprovementMoves() != null) {
+            character.getImprovementMoves().forEach(characterMove -> {
+                if (characterMove.getStatModifier() != null) {
+                    modifyCharacterStat(character, characterMove);
+                }
+            });
+        }
     }
 }
