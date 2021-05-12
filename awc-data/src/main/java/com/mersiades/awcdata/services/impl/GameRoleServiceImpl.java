@@ -252,14 +252,32 @@ public class GameRoleServiceImpl implements GameRoleService {
     public Character changePlaybook(String gameRoleId, String characterId, PlaybookType playbookType) {
         GameRole gameRole = getGameRole(gameRoleId);
         Character character = getCharacterById(gameRole, characterId);
+        PlaybookCreator playbookCreator = playbookCreatorService.findByPlaybookType(playbookType);
 
         character.setPlaybook(playbookType);
-        addUnique(character, playbookType); // need to change this method
+        addUnique(character, playbookType);
         character.setMustChangePlaybook(false);
+        character.setHasCompletedCharacterCreation(false);
 
-        StatsOption statsOption = getStatsOptionForPlaybook(playbookType);
-        assert statsOption != null;
+        StatsOption statsOption = statsOptionService.findAllByPlaybookType(playbookType).stream().findFirst().orElseThrow();
         setStatsBlock(character, statsOption.getId());
+
+        // Set default moves for playbook
+        List<Move> defaultMoves = moveService.findAllByPlaybookAndKind(playbookType, MoveType.DEFAULT_CHARACTER);
+        List<CharacterMove> defaultCharacterMoves = defaultMoves.stream().map(CharacterMove::createFromMove).collect(Collectors.toList());
+        List<CharacterMove> existingMoves = character.getCharacterMoves();
+
+        // At this point, with default moves removed, any existing moves are either from other playbooks,
+        // or about to become 'from another playbook' because non-default moves from the old playbook
+        // will be counted as moves from other another playbook
+        character.setAllowedOtherPlaybookMoves(existingMoves.size());
+
+        // And the player gets to add the usual move choices from a fresh playbook
+        character.setAllowedPlaybookMoves(playbookCreator.getMoveChoiceCount());
+
+        // Now add the new playbook's default move(s) into the existing moves
+        existingMoves.addAll(defaultCharacterMoves);
+        character.setCharacterMoves(existingMoves);
 
         // Save to db
         characterService.save(character);
@@ -2134,7 +2152,7 @@ public class GameRoleServiceImpl implements GameRoleService {
     private StatsOption getStatsOptionForPlaybook(PlaybookType playbookType) {
         switch (playbookType) {
             case ANGEL:
-                return statsOptionAngel1;
+                return statsOptionService.findAllByPlaybookType(playbookType).stream().findFirst().orElseThrow();
             case BATTLEBABE:
                 return statsOptionBattlebabe1;
             case BRAINER:

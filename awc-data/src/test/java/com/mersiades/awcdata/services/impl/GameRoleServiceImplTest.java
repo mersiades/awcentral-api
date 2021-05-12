@@ -440,6 +440,7 @@ class GameRoleServiceImplTest {
         int initialExperience = 27;
         int initialAllowedImprovements = 5;
         int initialAllowedOtherPlaybookMoves = 3;
+        int initialAllowedPlaybookMoves = 0; // original optional count + no extras
 
         String initialName = "name from previous playbook";
 
@@ -453,7 +454,7 @@ class GameRoleServiceImplTest {
         CharacterMove dangerousAndSexyAsCM = CharacterMove.createFromMove(dangerousAndSexy, true);
         CharacterMove packAlphaAsCM = CharacterMove.createFromMove(packAlpha, true);
         CharacterMove wealthAsCM = CharacterMove.createFromMove(wealth, true);
-        List<CharacterMove> initialCharacterMoves = List.of(packAlphaAsCM, wealthAsCM, dangerousAndSexyAsCM);
+        List<CharacterMove> initialCharacterMoves = new ArrayList<>(List.of(packAlphaAsCM, wealthAsCM, dangerousAndSexyAsCM));
 
         CharacterMove addGangPackAlphaAsCM = CharacterMove.createFromMove(addGangPackAlpha, true);
         CharacterMove addHoldingAsCM = CharacterMove.createFromMove(addHolding, true);
@@ -481,6 +482,7 @@ class GameRoleServiceImplTest {
                 .vehicleCount(initialVehicleCount)
                 .battleVehicleCount(initialBattleVehicleCount)
                 .experience(initialExperience)
+                .allowedPlaybookMoves(initialAllowedPlaybookMoves)
                 .allowedImprovements(initialAllowedImprovements)
                 .allowedOtherPlaybookMoves(initialAllowedOtherPlaybookMoves)
                 .isDead(false)
@@ -498,6 +500,9 @@ class GameRoleServiceImplTest {
         mockGameRole.getCharacters().add(resetCharacter);
         setupMockServices();
         when(statsOptionService.findById(anyString())).thenReturn(statsOptionBattlebabe1);
+        when(statsOptionService.findAllByPlaybookType(BATTLEBABE)).thenReturn(List.of(statsOptionBattlebabe1));
+        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(playbookCreatorBattlebabe);
+
 
         // When
         Character returnedCharacter = gameRoleService.changePlaybook(mockGameRole.getId(),
@@ -513,7 +518,6 @@ class GameRoleServiceImplTest {
         assertEquals(initialBattleVehicleCount, returnedCharacter.getBattleVehicleCount());
         assertEquals(initialBattleVehicleCount, returnedCharacter.getBattleVehicles().size());
         assertEquals(initialLooks, returnedCharacter.getLooks());
-        assertEquals(initialCharacterMoves, returnedCharacter.getCharacterMoves());
         assertEquals(initialImprovementMoves, returnedCharacter.getImprovementMoves());
         assertEquals(initialDeathMoves, returnedCharacter.getDeathMoves());
 
@@ -521,16 +525,24 @@ class GameRoleServiceImplTest {
         assertNotNull(returnedCharacter.getPlaybookUniques().getGang());
         assertNotNull(returnedCharacter.getHarm());
 
-        assertTrue(returnedCharacter.getHasCompletedCharacterCreation());
         assertTrue(returnedCharacter.getHasPlusOneForward());
-
         assertFalse(returnedCharacter.getIsDead());
-
 
         // Check the new character properties have been added
         assertEquals(BATTLEBABE, returnedCharacter.getPlaybook());
         assertNotNull(returnedCharacter.getPlaybookUniques().getCustomWeapons());
         assertFalse(returnedCharacter.getMustChangePlaybook());
+        CharacterMove battlebabeSpecialAsCM = CharacterMove.createFromMove(battlebabeSpecial, true);
+        initialCharacterMoves.add(battlebabeSpecialAsCM);
+        assertEquals(initialCharacterMoves, returnedCharacter.getCharacterMoves());
+        assertEquals(initialCharacterMoves.size(),
+                returnedCharacter.getCharacterMoves().size());
+        assertEquals( playbookCreatorBattlebabe.getMoveChoiceCount(),
+                returnedCharacter.getAllowedPlaybookMoves());
+
+        assertEquals(initialAllowedPlaybookMoves + initialAllowedOtherPlaybookMoves,
+                returnedCharacter.getAllowedOtherPlaybookMoves());
+        assertFalse(returnedCharacter.getHasCompletedCharacterCreation());
         // At this stage, a new StatsBlock has been assigned with the playbooks first StatsOption, with bonuses added
         // Cool has a +1 modifier, but since it is already at 3 it can't increase any more
         assertEquals(statsOptionBattlebabe1.getCOOL(), returnedCharacter.getStatsBlock().getStats().stream()
@@ -542,6 +554,114 @@ class GameRoleServiceImplTest {
 
         verifyMockServices();
         verify(statsOptionService, times(1)).findById(anyString());
+        verify(statsOptionService, times(1)).findAllByPlaybookType(BATTLEBABE);
+        verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
+    }
+
+    @Test
+    void shouldSetPlaybook_onChangePlaybook_fromAngelToBattlebabe() {
+        int initialBarter = 3;
+        int initialVehicleCount = 0;
+        int initialBattleVehicleCount = 0;
+        int initialExperience = 12;
+        int initialAllowedImprovements = 2;
+        int initialAllowedOtherPlaybookMoves = 1; // 1 from improvement
+        int initialAllowedPlaybookMoves = 3; // 2 original + 1 extra from improvement
+
+        String initialName = "name from previous playbook";
+
+        List<Look> initialLooks = List.of(lookAngel1, lookAngel6, lookAngel12, lookAngel18, lookAngel24);
+
+        CharacterMove sixthSenseAsCM = CharacterMove.createFromMove(sixthSense, true);
+        CharacterMove infirmaryAsCM = CharacterMove.createFromMove(infirmary, true);
+        CharacterMove profCompassionAsCM = CharacterMove.createFromMove(profCompassion, true);
+        CharacterMove dangerousAndSexyAsCM = CharacterMove.createFromMove(dangerousAndSexy, true);
+        List<CharacterMove> initialCharacterMoves = new ArrayList<>(List.of(profCompassionAsCM, sixthSenseAsCM, infirmaryAsCM, dangerousAndSexyAsCM));
+
+        CharacterMove addAngelMove1AsCM = CharacterMove.createFromMove(addAngelMove1, true);
+        CharacterMove addOtherPBMove1AsCM = CharacterMove.createFromMove(addOtherPBMove1, true);
+        List<CharacterMove> initialImprovementMoves = List.of(addAngelMove1AsCM, addOtherPBMove1AsCM);
+
+        CharacterMove deathChangePlaybookAsCM = CharacterMove.createFromMove(deathChangePlaybook, true);
+        List<CharacterMove> initialDeathMoves = List.of(deathChangePlaybookAsCM);
+
+        mockCharacter.setPlaybookUniques(mockPlaybookUnique);
+        Character resetCharacter = Character.builder()
+                .id(new ObjectId().toString())
+                .name(initialName)
+                .playbook(null)
+                .playbookUniques(mockPlaybookUnique)
+                .hasCompletedCharacterCreation(true)
+                .hasPlusOneForward(true)
+                .barter(initialBarter)
+                .harm(mockCharacterHarm)
+                .statsBlock(null)
+                .vehicleCount(initialVehicleCount)
+                .battleVehicleCount(initialBattleVehicleCount)
+                .experience(initialExperience)
+                .allowedPlaybookMoves(initialAllowedPlaybookMoves)
+                .allowedImprovements(initialAllowedImprovements)
+                .allowedOtherPlaybookMoves(initialAllowedOtherPlaybookMoves)
+                .isDead(false)
+                .mustChangePlaybook(true)
+                .gear(new ArrayList<>())
+                .looks(initialLooks)
+                .characterMoves(initialCharacterMoves)
+                .improvementMoves(initialImprovementMoves)
+                .deathMoves(initialDeathMoves)
+                .holds(new ArrayList<>())
+                .build();
+
+        mockGameRole.getCharacters().add(resetCharacter);
+        setupMockServices();
+        when(statsOptionService.findById(anyString())).thenReturn(statsOptionBattlebabe1);
+        when(statsOptionService.findAllByPlaybookType(BATTLEBABE)).thenReturn(List.of(statsOptionBattlebabe1));
+        when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(playbookCreatorBattlebabe);
+
+
+        // When
+        Character returnedCharacter = gameRoleService.changePlaybook(mockGameRole.getId(),
+                resetCharacter.getId(),
+                BATTLEBABE);
+
+        // Check old character properties have been maintained
+        assertEquals(initialName, returnedCharacter.getName());
+        assertEquals(initialBarter, returnedCharacter.getBarter());
+        assertEquals(initialExperience, returnedCharacter.getExperience());
+        assertEquals(initialVehicleCount, returnedCharacter.getVehicleCount());
+        assertEquals(initialVehicleCount, returnedCharacter.getVehicles().size());
+        assertEquals(initialBattleVehicleCount, returnedCharacter.getBattleVehicleCount());
+        assertEquals(initialBattleVehicleCount, returnedCharacter.getBattleVehicles().size());
+        assertEquals(initialLooks, returnedCharacter.getLooks());
+        assertEquals(initialImprovementMoves, returnedCharacter.getImprovementMoves());
+        assertEquals(initialDeathMoves, returnedCharacter.getDeathMoves());
+
+        assertNotNull(returnedCharacter.getHarm());
+
+        assertTrue(returnedCharacter.getHasPlusOneForward());
+        assertFalse(returnedCharacter.getIsDead());
+
+        // Check the new character properties have been added
+        assertEquals(BATTLEBABE, returnedCharacter.getPlaybook());
+        assertNotNull(returnedCharacter.getPlaybookUniques().getCustomWeapons());
+        assertFalse(returnedCharacter.getMustChangePlaybook());
+        CharacterMove battlebabeSpecialAsCM = CharacterMove.createFromMove(battlebabeSpecial, true);
+        initialCharacterMoves.add(battlebabeSpecialAsCM);
+        assertEquals(initialCharacterMoves, returnedCharacter.getCharacterMoves());
+        assertEquals(initialCharacterMoves.size(),
+                returnedCharacter.getCharacterMoves().size());
+        assertEquals(playbookCreatorBattlebabe.getMoveChoiceCount(),
+                returnedCharacter.getAllowedPlaybookMoves());
+
+        assertEquals(initialAllowedPlaybookMoves + initialAllowedOtherPlaybookMoves,
+                returnedCharacter.getAllowedOtherPlaybookMoves());
+        assertFalse(returnedCharacter.getHasCompletedCharacterCreation());
+        assertNotNull(returnedCharacter.getStatsBlock());
+
+        verifyMockServices();
+        verify(statsOptionService, times(1)).findById(anyString());
+        verify(statsOptionService, times(1)).findAllByPlaybookType(BATTLEBABE);
+        verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
     }
 
     @Test
@@ -2469,6 +2589,8 @@ class GameRoleServiceImplTest {
     @Test
     void shouldReviveCharacterAndChangePlaybook_onSwapDeathMove() {
         // Given
+        int initialAllowedCharacterMoves = 0;
+        int initialAllowedOtherPBMoves = 2;
         mockCharacter.setIsDead(true);
         mockCharacter.setPlaybook(PlaybookType.GUNLUGGER);
         Holding mockHolding = Holding.builder().id(new ObjectId().toString()).build();
@@ -2489,6 +2611,8 @@ class GameRoleServiceImplTest {
         mockCharacter.setCharacterMoves(List.of(packAlphaAsCM,wealthAsCM, gunluggerSpecialAsCM ));
         mockCharacter.setDeathMoves(List.of(dieAsCM));
         mockCharacter.setGear(List.of("item1", "item2"));
+        mockCharacter.setAllowedPlaybookMoves(initialAllowedCharacterMoves);
+        mockCharacter.setAllowedOtherPlaybookMoves(initialAllowedOtherPBMoves);
         mockGameRole.getCharacters().add(mockCharacter);
         setupMockServices();
 
@@ -2509,6 +2633,9 @@ class GameRoleServiceImplTest {
         assertNotNull(returnedCharacter.getPlaybookUniques().getGang());
 
         // Check the Gunlugger's special move has been removed
+        assertEquals(initialAllowedCharacterMoves, returnedCharacter.getAllowedPlaybookMoves());
+        assertEquals(initialAllowedCharacterMoves + initialAllowedOtherPBMoves,
+                returnedCharacter.getCharacterMoves().size());
         assertFalse(returnedCharacter.getCharacterMoves()
                 .stream().anyMatch(characterMove -> characterMove.getName().equals(gunluggerSpecial.getName())));
 
