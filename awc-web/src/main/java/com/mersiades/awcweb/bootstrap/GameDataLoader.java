@@ -154,6 +154,7 @@ public class GameDataLoader implements CommandLineRunner {
     private void loadMoves() {
 
         statModifierService.saveAll(List.of(
+                attunementMod,
                 insanoMod,
                 wacknutModifier,
                 deepInsightsModifier,
@@ -167,7 +168,8 @@ public class GameDataLoader implements CommandLineRunner {
                 coolMax3Mod,
                 hardMax3Mod,
                 hotMax3Mod,
-                weirdMax3Mod
+                weirdMax3Mod,
+                hardMinus1Mod
         ));
 
         moveService.saveAll(List.of(
