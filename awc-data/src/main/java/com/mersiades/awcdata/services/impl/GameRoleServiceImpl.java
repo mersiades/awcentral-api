@@ -263,8 +263,8 @@ public class GameRoleServiceImpl implements GameRoleService {
         setStatsBlock(character, statsOption.getId());
 
         // Set default moves for playbook
-        List<Move> defaultMoves = moveService.findAllByPlaybookAndKind(playbookType, MoveType.DEFAULT_CHARACTER);
-        List<CharacterMove> defaultCharacterMoves = defaultMoves.stream().map(CharacterMove::createFromMove).collect(Collectors.toList());
+        List<Move> newDefaultMoves = moveService.findAllByPlaybookAndKind(playbookType, MoveType.DEFAULT_CHARACTER);
+        List<CharacterMove> newDefaultCharacterMoves = newDefaultMoves.stream().map(CharacterMove::createFromMove).collect(Collectors.toList());
         List<CharacterMove> existingMoves = character.getCharacterMoves();
 
         // At this point, with default moves removed, any existing moves are either from other playbooks,
@@ -276,7 +276,7 @@ public class GameRoleServiceImpl implements GameRoleService {
         character.setAllowedPlaybookMoves(playbookCreator.getMoveChoiceCount());
 
         // Now add the new playbook's default move(s) into the existing moves
-        existingMoves.addAll(defaultCharacterMoves);
+        existingMoves.addAll(newDefaultCharacterMoves);
         character.setCharacterMoves(existingMoves);
 
         // Save to db
@@ -1480,7 +1480,7 @@ public class GameRoleServiceImpl implements GameRoleService {
                                 break;
                             case HARDHOLDER:
                                 character.getPlaybookUniques().setHolding(null);
-                                removeDefaultMoves(character, List.of(wealthName,leadershipName, hardholderSpecialName ));
+                                removeDefaultMoves(character, List.of(wealthName, leadershipName, hardholderSpecialName));
                                 break;
                             case HOCUS:
                                 character.getPlaybookUniques().setFollowers(null);
@@ -2197,22 +2197,17 @@ public class GameRoleServiceImpl implements GameRoleService {
             }
         });
 
-        // Adjust CharacterStat if Character has a Character Move with a StatModifier
-        if (character.getCharacterMoves() != null) {
-            character.getCharacterMoves().forEach(characterMove -> {
-                if (characterMove.getStatModifier() != null) {
-                    modifyCharacterStat(character, characterMove);
-                }
-            });
-        }
+        // Get a list of _all_ of the Character's CharacterMoves
+        List<CharacterMove> combinedCharacterMoves = new ArrayList<>();
+        combinedCharacterMoves.addAll(character.getCharacterMoves());
+        combinedCharacterMoves.addAll(character.getImprovementMoves());
+        combinedCharacterMoves.addAll(character.getDeathMoves());
 
-        // Adjust CharacterStat if Character has an improvement Move with a StatModifier
-        if (character.getImprovementMoves() != null) {
-            character.getImprovementMoves().forEach(characterMove -> {
-                if (characterMove.getStatModifier() != null) {
-                    modifyCharacterStat(character, characterMove);
-                }
-            });
-        }
+        // Adjust CharacterStat if Character has a Character Move with a StatModifier
+        combinedCharacterMoves.forEach(characterMove -> {
+            if (characterMove.getStatModifier() != null) {
+                modifyCharacterStat(character, characterMove);
+            }
+        });
     }
 }

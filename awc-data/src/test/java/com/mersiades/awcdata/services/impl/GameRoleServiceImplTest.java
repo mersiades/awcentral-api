@@ -502,6 +502,7 @@ class GameRoleServiceImplTest {
         when(statsOptionService.findById(anyString())).thenReturn(statsOptionBattlebabe1);
         when(statsOptionService.findAllByPlaybookType(BATTLEBABE)).thenReturn(List.of(statsOptionBattlebabe1));
         when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(playbookCreatorBattlebabe);
+        when(moveService.findAllByPlaybookAndKind(BATTLEBABE, MoveType.DEFAULT_CHARACTER)).thenReturn(List.of(battlebabeSpecial));
 
 
         // When
@@ -556,6 +557,7 @@ class GameRoleServiceImplTest {
         verify(statsOptionService, times(1)).findById(anyString());
         verify(statsOptionService, times(1)).findAllByPlaybookType(BATTLEBABE);
         verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
+        verify(moveService, times(1)).findAllByPlaybookAndKind(BATTLEBABE, MoveType.DEFAULT_CHARACTER);
     }
 
     @Test
@@ -613,10 +615,13 @@ class GameRoleServiceImplTest {
                 .build();
 
         mockGameRole.getCharacters().add(resetCharacter);
-        setupMockServices();
+        when(gameRoleRepository.findById(anyString())).thenReturn(Optional.of(mockGameRole));
+        when(characterService.save(any())).thenReturn(resetCharacter);
+        when(gameRoleRepository.save(any())).thenReturn(mockGameRole);
         when(statsOptionService.findById(anyString())).thenReturn(statsOptionBattlebabe1);
         when(statsOptionService.findAllByPlaybookType(BATTLEBABE)).thenReturn(List.of(statsOptionBattlebabe1));
         when(playbookCreatorService.findByPlaybookType(any(PlaybookType.class))).thenReturn(playbookCreatorBattlebabe);
+        when(moveService.findAllByPlaybookAndKind(BATTLEBABE, MoveType.DEFAULT_CHARACTER)).thenReturn(List.of(battlebabeSpecial));
 
 
         // When
@@ -662,6 +667,7 @@ class GameRoleServiceImplTest {
         verify(statsOptionService, times(1)).findById(anyString());
         verify(statsOptionService, times(1)).findAllByPlaybookType(BATTLEBABE);
         verify(playbookCreatorService, times(1)).findByPlaybookType(any(PlaybookType.class));
+        verify(moveService, times(1)).findAllByPlaybookAndKind(BATTLEBABE, MoveType.DEFAULT_CHARACTER);
     }
 
     @Test
