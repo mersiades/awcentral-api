@@ -279,6 +279,20 @@ public class GameRoleServiceImpl implements GameRoleService {
         existingMoves.addAll(newDefaultCharacterMoves);
         character.setCharacterMoves(existingMoves);
 
+        // Adjust battleVehicle and vehicle counts for new playbook
+        if (List.of(PlaybookType.DRIVER, PlaybookType.CHOPPER).contains(playbookType)) {
+            if (character.getVehicleCount() == 0) {
+                character.setVehicleCount(1);
+            }
+        } else if (playbookType.equals(PlaybookType.HARDHOLDER)) {
+            if (character.getVehicleCount() < 4) {
+                character.setVehicleCount(4);
+            }
+            if (character.getBattleVehicleCount() < 4) {
+                character.setBattleVehicleCount(4);
+            }
+        }
+
         // Save to db
         characterService.save(character);
         gameRoleRepository.save(gameRole);
