@@ -46,6 +46,7 @@ enum MoveType {
     ADD_SECOND_CHARACTER
     CHANGE_PLAYBOOK
     IMPROVE_BASIC_MOVES
+    DEATH
 }
 
 enum MoveActionType {
@@ -649,6 +650,8 @@ type Character {
     allowedImprovements: Int!
     allowedPlaybookMoves: Int!
     allowedOtherPlaybookMoves: Int!
+    isDead: Boolean!
+    mustChangePlaybook: Boolean!
     battleVehicles: [BattleVehicle]
     vehicles: [Vehicle]
     hxBlock: [HxStat]
@@ -657,6 +660,7 @@ type Character {
     characterMoves: [CharacterMove]
     improvementMoves: [CharacterMove]
     futureImprovementMoves: [CharacterMove]
+    deathMoves: [CharacterMove]
     holds: [Hold]
 }
 
@@ -1132,6 +1136,7 @@ type Query {
     vehicleCreator: VehicleCreator
     threatCreator: ThreatCreator
     mcContent: McContent
+    deathMoves: [Move!]!
 }
 
 # --------------------------------------------- MUTATIONS -------------------------------------------- #
@@ -1165,6 +1170,9 @@ type Mutation {
     setCharacterPlaybook(gameRoleId: String!,
         characterId: String!,
         playbookType: PlaybookType!): Character
+    changePlaybook(
+        gameRoleId: String!, characterId: String!, playbookType: PlaybookType!
+    ): Character!
     setCharacterName(gameRoleId: String!,
         characterId: String!,
         name: String!): Character
@@ -1277,6 +1285,9 @@ type Mutation {
         improvementIds: [String]!,
         futureImprovementIds: [String]
     ): Character
+    setDeathMoves(
+        gameRoleId: String!, characterId: String!, moveNames: [String]!
+    ): Character!
 
 
     #    Move categories

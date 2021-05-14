@@ -288,7 +288,7 @@ public class PlaybookCreatorsContent {
             .improvementMoves(improvementMovesBrainer)
             .build();
 
-    public static final List<Move> brainerOptionalMoves = List.of(unnaturalLust, brainReceptivity, brainScan, whisperProjection, puppetStrings);
+    public static final List<Move> brainerOptionalMoves = List.of(unnaturalLust, brainReceptivity, brainScan, whisperProjection, puppetStrings, brainAttunement);
 
     public static final List<Move> brainerDefaultMoves = List.of(brainerSpecial);
 

@@ -96,4 +96,9 @@ public class MoveServiceImpl implements MoveService {
 
         return moves;
     }
+
+    @Override
+    public List<Move> findDeathMoves() {
+        return moveRepository.findAllByKind(MoveType.DEATH);
+    }
 }

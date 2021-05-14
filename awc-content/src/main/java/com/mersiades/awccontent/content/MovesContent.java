@@ -1042,7 +1042,7 @@ public class MovesContent {
             .build();
     public static final Move battlebabeSpecial = Move.builder()
             .id(new ObjectId().toString())
-            .name("BATTLEBABE SPECIAL")
+            .name(battlebabeSpecialName)
             .description("If you and another character have sex, nullify the other character’s sex move. Whatever it is, it just doesn’t happen.")
             .kind(MoveType.DEFAULT_CHARACTER)
             .moveAction(battlebabeSpecialAction)
@@ -1159,7 +1159,7 @@ public class MovesContent {
             .build();
     public static final Move brainerSpecial = Move.builder()
             .id(new ObjectId().toString())
-            .name("BRAINER SPECIAL")
+            .name(brainerSpecialName)
             .description("If you and another character have sex, you automatically do a _**deep brain scan**_ on them, whether you have the move or not. Roll+weird as normal.\n" +
                     "\n" +
                     "However, the MC chooses which questions the other character’s player answers.")
@@ -1296,7 +1296,7 @@ public class MovesContent {
             .build();
     public static final Move fuckingThieves = Move.builder()
             .id(new ObjectId().toString())
-            .name("FUCKING THIEVES")
+            .name(fuckingThievesName)
             .description("_**Fucking thieves**_: when you have your gang search their pockets and saddlebags for something, roll+hard. It has to be something small enough to fit.\n" +
                     "\n" +
                     "On a 10+, one of you happens to have just the thing, or close enough.\n" +
@@ -1322,7 +1322,7 @@ public class MovesContent {
             .build();
     public static final Move driverSpecial = Move.builder()
             .id(new ObjectId().toString())
-            .name("DRIVER SPECIAL")
+            .name(driverSpecialName)
             .description("If you and another character have sex, roll+cool.\n" +
                     "\n" +
                     "On a 10+, it’s cool, no big deal.\n" +
@@ -2586,5 +2586,46 @@ public class MovesContent {
             .name(improveBasicMoves2Name)
             .description("advance the other three basic moves\n")
             .kind(MoveType.IMPROVE_BASIC_MOVES)
+            .build();
+
+    /* ----------------------------- DEATH MOVES --------------------------------- */
+
+    public static final StatModifier hardMinus1Mod = StatModifier.builder()
+            .id(new ObjectId().toString())
+            .statToModify(HARD)
+            .modification(-1)
+            .maxLimit(2)
+            .build();
+
+    public static final Move hardMinus1 = Move.builder()
+            .id(new ObjectId().toString())
+            .name(hardMinus1Name)
+            .description("come back with -1hard\n")
+            .statModifier(hardMinus1Mod)
+            .kind(MoveType.DEATH)
+            .stat(null)
+            .build();
+
+    public static final Move deathWeirdMax3 = Move.builder()
+            .id(new ObjectId().toString())
+            .name(deathWeirdMax3Name)
+            .description("come back with +1weird (max+3)\n")
+            .statModifier(weirdMax3Mod)
+            .kind(MoveType.DEATH)
+            .stat(null)
+            .build();
+
+    public static final Move deathChangePlaybook = Move.builder()
+            .id(new ObjectId().toString())
+            .name(deathChangePlaybookName)
+            .description("change to a new playbook\n")
+            .kind(MoveType.DEATH)
+            .build();
+
+    public static final Move die = Move.builder()
+            .id(new ObjectId().toString())
+            .name(dieName)
+            .description("die\n")
+            .kind(MoveType.DEATH)
             .build();
 }

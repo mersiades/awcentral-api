@@ -86,6 +86,11 @@ public class Query implements GraphQLQueryResolver {
         return moveService.findAll();
     }
 
+    public List<Move> deathMoves() {
+        log.info("fetching death moves");
+        return moveService.findDeathMoves();
+    }
+
     public List<Move> otherPlaybookMoves(PlaybookType playbookType) {
         return moveService.findOtherPlaybookMoves(playbookType);
     }

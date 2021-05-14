@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.mersiades.awccontent.content.PlaybookCreatorsContent.brainerGearCreator;
 import static com.mersiades.awcweb.bootstrap.MockUserLoader.*;
 
 
@@ -169,7 +170,7 @@ public class MockCharacterLoader implements CommandLineRunner {
 
         BrainerGear brainerGear = BrainerGear.builder()
                 .id(new ObjectId().toString())
-                .brainerGear(List.of("brain relay", "violation glove"))
+                .brainerGear(List.of(brainerGearCreator.getGear().get(0), brainerGearCreator.getGear().get(1)))
                 .build();
 
         PlaybookUniques brainerUnique = PlaybookUniques.builder()
