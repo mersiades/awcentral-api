@@ -30,7 +30,7 @@ import static com.mersiades.awcweb.bootstrap.MockUserLoader.*;
 
 
 @Component
-@Order(value = 2)
+@Order(value = 3)
 @Profile("dev")
 @Slf4j
 public class MockCharacterLoader implements CommandLineRunner {
