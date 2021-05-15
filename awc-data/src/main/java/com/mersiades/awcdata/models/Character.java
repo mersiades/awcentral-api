@@ -101,6 +101,10 @@ public class Character {
     @Builder.Default
     private List<CharacterMove> deathMoves = new ArrayList<>();
 
+    // The names of the basic Moves the player has chosen to advance.
+    @Builder.Default
+    private List<String> advancedBasicMoves = new ArrayList<>();
+
     @Builder.Default
     private List<Hold> holds = new ArrayList<>();
 

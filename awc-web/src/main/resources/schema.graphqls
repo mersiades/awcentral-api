@@ -182,6 +182,7 @@ type Move {
     name: String!
     kind: MoveType!
     description: String!
+    twelvePlusInstructions: String
     playbook: PlaybookType
     stat: StatType
     statModifier: StatModifier
@@ -662,6 +663,7 @@ type Character {
     improvementMoves: [CharacterMove]
     futureImprovementMoves: [CharacterMove]
     deathMoves: [CharacterMove]
+    advancedBasicMoves: [String]!
     holds: [Hold]
 }
 
@@ -682,6 +684,7 @@ type CharacterMove {
     name: String!
     kind: MoveType!
     description: String!
+    twelvePlusInstructions: String
     playbook: PlaybookType!
     stat: StatType
     statModifier: StatModifier

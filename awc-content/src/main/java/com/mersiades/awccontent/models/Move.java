@@ -22,6 +22,9 @@ public class Move  {
 
     private String description;
 
+    // Some of the basic moves have extra instruction for when the character rolls over 12
+    private String twelvePlusInstructions;
+
     private StatType stat;
 
     private StatModifier statModifier;
