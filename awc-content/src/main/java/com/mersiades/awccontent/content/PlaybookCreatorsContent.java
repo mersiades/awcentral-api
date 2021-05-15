@@ -108,7 +108,7 @@ public class PlaybookCreatorsContent {
                     "Go around again for Hx. On your turn, ask 1, 2, or all 3:\n" +
                     "\n" +
                     "- *Which one of you do I figure is doomed to self-destruction?* Give that character -2 for Hx.\n" +
-                    "- *Which one of you put a hand in when it mattered, and helped me save a life?* Give that character +2 for Hx." +
+                    "- *Which one of you put a hand in when it mattered, and helped me save a life?* Give that character +2 for Hx.\n" +
                     "- *Which one of you has been beside me all along, and has seen everything I’ve seen?* Give that character +3 for Hx.\n" +
                     "\n" +
                     "Give everyone else +1 for Hx. You keep your eyes open.\n" +

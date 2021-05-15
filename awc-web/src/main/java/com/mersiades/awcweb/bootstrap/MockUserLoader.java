@@ -326,10 +326,10 @@ public class MockUserLoader implements CommandLineRunner {
                     .build();
 
             GameRole daveAsMC3 = GameRole.builder().id(DAVE_AS_MC_3_ID).role(RoleType.MC).build();
-            daveAsMC2.setUserId(mockUser1.getId());
-            daveAsMC2.setGameId(mockGame6.getId());
-            daveAsMC2.setGameName(mockGame6.getName());
-            mockGame3.getGameRoles().add(daveAsMC3);
+            daveAsMC3.setUserId(mockUser1.getId());
+            daveAsMC3.setGameId(mockGame6.getId());
+            daveAsMC3.setGameName(mockGame6.getName());
+            mockGame6.getGameRoles().add(daveAsMC3);
             mockUser1.getGameRoles().add(daveAsMC3);
 
             GameRole sarahAsPlayer2 = GameRole.builder().id(SARA_AS_PLAYER_ID_2).role(RoleType.PLAYER).build();
