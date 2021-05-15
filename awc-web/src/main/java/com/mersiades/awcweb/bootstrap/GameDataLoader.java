@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.mersiades.awccontent.content.AlliesCreatorContent.allyCreator;
 import static com.mersiades.awccontent.content.LooksContent.*;
 import static com.mersiades.awccontent.content.McContentContent.mcContent;
 import static com.mersiades.awccontent.content.MovesContent.*;
@@ -38,6 +39,7 @@ public class GameDataLoader implements CommandLineRunner {
     private final StatModifierService statModifierService;
     private final VehicleCreatorService vehicleCreatorService;
     private final ThreatCreatorService threatCreatorService;
+    private final AllyCreatorService allyCreatorService;
     private final McContentService mcContentService;
 
     @Autowired
@@ -65,6 +67,9 @@ public class GameDataLoader implements CommandLineRunner {
     ThreatCreatorRepository threatCreatorRepository;
 
     @Autowired
+    AllyCreatorRepository allyCreatorRepository;
+
+    @Autowired
     McContentRepository mcContentRepository;
 
     public GameDataLoader(PlaybookCreatorService playbookCreatorService,
@@ -76,6 +81,7 @@ public class GameDataLoader implements CommandLineRunner {
                           StatModifierService statModifierService,
                           VehicleCreatorService vehicleCreatorService,
                           ThreatCreatorService threatCreatorService,
+                          AllyCreatorService allyCreatorService,
                           McContentService mcContentService) {
         this.playbookCreatorService = playbookCreatorService;
         this.playbookService = playbookService;
@@ -86,6 +92,7 @@ public class GameDataLoader implements CommandLineRunner {
         this.statModifierService = statModifierService;
         this.vehicleCreatorService = vehicleCreatorService;
         this.threatCreatorService = threatCreatorService;
+        this.allyCreatorService = allyCreatorService;
         this.mcContentService = mcContentService;
     }
 
@@ -131,6 +138,11 @@ public class GameDataLoader implements CommandLineRunner {
         List<ThreatCreator> threatCreators = threatCreatorRepository.findAll();
         if (threatCreators.size() == 0) {
             loadThreatCreator();
+        }
+
+        List<AllyCreator> allyCreators = allyCreatorRepository.findAll();
+        if (allyCreators.size() == 0) {
+            loadAllyCreator();
         }
 
         List<McContent> mcContent = mcContentRepository.findAll();
@@ -1056,6 +1068,10 @@ public class GameDataLoader implements CommandLineRunner {
 
     private void loadThreatCreator() {
         threatCreatorService.save(threatCreator);
+    }
+
+    private void loadAllyCreator() {
+        allyCreatorService.save(allyCreator);
     }
 
     private void fleshOutPlaybookAndSave(PlaybookType playbookType) {
