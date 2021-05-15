@@ -640,6 +640,8 @@ public class GameServiceImpl implements GameService {
         hold2.setRollResult(gameMessage.getRollResult());
         hold3.setRollResult(gameMessage.getRollResult());
 
+        // TODO: add twelvePlusInstructions to gameMessage if the character has advanced the Move
+
         if (modifier.getIsHighlighted()) {
             character.setExperience(character.getExperience() + 1);
             gameMessage.setContent(gameMessage.getContent() +

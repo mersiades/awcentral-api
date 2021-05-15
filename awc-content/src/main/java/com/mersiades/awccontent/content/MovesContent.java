@@ -35,6 +35,7 @@ public class MovesContent {
             .kind(MoveType.BASIC)
             .moveAction(doSomethingUnderFireAction)
             .playbook(null)
+            .twelvePlusInstructions("_**On a 12+**_, you transcend the danger, the pressure, the possibility of harm. You do what you set out to do, and the MC will offer you a better outcome, true beauty, or a moment of grace.")
             .build();
 
     public static final MoveAction goAggroAction = MoveAction.builder()
@@ -64,6 +65,7 @@ public class MovesContent {
             .kind(MoveType.BASIC)
             .moveAction(goAggroAction)
             .playbook(null)
+            .twelvePlusInstructions("_**On a 12+**_, they have to cave and do what you want. You’ve overwhelmed them; they can’t possibly bring themselves to force your hand.")
             .build();
     public static final MoveAction suckerAction = MoveAction.builder()
             .id(new ObjectId().toString())
@@ -119,6 +121,15 @@ public class MovesContent {
             .kind(MoveType.BASIC)
             .moveAction(seduceOrManipAction)
             .playbook(null)
+            .twelvePlusInstructions("_**On a 12+**_, only if they’re an NPC, they do it, and furthermore you change their nature. Choose one of the following; tell the MC to erase their threat type altogether and write it in instead.\n" +
+                    "\n" +
+                    "- _**ally: friend** (impulse: to back you up)_\n" +
+                    "- _**ally: lover** (impulse: to give you shelter & comfort)_\n" +
+                    "- _**ally: right hand** (impulse: to follow through on your intentions)_\n" +
+                    "- _**ally: representative** (impulse: to pursue your interests in your absence)_\n" +
+                    "- _**ally: guardian** (impulse: to intercept danger)_\n" +
+                    "- _**ally: confidante** (impulse: to give you advice, perspective, or absolution)_\n" +
+                    "\n")
             .build();
     public static final MoveAction helpOrInterfereAction = MoveAction.builder()
             .id(new ObjectId().toString())
@@ -164,6 +175,7 @@ public class MovesContent {
             .kind(MoveType.BASIC)
             .moveAction(readASitchAction)
             .playbook(null)
+            .twelvePlusInstructions("_**On a 12+**_, ask any 3 questions you want, not limited to the list.")
             .build();
     public static final MoveAction readAPersonAction = MoveAction.builder()
             .id(new ObjectId().toString())
@@ -188,6 +200,7 @@ public class MovesContent {
             .kind(MoveType.BASIC)
             .moveAction(readAPersonAction)
             .playbook(null)
+            .twelvePlusInstructions("_**On a 12+**_, hold 3, but spend them 1 for 1 to ask any question you want, not limited to the list.")
             .build();
     public static final MoveAction openBrainAction = MoveAction.builder()
             .id(new ObjectId().toString())
@@ -208,6 +221,7 @@ public class MovesContent {
             .kind(MoveType.BASIC)
             .moveAction(openBrainAction)
             .playbook(null)
+            .twelvePlusInstructions("_**On a 12+**_, you reach through the world’s psychic maelstrom to what’s beyond it.")
             .build();
     public static final MoveAction lifestyleAndGigsAction = MoveAction.builder()
             .id(new ObjectId().toString())
