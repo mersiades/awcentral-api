@@ -553,11 +553,20 @@ type Game {
     commsUrl: String
     hasFinishedPreGame: Boolean
     showFirstSession: Boolean
+    threatMap: ThreatMap
     players: [User]
     gameRoles: [GameRole]
     invitees: [String]
     gameMessages: [GameMessage]
 }
+
+type ThreatMap {
+    id: ID!
+    gameId: String!
+    wonderNotes: String
+    threats: [Threat]!
+}
+
 
 type GameMessage {
     id: ID!
