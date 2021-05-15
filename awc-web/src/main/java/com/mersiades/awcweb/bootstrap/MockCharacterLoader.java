@@ -30,8 +30,8 @@ import static com.mersiades.awcweb.bootstrap.MockUserLoader.*;
 
 
 @Component
-@Order(value = 2)
-@Profile("dev")
+@Order(value = 3)
+@Profile({"dev", "cypress"})
 @Slf4j
 public class MockCharacterLoader implements CommandLineRunner {
 
@@ -83,6 +83,8 @@ public class MockCharacterLoader implements CommandLineRunner {
     private void loadMockCharacters() {
         GameRole saraAsPlayer = gameRoleService.findById(SARA_AS_PLAYER_ID);
         assert saraAsPlayer != null;
+        GameRole saraAsPlayer2 = gameRoleService.findById(SARA_AS_PLAYER_ID_2);
+        assert saraAsPlayer2 != null;
         GameRole johnAsPlayer = gameRoleService.findById(JOHN_AS_PLAYER_ID);
         assert johnAsPlayer != null;
         GameRole mayaAsPlayer = gameRoleService.findById(MAYA_AS_PLAYER_ID);
@@ -334,6 +336,22 @@ public class MockCharacterLoader implements CommandLineRunner {
                 .allowedPlaybookMoves(playbookCreatorAngel.getMoveChoiceCount())
                 .build();
 
+        Character mockCharacter1_2 = Character.builder()
+                .name("Doc")
+                .playbook(PlaybookType.ANGEL)
+                .looks(angelLooks)
+                .gear(List.of("Shotgun", "Rusty screwdriver"))
+                .statsBlock(angelStatsBlock1)
+                .barter(2)
+                .playbookUniques(angelUnique)
+                .characterMoves(characterMoves)
+                .hasCompletedCharacterCreation(true)
+                .hasPlusOneForward(true)
+                .vehicleCount(0)
+                .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorAngel.getMoveChoiceCount())
+                .build();
+
         // -------------------------------- Create John's Battlebabe ----------------------------------- //
         Character mockCharacter2 = Character.builder()
                 .name("Scarlet")
@@ -410,6 +428,9 @@ public class MockCharacterLoader implements CommandLineRunner {
         saveCharacter(mayaAsPlayer, harm, mockCharacter3);
         saveCharacter(ahmadAsPlayer, harm, mockCharacter4);
         saveCharacter(takeshiAsPlayer, harm, mockCharacter5);
+
+        // Add Sara's character to her other GameRole as well
+        saveCharacter(saraAsPlayer2, harm, mockCharacter1_2);
     }
 
     private void loadHx() {

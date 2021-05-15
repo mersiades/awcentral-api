@@ -24,7 +24,7 @@ import static com.mersiades.awccontent.content.ThreatsCreatorContent.threatCreat
 import static com.mersiades.awccontent.content.VehicleCreatorContent.vehicleCreator;
 
 @Component
-@Order(value = 0)
+@Order(value = 1)
 @Profile("!test")
 @Slf4j
 public class GameDataLoader implements CommandLineRunner {
