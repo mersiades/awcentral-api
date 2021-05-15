@@ -33,6 +33,8 @@ public class Game {
 
     private Boolean showFirstSession;
 
+    private ThreatMap threatMap;
+
     @Builder.Default
     private List<GameMessage> gameMessages = new ArrayList<>();
 

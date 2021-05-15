@@ -182,6 +182,7 @@ type Move {
     name: String!
     kind: MoveType!
     description: String!
+    twelvePlusInstructions: String
     playbook: PlaybookType
     stat: StatType
     statModifier: StatModifier
@@ -552,11 +553,20 @@ type Game {
     commsUrl: String
     hasFinishedPreGame: Boolean
     showFirstSession: Boolean
+    threatMap: ThreatMap
     players: [User]
     gameRoles: [GameRole]
     invitees: [String]
     gameMessages: [GameMessage]
 }
+
+type ThreatMap {
+    id: ID!
+    gameId: String!
+    wonderNotes: String
+    threats: [Threat]!
+}
+
 
 type GameMessage {
     id: ID!
@@ -651,6 +661,7 @@ type Character {
     allowedPlaybookMoves: Int!
     allowedOtherPlaybookMoves: Int!
     isDead: Boolean!
+    isRetired: Boolean!
     mustChangePlaybook: Boolean!
     battleVehicles: [BattleVehicle]
     vehicles: [Vehicle]
@@ -661,6 +672,7 @@ type Character {
     improvementMoves: [CharacterMove]
     futureImprovementMoves: [CharacterMove]
     deathMoves: [CharacterMove]
+    advancedBasicMoves: [String]!
     holds: [Hold]
 }
 
@@ -681,6 +693,7 @@ type CharacterMove {
     name: String!
     kind: MoveType!
     description: String!
+    twelvePlusInstructions: String
     playbook: PlaybookType!
     stat: StatType
     statModifier: StatModifier

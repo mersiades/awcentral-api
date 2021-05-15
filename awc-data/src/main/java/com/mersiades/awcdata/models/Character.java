@@ -69,6 +69,9 @@ public class Character {
     private Boolean isDead = false;
 
     @Builder.Default
+    private Boolean isRetired = false;
+
+    @Builder.Default
     private Boolean mustChangePlaybook = false;
 
     @Builder.Default
@@ -97,6 +100,10 @@ public class Character {
 
     @Builder.Default
     private List<CharacterMove> deathMoves = new ArrayList<>();
+
+    // The names of the basic Moves the player has chosen to advance.
+    @Builder.Default
+    private List<String> advancedBasicMoves = new ArrayList<>();
 
     @Builder.Default
     private List<Hold> holds = new ArrayList<>();
