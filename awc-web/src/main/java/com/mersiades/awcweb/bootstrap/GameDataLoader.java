@@ -21,6 +21,7 @@ import static com.mersiades.awccontent.content.NamesContent.*;
 import static com.mersiades.awccontent.content.PlaybookCreatorsContent.*;
 import static com.mersiades.awccontent.content.PlaybooksContent.*;
 import static com.mersiades.awccontent.content.StatOptionsContent.*;
+import static com.mersiades.awccontent.content.ThreatMapCreatorContent.threatMapCreator;
 import static com.mersiades.awccontent.content.ThreatsCreatorContent.threatCreator;
 import static com.mersiades.awccontent.content.VehicleCreatorContent.vehicleCreator;
 
@@ -40,6 +41,7 @@ public class GameDataLoader implements CommandLineRunner {
     private final VehicleCreatorService vehicleCreatorService;
     private final ThreatCreatorService threatCreatorService;
     private final AllyCreatorService allyCreatorService;
+    private final ThreatMapCreatorService threatMapCreatorService;
     private final McContentService mcContentService;
 
     @Autowired
@@ -70,6 +72,9 @@ public class GameDataLoader implements CommandLineRunner {
     AllyCreatorRepository allyCreatorRepository;
 
     @Autowired
+    ThreatMapCreatorRepository threatMapCreatorRepository;
+
+    @Autowired
     McContentRepository mcContentRepository;
 
     public GameDataLoader(PlaybookCreatorService playbookCreatorService,
@@ -82,6 +87,7 @@ public class GameDataLoader implements CommandLineRunner {
                           VehicleCreatorService vehicleCreatorService,
                           ThreatCreatorService threatCreatorService,
                           AllyCreatorService allyCreatorService,
+                          ThreatMapCreatorService threatMapCreatorService,
                           McContentService mcContentService) {
         this.playbookCreatorService = playbookCreatorService;
         this.playbookService = playbookService;
@@ -93,6 +99,7 @@ public class GameDataLoader implements CommandLineRunner {
         this.vehicleCreatorService = vehicleCreatorService;
         this.threatCreatorService = threatCreatorService;
         this.allyCreatorService = allyCreatorService;
+        this.threatMapCreatorService = threatMapCreatorService;
         this.mcContentService = mcContentService;
     }
 
@@ -145,6 +152,11 @@ public class GameDataLoader implements CommandLineRunner {
             loadAllyCreator();
         }
 
+        List<ThreatMapCreator> threatMapCreators = threatMapCreatorRepository.findAll();
+        if (threatMapCreators.size() == 0) {
+            loadThreatMapCreator();
+        }
+
         List<McContent> mcContent = mcContentRepository.findAll();
         if (mcContent.size() == 0) {
             loadMcContent();
@@ -162,6 +174,8 @@ public class GameDataLoader implements CommandLineRunner {
         log.info("VehicleCreator count: " + vehicleCreatorRepository.count());
         log.info("ThreatCreator count: " + threatCreatorRepository.count());
     }
+
+
 
     private void loadMoves() {
 
@@ -1072,6 +1086,10 @@ public class GameDataLoader implements CommandLineRunner {
 
     private void loadAllyCreator() {
         allyCreatorService.save(allyCreator);
+    }
+
+    private void loadThreatMapCreator() {
+        threatMapCreatorService.save(threatMapCreator);
     }
 
     private void fleshOutPlaybookAndSave(PlaybookType playbookType) {
