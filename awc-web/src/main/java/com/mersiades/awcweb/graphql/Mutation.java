@@ -3,6 +3,7 @@ package com.mersiades.awcweb.graphql;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awccontent.models.Look;
+import com.mersiades.awcdata.enums.ScriptChangeType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.*;
@@ -32,7 +33,7 @@ public class Mutation implements GraphQLMutationResolver {
         return gameService.createGameWithMC(userId, displayName, email, name);
     }
 
-    public Game setGameName(String gameId, String name)  {
+    public Game setGameName(String gameId, String name) {
         log.info("Setting name for Game: " + gameId);
         return gameService.setGameName(gameId, name);
     }
@@ -390,7 +391,6 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
 
-
     public Game performStabilizeAndHealMove(String gameId, String gameroleId, String characterId, int stockSpent) {
         log.info("Performing STABILIZE AND HEAL move for Character: " + characterId);
         return gameService.performStabilizeAndHealMove(gameId, gameroleId, characterId, stockSpent);
@@ -413,9 +413,9 @@ public class Mutation implements GraphQLMutationResolver {
         return gameRoleService.removeHold(gameRoleId, characterId, hold);
     }
 
-    public Game playXCard(String gameId) {
-        log.info("Playing X card in Game: " + gameId);
-        return gameService.playXCard(gameId);
+    public Game changeScript(String gameId, ScriptChangeType scriptChangeType, String comment) {
+        log.info("Changing script in Game: " + gameId);
+        return gameService.changeScript(gameId, scriptChangeType, comment);
     }
 
 }

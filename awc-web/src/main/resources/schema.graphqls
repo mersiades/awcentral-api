@@ -10,7 +10,7 @@ enum MessageType {
     ROLL_STOCK_MOVE
     STOCK_MOVE
     SUFFER_V_HARM_MOVE
-    X_CARD
+    SCRIPT_CHANGE
 }
 
 enum RoleType {
@@ -149,6 +149,24 @@ enum HoldingSize {
     SMALL,
     MEDIUM,
     LARGE
+}
+
+enum AllyType {
+    FRIEND,
+    LOVER,
+    RIGHT_HAND,
+    REPRESENTATIVE,
+    GUARDIAN,
+    CONFIDANTE
+}
+
+enum ScriptChangeType {
+    REWIND,
+    FAST_FORWARD,
+    PAUSE,
+    FRAME_BY_FRAME,
+    INSTANT_REPLAY,
+    RESUME
 }
 
 # ---------------------------------------- STATIC GAME CONTENT TYPES -------------------------------------- #
@@ -1383,7 +1401,7 @@ type Mutation {
     # Other
     spendHold(gameId: String!, gameRoleId: String!, characterId: String!, hold: HoldInput!): Game
     removeHold(gameRoleId: String!, characterId: String!, hold: HoldInput!): Character
-    playXCard(gameId: String!): Game
+    changeScript(gameId: String!, scriptChangeType: ScriptChangeType!, comment: String): Game
 }
 
 # ------------------------------------------- SUBSCRIPTIONS ------------------------------------------ #
