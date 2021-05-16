@@ -65,10 +65,6 @@ public class GameServiceImpl implements GameService {
             "\n" +
             "Also see the rules about a gang holding together after it takes harm.";
 
-    private static final String X_CARD_CONTENT = "_“I’d like your help. Your help to make this game fun for everyone. If anything makes anyone uncomfortable in any way, click on the X-Card icon. You don’t have to explain why. It doesn't matter why. When we see that the X-Card has been played, we simply edit out anything X-Carded. And if there is ever an issue, anyone can call for a break and we can talk privately. I know it sounds funny but it will help us play amazing games together and usually I’m the one who uses the X-Card to help take care of myself. Please help make this game fun for everyone. Thank you!\"_\n" +
-            "\n" +
-            "The X-Card was created by **John Stavropoulos** and you can [read more about it here](http://tinyurl.com/x-card-rpg).";
-
     public static final String SCRIPT_CHANGE_REWIND_TITLE = "SCRIPT CHANGE: REWIND";
     public static final String SCRIPT_CHANGE_FAST_FORWARD_TITLE = "SCRIPT CHANGE: FAST FORWARD";
     public static final String SCRIPT_CHANGE_PAUSE_TITLE = "SCRIPT CHANGE: PAUSE";
@@ -81,7 +77,6 @@ public class GameServiceImpl implements GameService {
     public static final String SCRIPT_CHANGE_FRAME_CONTENT = "Call frame-by-frame before scenes with content you want to play through with care. During the scene, players will call occasional pauses to check in, and take the scene slow.";
     public static final String SCRIPT_CHANGE_RESUME_CONTENT = "Use resume to return to normal play at any time, as the player who called the original Script Change in effect.";
     public static final String SCRIPT_CHANGE_REPLAY_CONTENT = "Call an instant replay right after a scene to share enthusiasm about what happened, or to clarify details of the narrative.";
-    public static final String SCRIPT_CHANGE_ATTRIBUTION = "Script Change was created by **Beau Jágr Sheldon ** and you can and should [read more about it here](http://briebeau.com/scriptchange).";
 
     private final GameRepository gameRepository;
     private final UserService userService;
@@ -1606,53 +1601,36 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game playXCard(String gameId) {
-        Game game = getGame(gameId);
-
-        GameMessage gameMessage = GameMessage.builder()
-                .id(new ObjectId().toString())
-                .gameId(gameId)
-                .messageType(MessageType.X_CARD)
-                .sentOn(Instant.now().toString())
-                .title("AN X-CARD HAS BEEN PLAYED")
-                .content(X_CARD_CONTENT)
-                .build();
-
-        game.getGameMessages().add(gameMessage);
-        return gameRepository.save(game);
-    }
-
-    @Override
     public Game changeScript(String gameId, ScriptChangeType scriptChangeType, String comment) {
         Game game = getGame(gameId);
 
         String title = "";
-        String content = comment == null ? "" : "Comment: _**" +comment + "**_\n \n";
+        String content = comment == null || comment.equals("") ? "" : "Comment: _**" +comment + "**_\n \n";
 
         switch (scriptChangeType) {
             case REWIND:
                 title = SCRIPT_CHANGE_REWIND_TITLE;
-                content += SCRIPT_CHANGE_REWIND_CONTENT + "\n\n" + SCRIPT_CHANGE_ATTRIBUTION;
+                content += SCRIPT_CHANGE_REWIND_CONTENT + "\n\n";
                 break;
             case FAST_FORWARD:
                 title = SCRIPT_CHANGE_FAST_FORWARD_TITLE;
-                content += SCRIPT_CHANGE_FAST_FORWARD_CONTENT + "\n\n" + SCRIPT_CHANGE_ATTRIBUTION;
+                content += SCRIPT_CHANGE_FAST_FORWARD_CONTENT + "\n\n";
                 break;
             case PAUSE:
                 title = SCRIPT_CHANGE_PAUSE_TITLE;
-                content += SCRIPT_CHANGE_PAUSE_CONTENT + "\n\n" + SCRIPT_CHANGE_ATTRIBUTION;
+                content += SCRIPT_CHANGE_PAUSE_CONTENT + "\n\n";
                 break;
             case FRAME_BY_FRAME:
                 title = SCRIPT_CHANGE_FRAME_TITLE;
-                content += SCRIPT_CHANGE_FRAME_CONTENT + "\n\n" + SCRIPT_CHANGE_ATTRIBUTION;
+                content += SCRIPT_CHANGE_FRAME_CONTENT + "\n\n";
                 break;
             case RESUME:
                 title = SCRIPT_CHANGE_RESUME_TITLE;
-                content += SCRIPT_CHANGE_RESUME_CONTENT + "\n\n" + SCRIPT_CHANGE_ATTRIBUTION;
+                content += SCRIPT_CHANGE_RESUME_CONTENT + "\n\n";
                 break;
             case INSTANT_REPLAY:
                 title = SCRIPT_CHANGE_REPLAY_TITLE;
-                content += SCRIPT_CHANGE_REPLAY_CONTENT + "\n\n" + SCRIPT_CHANGE_ATTRIBUTION;
+                content += SCRIPT_CHANGE_REPLAY_CONTENT + "\n\n";
                 break;
         }
 

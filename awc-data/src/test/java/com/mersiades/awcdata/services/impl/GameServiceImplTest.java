@@ -1297,24 +1297,6 @@ class GameServiceImplTest {
     }
 
     @Test
-    void shouldPlayXCard() {
-        // Given
-        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
-        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
-
-        // When
-        Game returnedGame = gameService.playXCard(mockGame1.getId());
-
-        // Then
-        assert returnedGame != null;
-        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
-
-        assertTrue(returnedGameMessage.getTitle().contains("AN X-CARD HAS BEEN PLAYED"));
-        verify(gameRepository, times(1)).findById(anyString());
-        verify(gameRepository, times(1)).save(any(Game.class));
-    }
-
-    @Test
     void shouldRewindScript_withComment() {
         String mockComment = "I'd like to go back to that bit about...";
         GameMessage returnedGameMessage = checkChangeScript(
@@ -1374,7 +1356,6 @@ class GameServiceImplTest {
 
         assertTrue(returnedGameMessage.getTitle().contains(expectedTitle));
         assertTrue(returnedGameMessage.getContent().contains(expectedContent));
-        assertTrue(returnedGameMessage.getContent().contains(SCRIPT_CHANGE_ATTRIBUTION));
         verify(gameRepository, times(1)).findById(anyString());
         verify(gameRepository, times(1)).save(any(Game.class));
 

@@ -11,6 +11,5 @@ public enum MessageType {
     ROLL_STOCK_MOVE,
     STOCK_MOVE,
     SUFFER_V_HARM_MOVE,
-    X_CARD,
     SCRIPT_CHANGE
 }
