@@ -4,6 +4,7 @@ import com.mersiades.awccontent.enums.RoleType;
 import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awccontent.models.Move;
 import com.mersiades.awccontent.services.MoveService;
+import com.mersiades.awcdata.enums.ScriptChangeType;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.AngelKit;
@@ -27,6 +28,8 @@ import java.util.Optional;
 
 import static com.mersiades.awccontent.content.MovesContent.*;
 import static com.mersiades.awccontent.enums.StatType.*;
+import static com.mersiades.awcdata.enums.ScriptChangeType.*;
+import static com.mersiades.awcdata.services.impl.GameServiceImpl.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -1311,11 +1314,71 @@ class GameServiceImplTest {
         verify(gameRepository, times(1)).save(any(Game.class));
     }
 
+    @Test
+    void shouldRewindScript_withComment() {
+        String mockComment = "I'd like to go back to that bit about...";
+        GameMessage returnedGameMessage = checkChangeScript(
+                REWIND,
+                mockComment,
+                SCRIPT_CHANGE_REWIND_TITLE,
+                SCRIPT_CHANGE_REWIND_CONTENT);
+        assertTrue(returnedGameMessage.getContent().contains(mockComment));
+    }
+
+    @Test
+    void shouldFastForwardScript() {
+        checkChangeScript(FAST_FORWARD, null, SCRIPT_CHANGE_FAST_FORWARD_TITLE, SCRIPT_CHANGE_FAST_FORWARD_CONTENT);
+    }
+
+    @Test
+    void shouldPauseScript() {
+        checkChangeScript(PAUSE, null, SCRIPT_CHANGE_PAUSE_TITLE, SCRIPT_CHANGE_PAUSE_CONTENT);
+    }
+
+    @Test
+    void shouldChangeScript_frameByFrame() {
+        checkChangeScript(FRAME_BY_FRAME, null, SCRIPT_CHANGE_FRAME_TITLE, SCRIPT_CHANGE_FRAME_CONTENT);
+    }
+
+    @Test
+    void shouldResumeScript() {
+        checkChangeScript(RESUME, null, SCRIPT_CHANGE_RESUME_TITLE, SCRIPT_CHANGE_RESUME_CONTENT);
+    }
+
+    @Test
+    void shouldReplayScript() {
+        checkChangeScript(INSTANT_REPLAY, null, SCRIPT_CHANGE_REPLAY_TITLE, SCRIPT_CHANGE_REPLAY_CONTENT);
+    }
+
     private Character getSavedCharacter(Game game, String gameRoleId, String characterId) {
         return game.getGameRoles().stream()
                 .filter(gameRole -> gameRole.getId().equals(gameRoleId)).findFirst().orElseThrow()
                 .getCharacters().stream()
                 .filter(character -> character.getId().equals(characterId)).findFirst().orElseThrow();
+    }
+
+    private GameMessage checkChangeScript(
+            ScriptChangeType scriptChangeType,
+            String comment,
+            String expectedTitle,
+            String expectedContent) {
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
+
+        // When
+        Game returnedGame = gameService.changeScript(mockGame1.getId(), scriptChangeType, comment);
+
+        // Then
+        assert returnedGame != null;
+        GameMessage returnedGameMessage = returnedGame.getGameMessages().stream().findFirst().orElseThrow();
+
+        assertTrue(returnedGameMessage.getTitle().contains(expectedTitle));
+        assertTrue(returnedGameMessage.getContent().contains(expectedContent));
+        assertTrue(returnedGameMessage.getContent().contains(SCRIPT_CHANGE_ATTRIBUTION));
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(gameRepository, times(1)).save(any(Game.class));
+
+        return returnedGameMessage;
     }
 
     private void setUpMockServicesWithByMoveId(Move move) {
