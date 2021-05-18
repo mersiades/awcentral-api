@@ -1083,7 +1083,7 @@ public class MovesContent {
             .build();
     public static final Move iceCold = Move.builder()
             .id(new ObjectId().toString())
-            .name("ICE COLD")
+            .name(iceColdName)
             .description("_**Ice cold**_: when you go aggro on an NPC, roll+cool instead of roll+hard. When you go aggro on another player’s character, roll+Hx instead of roll+hard.")
             .rollModifier(iceColdMod)
             .stat(null).kind(MoveType.CHARACTER)
@@ -1190,7 +1190,7 @@ public class MovesContent {
             .playbook(PlaybookType.BRAINER).build();
     public static final Move brainReceptivity = Move.builder()
             .id(new ObjectId().toString())
-            .name("CASUAL BRAIN RECEPTIVITY")
+            .name(brainReceptivityName)
             .description("_**Casual brain receptivity**_: when you read someone, roll+weird instead of roll+sharp. Your victim has to be able to see you, but you don’t have to interact.")
             .kind(MoveType.CHARACTER)
             .stat(null)
