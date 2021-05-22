@@ -15,7 +15,7 @@ A web interface to play Apocalypse World online
 - Checkout the `master` branch
 - run `./mvnw clean release:prepare` 
   - this get the maven-release-plugin to update the release versions, and commits the changes
-- push the 2 new commits to the remote repo
+- run `git fetch` and make sure local and remote are up-to-date.
 - run `./mvnw release:clean` to remove all the temporary files `release:prepare` generates
 - check out the newly created `tag`. (eg, aw-central-0.0.6)
 - run `mvn clean package`
