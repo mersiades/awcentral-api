@@ -10,7 +10,6 @@ import com.mersiades.awcdata.models.uniques.AngelKit;
 import com.mersiades.awcdata.models.uniques.BrainerGear;
 import com.mersiades.awcdata.models.uniques.CustomWeapons;
 import com.mersiades.awcdata.models.uniques.Gang;
-import com.mersiades.awcdata.repositories.CharacterRepository;
 import com.mersiades.awcdata.repositories.UserRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
@@ -20,7 +19,6 @@ import com.mersiades.awcweb.services.MockDataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,7 +27,6 @@ import java.util.stream.Collectors;
 
 import static com.mersiades.awccontent.content.PlaybookCreatorsContent.brainerGearCreator;
 
-@Profile({"dev", "cypress", "test"})
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -46,7 +43,6 @@ public class MockDataServiceImpl implements MockDataService {
     private final VehicleCreatorService vehicleCreatorService;
     private final ThreatCreatorService threatCreatorService;
     private final UserRepository userRepository;
-    private final CharacterRepository characterRepository;
 
     final String KEYCLOAK_ID_1 = System.getenv("DAVE_ID");
     final String KEYCLOAK_DISPLAY_NAME_1 = "dave";
