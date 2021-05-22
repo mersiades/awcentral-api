@@ -49,6 +49,10 @@ public class MoveNames {
     public static final String fuckingThievesName = "FUCKING THIEVES";
     public static final String iceColdName = "ICE COLD";
     public static final String brainReceptivityName = "CASUAL BRAIN RECEPTIVITY";
+    public static final String combatDriverName = "COMBAT DRIVER";
+    public static final String battleHardenedName = "BATTLE-HARDENED";
+    public static final String fuckThisShitName = "FUCK THIS SHIT";
+    public static final String battlefieldInstinctsName = "BATTLEFIELD INSTINCTS";
 
     // Improvement moves
     public static final String sharpMax2Name = "SHARP MAX 2";

@@ -1355,7 +1355,7 @@ public class MovesContent {
             .build();
     public static final Move combatDriver = Move.builder()
             .id(new ObjectId().toString())
-            .name("COMBAT DRIVER")
+            .name(combatDriverName)
             .description("_**Combat driver**_: when you use your vehicle as a weapon, inflict +1harm. When you inflict v-harm, add +1 to your target’s roll. When you suffer v-harm, take -1 to your roll.")
             .kind(MoveType.CHARACTER)
             .moveAction(combatDriverAction)
@@ -1465,7 +1465,7 @@ public class MovesContent {
             .playbook(PlaybookType.GUNLUGGER).build();
     public static final Move battleHardened = Move.builder()
             .id(new ObjectId().toString())
-            .name("BATTLE-HARDENED")
+            .name(battleHardenedName)
             .description("_**Battle-hardened**_: when you act under fire, or when you stand overwatch, roll+hard instead of roll+cool.")
             .kind(MoveType.CHARACTER)
             .stat(null)
@@ -1479,7 +1479,7 @@ public class MovesContent {
             .build();
     public static final Move fuckThisShit = Move.builder()
             .id(new ObjectId().toString())
-            .name("FUCK THIS SHIT")
+            .name(fuckThisShitName)
             .description("_**Fuck this shit**_: name your escape route and roll+hard.\n" +
                     "\n" +
                     "On a 10+, sweet, you’re gone.\n" +
@@ -1492,7 +1492,8 @@ public class MovesContent {
             .playbook(PlaybookType.GUNLUGGER).build();
     public static final Move battlefieldInstincts = Move.builder()
             .id(new ObjectId().toString())
-            .name("BATTLEFIELD INSTINCTS").description("_**Battlefield instincts**_: when you open your brain to the world’s psychic maelstrom, roll+hard instead of roll+weird, but only in battle.")
+            .name(battlefieldInstinctsName)
+            .description("_**Battlefield instincts**_: when you open your brain to the world’s psychic maelstrom, roll+hard instead of roll+weird, but only in battle.")
             .rollModifier(battlefieldInstinctsMod)
             .kind(MoveType.CHARACTER)
             .stat(null)

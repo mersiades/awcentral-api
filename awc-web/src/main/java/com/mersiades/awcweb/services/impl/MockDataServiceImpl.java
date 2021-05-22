@@ -87,19 +87,20 @@ public class MockDataServiceImpl implements MockDataService {
     final String KEYCLOAK_ID_13 = System.getenv("CRISTI_ID");
     final String KEYCLOAK_DISPLAY_NAME_13 = "cristi";
     final String KEYCLOAK_EMAIL_13 = "cristi@email.com";
-    public final String MOCK_GAME_1_ID = new ObjectId().toString();
-    public final String MOCK_GAME_2_ID = new ObjectId().toString();
+    public final String MOCK_GAME_1_ID = "mock-game-1-id";
+    public final String MOCK_GAME_2_ID = "mock-game-2-id";
     public final String MOCK_GAME_3_ID = "mock-game-3-id";
     public final String MOCK_GAME_6_ID = "mock-game-6-id";
+    public final String MOCK_GAME_7_ID = "mock-game-7-id";
     public static final String DAVE_AS_MC_1_ID = "dave-mc-gamerole-1-id";
     public static final String DAVE_AS_MC_2_ID = "dave-mc-gamerole-2-id";
     public static final String DAVE_AS_MC_3_ID = "dave-mc-gamerole-3-id";
     public static final String DAVE_AS_PLAYER_ID = new ObjectId().toString();
-    public static final String SARA_AS_PLAYER_ID = new ObjectId().toString();
-    public static final String JOHN_AS_PLAYER_ID = new ObjectId().toString();
-    public static final String MAYA_AS_PLAYER_ID = new ObjectId().toString();
-    public static final String AHMAD_AS_PLAYER_ID = new ObjectId().toString();
-    public static final String TAKESHI_AS_PLAYER_ID = new ObjectId().toString();
+    public static final String SARA_AS_PLAYER_ID = "sara-player-gamerole-1-id";
+    public static final String JOHN_AS_PLAYER_ID = "john-player-gamerole-1-id";
+    public static final String MAYA_AS_PLAYER_ID = "maya-player-gamerole-1-id";
+    public static final String AHMAD_AS_PLAYER_ID = "ahmad-player-gamerole-1-id";
+    public static final String TAKESHI_AS_PLAYER_ID = "takeshi-player-gamerole-1-id";
     public static final String SARA_AS_PLAYER_ID_2 = "sara-player-gamerole-2-id";
     public static final String JOHN_AS_PLAYER_ID_2 = "john-player-gamerole-2-id";
     public static final String MAYA_AS_PLAYER_ID_2 = "maya-player-gamerole-2-id";
@@ -432,6 +433,18 @@ public class MockDataServiceImpl implements MockDataService {
                     caesarAsPlayer2,
                     cristiAsPlayer2
             ));
+
+            // ------------------------------ Set up mock Game 6 ----------------------------- //
+            // Mock Game 7 is the same as mock game 1, except that the pre-game is marked as complete
+
+            Game mockGame7 = mockGame1;
+
+            mockGame7.setHasFinishedPreGame(true);
+            mockGame7.setShowFirstSession(false);
+            mockGame7.setId(MOCK_GAME_7_ID);
+            mockGame7.setName("Mock Game 7");
+
+            gameService.save(mockGame7);
 
             // ----------------------------- Saving it all ----------------------------------- //
 
