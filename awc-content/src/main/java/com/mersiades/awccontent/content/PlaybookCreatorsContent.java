@@ -480,7 +480,7 @@ public class PlaybookCreatorsContent {
                     "big knife (2-harm hand)",
                     "sawed-off (3-harm close reload messy)",
                     "machete (3-harm hand messy)",
-                    "magnum (3-harm close reload loud"
+                    "magnum (3-harm close reload loud)"
             ))
             .startingBarter(4)
             .withMC("If you’d like to start play with a vehicle or a prosthetic, get with the MC.")

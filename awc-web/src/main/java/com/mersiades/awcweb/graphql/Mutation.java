@@ -9,6 +9,8 @@ import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.*;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
+import com.mersiades.awcweb.models.SystemMessage;
+import com.mersiades.awcweb.services.CypressTestService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,10 +23,12 @@ public class Mutation implements GraphQLMutationResolver {
 
     private final GameService gameService;
     private final GameRoleService gameRoleService;
+    private final CypressTestService cypressTestService;
 
-    public Mutation(GameService gameService, GameRoleService gameRoleService) {
+    public Mutation(GameService gameService, GameRoleService gameRoleService, CypressTestService cypressTestService) {
         this.gameService = gameService;
         this.gameRoleService = gameRoleService;
+        this.cypressTestService = cypressTestService;
     }
 
     // ---------------------------------------------- Game-related -------------------------------------------- //
@@ -416,6 +420,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Game changeScript(String gameId, ScriptChangeType scriptChangeType, String comment) {
         log.info("Changing script in Game: " + gameId);
         return gameService.changeScript(gameId, scriptChangeType, comment);
+    }
+
+    public SystemMessage resetDb() {
+        log.info("Resetting db for end-to-end tests");
+        return cypressTestService.resetDB();
     }
 
 }

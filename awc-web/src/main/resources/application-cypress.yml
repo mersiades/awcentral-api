@@ -7,6 +7,13 @@ spring:
           jwk-set-uri: http://localhost:8180/auth/realms/awc-realm/protocol/openid-connect/certs
   data:
     mongodb:
-      port: 27017
-      host: localhost
-      database: awc-cypress
+      uri: mongodb+srv://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@awcentral-cluster-1.nnjlp.mongodb.net/cypress-awcentral?retryWrites=true&w=majority
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        data:
+#          mongodb:
+#            core:
+#              MongoTemplate: DEBUG
