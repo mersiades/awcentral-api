@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 import static com.mersiades.awccontent.content.PlaybookCreatorsContent.brainerGearCreator;
 
-@Profile({"dev", "cypress"})
+@Profile({"dev", "cypress", "test"})
 @Service
 @RequiredArgsConstructor
 @Slf4j
