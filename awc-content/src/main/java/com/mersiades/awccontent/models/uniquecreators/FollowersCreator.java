@@ -23,13 +23,16 @@ public class FollowersCreator {
 
     private int defaultNumberOfFollowers;
 
-    private int defaultSurplusBarter;
+    private int defaultSurplusBarterCount;
 
     private int defaultFortune;
 
     private int defaultStrengthsCount;
 
     private int defaultWeaknessesCount;
+
+    @Builder.Default
+    private List<String> defaultSurplus = new ArrayList<>();
 
     @Builder.Default
     private List<String> travelOptions = new ArrayList<>();

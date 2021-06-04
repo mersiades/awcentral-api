@@ -356,13 +356,14 @@ type FollowersCreator {
     id: ID!
     instructions: String!
     defaultNumberOfFollowers: Int!
-    defaultSurplusBarter: Int!
+    defaultSurplusBarterCount: Int!
     defaultFortune: Int!
     defaultStrengthsCount: Int!
     defaultWeaknessesCount: Int!
     travelOptions: [String]!
     characterizationOptions: [String]!
     defaultWants: [String]!
+    defaultSurplus: [String]!
     strengthOptions: [FollowersOption]!
     weaknessOptions: [FollowersOption]!
 }

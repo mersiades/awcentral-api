@@ -1140,13 +1140,14 @@ public class PlaybookCreatorsContent {
             .id(new ObjectId().toString())
             .instructions("By default you have around 20 followers, loyal to you but not fanatical. They have their own lives apart from you, integrated into the local population (fortune+1 surplus: 1-barter want: desertion)")
             .defaultNumberOfFollowers(20)
-            .defaultSurplusBarter(1)
+            .defaultSurplusBarterCount(1)
             .defaultFortune(1)
             .defaultStrengthsCount(2)
             .defaultWeaknessesCount(2)
             .travelOptions(List.of("travel with you", "congregate in their own communities"))
             .characterizationOptions(List.of("your cult", "your scene", "your family", "your staff", "your students", "your court"))
             .defaultWants(List.of("desertion"))
+            .defaultSurplus(List.of("1-barter"))
             .strengthOptions(List.of(followersOption1, followersOption2, followersOption3, followersOption4,
                     followersOption5, followersOption6, followersOption7))
             .weaknessOptions(List.of(followersOption8, followersOption9, followersOption10, followersOption11,

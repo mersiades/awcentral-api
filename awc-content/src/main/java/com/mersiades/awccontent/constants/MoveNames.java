@@ -53,6 +53,11 @@ public class MoveNames {
     public static final String battleHardenedName = "BATTLE-HARDENED";
     public static final String fuckThisShitName = "FUCK THIS SHIT";
     public static final String battlefieldInstinctsName = "BATTLEFIELD INSTINCTS";
+    public static final String frenzyName = "FRENZY";
+    public static final String charismaticName = "CHARISMATIC";
+    public static final String wacknutName = "FUCKING WACKNUT";
+    public static final String callThisHotName = "YOU CALL THIS HOT?";
+    public static final String thingsSpeakName = "THINGS SPEAK";
 
     // Improvement moves
     public static final String sharpMax2Name = "SHARP MAX 2";

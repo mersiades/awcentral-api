@@ -1639,7 +1639,7 @@ public class MovesContent {
             .build();
     public static final Move frenzy = Move.builder()
             .id(new ObjectId().toString())
-            .name("FRENZY")
+            .name(frenzyName)
             .description("_**Frenzy**_: When you speak the truth to a mob, roll+weird.\n" +
                     "\n" +
                     "On a 10+, hold 3.\n" +
@@ -1664,7 +1664,7 @@ public class MovesContent {
             .statToRollWith(WEIRD).build();
     public static final Move charismatic = Move.builder()
             .id(new ObjectId().toString())
-            .name("CHARISMATIC")
+            .name(charismaticName)
             .description("_**Charismatic**_: when you try to manipulate someone, roll+weird instead of roll+hot")
             .kind(MoveType.CHARACTER)
             .rollModifier(charismaticModifier)
@@ -1678,7 +1678,7 @@ public class MovesContent {
 
     public static final Move fuckingWacknut = Move.builder()
             .id(new ObjectId().toString())
-            .name("FUCKING WACKNUT")
+            .name(wacknutName)
             .description("_**Fucking wacknut**_: you get +1weird (weird+3)")
             .kind(MoveType.CHARACTER)
             .statModifier(wacknutModifier)
@@ -1726,7 +1726,7 @@ public class MovesContent {
             .statToRollWith(HOT).build();
     public static final Move callThisHot = Move.builder()
             .id(new ObjectId().toString())
-            .name("YOU CALL THIS HOT?")
+            .name(callThisHotName)
             .description("_**You call this hot?**_: when you do something under fire, roll+hot instead of roll+cool.")
             .kind(MoveType.CHARACTER)
             .rollModifier(callThisHotModifier)
@@ -1830,7 +1830,7 @@ public class MovesContent {
             .build();
     public static final Move thingsSpeak = Move.builder()
             .id(new ObjectId().toString())
-            .name("THINGS SPEAK")
+            .name(thingsSpeakName)
             .description("_**Things speak**_: whenever you handle or examine something interesting, roll+weird.\n" +
                     "\n" +
                     "On a hit, you can ask the MC questions.\n" +

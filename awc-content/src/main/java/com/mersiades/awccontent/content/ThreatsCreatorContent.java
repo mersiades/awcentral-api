@@ -29,7 +29,7 @@ public class ThreatsCreatorContent {
             .impulses(List.of(
                     "Slaver (to own or sell people)",
                     "Hive queen (to consume and swarm)",
-                    "Prophet (to denounce and overthrow",
+                    "Prophet (to denounce and overthrow)",
                     "Dictator (to control)",
                     "Collector (to own)",
                     "Alpha wolf (to hunt and dominate"))
