@@ -6,10 +6,7 @@ import com.mersiades.awccontent.models.uniquecreators.GangCreator;
 import com.mersiades.awccontent.services.*;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
-import com.mersiades.awcdata.models.uniques.AngelKit;
-import com.mersiades.awcdata.models.uniques.BrainerGear;
-import com.mersiades.awcdata.models.uniques.CustomWeapons;
-import com.mersiades.awcdata.models.uniques.Gang;
+import com.mersiades.awcdata.models.uniques.*;
 import com.mersiades.awcdata.repositories.UserRepository;
 import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
@@ -25,7 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.mersiades.awccontent.content.PlaybookCreatorsContent.brainerGearCreator;
+import static com.mersiades.awccontent.constants.MoveNames.*;
+import static com.mersiades.awccontent.content.PlaybookCreatorsContent.*;
+import static com.mersiades.awccontent.content.PlaybookCreatorsContent.followersCreator;
 
 @Service
 @RequiredArgsConstructor
@@ -102,9 +101,12 @@ public class MockDataServiceImpl implements MockDataService {
     public static final String MAYA_AS_PLAYER_ID_2 = "maya-player-gamerole-2-id";
     public static final String AHMAD_AS_PLAYER_ID_2 = "ahmad-player-gamerole-2-id";
     public static final String TAKESHI_AS_PLAYER_ID_2 = "takeshi-player-gamerole-2-id";
+    public static final String MARAMA_AS_PLAYER_ID_1 = "marama-player-gamerole-1-id";
     public static final String MARAMA_AS_PLAYER_ID_2 = "marama-player-gamerole-2-id";
     public static final String OLAYINKA_AS_PLAYER_ID_2 = "olayinka-player-gamerole-2-id";
+    public static final String WILMER_AS_PLAYER_ID_1 = "wilmer-player-gamerole-1-id";
     public static final String WILMER_AS_PLAYER_ID_2 = "wilmer-player-gamerole-2-id";
+    public static final String IVETTE_AS_PLAYER_ID_1 = "ivette-player-gamerole-1-id";
     public static final String IVETTE_AS_PLAYER_ID_2 = "ivette-player-gamerole-2-id";
     public static final String SERGIO_AS_PLAYER_ID_2 = "sergio-player-gamerole-2-id";
     public static final String CAESAR_AS_PLAYER_ID_2 = "caesar-player-gamerole-2-id";
@@ -196,6 +198,9 @@ public class MockDataServiceImpl implements MockDataService {
             GameRole mayaAsPlayer = GameRole.builder().id(MAYA_AS_PLAYER_ID).role(RoleType.PLAYER).build();
             GameRole ahmadAsPlayer = GameRole.builder().id(AHMAD_AS_PLAYER_ID).role(RoleType.PLAYER).build();
             GameRole takeshiAsPlayer = GameRole.builder().id(TAKESHI_AS_PLAYER_ID).role(RoleType.PLAYER).build();
+            GameRole maramaAsPlayer = GameRole.builder().id(MARAMA_AS_PLAYER_ID_1).role(RoleType.PLAYER).build();
+            GameRole wilmerAsPlayer = GameRole.builder().id(WILMER_AS_PLAYER_ID_1).role(RoleType.PLAYER).build();
+            GameRole ivetteAsPlayer = GameRole.builder().id(IVETTE_AS_PLAYER_ID_1).role(RoleType.PLAYER).build();
 
             mockGame1.getGameRoles().add(daveAsMC);
             mockGame1.getGameRoles().add(sarahAsPlayer);
@@ -203,12 +208,18 @@ public class MockDataServiceImpl implements MockDataService {
             mockGame1.getGameRoles().add(mayaAsPlayer);
             mockGame1.getGameRoles().add(ahmadAsPlayer);
             mockGame1.getGameRoles().add(takeshiAsPlayer);
+            mockGame1.getGameRoles().add(maramaAsPlayer);
+            mockGame1.getGameRoles().add(wilmerAsPlayer);
+            mockGame1.getGameRoles().add(ivetteAsPlayer);
             mockGame1.setMc(mockUser1);
             mockGame1.getPlayers().add(mockUser2);
             mockGame1.getPlayers().add(mockUser3);
             mockGame1.getPlayers().add(mockUser4);
             mockGame1.getPlayers().add(mockUser5);
             mockGame1.getPlayers().add(mockUser6);
+            mockGame1.getPlayers().add(mockUser7);
+            mockGame1.getPlayers().add(mockUser9);
+            mockGame1.getPlayers().add(mockUser10);
             gameService.save(mockGame1);
 
             mockUser1.getGameRoles().add(daveAsMC);
@@ -218,6 +229,10 @@ public class MockDataServiceImpl implements MockDataService {
             mockUser4.getGameRoles().add(mayaAsPlayer);
             mockUser5.getGameRoles().add(ahmadAsPlayer);
             mockUser6.getGameRoles().add(takeshiAsPlayer);
+            mockUser7.getGameRoles().add(maramaAsPlayer);
+            mockUser9.getGameRoles().add(wilmerAsPlayer);
+            mockUser10.getGameRoles().add(ivetteAsPlayer);
+
 
             daveAsMC.setGameId(mockGame1.getId());
             daveAsMC.setGameName(mockGame1.getName());
@@ -237,8 +252,18 @@ public class MockDataServiceImpl implements MockDataService {
             takeshiAsPlayer.setGameId(mockGame1.getId());
             takeshiAsPlayer.setGameName(mockGame1.getName());
             takeshiAsPlayer.setUserId(mockUser6.getId());
+            maramaAsPlayer.setGameId(mockGame1.getId());
+            maramaAsPlayer.setGameName(mockGame1.getName());
+            maramaAsPlayer.setUserId(mockUser7.getId());
+            wilmerAsPlayer.setGameId(mockGame1.getId());
+            wilmerAsPlayer.setGameName(mockGame1.getName());
+            wilmerAsPlayer.setUserId(mockUser9.getId());
+            ivetteAsPlayer.setGameId(mockGame1.getId());
+            ivetteAsPlayer.setGameName(mockGame1.getName());
+            ivetteAsPlayer.setUserId(mockUser10.getId());
             gameRoleService.saveAll(List.of(daveAsMC, sarahAsPlayer, johnAsPlayer,
-                    mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer));
+                    mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer, maramaAsPlayer,
+                    wilmerAsPlayer, ivetteAsPlayer));
 
             // ------------------------------ Set up mock Game 2 with Game RoleType ----------------------------- //
             Game mockGame2 = Game.builder()
@@ -465,6 +490,8 @@ public class MockDataServiceImpl implements MockDataService {
 
     @Override
     public void loadMockCharacters() {
+
+        // For Game 1
         GameRole saraAsPlayer = gameRoleService.findById(SARA_AS_PLAYER_ID);
         assert saraAsPlayer != null;
         GameRole saraAsPlayer2 = gameRoleService.findById(SARA_AS_PLAYER_ID_2);
@@ -477,6 +504,32 @@ public class MockDataServiceImpl implements MockDataService {
         assert ahmadAsPlayer != null;
         GameRole takeshiAsPlayer = gameRoleService.findById(TAKESHI_AS_PLAYER_ID);
         assert takeshiAsPlayer != null;
+        GameRole maramaAsPlayer = gameRoleService.findById(MARAMA_AS_PLAYER_ID_1);
+        assert maramaAsPlayer != null;
+        GameRole wilmerAsPlayer = gameRoleService.findById(WILMER_AS_PLAYER_ID_1);
+        assert wilmerAsPlayer != null;
+        GameRole ivetteAsPlayer = gameRoleService.findById(IVETTE_AS_PLAYER_ID_1);
+        assert ivetteAsPlayer != null;
+
+        // For Game 6
+        GameRole mayaAsPlayer2 = gameRoleService.findById(MAYA_AS_PLAYER_ID_2);
+        assert mayaAsPlayer2 != null;
+        GameRole ahmadAsPlayer2 = gameRoleService.findById(AHMAD_AS_PLAYER_ID_2);
+        assert ahmadAsPlayer2 != null;
+        GameRole takeshiAsPlayer2 = gameRoleService.findById(TAKESHI_AS_PLAYER_ID_2);
+        assert takeshiAsPlayer2 != null;
+        GameRole maramaAsPlayer2 = gameRoleService.findById(MARAMA_AS_PLAYER_ID_2);
+        assert maramaAsPlayer2 != null;
+        GameRole olayinkaAsPlayer = gameRoleService.findById(OLAYINKA_AS_PLAYER_ID_2);
+        assert olayinkaAsPlayer != null;
+        GameRole wilmerAsPlayer2 = gameRoleService.findById(WILMER_AS_PLAYER_ID_2);
+        assert wilmerAsPlayer2 != null;
+        GameRole ivetteAsPlayer2 = gameRoleService.findById(IVETTE_AS_PLAYER_ID_2);
+        assert ivetteAsPlayer2 != null;
+        GameRole sergioAsPlayer = gameRoleService.findById(SERGIO_AS_PLAYER_ID_2);
+        assert sergioAsPlayer != null;
+        GameRole caesarAsPlayer = gameRoleService.findById(CAESAR_AS_PLAYER_ID_2);
+        assert caesarAsPlayer != null;
 
         CharacterHarm harm = CharacterHarm.builder()
                 .hasChangedPlaybook(false)
@@ -564,6 +617,18 @@ public class MockDataServiceImpl implements MockDataService {
                 .brainerGear(brainerGear)
                 .build();
 
+        BrainerGear brainerGearDefault = BrainerGear.builder()
+                .id(new ObjectId().toString())
+                .uniqueType(UniqueType.BRAINER_GEAR)
+                .allowedItemsCount(brainerGearCreator.getDefaultItemCount())
+                .build();
+
+        PlaybookUniques brainerUniqueDefault = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .type(UniqueType.BRAINER_GEAR)
+                .brainerGear(brainerGearDefault)
+                .build();
+
         List<Move> brainerMoves = moveService.findAllByPlaybookAndKind(PlaybookType.BRAINER, MoveType.CHARACTER)
                 .stream().filter(move -> move.getName().equals("DEEP BRAIN SCAN") ||
                         move.getName().equals("PRETERNATURAL BRAIN ATTUNEMENT")).collect(Collectors.toList());
@@ -611,12 +676,29 @@ public class MockDataServiceImpl implements MockDataService {
                 .tags(List.of("savage", "vulnerable: breakdown"))
                 .strengths(List.of(gangOption1, gangOption2))
                 .weaknesses(List.of(gangOption3))
+                .allowedStrengths(playbookCreatorChopper.getPlaybookUniqueCreator().getGangCreator().getStrengthChoiceCount())
+                .build();
+
+        Gang gangDefault = Gang.builder()
+                .id(new ObjectId().toString())
+                .uniqueType(UniqueType.GANG)
+                .allowedStrengths(gangCreator.getStrengthChoiceCount())
+                .size(gangCreator.getDefaultSize())
+                .harm(gangCreator.getDefaultHarm())
+                .armor(gangCreator.getDefaultArmor())
+                .tags(gangCreator.getDefaultTags())
                 .build();
 
         PlaybookUniques chopperUnique = PlaybookUniques.builder()
                 .id(new ObjectId().toString())
                 .type(UniqueType.GANG)
                 .gang(gang)
+                .build();
+
+        PlaybookUniques chopperUniqueDefault = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .type(UniqueType.GANG)
+                .gang(gangDefault)
                 .build();
 
         List<Move> chopperDefaultMoves = moveService
@@ -700,6 +782,265 @@ public class MockDataServiceImpl implements MockDataService {
                 .weaknesses(List.of("bucking", "unreliable"))
                 .build();
 
+        // -------------------------------- Set up Marama's Gunlugger ------------------------------ //
+        PlaybookCreator playbookCreatorGunlugger = playbookCreatorService.findByPlaybookType(PlaybookType.GUNLUGGER);
+
+        List<Look> gunluggerLooks = getLooks(PlaybookType.GUNLUGGER);
+
+        StatsBlock gunluggerStatsBlock = getStatsBlock(PlaybookType.GUNLUGGER);
+
+        Weapons weaponsDefault = Weapons.builder()
+                .id(new ObjectId().toString())
+                .uniqueType(UniqueType.WEAPONS)
+                .build();
+
+        PlaybookUniques gunluggerUniqueDefault = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .type(UniqueType.WEAPONS)
+                .weapons(weaponsDefault)
+                .build();
+
+        Weapons weapons = Weapons.builder()
+                .id(new ObjectId().toString())
+                .uniqueType(UniqueType.WEAPONS)
+                .weapons(List.of(
+                        playbookCreatorGunlugger.getPlaybookUniqueCreator().getWeaponsCreator().getBigFuckOffGuns().get(0),
+                        playbookCreatorGunlugger.getPlaybookUniqueCreator().getWeaponsCreator().getSeriousGuns().get(0),
+                        playbookCreatorGunlugger.getPlaybookUniqueCreator().getWeaponsCreator().getSeriousGuns().get(1),
+                        playbookCreatorGunlugger.getPlaybookUniqueCreator().getWeaponsCreator().getBackupWeapons().get(0)
+                ))
+                .build();
+
+        PlaybookUniques gunluggerUnique = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .type(UniqueType.WEAPONS)
+                .weapons(weapons)
+                .build();
+
+        List<Move> gunluggerMoves = moveService.findAllByPlaybookAndKind(PlaybookType.GUNLUGGER, MoveType.CHARACTER)
+                .stream().filter(move -> move.getName().equals(battleHardenedName) ||
+                        move.getName().equals(fuckThisShitName)).collect(Collectors.toList());
+
+        List<Move> gunluggerDefaultMoves = moveService
+                .findAllByPlaybookAndKind(PlaybookType.GUNLUGGER, MoveType.DEFAULT_CHARACTER);
+        assert gunluggerDefaultMoves != null;
+
+        List<CharacterMove> characterMoves6 = createAndMergeCharacterMoves(gunluggerMoves, gunluggerDefaultMoves);
+
+        // -------------------------------- Set up Olayinka's Hardholder ------------------------------ //
+        PlaybookCreator playbookCreatorHardholder = playbookCreatorService.findByPlaybookType(PlaybookType.HARDHOLDER);
+        List<Look> hardholderLooks = getLooks(PlaybookType.HARDHOLDER);
+
+        StatsBlock hardholderStatsBlock = getStatsBlock(PlaybookType.HARDHOLDER);
+
+        Holding holdingDefault = Holding.builder()
+                .id(new ObjectId().toString())
+                .uniqueType(UniqueType.HOLDING)
+                .holdingSize(holdingCreator.getDefaultHoldingSize())
+                .souls(holdingCreator.getDefaultSouls())
+                .gigs(holdingCreator.getDefaultGigs())
+                .wants(List.of(holdingCreator.getDefaultWant()))
+                .gangDefenseArmorBonus(holdingCreator.getDefaultArmorBonus())
+                .surplus(holdingCreator.getDefaultSurplus())
+                .gangSize(holdingCreator.getDefaultGangSize())
+                .gangHarm(holdingCreator.getDefaultGangHarm())
+                .gangArmor(holdingCreator.getDefaultGangArmor())
+                .gangTags(List.of(holdingCreator.getDefaultGangTag()))
+                .strengthsCount(holdingCreator.getDefaultStrengthsCount())
+                .weaknessesCount(holdingCreator.getDefaultWeaknessesCount())
+                .build();
+
+        PlaybookUniques hardholderUniqueDefault = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .type(UniqueType.HOLDING)
+                .holding(holdingDefault)
+                .build();
+
+        List<Move> hardholderDefaultMoves = moveService
+                .findAllByPlaybookAndKind(PlaybookType.HARDHOLDER, MoveType.DEFAULT_CHARACTER);
+        assert hardholderDefaultMoves != null;
+
+        List<CharacterMove> characterMoves7 = new ArrayList<>();
+        hardholderDefaultMoves.forEach(move -> characterMoves7.add(CharacterMove.createFromMove(move)));
+
+        // -------------------------------- Set up Wilmer's Hocus ------------------------------ //
+        PlaybookCreator playbookCreatorHocus = playbookCreatorService.findByPlaybookType(PlaybookType.HOCUS);
+
+        List<Look> hocusLooks = getLooks(PlaybookType.HOCUS);
+
+        StatsBlock hocusStatsBlock = getStatsBlock(PlaybookType.HOCUS);
+
+        Followers followersDefault = Followers.builder()
+                .id(new ObjectId().toString())
+                .uniqueType(UniqueType.FOLLOWERS)
+                .followers(followersCreator.getDefaultNumberOfFollowers())
+                .surplusBarter(followersCreator.getDefaultSurplusBarterCount())
+                .fortune(followersCreator.getDefaultFortune())
+                .wants(followersCreator.getDefaultWants())
+                .surplus(followersCreator.getDefaultSurplus())
+                .strengthsCount(followersCreator.getDefaultStrengthsCount())
+                .weaknessesCount(followersCreator.getDefaultWeaknessesCount())
+                .build();
+
+        PlaybookUniques hocusUniqueDefault = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .type(UniqueType.FOLLOWERS)
+                .followers(followersDefault)
+                .build();
+
+        Followers followers = Followers.builder()
+                .id(new ObjectId().toString())
+                .uniqueType(UniqueType.FOLLOWERS)
+                .followers(10)
+                .surplusBarter(followersCreator.getDefaultSurplusBarterCount())
+                .fortune(2)
+                .wants(List.of("hungry", "judgement"))
+                .surplus(followersCreator.getDefaultSurplus())
+                .strengthsCount(followersCreator.getDefaultStrengthsCount())
+                .weaknessesCount(followersCreator.getDefaultWeaknessesCount())
+                .selectedStrengths(List.of(followersOption1, followersOption2))
+                .selectedWeaknesses(List.of(followersOption8, followersOption9))
+                .description("Your cult is about 10 followers. When you travel, they travel with you.")
+                .barter(2)
+                .travelOption("travel with you")
+                .characterization("your cult")
+                .build();
+
+        PlaybookUniques hocusUnique = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .type(UniqueType.FOLLOWERS)
+                .followers(followers)
+                .build();
+
+        List<Move> hocusMoves = moveService.findAllByPlaybookAndKind(PlaybookType.HOCUS, MoveType.CHARACTER)
+                .stream().filter(move -> move.getName().equals(frenzyName) ||
+                        move.getName().equals(charismaticName)).collect(Collectors.toList());
+
+        List<Move> hocusDefaultMoves = moveService
+                .findAllByPlaybookAndKind(PlaybookType.HOCUS, MoveType.DEFAULT_CHARACTER);
+        assert hocusDefaultMoves != null;
+
+        List<CharacterMove> characterMoves8 = createAndMergeCharacterMoves(hocusMoves, hocusDefaultMoves);
+
+        // -------------------------------- Set up Ivette's Maestro D' ------------------------------ //
+        PlaybookCreator playbookCreatorMaestroD = playbookCreatorService.findByPlaybookType(PlaybookType.MAESTRO_D);
+
+        List<Look> maestroDLooks = getLooks(PlaybookType.MAESTRO_D);
+
+        StatsBlock maestroDStatsBlock = getStatsBlock(PlaybookType.MAESTRO_D);
+
+        Establishment establishmentDefault = Establishment.builder()
+                .id(new ObjectId().toString())
+                .uniqueType(UniqueType.ESTABLISHMENT)
+                .securitiesCount(establishmentCreator.getDefaultSecuritiesCount())
+                .regulars(establishmentCreator.getRegularsNames())
+                .interestedParties(establishmentCreator.getInterestedPartyNames())
+                .build();
+
+        PlaybookUniques maestroUniqueDefault = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .type(UniqueType.ESTABLISHMENT)
+                .establishment(establishmentDefault)
+                .build();
+
+        CastCrew castCrew1 = CastCrew.builder()
+                .id(new ObjectId().toString())
+                .name("crewey 1")
+                .description("cool dude")
+                .build();
+
+        Establishment establishment = Establishment.builder()
+                .id(new ObjectId().toString())
+                .uniqueType(UniqueType.ESTABLISHMENT)
+                .mainAttraction("luxury food")
+                .bestRegular("Lamprey")
+                .worstRegular("Toyota")
+                .wantsItGone("Gams")
+                .wantsInOnIt("Been")
+                .oweForIt("Rolfball")
+                .sideAttractions(List.of("music", "spectacle"))
+                .atmospheres(List.of("bustle", "velvet", "fantasy"))
+                .securitiesCount(establishmentCreator.getDefaultSecuritiesCount())
+                .regulars(establishmentCreator.getRegularsNames())
+                .interestedParties(establishmentCreator.getInterestedPartyNames())
+                .securityOptions(List.of(securityOption4, securityOption3))
+                .castAndCrew(List.of(castCrew1))
+                .build();
+
+        PlaybookUniques maestroUnique = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .type(UniqueType.ESTABLISHMENT)
+                .establishment(establishment)
+                .build();
+
+        List<Move> maestroDMoves = moveService.findAllByPlaybookAndKind(PlaybookType.MAESTRO_D, MoveType.CHARACTER)
+                .stream().filter(move -> move.getName().equals(callThisHotName) ||
+                        move.getName().equals(justGiveMotiveName)).collect(Collectors.toList());
+
+        List<Move> maestroDDefaultMoves = moveService
+                .findAllByPlaybookAndKind(PlaybookType.MAESTRO_D, MoveType.DEFAULT_CHARACTER);
+        assert maestroDDefaultMoves != null;
+
+        List<CharacterMove> characterMoves9 = createAndMergeCharacterMoves(maestroDMoves, maestroDDefaultMoves);
+
+        // -------------------------------- Set up Sergio's Savvyhead ------------------------------ //
+        PlaybookCreator playbookCreatorSavvyhead = playbookCreatorService.findByPlaybookType(PlaybookType.SAVVYHEAD);
+
+        List<Look> savvyheadLooks = getLooks(PlaybookType.SAVVYHEAD);
+
+        StatsBlock savvyheadDStatsBlock = getStatsBlock(PlaybookType.SAVVYHEAD);
+
+        Workspace workspaceDefault = Workspace.builder()
+                .id(new ObjectId().toString())
+                .uniqueType(UniqueType.WORKSPACE)
+                .projectInstructions(workspaceCreator.getProjectInstructions())
+                .workspaceInstructions(workspaceCreator.getWorkspaceInstructions())
+                .itemsCount(workspaceCreator.getDefaultItemsCount())
+                .build();
+
+        PlaybookUniques savvyheadUniqueDefault = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .type(UniqueType.WORKSPACE)
+                .workspace(workspaceDefault)
+                .build();
+
+        List<Move> savvyheadMoves = moveService.findAllByPlaybookAndKind(PlaybookType.SAVVYHEAD, MoveType.CHARACTER)
+                .stream().filter(move -> move.getName().equals(thingsSpeakName) ||
+                        move.getName().equals(bonefeelName)).collect(Collectors.toList());
+
+        List<Move> savvyheadDefaultMoves = moveService
+                .findAllByPlaybookAndKind(PlaybookType.SAVVYHEAD, MoveType.DEFAULT_CHARACTER);
+        assert savvyheadDefaultMoves != null;
+
+        List<CharacterMove> characterMoves10 = createAndMergeCharacterMoves(savvyheadMoves, savvyheadDefaultMoves);
+
+        // -------------------------------- Set up Caesar's Skinner ------------------------------ //
+        PlaybookCreator playbookCreatorSkinner = playbookCreatorService.findByPlaybookType(PlaybookType.SKINNER);
+
+        List<Look> skinnerLooks = getLooks(PlaybookType.SKINNER);
+
+        StatsBlock skinnerStatsBlock = getStatsBlock(PlaybookType.SKINNER);
+
+        SkinnerGear skinnerGearDefault = SkinnerGear.builder()
+                .id(new ObjectId().toString())
+                .uniqueType(UniqueType.SKINNER_GEAR)
+                .build();
+
+        PlaybookUniques skinnerUniqueDefault = PlaybookUniques.builder()
+                .id(new ObjectId().toString())
+                .type(UniqueType.SKINNER_GEAR)
+                .skinnerGear(skinnerGearDefault)
+                .build();
+
+        List<Move> skinnerMoves = moveService.findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.CHARACTER)
+                .stream().filter(move -> move.getName().equals(lostName) ||
+                        move.getName().equals(artfulName)).collect(Collectors.toList());
+
+        List<Move> skinnerDefaultMoves = moveService
+                .findAllByPlaybookAndKind(PlaybookType.SKINNER, MoveType.DEFAULT_CHARACTER);
+        assert skinnerDefaultMoves != null;
+
+        List<CharacterMove> characterMoves11 = createAndMergeCharacterMoves(skinnerMoves, skinnerDefaultMoves);
 
         // -------------------------------- Create Sara's Angel ----------------------------------- //
         Character mockCharacter1 = Character.builder()
@@ -718,6 +1059,7 @@ public class MockDataServiceImpl implements MockDataService {
                 .allowedPlaybookMoves(playbookCreatorAngel.getMoveChoiceCount())
                 .build();
 
+        // Complete Angel, for Game 6, so another Character can assign Hx during test
         Character mockCharacter1_2 = Character.builder()
                 .name("Doc")
                 .playbook(PlaybookType.ANGEL)
@@ -751,6 +1093,8 @@ public class MockDataServiceImpl implements MockDataService {
                 .allowedPlaybookMoves(playbookCreatorBattlebabe.getMoveChoiceCount())
                 .build();
 
+        // For game 6 testing, John creates a Battlebabe from scratch
+
         // -------------------------------- Create Maya's Brainer ----------------------------------- //
         Character mockCharacter3 = Character.builder()
                 .name("Smith")
@@ -758,12 +1102,30 @@ public class MockDataServiceImpl implements MockDataService {
                 .looks(brainerLooks)
                 .gear(List.of("Sharp kitchen knife", "Wireless radio"))
                 .statsBlock(brainerStatsBlock)
-                .barter(2)
+                .barter(playbookCreatorBrainer.getGearInstructions().getStartingBarter())
                 .playbookUniques(brainerUnique)
                 .characterMoves(characterMoves3)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(false)
-                .vehicleCount(0)
+                .vehicleCount(playbookCreatorBrainer.getDefaultVehicleCount())
+                .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorBrainer.getMoveChoiceCount())
+                .build();
+
+        // Without Brainer Gear, for Game 6 testing
+        Character mockCharacter3_2 = Character.builder()
+                .id("maya-player-gamerole-2-brainer-character-id")
+                .name("Smith")
+                .playbook(PlaybookType.BRAINER)
+                .looks(brainerLooks)
+                .gear(List.of("Sharp kitchen knife", "Wireless radio"))
+                .statsBlock(brainerStatsBlock)
+                .playbookUniques(brainerUniqueDefault)
+                .characterMoves(characterMoves3)
+                .barter(playbookCreatorBrainer.getGearInstructions().getStartingBarter())
+                .hasCompletedCharacterCreation(false)
+                .hasPlusOneForward(false)
+                .vehicleCount(playbookCreatorBrainer.getDefaultVehicleCount())
                 .battleVehicleCount(0)
                 .allowedPlaybookMoves(playbookCreatorBrainer.getMoveChoiceCount())
                 .build();
@@ -780,9 +1142,27 @@ public class MockDataServiceImpl implements MockDataService {
                 .characterMoves(characterMoves5)
                 .hasCompletedCharacterCreation(true)
                 .hasPlusOneForward(false)
-                .vehicleCount(1)
+                .vehicleCount(playbookCreatorChopper.getDefaultVehicleCount())
                 .battleVehicleCount(0)
                 .vehicles(List.of(chopperBike))
+                .allowedPlaybookMoves(playbookCreatorChopper.getMoveChoiceCount())
+                .build();
+
+        // With default Gang, for Game 6 testing
+        Character mockCharacter5_2 = Character.builder()
+                .id("takeshi-player-gamerole-2-chopper-character-id")
+                .name("Dog")
+                .playbook(PlaybookType.CHOPPER)
+                .looks(chopperLooks)
+                .gear(List.of("magnum (3-harm close reload loud)", "machete (3-harm hand messy"))
+                .statsBlock(chopperStatsBlock)
+                .barter(2)
+                .playbookUniques(chopperUniqueDefault)
+                .characterMoves(characterMoves5)
+                .hasCompletedCharacterCreation(false)
+                .hasPlusOneForward(false)
+                .vehicleCount(playbookCreatorChopper.getDefaultVehicleCount())
+                .battleVehicleCount(0)
                 .allowedPlaybookMoves(playbookCreatorChopper.getMoveChoiceCount())
                 .build();
 
@@ -803,6 +1183,192 @@ public class MockDataServiceImpl implements MockDataService {
                 .allowedPlaybookMoves(playbookCreatorDriver.getMoveChoiceCount())
                 .build();
 
+        // With no vehicles, for Game 6 testing
+        Character mockCharacter4_2 = Character.builder()
+                .id("ahmad-player-gamerole-2-driver-character-id")
+                .name("Phoenix")
+                .playbook(PlaybookType.DRIVER)
+                .looks(driverLooks)
+                .gear(List.of("Leather jacket", ".38 revolver"))
+                .statsBlock(driverStatsBlock)
+                .barter(4)
+                .characterMoves(characterMoves4)
+                .hasCompletedCharacterCreation(false)
+                .hasPlusOneForward(false)
+                .vehicleCount(3)
+                .battleVehicleCount(0)
+                .vehicles(new ArrayList<>())
+                .allowedPlaybookMoves(playbookCreatorDriver.getMoveChoiceCount())
+                .build();
+
+        // ----------------------------- Create Mayama's Gunlugger -------------------------------- //
+        // With Weapons, for Game 1 testing
+        Character mockCharacter6 = Character.builder()
+                .id("mayama-player-gamerole-2-gunlugger-character-id")
+                .name("Batty")
+                .playbook(PlaybookType.GUNLUGGER)
+                .looks(gunluggerLooks)
+                .gear(List.of("homemade chainmail"))
+                .statsBlock(gunluggerStatsBlock)
+                .barter(playbookCreatorGunlugger.getGearInstructions().getStartingBarter())
+                .playbookUniques(gunluggerUnique)
+                .characterMoves(characterMoves6)
+                .hasCompletedCharacterCreation(true)
+                .hasPlusOneForward(false)
+                .vehicleCount(playbookCreatorGunlugger.getDefaultVehicleCount())
+                .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorGunlugger.getMoveChoiceCount())
+                .build();
+
+        // Without Weapons, for Game 6 testing
+        Character mockCharacter6_2 = Character.builder()
+                .id("mayama-player-gamerole-2-gunlugger-character-id")
+                .name("Batty")
+                .playbook(PlaybookType.GUNLUGGER)
+                .looks(gunluggerLooks)
+                .gear(List.of("homemade chainmail"))
+                .statsBlock(gunluggerStatsBlock)
+                .barter(playbookCreatorGunlugger.getGearInstructions().getStartingBarter())
+                .playbookUniques(gunluggerUniqueDefault)
+                .characterMoves(characterMoves6)
+                .hasCompletedCharacterCreation(false)
+                .hasPlusOneForward(false)
+                .vehicleCount(playbookCreatorGunlugger.getDefaultVehicleCount())
+                .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorGunlugger.getMoveChoiceCount())
+                .build();
+
+        // ----------------------------- Create Olayinka's Hardholder -------------------------------- //
+        // Without Holding, for Game 6 testing
+        Character mockCharacter7 = Character.builder()
+                .id("olayinka-player-gamerole-2-hardholder-character-id")
+                .name("Kobe")
+                .playbook(PlaybookType.HARDHOLDER)
+                .looks(hardholderLooks)
+                .gear(List.of("9mm"))
+                .statsBlock(hardholderStatsBlock)
+                .barter(playbookCreatorHardholder.getGearInstructions().getStartingBarter())
+                .playbookUniques(hardholderUniqueDefault)
+                .characterMoves(characterMoves7)
+                .hasCompletedCharacterCreation(false)
+                .hasPlusOneForward(false)
+                .vehicleCount(playbookCreatorHardholder.getDefaultVehicleCount())
+                .battleVehicleCount(2)
+                .allowedPlaybookMoves(playbookCreatorHardholder.getMoveChoiceCount())
+                .build();
+
+        // ----------------------------- Create Wilmer's Hocus -------------------------------- //
+        // With Followers, for Game 1 testing
+        Character mockCharacter8 = Character.builder()
+                .id("wilmer-player-gamerole-2-hocus-character-id")
+                .name("Vision")
+                .playbook(PlaybookType.HOCUS)
+                .looks(hocusLooks)
+                .gear(List.of("tattered bible"))
+                .statsBlock(hocusStatsBlock)
+                .barter(playbookCreatorHocus.getGearInstructions().getStartingBarter())
+                .playbookUniques(hocusUnique)
+                .characterMoves(characterMoves8)
+                .hasCompletedCharacterCreation(true)
+                .hasPlusOneForward(false)
+                .vehicleCount(playbookCreatorHocus.getDefaultVehicleCount())
+                .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorHocus.getMoveChoiceCount())
+                .build();
+
+        // Without Followers, for Game 6 testing
+        Character mockCharacter8_2 = Character.builder()
+                .id("wilmer-player-gamerole-2-hocus-character-id")
+                .name("Vision")
+                .playbook(PlaybookType.HOCUS)
+                .looks(hocusLooks)
+                .gear(List.of("tattered bible"))
+                .statsBlock(hocusStatsBlock)
+                .barter(playbookCreatorHocus.getGearInstructions().getStartingBarter())
+                .playbookUniques(hocusUniqueDefault)
+                .characterMoves(characterMoves8)
+                .hasCompletedCharacterCreation(false)
+                .hasPlusOneForward(false)
+                .vehicleCount(playbookCreatorHocus.getDefaultVehicleCount())
+                .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorHocus.getMoveChoiceCount())
+                .build();
+
+        // ----------------------------- Create Ivette's Maestro D' -------------------------------- //
+        // With Establishment, for Game 1 testing
+        Character mockCharacter9 = Character.builder()
+                .id("ivette-player-gamerole-1-maestro-character-id")
+                .name("Emmy")
+                .playbook(PlaybookType.MAESTRO_D)
+                .looks(maestroDLooks)
+                .gear(List.of("rusty iron mic"))
+                .statsBlock(maestroDStatsBlock)
+                .barter(playbookCreatorMaestroD.getGearInstructions().getStartingBarter())
+                .playbookUniques(maestroUnique)
+                .characterMoves(characterMoves9)
+                .hasCompletedCharacterCreation(true)
+                .hasPlusOneForward(false)
+                .vehicleCount(playbookCreatorMaestroD.getDefaultVehicleCount())
+                .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorMaestroD.getMoveChoiceCount())
+                .build();
+
+        // Without Establishment, for Game 6 testing
+        Character mockCharacter9_2 = Character.builder()
+                .id("ivette-player-gamerole-2-maestro-character-id")
+                .name("Emmy")
+                .playbook(PlaybookType.MAESTRO_D)
+                .looks(maestroDLooks)
+                .gear(List.of("rusty iron mic"))
+                .statsBlock(maestroDStatsBlock)
+                .barter(playbookCreatorMaestroD.getGearInstructions().getStartingBarter())
+                .playbookUniques(maestroUniqueDefault)
+                .characterMoves(characterMoves9)
+                .hasCompletedCharacterCreation(false)
+                .hasPlusOneForward(false)
+                .vehicleCount(playbookCreatorMaestroD.getDefaultVehicleCount())
+                .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorMaestroD.getMoveChoiceCount())
+                .build();
+
+        // ----------------------------- Create Sergio's Savvyhead -------------------------------- //
+        // Without Workspace, for Game 6 testing
+        Character mockCharacter10 = Character.builder()
+                .id("sergio-player-gamerole-2-savvyhead-character-id")
+                .name("Leah")
+                .playbook(PlaybookType.SAVVYHEAD)
+                .looks(savvyheadLooks)
+                .gear(List.of("homemade crossbow"))
+                .statsBlock(savvyheadDStatsBlock)
+                .barter(playbookCreatorSavvyhead.getGearInstructions().getStartingBarter())
+                .playbookUniques(savvyheadUniqueDefault)
+                .characterMoves(characterMoves10)
+                .hasCompletedCharacterCreation(false)
+                .hasPlusOneForward(false)
+                .vehicleCount(playbookCreatorSavvyhead.getDefaultVehicleCount())
+                .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorSavvyhead.getMoveChoiceCount())
+                .build();
+
+        // ----------------------------- Create Caesar's Skinner -------------------------------- //
+        // Without Skinner Gear, for Game 6 testing
+        Character mockCharacter11 = Character.builder()
+                .id("caesar-player-gamerole-2-skinner-character-id")
+                .name("Venus")
+                .playbook(PlaybookType.SKINNER)
+                .looks(skinnerLooks)
+                .gear(List.of("expensive red dress"))
+                .statsBlock(skinnerStatsBlock)
+                .barter(playbookCreatorSkinner.getGearInstructions().getStartingBarter())
+                .playbookUniques(skinnerUniqueDefault)
+                .characterMoves(characterMoves11)
+                .hasCompletedCharacterCreation(false)
+                .hasPlusOneForward(false)
+                .vehicleCount(playbookCreatorSkinner.getDefaultVehicleCount())
+                .battleVehicleCount(0)
+                .allowedPlaybookMoves(playbookCreatorSkinner.getMoveChoiceCount())
+                .build();
+
         // ----------------------- Add Characters to players and save ----------------------------- //
 
         saveCharacter(saraAsPlayer, harm, mockCharacter1);
@@ -810,9 +1376,22 @@ public class MockDataServiceImpl implements MockDataService {
         saveCharacter(mayaAsPlayer, harm, mockCharacter3);
         saveCharacter(ahmadAsPlayer, harm, mockCharacter4);
         saveCharacter(takeshiAsPlayer, harm, mockCharacter5);
+        saveCharacter(maramaAsPlayer, harm, mockCharacter6);
+        saveCharacter(wilmerAsPlayer, harm, mockCharacter8);
+        saveCharacter(ivetteAsPlayer, harm, mockCharacter9);
 
         // Add Sara's character to her other GameRole as well
         saveCharacter(saraAsPlayer2, harm, mockCharacter1_2);
+        // John creates Battlebabe from scratch in test
+        saveCharacter(mayaAsPlayer2, harm, mockCharacter3_2);
+        saveCharacter(ahmadAsPlayer2, harm, mockCharacter4_2);
+        saveCharacter(takeshiAsPlayer2, harm, mockCharacter5_2);
+        saveCharacter(maramaAsPlayer2, harm, mockCharacter6_2);
+        saveCharacter(olayinkaAsPlayer, harm, mockCharacter7);
+        saveCharacter(wilmerAsPlayer2, harm, mockCharacter8_2);
+        saveCharacter(ivetteAsPlayer2, harm, mockCharacter9_2);
+        saveCharacter(sergioAsPlayer, harm, mockCharacter10);
+        saveCharacter(caesarAsPlayer, harm, mockCharacter11);
     }
 
     @Override
@@ -827,6 +1406,12 @@ public class MockDataServiceImpl implements MockDataService {
         assert ahmadAsPlayer != null;
         GameRole takeshiAsPlayer = gameRoleService.findById(TAKESHI_AS_PLAYER_ID);
         assert takeshiAsPlayer != null;
+        GameRole maramaAsPlayer = gameRoleService.findById(MARAMA_AS_PLAYER_ID_1);
+        assert maramaAsPlayer != null;
+        GameRole wilmerAsPlayer = gameRoleService.findById(WILMER_AS_PLAYER_ID_1);
+        assert wilmerAsPlayer != null;
+        GameRole ivetteAsPlayer = gameRoleService.findById(IVETTE_AS_PLAYER_ID_1);
+        assert ivetteAsPlayer != null;
 
         Character doc = saraAsPlayer.getCharacters().stream().findFirst().orElseThrow();
         assert doc != null;
@@ -838,6 +1423,12 @@ public class MockDataServiceImpl implements MockDataService {
         assert nee != null;
         Character dog = takeshiAsPlayer.getCharacters().stream().findFirst().orElseThrow();
         assert dog != null;
+        Character batty = maramaAsPlayer.getCharacters().stream().findFirst().orElseThrow();
+        assert batty != null;
+        Character vision = wilmerAsPlayer.getCharacters().stream().findFirst().orElseThrow();
+        assert vision != null;
+        Character emmy = ivetteAsPlayer.getCharacters().stream().findFirst().orElseThrow();
+        assert emmy != null;
 
         // ------------------------------ Doc's Hx --------------------------------- //
         HxStat doc1 = HxStat.builder().id(new ObjectId().toString())
@@ -913,9 +1504,63 @@ public class MockDataServiceImpl implements MockDataService {
 
         dog.setHxBlock(List.of(dog1, dog2, dog3, dog4));
 
+        // ------------------------------ Batty's Hx --------------------------------- //
+        HxStat batty1 = HxStat.builder().id(new ObjectId().toString())
+                .characterId(doc.getId()).characterName(doc.getName()).hxValue(-1).build();
+
+        HxStat batty2 = HxStat.builder().id(new ObjectId().toString())
+                .characterId(scarlet.getId()).characterName(scarlet.getName()).hxValue(2).build();
+
+        HxStat batty3 = HxStat.builder().id(new ObjectId().toString())
+                .characterId(smith.getId()).characterName(smith.getName()).hxValue(2).build();
+
+        HxStat batty4 = HxStat.builder().id(new ObjectId().toString())
+                .characterId(nee.getId()).characterName(nee.getName()).hxValue(-1).build();
+
+        batty.setHxBlock(List.of(batty1, batty2, batty3, batty4));
+
+        // ------------------------------ Vision's Hx --------------------------------- //
+        HxStat vision1 = HxStat.builder().id(new ObjectId().toString())
+                .characterId(doc.getId()).characterName(doc.getName()).hxValue(-1).build();
+
+        HxStat vision2 = HxStat.builder().id(new ObjectId().toString())
+                .characterId(scarlet.getId()).characterName(scarlet.getName()).hxValue(2).build();
+
+        HxStat vision3 = HxStat.builder().id(new ObjectId().toString())
+                .characterId(smith.getId()).characterName(smith.getName()).hxValue(2).build();
+
+        HxStat vision4 = HxStat.builder().id(new ObjectId().toString())
+                .characterId(nee.getId()).characterName(nee.getName()).hxValue(-1).build();
+
+        vision.setHxBlock(List.of(vision1, vision2, vision3, vision4));
+
+        // ------------------------------ Emmy's Hx --------------------------------- //
+        HxStat emmy1 = HxStat.builder().id(new ObjectId().toString())
+                .characterId(doc.getId()).characterName(doc.getName()).hxValue(-1).build();
+
+        HxStat emmy2 = HxStat.builder().id(new ObjectId().toString())
+                .characterId(scarlet.getId()).characterName(scarlet.getName()).hxValue(2).build();
+
+        HxStat emmy3 = HxStat.builder().id(new ObjectId().toString())
+                .characterId(smith.getId()).characterName(smith.getName()).hxValue(2).build();
+
+        HxStat emmy4 = HxStat.builder().id(new ObjectId().toString())
+                .characterId(nee.getId()).characterName(nee.getName()).hxValue(-1).build();
+
+        emmy.setHxBlock(List.of(emmy1, emmy2, emmy3, emmy4));
+
         // ------------------------------ Save to db --------------------------------- //
-        characterService.saveAll(List.of(doc, scarlet, smith, nee, dog));
-        gameRoleService.saveAll(List.of(saraAsPlayer, johnAsPlayer, mayaAsPlayer, ahmadAsPlayer, takeshiAsPlayer));
+        characterService.saveAll(List.of(doc, scarlet, smith, nee, dog, batty, vision, emmy));
+        gameRoleService.saveAll(List.of(
+                saraAsPlayer,
+                johnAsPlayer,
+                mayaAsPlayer,
+                ahmadAsPlayer,
+                takeshiAsPlayer,
+                maramaAsPlayer,
+                wilmerAsPlayer,
+                ivetteAsPlayer
+        ));
     }
 
     @Override

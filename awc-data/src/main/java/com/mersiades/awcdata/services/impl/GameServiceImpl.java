@@ -147,7 +147,8 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<Game> findAllByInvitee(String email) {
-        return gameRepository.findAllByInviteesContaining(email);
+        String lowercaseEmail = email.toLowerCase();
+        return gameRepository.findAllByInviteesContaining(lowercaseEmail);
     }
 
     // ---------------------------------------------- Game-related -------------------------------------------- //
@@ -193,7 +194,8 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game addInvitee(String gameId, String email) {
         Game game = getGame(gameId);
-        game.getInvitees().add(email);
+        String lowercaseEmail = email.toLowerCase();
+        game.getInvitees().add(lowercaseEmail);
         gameRepository.save(game);
         return game;
     }
@@ -408,7 +410,7 @@ public class GameServiceImpl implements GameService {
         gameMessage.setContent(move.getDescription());
         gameMessage.setTitle(String.format("%s: %s", userCharacter.getName(), move.getName()).toUpperCase());
         gameMessage.setStockSpent(stockSpent);
-        gameMessage.setCurrentStock(userCharacter.getPlaybookUniques().getAngelKit().getStock());
+        gameMessage.setCurrentStock(userCharacter.getPlaybookUniques().getAngelKit().getStock() - stockSpent);
 
         // Save message to Game and return game
         game.getGameMessages().add(gameMessage);
