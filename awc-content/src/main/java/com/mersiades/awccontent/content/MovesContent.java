@@ -89,7 +89,7 @@ public class MovesContent {
             .build();
     public static final Move doBattle = Move.builder()
             .id(new ObjectId().toString())
-            .name("DO BATTLE")
+            .name(doBattleName)
             .description("When you’re _**in battle**_, you can bring the battle moves into play.")
             .kind(MoveType.BASIC)
             .moveAction(doBattleAction)
@@ -159,7 +159,7 @@ public class MovesContent {
             .build();
     public static final Move readASitch = Move.builder()
             .id(new ObjectId().toString())
-            .name("READ A SITCH")
+            .name(readASitchName)
             .description("When you _**read a charged situation**_, roll+sharp.\n" +
                     "\n" +
                     "On a hit, you can ask the MC questions. Whenever you act on one of the MC’s answers, take +1. On a 10+, ask 3. On a 7–9, ask 1:\n" +
@@ -210,7 +210,7 @@ public class MovesContent {
             .build();
     public static final Move openBrain = Move.builder()
             .id(new ObjectId().toString())
-            .name("OPEN YOUR BRAIN")
+            .name(openBrainName)
             .description("When you _**open your brain to the world’s psychic maelstrom**_, roll+weird.\n" +
                     "\n" +
                     "On a hit, the MC tells you something new and interesting about the current situation, and might ask you a question or two; answer them.\n" +
@@ -231,7 +231,7 @@ public class MovesContent {
             .build();
     public static final Move lifestyleAndGigs = Move.builder()
             .id(new ObjectId().toString())
-            .name("LIFESTYLE AND GIGS")
+            .name(lifestyleGigsName)
             .description("_**At the beginning of the session**_, spend 1- or 2-barter for your lifestyle. If you can’t or won’t, tell the MC and answer her questions. If you need jingle during a session, tell the MC you’d like to work a gig.")
             .kind(MoveType.BASIC)
             .moveAction(lifestyleAndGigsAction)
@@ -245,7 +245,7 @@ public class MovesContent {
             .build();
     public static final Move sessionEnd = Move.builder()
             .id(new ObjectId().toString())
-            .name("SESSION END")
+            .name(sessionEndName)
             .description("_**At the end of every session**_, choose a character who knows you better than they used to. If there’s more than one, choose one at your whim.\n" +
                     "\n" +
                     "Tell that player to add +1 to their Hx with you on their sheet. If this brings them to Hx+4, they reset to Hx+1 (and therefore mark experience).\n" +
@@ -265,7 +265,7 @@ public class MovesContent {
             .build();
     public static final Move sufferHarm = Move.builder()
             .id(new ObjectId().toString())
-            .name("SUFFER HARM")
+            .name(sufferHarmName)
             .description("When you _**suffer harm**_, roll+harm suffered (after armor, if you’re wearing any).\n" +
                     "\n" +
                     "On a 10+, the MC can choose 1:\n" +
@@ -349,7 +349,7 @@ public class MovesContent {
             .build();
     public static final Move giveBarter = Move.builder()
             .id(new ObjectId().toString())
-            .name("GIVE BARTER")
+            .name(giveBarterName)
             .description("When you _**give 1-barter to someone, but with strings attached**_, it counts as manipulating them and hitting the roll with a 10+, no leverage or roll required.")
             .kind(MoveType.PERIPHERAL)
             .moveAction(giveBarterAction)
@@ -363,7 +363,7 @@ public class MovesContent {
             .build();
     public static final Move goToMarket = Move.builder()
             .id(new ObjectId().toString())
-            .name("GO TO THE MARKET")
+            .name(goToMarketName)
             .description("When you _**go into a holding’s bustling market**_, looking for some particular thing to buy, and it’s not obvious whether you should be able to just go buy one like that, roll+sharp.\n" +
                     "\n" +
                     "On a 10+, yes, you can just go buy it like that.\n" +
@@ -407,7 +407,7 @@ public class MovesContent {
             .build();
     public static final Move insight = Move.builder()
             .id(new ObjectId().toString())
-            .name("INSIGHT")
+            .name(insightName)
             .description("When you are able to go to someone for _**insight**_, ask them what they think your best course is, and the MC will tell you.\n" +
                     "\n" +
                     "If you pursue that course, take +1 to any rolls you make in the pursuit. If you pursue that course but don’t accomplish your ends, you mark experience.")
@@ -423,7 +423,7 @@ public class MovesContent {
             .build();
     public static final Move augury = Move.builder()
             .id(new ObjectId().toString())
-            .name("AUGURY")
+            .name(auguryName)
             .description("When you are able to use something for _**augury**_, roll+weird.\n" +
                     "\n" +
                     "On a hit, you can choose 1:\n" +
@@ -456,7 +456,7 @@ public class MovesContent {
             .build();
     public static final Move changeHighlightedStats = Move.builder()
             .id(new ObjectId().toString())
-            .name("CHANGE HIGHLIGHTED STATS")
+            .name(changeHighlightedStatsName)
             .description("_**At the beginning of any session**_, or at the end if you forgot, anyone can say, “hey, let’s change highlighted stats.” When someone says it, do it.\n" +
                     "\n" +
                     "Go around the circle again, following the same procedure you used to highlight them in the first place: the high-Hx player highlights one stat, and the MC highlight another.")
@@ -474,7 +474,7 @@ public class MovesContent {
             .build();
     public static final Move exchangeHarm = Move.builder()
             .id(new ObjectId().toString())
-            .name("EXCHANGE HARM")
+            .name(exchangeHarmName)
             .description("When you _**exchange harm**_, both sides simultaneously inflict and suffer harm as established:\n" +
                     "\n" +
                     "- *You inflict harm equal to the harm rating of your weapon, minus the armor rating of your enemy’s armor.*\n" +
@@ -491,7 +491,7 @@ public class MovesContent {
             .build();
     public static final Move seizeByForce = Move.builder()
             .id(new ObjectId().toString())
-            .name("SEIZE BY FORCE")
+            .name(seizeByForceName)
             .description("To _**seize something by force**_, exchange harm, but first roll+hard.\n" +
                     "\n" +
                     "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
@@ -512,7 +512,7 @@ public class MovesContent {
             .build();
     public static final Move assaultAPosition = Move.builder()
             .id(new ObjectId().toString())
-            .name("ASSAULT A POSITION")
+            .name(assaultAPositionName)
             .description("To _**assault a secure position**_, exchange harm, but first roll+hard.\n" +
                     "\n" +
                     "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
@@ -533,7 +533,7 @@ public class MovesContent {
             .build();
     public static final Move keepHoldOfSomething = Move.builder()
             .id(new ObjectId().toString())
-            .name("KEEP HOLD OF SOMETHING")
+            .name(keepHoldOfSomethingName)
             .description("To _**keep hold of something you have**_, exchange harm, but first roll+hard.\n" +
                     "\n" +
                     "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
@@ -554,7 +554,7 @@ public class MovesContent {
             .build();
     public static final Move fightFree = Move.builder()
             .id(new ObjectId().toString())
-            .name("FIGHT FREE")
+            .name(fightFreeName)
             .description("To _**fight your way free**_, exchange harm, but first roll+hard.\n" +
                     "\n" +
                     "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
@@ -575,7 +575,7 @@ public class MovesContent {
             .build();
     public static final Move defendSomeone = Move.builder()
             .id(new ObjectId().toString())
-            .name("DEFEND SOMEONE")
+            .name(defendSomeoneName)
             .description("To _**defend someone else from attack**_, exchange harm, but first roll+hard.\n" +
                     "\n" +
                     "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
@@ -596,7 +596,7 @@ public class MovesContent {
             .build();
     public static final Move doSingleCombat = Move.builder()
             .id(new ObjectId().toString())
-            .name("DO SINGLE COMBAT")
+            .name(doSingleCombatName)
             .description("When you _**do single combat with someone**_, no quarters, exchange harm, but first roll+hard.\n" +
                     "\n" +
                     "On a 10+, both. On a 7–9, choose 1. On a miss, your opponent chooses 1 against you:\n" +
@@ -619,7 +619,7 @@ public class MovesContent {
             .build();
     public static final Move layDownFire = Move.builder()
             .id(new ObjectId().toString())
-            .name("LAY DOWN FIRE")
+            .name(layDownFireName)
             .description("When you _**lay down fire**_, roll+hard.\n" +
                     "\n" +
                     "On a 10+, choose 3. On a 7–9, choose 2. On a miss, choose 1:\n" +
@@ -640,7 +640,7 @@ public class MovesContent {
             .build();
     public static final Move standOverwatch = Move.builder()
             .id(new ObjectId().toString())
-            .name("STAND OVERWATCH")
+            .name(standOverwatchName)
             .description("When you _**stand overwatch**_ for an ally, roll+cool.\n" +
                     "\n" +
                     "On a hit, if anyone attacks or interferes with your ally, you attack them and inflict harm as established, as well as warning your ally.\n" +
@@ -684,7 +684,7 @@ public class MovesContent {
             .build();
     public static final Move beTheBait = Move.builder()
             .id(new ObjectId().toString())
-            .name("BE THE BAIT")
+            .name(beTheBaitName)
             .description("When _**you’re the bait**_, roll+cool.\n" +
                     "\n" +
                     "On a 10+, choose 2. On a 7–9, choose 1:\n" +
@@ -706,7 +706,7 @@ public class MovesContent {
             .build();
     public static final Move beTheCat = Move.builder()
             .id(new ObjectId().toString())
-            .name("BE THE CAT")
+            .name(beTheCatName)
             .description("When _**you’re the cat**_, roll+cool. On a hit, you catch your prey out.\n" +
                     "\n" +
                     "On a 10+, you’ve driven them first to a place of your choosing; say where.\n" +
@@ -726,7 +726,7 @@ public class MovesContent {
             .build();
     public static final Move beTheMouse = Move.builder()
             .id(new ObjectId().toString())
-            .name("BE THE MOUSE")
+            .name(beTheMouseName)
             .description("When _**you’re the mouse**_, roll+cool.\n" +
                     "\n" +
                     "On a 10+, you escape clean and leave your hunter hunting.\n" +

@@ -5,59 +5,121 @@ import org.springframework.stereotype.Component;
 @Component
 public class MoveNames {
 
+    // Basic moves
     public static final String underFireName = "DO SOMETHING UNDER FIRE";
-    public static final String inflictHarmName = "INFLICT HARM ON PC";
-    public static final String healHarmName = "HEAL PC HARM";
-    public static final String angelSpecialName = "ANGEL SPECIAL";
-    public static final String battlebabeSpecialName = "BATTLEBABE SPECIAL";
-    public static final String brainerSpecialName = "BRAINER SPECIAL";
-    public static final String chopperSpecialName = "CHOPPER SPECIAL";
-    public static final String driverSpecialName = "DRIVER SPECIAL";
-    public static final String gunluggerSpecialName = "GUNLUGGER SPECIAL";
-    public static final String hardholderSpecialName = "HARDHOLDER SPECIAL";
-    public static final String hocusSpecialName = "HOCUS SPECIAL";
-    public static final String maestroDSpecialName = "MAESTRO D' SPECIAL";
-    public static final String savvyheadSpecialName = "SAVVYHEAD SPECIAL";
-    public static final String skinnerSpecialName = "SKINNER SPECIAL";
-    public static final String makeWantKnownName = "MAKE WANT KNOWN";
-    public static final String helpOrInterfereName = "HELP OR INTERFERE WITH SOMEONE";
-    public static final String stabilizeAndHealName = "STABILIZE AND HEAL SOMEONE";
-    public static final String speedRecoveryName = "SPEED THE RECOVERY OF SOMEONE";
-    public static final String reviveSomeoneName = "REVIVE SOMEONE";
-    public static final String treatNpcName = "TREAT AN NPC";
-    public static final String collectorName = "COLLECTOR";
-    public static final String otherCarTankName = "MY OTHER CAR IS A TANK";
     public static final String goAggroName = "GO AGGRO ON SOMEONE";
     public static final String suckerSomeoneName = "SUCKER SOMEONE";
+    public static final String doBattleName = "DO BATTLE";
+    public static final String manipulateName = "SEDUCE OR MANIPULATE SOMEONE";
+    public static final String helpOrInterfereName = "HELP OR INTERFERE WITH SOMEONE";
+    public static final String readASitchName = "READ A SITCH";
+    public static final String readPersonName = "READ A PERSON"; // Can earn holds
+    public static final String openBrainName = "OPEN YOUR BRAIN";
+    public static final String lifestyleGigsName = "LIFESTYLE AND GIGS";
+    public static final String sessionEndName = "SESSION END";
+
+    // Peripheral moves
+    public static final String sufferHarmName = "SUFFER HARM";
+    public static final String sufferVHarm = "SUFFER V-HARM";
+    public static final String inflictHarmName = "INFLICT HARM ON PC";
+    public static final String healHarmName = "HEAL PC HARM";
+    public static final String giveBarterName = "GIVE BARTER";
+    public static final String goToMarketName = "GO TO THE MARKET";
+    public static final String makeWantKnownName = "MAKE WANT KNOWN";
+    public static final String insightName = "INSIGHT";
+    public static final String auguryName = "AUGURY";
+    public static final String changeHighlightedStatsName = "CHANGE HIGHLIGHTED STATS";
+
+    // Battle moves
+    public static final String exchangeHarmName = "EXCHANGE HARM";
+    public static final String seizeByForceName = "SEIZE BY FORCE";
+    public static final String assaultAPositionName = "ASSAULT A POSITION";
+    public static final String keepHoldOfSomethingName = "KEEP HOLD OF SOMETHING";
+    public static final String fightFreeName = "FIGHT FREE";
+    public static final String defendSomeoneName = "DEFEND SOMEONE";
+    public static final String doSingleCombatName = "DO SINGLE COMBAT";
+    public static final String layDownFireName = "LAY DOWN FIRE";
+    public static final String standOverwatchName = "STAND OVERWATCH";
+    public static final String keepEyeOutName = "KEEP AN EYE OUT"; // Earns holds
+    public static final String beTheBaitName = "BE THE BAIT";
+    public static final String beTheCatName = "BE THE CAT";
+    public static final String beTheMouseName = "BE THE MOUSE";
     public static final String catOrMouseName = "CAT OR MOUSE";
-    public static final String reputationName = "REPUTATION";
+
+
+    // Road war moves
     public static final String boardVehicleName = "BOARD A MOVING VEHICLE";
     public static final String outdistanceVehicleName = "OUTDISTANCE ANOTHER VEHICLE";
     public static final String overtakeVehicleName = "OVERTAKE ANOTHER VEHICLE";
     public static final String dealWithTerrainName = "DEAL WITH BAD TERRAIN";
-    public static final String leadershipName = "LEADERSHIP";
-    public static final String wealthName = "WEALTH";
-    public static final String packAlphaName = "PACK ALPHA";
-    public static final String manipulateName = "SEDUCE OR MANIPULATE SOMEONE";
-    public static final String fortunesName = "FORTUNES";
-    public static final String lostName = "LOST";
-    public static final String artfulName = "ARTFUL & GRACIOUS";
-    public static final String hypnoticName = "HYPNOTIC";
-    public static final String justGiveMotiveName = "JUST GIVE ME A MOTIVE";
-    public static final String sufferVHarm = "SUFFER V-HARM";
-    public static final String preparedForTheInevitableName = "PREPARED FOR THE INEVITABLE";
-    public static final String fuckingThievesName = "FUCKING THIEVES";
+
+    // AngelKit moves
+    public static final String stabilizeAndHealName = "STABILIZE AND HEAL SOMEONE";
+    public static final String speedRecoveryName = "SPEED THE RECOVERY OF SOMEONE";
+    public static final String reviveSomeoneName = "REVIVE SOMEONE";
+    public static final String treatNpcName = "TREAT AN NPC";
+
+
+    // Angel
+    public static final String angelSpecialName = "ANGEL SPECIAL";
+
+    // Battlebabe
+    public static final String battlebabeSpecialName = "BATTLEBABE SPECIAL";
+    public static final String dangerousAndSexyName = "DANGEROUS & SEXY"; // Can earn holds
     public static final String iceColdName = "ICE COLD";
+
+    // Brainer
+    public static final String brainerSpecialName = "BRAINER SPECIAL";
     public static final String brainReceptivityName = "CASUAL BRAIN RECEPTIVITY";
+    public static final String brainScanName = "DEEP BRAIN SCAN"; // Can earn holds
+    public static final String puppetStringsName = "IN BRAIN PUPPET STRINGS"; // Can earn holds
+
+    // Chopper
+    public static final String chopperSpecialName = "CHOPPER SPECIAL";
+    public static final String packAlphaName = "PACK ALPHA";
+    public static final String fuckingThievesName = "FUCKING THIEVES";
+
+    // Driver
+    public static final String driverSpecialName = "DRIVER SPECIAL";
     public static final String combatDriverName = "COMBAT DRIVER";
+    public static final String reputationName = "REPUTATION";
+    public static final String collectorName = "COLLECTOR";
+    public static final String otherCarTankName = "MY OTHER CAR IS A TANK";
+
+    // Gunlugger
+    public static final String gunluggerSpecialName = "GUNLUGGER SPECIAL";
     public static final String battleHardenedName = "BATTLE-HARDENED";
     public static final String fuckThisShitName = "FUCK THIS SHIT";
+    public static final String preparedForTheInevitableName = "PREPARED FOR THE INEVITABLE";
     public static final String battlefieldInstinctsName = "BATTLEFIELD INSTINCTS";
+
+    // Hardholder
+    public static final String hardholderSpecialName = "HARDHOLDER SPECIAL";
+    public static final String leadershipName = "LEADERSHIP";
+    public static final String wealthName = "WEALTH";
+
+    // Hocus
+    public static final String hocusSpecialName = "HOCUS SPECIAL";
+    public static final String fortunesName = "FORTUNES";
     public static final String frenzyName = "FRENZY";
     public static final String charismaticName = "CHARISMATIC";
     public static final String wacknutName = "FUCKING WACKNUT";
+
+    // Maestro D'
+    public static final String maestroDSpecialName = "MAESTRO D' SPECIAL";
+    public static final String justGiveMotiveName = "JUST GIVE ME A MOTIVE";
     public static final String callThisHotName = "YOU CALL THIS HOT?";
+
+    // Savvyhead
+    public static final String savvyheadSpecialName = "SAVVYHEAD SPECIAL";
     public static final String thingsSpeakName = "THINGS SPEAK";
+    public static final String bonefeelName = "BONEFEEL";  // Can earn holds
+
+    // Skinner
+    public static final String skinnerSpecialName = "SKINNER SPECIAL";
+    public static final String lostName = "LOST";
+    public static final String artfulName = "ARTFUL & GRACIOUS";
+    public static final String hypnoticName = "HYPNOTIC";
 
     // Improvement moves
     public static final String sharpMax2Name = "SHARP MAX 2";
@@ -119,15 +181,6 @@ public class MoveNames {
     public static final String changePlaybookName = "CHANGE PLAYBOOK";
     public static final String improveBasicMoves1Name = "IMPROVE BASIC MOVES 1";
     public static final String improveBasicMoves2Name = "IMPROVE BASIC MOVES 2";
-
-
-    // Moves that can earn holds
-    public static final String readPersonName = "READ A PERSON";
-    public static final String keepEyeOutName = "KEEP AN EYE OUT";
-    public static final String dangerousAndSexyName = "DANGEROUS & SEXY";
-    public static final String brainScanName = "DEEP BRAIN SCAN";
-    public static final String puppetStringsName = "IN BRAIN PUPPET STRINGS";
-    public static final String bonefeelName = "BONEFEEL";
 
     // Death moves
     public static final String hardMinus1Name = "HARD MINUS 1";
