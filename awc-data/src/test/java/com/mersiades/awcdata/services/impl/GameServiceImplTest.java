@@ -361,6 +361,67 @@ class GameServiceImplTest {
     }
 
     @Test
+    void shouldNOTAddInvitee_alreadyAPlayer() {
+        // Given
+        String mockInvitee = "mock@invitee.com";
+        User player = User.builder()
+                .id("user-id")
+                .email(mockInvitee)
+                .displayName(mockInvitee)
+                .build();
+        mockGame1.getPlayers().add(player);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
+
+        // When
+        Game returnedGame = gameService.addInvitee(mockGame1.getId(), mockInvitee);
+
+        // Then
+        assert returnedGame != null;
+        assertFalse(returnedGame.getInvitees().contains(mockInvitee));
+        verify(gameRepository, times(0)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldNOTAddInvitee_alreadyInvited() {
+        // Given
+        String mockInvitee = "mock@invitee.com";
+        mockGame1.getInvitees().add(mockInvitee);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
+
+        // When
+        Game returnedGame = gameService.addInvitee(mockGame1.getId(), mockInvitee);
+
+        // Then
+        assert returnedGame != null;
+        assertTrue(returnedGame.getInvitees().contains(mockInvitee));
+        verify(gameRepository, times(0)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldNOTAddInvitee_inviteeIsMC() {
+        // Given
+        String mockInvitee = "mock@invitee.com";
+        User mc = User.builder()
+                .id("user-id")
+                .email(mockInvitee)
+                .displayName(mockInvitee)
+                .build();
+        mockGame1.setMc(mc);
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
+
+        // When
+        Game returnedGame = gameService.addInvitee(mockGame1.getId(), mockInvitee);
+
+        // Then
+        assert returnedGame != null;
+        assertFalse(returnedGame.getInvitees().contains(mockInvitee));
+        verify(gameRepository, times(0)).save(any(Game.class));
+    }
+
+    @Test
     void shouldRemoveInviteeFromGame() {
         // Given
         String mockInvitee = "mock@invitee.com";
