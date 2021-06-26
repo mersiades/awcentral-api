@@ -195,8 +195,17 @@ public class GameServiceImpl implements GameService {
     public Game addInvitee(String gameId, String email) {
         Game game = getGame(gameId);
         String lowercaseEmail = email.toLowerCase();
-        game.getInvitees().add(lowercaseEmail);
-        gameRepository.save(game);
+
+        boolean isInviteeAlreadyAPlayer = game.getPlayers()
+                .stream().anyMatch(player -> player.getEmail().equals(lowercaseEmail));
+        boolean isInviteeAlreadyInvited = game.getInvitees()
+                .stream().anyMatch(invitee -> invitee.equals(lowercaseEmail));
+        boolean isInviteeTheMC = game.getMc().getEmail().equals(lowercaseEmail);
+
+        if (!isInviteeAlreadyAPlayer && !isInviteeAlreadyInvited && !isInviteeTheMC) {
+            game.getInvitees().add(lowercaseEmail);
+            gameRepository.save(game);
+        }
         return game;
     }
 
