@@ -5,7 +5,7 @@
     <parent>
         <artifactId>awcentral</artifactId>
         <groupId>com.mersiades</groupId>
-        <version>0.0.16-SNAPSHOT</version>
+        <version>0.0.16</version>
     </parent>
 
     <artifactId>awc-content</artifactId>
