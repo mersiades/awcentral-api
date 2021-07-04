@@ -169,6 +169,27 @@ enum ScriptChangeType {
     RESUME
 }
 
+enum ThreatMapLocation {
+    CENTER,
+    CLOSER_NORTH,
+    FARTHER_NORTH,
+    CLOSER_UP,
+    FARTHER_UP,
+    CLOSER_EAST,
+    FARTHER_EAST,
+    CLOSER_OUT,
+    FARTHER_OUT,
+    CLOSER_SOUTH,
+    FARTHER_SOUTH,
+    CLOSER_DOWN,
+    FARTHER_DOWN,
+    CLOSER_WEST,
+    FARTHER_WEST,
+    CLOSER_IN,
+    FARTHER_IN,
+    NOT_ASSIGNED
+}
+
 # ---------------------------------------- STATIC GAME CONTENT TYPES -------------------------------------- #
 
 type HoldConditions {
@@ -679,6 +700,7 @@ type Character {
     allowedImprovements: Int!
     allowedPlaybookMoves: Int!
     allowedOtherPlaybookMoves: Int!
+    mapPosition: ThreatMapLocation!
     isDead: Boolean!
     isRetired: Boolean!
     mustChangePlaybook: Boolean!
