@@ -299,7 +299,7 @@ type PlaybookCreator {
     improvementBlock: ImprovementBlock
 }
 
-    ### ------------- Playbook Unique Creators ------------- ###
+### ------------- Playbook Unique Creators ------------- ###
 
 type PlaybookUniqueCreator {
     id: ID!
@@ -476,7 +476,7 @@ type WorkspaceCreator {
     workspaceItems: [String]!
 }
 
-     ### ------------- Vehicle Creators ------------- ###
+### ------------- Vehicle Creators ------------- ###
 
 type VehicleFrame {
     id: ID!
@@ -527,7 +527,7 @@ type VehicleCreator {
     battleVehicleCreator: BattleVehicleCreator
 }
 
-     ### ------------- Threat Creator ------------- ###
+### ------------- Threat Creator ------------- ###
 
 type ThreatCreatorContent {
     id: ID!
@@ -544,7 +544,7 @@ type ThreatCreator {
     threats: [ThreatCreatorContent]!
 }
 
-     ### ------------- MC CONTENT ------------- ###
+### ------------- MC CONTENT ------------- ###
 
 type ContentItem {
     id: ID!
@@ -742,7 +742,7 @@ type CharacterMove {
     moveAction: MoveAction
 }
 
-     ### ------------- Playbook Uniques ------------- ###
+### ------------- Playbook Uniques ------------- ###
 
 type PlaybookUniques {
     id: ID!
@@ -885,7 +885,7 @@ type Workspace {
     projects: [Project]
 }
 
-     ### ------------- Vehicles ------------- ###
+### ------------- Vehicles ------------- ###
 
 type Vehicle {
     id: ID!
@@ -1224,6 +1224,11 @@ type Mutation {
     closeFirstSession(gameId: String!): Game
     addThreat(gameRoleId: String!, threat: ThreatInput): GameRole
     addNpc(gameRoleId: String!, npc: NpcInput): GameRole
+    changeCharacterPosition(
+        gameId: String!,
+        gameRoleId: String!,
+        characterId: String!,
+        newPosition: ThreatMapLocation!): Game
 
     # Creating and editing characters
     createCharacter(gameRoleId: String!): Character

@@ -7,6 +7,7 @@ import com.mersiades.awccontent.models.RollModifier;
 import com.mersiades.awccontent.services.MoveService;
 import com.mersiades.awcdata.enums.MessageType;
 import com.mersiades.awcdata.enums.ScriptChangeType;
+import com.mersiades.awcdata.enums.ThreatMapLocation;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.repositories.GameRepository;
@@ -306,6 +307,30 @@ public class GameServiceImpl implements GameService {
     public Game closeFirstSession(String gameId) {
         Game game = getGame(gameId);
         game.setShowFirstSession(false);
+        return gameRepository.save(game);
+    }
+
+    @Override
+    public Game changeCharacterPosition(
+            String gameId,
+            String gameRoleId,
+            String characterId,
+            ThreatMapLocation newPosition
+    ) {
+        Game game = getGame(gameId);
+
+        GameRole gameRole = game.getGameRoles().stream()
+                .filter(gameRole1 -> gameRole1.getId().equals(gameRoleId))
+                .findFirst().orElseThrow(NoSuchElementException::new);
+
+        Character character = gameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(characterId))
+                .findFirst().orElseThrow(NoSuchElementException::new);
+
+        character.setMapPosition(newPosition);
+
+        characterService.save(character);
+        gameRoleService.save(gameRole);
         return gameRepository.save(game);
     }
 
@@ -1435,7 +1460,7 @@ public class GameServiceImpl implements GameService {
         Game game = getGame(gameId);
 
         String title = "";
-        String content = comment == null || comment.equals("") ? "" : "Comment: _**" +comment + "**_\n \n";
+        String content = comment == null || comment.equals("") ? "" : "Comment: _**" + comment + "**_\n \n";
 
         switch (scriptChangeType) {
             case REWIND:

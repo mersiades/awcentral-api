@@ -5,6 +5,7 @@ import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awccontent.models.Move;
 import com.mersiades.awccontent.services.MoveService;
 import com.mersiades.awcdata.enums.ScriptChangeType;
+import com.mersiades.awcdata.enums.ThreatMapLocation;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.AngelKit;
@@ -21,10 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.mersiades.awccontent.content.MovesContent.*;
 import static com.mersiades.awccontent.enums.StatType.*;
@@ -83,7 +81,7 @@ class GameServiceImplTest {
     CharacterStat mockWeird;
 
     @BeforeEach
-    public void setUp()  {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         mockMc = User.builder().id("mock-user-id").email("mock-email").displayName("mock-displayname").build();
         mockPlayer = User.builder().id("mock-user-id-2").email("mock-email-2").displayName("mock-displayname-2").build();
@@ -321,7 +319,7 @@ class GameServiceImplTest {
         assert returnedGame != null;
         assertEquals(mockGameName, returnedGame.getName());
         assertEquals(mockMc.getId(), returnedGame.getMc().getId());
-        verify(userService, times(1)).findOrCreateUser(anyString(),anyString(),anyString());
+        verify(userService, times(1)).findOrCreateUser(anyString(), anyString(), anyString());
         verify(gameRepository, times(1)).save(any(Game.class));
         verify(gameRoleService, times(1)).save(any(GameRole.class));
     }
@@ -515,7 +513,7 @@ class GameServiceImplTest {
         assert returnedGame != null;
         assertEquals(1, returnedGame.getPlayers().size());
         assertEquals(3, returnedGame.getGameRoles().size());
-        verify(userService, times(1)).findOrCreateUser(anyString(),anyString(),anyString());
+        verify(userService, times(1)).findOrCreateUser(anyString(), anyString(), anyString());
         verify(gameRepository, times(1)).findById(anyString());
         verify(gameRepository, times(1)).save(any(Game.class));
         verify(gameRoleService, times(1)).save(any(GameRole.class));
@@ -539,7 +537,7 @@ class GameServiceImplTest {
         assertEquals(2, returnedGame.getGameRoles().size());
         assertEquals(1, returnedGame.getPlayers().size());
 
-        verify(userService, times(1)).findOrCreateUser(anyString(),anyString(),anyString());
+        verify(userService, times(1)).findOrCreateUser(anyString(), anyString(), anyString());
         verify(gameRepository, times(1)).findById(anyString());
     }
 
@@ -590,6 +588,9 @@ class GameServiceImplTest {
         mockGame1.setShowFirstSession(true);
         when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
         when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(characterService.findById(anyString())).thenReturn(mockCharacter);
+        when(characterService.save(any(Character.class))).thenReturn(mockCharacter);
+
 
         // When
         Game returnedGame = gameService.closeFirstSession(mockGame1.getId());
@@ -598,6 +599,38 @@ class GameServiceImplTest {
         assert returnedGame != null;
         assertFalse(returnedGame.getShowFirstSession());
         verify(gameRepository, times(1)).save(any(Game.class));
+    }
+
+    @Test
+    void shouldChangeCharacterPosition() {
+        // Given
+        ThreatMapLocation newPosition = ThreatMapLocation.CLOSER_DOWN;
+        when(gameRepository.findById(anyString())).thenReturn(Optional.of(mockGame1));
+        when(characterService.save(any(Character.class))).thenReturn(mockCharacter2);
+        when(gameRoleService.save(any(GameRole.class))).thenReturn(mockGameRole2);
+        when(gameRepository.save(any(Game.class))).thenReturn(mockGame1);
+
+        // When
+        Game returnedGame = gameService.changeCharacterPosition(
+                mockGame1.getId(),
+                mockGameRole2.getId(),
+                mockCharacter2.getId(),
+                newPosition
+        );
+
+        // Then
+        assert returnedGame != null;
+        GameRole savedGameRole = returnedGame.getGameRoles().stream()
+                .filter(gameRole1 -> gameRole1.getId().equals(mockGameRole2.getId()))
+                .findFirst().orElseThrow(NoSuchElementException::new);
+        Character savedCharacter = savedGameRole.getCharacters().stream()
+                .filter(character1 -> character1.getId().equals(mockCharacter2.getId()))
+                .findFirst().orElseThrow(NoSuchElementException::new);
+        assertEquals(newPosition, savedCharacter.getMapPosition());
+        verify(gameRepository, times(1)).save(any(Game.class));
+        verify(gameRepository, times(1)).findById(anyString());
+        verify(characterService, times(1)).save(any(Character.class));
+        verify(gameRoleService, times(1)).save(any(GameRole.class));
     }
 
     // ---------------------------------------------- Move categories -------------------------------------------- //
