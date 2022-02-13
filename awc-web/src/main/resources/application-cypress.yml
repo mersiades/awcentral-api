@@ -1,10 +1,11 @@
+auth0:
+  audience: https://graphql.aw-central.com
 spring:
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8180/auth/realms/awc-realm
-          jwk-set-uri: http://localhost:8180/auth/realms/awc-realm/protocol/openid-connect/certs
+          issuer-uri: https://neonkingkong.au.auth0.com/
   data:
     mongodb:
       uri: mongodb+srv://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@awcentral-cluster-1.nnjlp.mongodb.net/cypress-awcentral?retryWrites=true&w=majority
