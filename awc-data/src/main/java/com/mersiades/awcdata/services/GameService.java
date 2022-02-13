@@ -1,6 +1,7 @@
 package com.mersiades.awcdata.services;
 
 import com.mersiades.awcdata.enums.ScriptChangeType;
+import com.mersiades.awcdata.enums.ThreatMapLocation;
 import com.mersiades.awcdata.models.Game;
 import com.mersiades.awcdata.models.GameRole;
 import com.mersiades.awcdata.models.Hold;
@@ -89,4 +90,6 @@ public interface GameService extends CrudService<Game, String> {
     Game spendHold(String gameId, String gameroleId, String characterId, Hold hold);
 
     Game changeScript(String gameId, ScriptChangeType scriptChangeType, String comment);
+
+    Game changeCharacterPosition(String gameId, String gameRoleId, String characterId, ThreatMapLocation newPosition);
 }

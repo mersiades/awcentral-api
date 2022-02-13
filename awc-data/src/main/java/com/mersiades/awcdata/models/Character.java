@@ -3,6 +3,7 @@ package com.mersiades.awcdata.models;
 import com.mersiades.awccontent.enums.LookType;
 import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.models.Look;
+import com.mersiades.awcdata.enums.ThreatMapLocation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,10 +47,6 @@ public class Character {
 
     private int battleVehicleCount;
 
-
-
-//    @Size(max = 5, message = "Experience must be between 0 and 5")
-//    @NotNull
     private int experience;
 
     // Min 0, max 16
@@ -64,6 +61,10 @@ public class Character {
     // The number of moves the character can have from other playbooks.
     // Usually 0, but can be increased by ADD_OTHER_PB_MOVE improvements
     private int allowedOtherPlaybookMoves;
+
+    // The character's current location on the ThreatMap
+    @Builder.Default
+    private ThreatMapLocation mapPosition = ThreatMapLocation.CENTER;
 
     @Builder.Default
     private Boolean isDead = false;

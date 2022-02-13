@@ -7,6 +7,7 @@ import com.mersiades.awccontent.services.MoveService;
 import com.mersiades.awccontent.services.PlaybookCreatorService;
 import com.mersiades.awccontent.services.StatModifierService;
 import com.mersiades.awccontent.services.StatsOptionService;
+import com.mersiades.awcdata.enums.ThreatMapLocation;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.*;
@@ -311,6 +312,7 @@ class GameRoleServiceImplTest {
         assertEquals(0, returnedCharacter.getExperience());
         assertEquals(0, returnedCharacter.getAllowedOtherPlaybookMoves());
         assertEquals(0, returnedCharacter.getHarm().getValue());
+        assertEquals(ThreatMapLocation.CENTER, returnedCharacter.getMapPosition());
         verifyMockServices();
     }
 

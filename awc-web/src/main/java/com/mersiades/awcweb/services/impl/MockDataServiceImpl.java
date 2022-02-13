@@ -43,45 +43,45 @@ public class MockDataServiceImpl implements MockDataService {
     private final ThreatCreatorService threatCreatorService;
     private final UserRepository userRepository;
 
-    final String KEYCLOAK_ID_1 = System.getenv("DAVE_ID");
-    final String KEYCLOAK_DISPLAY_NAME_1 = "dave";
-    final String KEYCLOAK_EMAIL_1 = "dave@email.com";
-    final String KEYCLOAK_ID_2 = System.getenv("SARA_ID");
-    final String KEYCLOAK_DISPLAY_NAME_2 = "sara";
-    final String KEYCLOAK_EMAIL_2 = "sara@email.com";
-    final String KEYCLOAK_ID_3 = System.getenv("JOHN_ID");
-    final String KEYCLOAK_DISPLAY_NAME_3 = "john";
-    final String KEYCLOAK_EMAIL_3 = "john@email.com";
-    final String KEYCLOAK_ID_4 = System.getenv("MAYA_ID");
-    final String KEYCLOAK_DISPLAY_NAME_4 = "maya";
-    final String KEYCLOAK_EMAIL_4 = "maya@email.com";
-    final String KEYCLOAK_ID_5 = System.getenv("AHMAD_ID");
-    final String KEYCLOAK_DISPLAY_NAME_5 = "ahmad";
-    final String KEYCLOAK_EMAIL_5 = "ahmad@email.com";
-    final String KEYCLOAK_ID_6 = System.getenv("TAKESHI_ID");
-    final String KEYCLOAK_DISPLAY_NAME_6 = "takeshi";
-    final String KEYCLOAK_EMAIL_6 = "takeshi@email.com";
-    final String KEYCLOAK_ID_7 = System.getenv("MARAMA_ID");
-    final String KEYCLOAK_DISPLAY_NAME_7 = "marama";
-    final String KEYCLOAK_EMAIL_7 = "marama@email.com";
-    final String KEYCLOAK_ID_8 = System.getenv("OLAYINKA_ID");
-    final String KEYCLOAK_DISPLAY_NAME_8 = "olayinka";
-    final String KEYCLOAK_EMAIL_8 = "olayinka@email.com";
-    final String KEYCLOAK_ID_9 = System.getenv("WILMER_ID");
-    final String KEYCLOAK_DISPLAY_NAME_9 = "wilmer";
-    final String KEYCLOAK_EMAIL_9 = "wilmer@email.com";
-    final String KEYCLOAK_ID_10 = System.getenv("IVETTE_ID");
-    final String KEYCLOAK_DISPLAY_NAME_10 = "ivette";
-    final String KEYCLOAK_EMAIL_10 = "ivette@email.com";
-    final String KEYCLOAK_ID_11 = System.getenv("SERGIO_ID");
-    final String KEYCLOAK_DISPLAY_NAME_11 = "sergio";
-    final String KEYCLOAK_EMAIL_11 = "sergio@email.com";
-    final String KEYCLOAK_ID_12 = System.getenv("CAESAR_ID");
-    final String KEYCLOAK_DISPLAY_NAME_12 = "caesar";
-    final String KEYCLOAK_EMAIL_12 = "caesar@email.com";
-    final String KEYCLOAK_ID_13 = System.getenv("CRISTI_ID");
-    final String KEYCLOAK_DISPLAY_NAME_13 = "cristi";
-    final String KEYCLOAK_EMAIL_13 = "cristi@email.com";
+    final String AUTH0_ID_1 = System.getenv("DAVE_ID");
+    final String AUTH0_DISPLAY_NAME_1 = "dave";
+    final String AUTH0_EMAIL_1 = "dave@email.com";
+    final String AUTH0_ID_2 = System.getenv("SARA_ID");
+    final String AUTH0_DISPLAY_NAME_2 = "sara";
+    final String AUTH0_EMAIL_2 = "sara@email.com";
+    final String AUTH0_ID_3 = System.getenv("JOHN_ID");
+    final String AUTH0_DISPLAY_NAME_3 = "john";
+    final String AUTH0_EMAIL_3 = "john@email.com";
+    final String AUTH0_ID_4 = System.getenv("MAYA_ID");
+    final String AUTH0_DISPLAY_NAME_4 = "maya";
+    final String AUTH0_EMAIL_4 = "maya@email.com";
+    final String AUTH0_ID_5 = System.getenv("AHMAD_ID");
+    final String AUTH0_DISPLAY_NAME_5 = "ahmad";
+    final String AUTH0_EMAIL_5 = "ahmad@email.com";
+    final String AUTH0_ID_6 = System.getenv("TAKESHI_ID");
+    final String AUTH0_DISPLAY_NAME_6 = "takeshi";
+    final String AUTH0_EMAIL_6 = "takeshi@email.com";
+    final String AUTH0_ID_7 = System.getenv("MARAMA_ID");
+    final String AUTH0_DISPLAY_NAME_7 = "marama";
+    final String AUTH0_EMAIL_7 = "marama@email.com";
+    final String AUTH0_ID_8 = System.getenv("OLAYINKA_ID");
+    final String AUTH0_DISPLAY_NAME_8 = "olayinka";
+    final String AUTH0_EMAIL_8 = "olayinka@email.com";
+    final String AUTH0_ID_9 = System.getenv("WILMER_ID");
+    final String AUTH0_DISPLAY_NAME_9 = "wilmer";
+    final String AUTH0_EMAIL_9 = "wilmer@email.com";
+    final String AUTH0_ID_10 = System.getenv("IVETTE_ID");
+    final String AUTH0_DISPLAY_NAME_10 = "ivette";
+    final String AUTH0_EMAIL_10 = "ivette@email.com";
+    final String AUTH0_ID_11 = System.getenv("SERGIO_ID");
+    final String AUTH0_DISPLAY_NAME_11 = "sergio";
+    final String AUTH0_EMAIL_11 = "sergio@email.com";
+    final String AUTH0_ID_12 = System.getenv("CAESAR_ID");
+    final String AUTH0_DISPLAY_NAME_12 = "caesar";
+    final String AUTH0_EMAIL_12 = "caesar@email.com";
+    final String AUTH0_ID_13 = System.getenv("CRISTI_ID");
+    final String AUTH0_DISPLAY_NAME_13 = "cristi";
+    final String AUTH0_EMAIL_13 = "cristi@email.com";
     public final String MOCK_GAME_1_ID = "mock-game-1-id";
     public final String MOCK_GAME_2_ID = "mock-game-2-id";
     public final String MOCK_GAME_3_ID = "mock-game-3-id";
@@ -90,6 +90,7 @@ public class MockDataServiceImpl implements MockDataService {
     public static final String DAVE_AS_MC_1_ID = "dave-mc-gamerole-1-id";
     public static final String DAVE_AS_MC_2_ID = "dave-mc-gamerole-2-id";
     public static final String DAVE_AS_MC_3_ID = "dave-mc-gamerole-3-id";
+    public static final String DAVE_AS_MC_4_ID = "dave-mc-gamerole-4-id";
     public static final String DAVE_AS_PLAYER_ID = new ObjectId().toString();
     public static final String SARA_AS_PLAYER_ID = "sara-player-gamerole-1-id";
     public static final String JOHN_AS_PLAYER_ID = "john-player-gamerole-1-id";
@@ -111,6 +112,13 @@ public class MockDataServiceImpl implements MockDataService {
     public static final String SERGIO_AS_PLAYER_ID_2 = "sergio-player-gamerole-2-id";
     public static final String CAESAR_AS_PLAYER_ID_2 = "caesar-player-gamerole-2-id";
     public static final String CRISTI_AS_PLAYER_ID_2 = "cristi-player-gamerole-2-id";
+    public static final String SARA_AS_PLAYER_ID_3 = "sara-player-gamerole-3-id";
+    public static final String JOHN_AS_PLAYER_ID_3 = "john-player-gamerole-3-id";
+    public static final String AHMAD_AS_PLAYER_ID_3 = "ahmad-player-gamerole-3-id";
+    public static final String TAKESHI_AS_PLAYER_ID_3 = "takeshi-player-gamerole-3-id";
+    public static final String MARAMA_AS_PLAYER_ID_3 = "marama-player-gamerole-3-id";
+    public static final String WILMER_AS_PLAYER_ID_3 = "wilmer-player-gamerole-3-id";
+    public static final String IVETTE_AS_PLAYER_ID_3 = "ivette-player-gamerole-3-id";
 
     @Override
     public void loadMockData() {
@@ -119,69 +127,69 @@ public class MockDataServiceImpl implements MockDataService {
 
             // -------------------------------------- Set up mock Users -------------------------------------- //
             User mockUser1 = User.builder()
-                    .id((KEYCLOAK_ID_1))
-                    .displayName(KEYCLOAK_DISPLAY_NAME_1)
-                    .email(KEYCLOAK_EMAIL_1).build();
+                    .id((AUTH0_ID_1))
+                    .displayName(AUTH0_DISPLAY_NAME_1)
+                    .email(AUTH0_EMAIL_1).build();
 
             User mockUser2 = User.builder()
-                    .id(KEYCLOAK_ID_2)
-                    .displayName(KEYCLOAK_DISPLAY_NAME_2)
-                    .email(KEYCLOAK_EMAIL_2).build();
+                    .id(AUTH0_ID_2)
+                    .displayName(AUTH0_DISPLAY_NAME_2)
+                    .email(AUTH0_EMAIL_2).build();
 
             User mockUser3 = User.builder()
-                    .id(KEYCLOAK_ID_3)
-                    .displayName(KEYCLOAK_DISPLAY_NAME_3)
-                    .email(KEYCLOAK_EMAIL_3).build();
+                    .id(AUTH0_ID_3)
+                    .displayName(AUTH0_DISPLAY_NAME_3)
+                    .email(AUTH0_EMAIL_3).build();
 
             User mockUser4 = User.builder()
-                    .id(KEYCLOAK_ID_4)
-                    .displayName(KEYCLOAK_DISPLAY_NAME_4)
-                    .email(KEYCLOAK_EMAIL_4).build();
+                    .id(AUTH0_ID_4)
+                    .displayName(AUTH0_DISPLAY_NAME_4)
+                    .email(AUTH0_EMAIL_4).build();
 
             User mockUser5 = User.builder()
-                    .id(KEYCLOAK_ID_5)
-                    .displayName(KEYCLOAK_DISPLAY_NAME_5)
-                    .email(KEYCLOAK_EMAIL_5).build();
+                    .id(AUTH0_ID_5)
+                    .displayName(AUTH0_DISPLAY_NAME_5)
+                    .email(AUTH0_EMAIL_5).build();
 
             User mockUser6 = User.builder()
-                    .id(KEYCLOAK_ID_6)
-                    .displayName(KEYCLOAK_DISPLAY_NAME_6)
-                    .email(KEYCLOAK_EMAIL_6).build();
+                    .id(AUTH0_ID_6)
+                    .displayName(AUTH0_DISPLAY_NAME_6)
+                    .email(AUTH0_EMAIL_6).build();
 
             User mockUser7 = User.builder()
-                    .id(KEYCLOAK_ID_7)
-                    .displayName(KEYCLOAK_DISPLAY_NAME_7)
-                    .email(KEYCLOAK_EMAIL_7).build();
+                    .id(AUTH0_ID_7)
+                    .displayName(AUTH0_DISPLAY_NAME_7)
+                    .email(AUTH0_EMAIL_7).build();
 
             User mockUser8 = User.builder()
-                    .id(KEYCLOAK_ID_8)
-                    .displayName(KEYCLOAK_DISPLAY_NAME_8)
-                    .email(KEYCLOAK_EMAIL_8).build();
+                    .id(AUTH0_ID_8)
+                    .displayName(AUTH0_DISPLAY_NAME_8)
+                    .email(AUTH0_EMAIL_8).build();
 
             User mockUser9 = User.builder()
-                    .id(KEYCLOAK_ID_9)
-                    .displayName(KEYCLOAK_DISPLAY_NAME_9)
-                    .email(KEYCLOAK_EMAIL_9).build();
+                    .id(AUTH0_ID_9)
+                    .displayName(AUTH0_DISPLAY_NAME_9)
+                    .email(AUTH0_EMAIL_9).build();
 
             User mockUser10 = User.builder()
-                    .id(KEYCLOAK_ID_10)
-                    .displayName(KEYCLOAK_DISPLAY_NAME_10)
-                    .email(KEYCLOAK_EMAIL_10).build();
+                    .id(AUTH0_ID_10)
+                    .displayName(AUTH0_DISPLAY_NAME_10)
+                    .email(AUTH0_EMAIL_10).build();
 
             User mockUser11 = User.builder()
-                    .id(KEYCLOAK_ID_11)
-                    .displayName(KEYCLOAK_DISPLAY_NAME_11)
-                    .email(KEYCLOAK_EMAIL_11).build();
+                    .id(AUTH0_ID_11)
+                    .displayName(AUTH0_DISPLAY_NAME_11)
+                    .email(AUTH0_EMAIL_11).build();
 
             User mockUser12 = User.builder()
-                    .id(KEYCLOAK_ID_12)
-                    .displayName(KEYCLOAK_DISPLAY_NAME_12)
-                    .email(KEYCLOAK_EMAIL_12).build();
+                    .id(AUTH0_ID_12)
+                    .displayName(AUTH0_DISPLAY_NAME_12)
+                    .email(AUTH0_EMAIL_12).build();
 
             User mockUser13 = User.builder()
-                    .id(KEYCLOAK_ID_13)
-                    .displayName(KEYCLOAK_DISPLAY_NAME_13)
-                    .email(KEYCLOAK_EMAIL_13).build();
+                    .id(AUTH0_ID_13)
+                    .displayName(AUTH0_DISPLAY_NAME_13)
+                    .email(AUTH0_EMAIL_13).build();
 
             // ------------------------------ Set up mock Game 1 with Game RoleType ----------------------------- //
             Game mockGame1 = Game.builder()
@@ -455,17 +463,100 @@ public class MockDataServiceImpl implements MockDataService {
                     cristiAsPlayer2
             ));
 
-            // ------------------------------ Set up mock Game 6 ----------------------------- //
-            // Mock Game 7 is the same as mock game 1, except that the pre-game is marked as complete
+            // ------------------------------ Set up mock Game 7 ----------------------------- //
+            // Mock Game 7 is mid-game, meaning that all characters have been created.
+            // Intended for testing playbook panels, moves etc
+            Game mockGame7 = Game.builder()
+                    .id(MOCK_GAME_7_ID)
+                    .name("Mock Game 7")
+                    .commsApp("Zoom")
+                    .commsUrl("https://zoom.com/somethingsomething?something=something&somethingelse=somethingelse")
+                    .hasFinishedPreGame(true)
+                    .showFirstSession(false)
+                    .mc(mockUser1)
+                    .build();
 
-            Game mockGame7 = mockGame1;
+            GameRole daveAsMC4 = GameRole.builder().id(DAVE_AS_MC_4_ID).role(RoleType.MC).build();
+            daveAsMC4.setUserId(mockUser1.getId());
+            daveAsMC4.setGameId(mockGame7.getId());
+            daveAsMC4.setGameName(mockGame7.getName());
+            mockGame7.getGameRoles().add(daveAsMC4);
+            mockUser1.getGameRoles().add(daveAsMC4);
 
-            mockGame7.setHasFinishedPreGame(true);
-            mockGame7.setShowFirstSession(false);
-            mockGame7.setId(MOCK_GAME_7_ID);
-            mockGame7.setName("Mock Game 7");
+            // Sara -> Angel
+            GameRole sarahAsPlayer3 = GameRole.builder().id(SARA_AS_PLAYER_ID_3).role(RoleType.PLAYER).build();
+            sarahAsPlayer3.setUserId(mockUser2.getId());
+            sarahAsPlayer3.setGameId(mockGame7.getId());
+            sarahAsPlayer3.setGameName(mockGame7.getName());
+            mockGame7.getGameRoles().add(sarahAsPlayer3);
+            mockGame7.getPlayers().add(mockUser2);
+            mockUser2.getGameRoles().add(sarahAsPlayer3);
+
+            // John -> Battlebabe
+            GameRole johnAsPlayer3 = GameRole.builder().id(JOHN_AS_PLAYER_ID_3).role(RoleType.PLAYER).build();
+            johnAsPlayer3.setUserId(mockUser3.getId());
+            johnAsPlayer3.setGameId(mockGame7.getId());
+            johnAsPlayer3.setGameName(mockGame7.getName());
+            mockGame7.getGameRoles().add(johnAsPlayer3);
+            mockGame7.getPlayers().add(mockUser3);
+            mockUser3.getGameRoles().add(johnAsPlayer3);
+
+            // Takeshi -> Chopper
+            GameRole takeshiAsPlayer3 = GameRole.builder().id(TAKESHI_AS_PLAYER_ID_3).role(RoleType.PLAYER).build();
+            takeshiAsPlayer3.setUserId(mockUser6.getId());
+            takeshiAsPlayer3.setGameId(mockGame7.getId());
+            takeshiAsPlayer3.setGameName(mockGame7.getName());
+            mockGame7.getGameRoles().add(takeshiAsPlayer3);
+            mockGame7.getPlayers().add(mockUser6);
+            mockUser6.getGameRoles().add(takeshiAsPlayer3);
+
+            // Ahmad -> Driver
+            GameRole ahmadAsPlayer3 = GameRole.builder().id(AHMAD_AS_PLAYER_ID_3).role(RoleType.PLAYER).build();
+            ahmadAsPlayer3.setUserId(mockUser5.getId());
+            ahmadAsPlayer3.setGameId(mockGame7.getId());
+            ahmadAsPlayer3.setGameName(mockGame7.getName());
+            mockGame7.getGameRoles().add(ahmadAsPlayer3);
+            mockGame7.getPlayers().add(mockUser5);
+            mockUser5.getGameRoles().add(ahmadAsPlayer3);
+
+            // Marama -> Gunlugger
+            GameRole maramaAsPlayer3 = GameRole.builder().id(MARAMA_AS_PLAYER_ID_3).role(RoleType.PLAYER).build();
+            maramaAsPlayer3.setUserId(mockUser7.getId());
+            maramaAsPlayer3.setGameId(mockGame7.getId());
+            maramaAsPlayer3.setGameName(mockGame7.getName());
+            mockGame7.getGameRoles().add(maramaAsPlayer3);
+            mockGame7.getPlayers().add(mockUser7);
+            mockUser7.getGameRoles().add(maramaAsPlayer3);
+
+            // Wilmer -> Hocus
+            GameRole wilmerAsPlayer3 = GameRole.builder().id(WILMER_AS_PLAYER_ID_3).role(RoleType.PLAYER).build();
+            wilmerAsPlayer3.setUserId(mockUser9.getId());
+            wilmerAsPlayer3.setGameId(mockGame7.getId());
+            wilmerAsPlayer3.setGameName(mockGame7.getName());
+            mockGame7.getGameRoles().add(wilmerAsPlayer3);
+            mockGame7.getPlayers().add(mockUser9);
+            mockUser9.getGameRoles().add(wilmerAsPlayer3);
+
+            // Ivette -> Maestro'D
+            GameRole ivetteAsPlayer3 = GameRole.builder().id(IVETTE_AS_PLAYER_ID_3).role(RoleType.PLAYER).build();
+            ivetteAsPlayer3.setUserId(mockUser10.getId());
+            ivetteAsPlayer3.setGameId(mockGame7.getId());
+            ivetteAsPlayer3.setGameName(mockGame7.getName());
+            mockGame7.getGameRoles().add(ivetteAsPlayer3);
+            mockGame7.getPlayers().add(mockUser10);
+            mockUser10.getGameRoles().add(ivetteAsPlayer3);
 
             gameService.save(mockGame7);
+            gameRoleService.saveAll(List.of(
+                    daveAsMC4,
+                    sarahAsPlayer3,
+                    johnAsPlayer3,
+                    ahmadAsPlayer3,
+                    takeshiAsPlayer3,
+                    maramaAsPlayer3,
+                    wilmerAsPlayer3,
+                    ivetteAsPlayer3
+            ));
 
             // ----------------------------- Saving it all ----------------------------------- //
 
@@ -530,6 +621,22 @@ public class MockDataServiceImpl implements MockDataService {
         assert sergioAsPlayer != null;
         GameRole caesarAsPlayer = gameRoleService.findById(CAESAR_AS_PLAYER_ID_2);
         assert caesarAsPlayer != null;
+
+        // For Game 7
+        GameRole saraAsPlayer3 = gameRoleService.findById(SARA_AS_PLAYER_ID_3);
+        assert saraAsPlayer3 != null;
+        GameRole johnAsPlayer3 = gameRoleService.findById(JOHN_AS_PLAYER_ID_3);
+        assert johnAsPlayer3 != null;
+        GameRole ahmadAsPlayer3 = gameRoleService.findById(AHMAD_AS_PLAYER_ID_3);
+        assert ahmadAsPlayer3 != null;
+        GameRole takeshiAsPlayer3 = gameRoleService.findById(TAKESHI_AS_PLAYER_ID_3);
+        assert takeshiAsPlayer3 != null;
+        GameRole maramaAsPlayer3 = gameRoleService.findById(MARAMA_AS_PLAYER_ID_3);
+        assert maramaAsPlayer3 != null;
+        GameRole wilmerAsPlayer3 = gameRoleService.findById(WILMER_AS_PLAYER_ID_3);
+        assert wilmerAsPlayer3 != null;
+        GameRole ivetteAsPlayer3 = gameRoleService.findById(IVETTE_AS_PLAYER_ID_3);
+        assert ivetteAsPlayer3 != null;
 
         CharacterHarm harm = CharacterHarm.builder()
                 .hasChangedPlaybook(false)
@@ -1059,7 +1166,7 @@ public class MockDataServiceImpl implements MockDataService {
                 .allowedPlaybookMoves(playbookCreatorAngel.getMoveChoiceCount())
                 .build();
 
-        // Complete Angel, for Game 6, so another Character can assign Hx during test
+        // Complete Angel, for Game 6 and Game 7, so another Character can assign Hx during test
         Character mockCharacter1_2 = Character.builder()
                 .name("Doc")
                 .playbook(PlaybookType.ANGEL)
@@ -1371,6 +1478,7 @@ public class MockDataServiceImpl implements MockDataService {
 
         // ----------------------- Add Characters to players and save ----------------------------- //
 
+        // Game 1
         saveCharacter(saraAsPlayer, harm, mockCharacter1);
         saveCharacter(johnAsPlayer, harm, mockCharacter2);
         saveCharacter(mayaAsPlayer, harm, mockCharacter3);
@@ -1380,6 +1488,7 @@ public class MockDataServiceImpl implements MockDataService {
         saveCharacter(wilmerAsPlayer, harm, mockCharacter8);
         saveCharacter(ivetteAsPlayer, harm, mockCharacter9);
 
+        // Game 6
         // Add Sara's character to her other GameRole as well
         saveCharacter(saraAsPlayer2, harm, mockCharacter1_2);
         // John creates Battlebabe from scratch in test
@@ -1392,10 +1501,21 @@ public class MockDataServiceImpl implements MockDataService {
         saveCharacter(ivetteAsPlayer2, harm, mockCharacter9_2);
         saveCharacter(sergioAsPlayer, harm, mockCharacter10);
         saveCharacter(caesarAsPlayer, harm, mockCharacter11);
+
+        // Game 7
+        saveCharacter(saraAsPlayer3, harm, mockCharacter1_2);
+        saveCharacter(johnAsPlayer3, harm, mockCharacter2);
+        saveCharacter(ahmadAsPlayer3, harm, mockCharacter4);
+        saveCharacter(takeshiAsPlayer3, harm, mockCharacter5);
+        saveCharacter(maramaAsPlayer3, harm, mockCharacter6);
+        saveCharacter(wilmerAsPlayer3, harm, mockCharacter8);
+        saveCharacter(ivetteAsPlayer3, harm, mockCharacter9);
+
     }
 
     @Override
     public void loadHx() {
+        // Game 1
         GameRole saraAsPlayer = gameRoleService.findById(SARA_AS_PLAYER_ID);
         assert saraAsPlayer != null;
         GameRole johnAsPlayer = gameRoleService.findById(JOHN_AS_PLAYER_ID);
@@ -1413,22 +1533,41 @@ public class MockDataServiceImpl implements MockDataService {
         GameRole ivetteAsPlayer = gameRoleService.findById(IVETTE_AS_PLAYER_ID_1);
         assert ivetteAsPlayer != null;
 
+        // Game 7
+        GameRole saraAsPlayer3 = gameRoleService.findById(SARA_AS_PLAYER_ID_3);
+        assert saraAsPlayer3 != null;
+        GameRole johnAsPlayer3 = gameRoleService.findById(JOHN_AS_PLAYER_ID_3);
+        assert johnAsPlayer3 != null;
+        GameRole ahmadAsPlayer3 = gameRoleService.findById(AHMAD_AS_PLAYER_ID_3);
+        assert ahmadAsPlayer3 != null;
+        GameRole takeshiAsPlayer3 = gameRoleService.findById(TAKESHI_AS_PLAYER_ID_3);
+        assert takeshiAsPlayer3 != null;
+        GameRole maramaAsPlayer3 = gameRoleService.findById(MARAMA_AS_PLAYER_ID_3);
+        assert maramaAsPlayer3 != null;
+        GameRole wilmerAsPlayer3 = gameRoleService.findById(WILMER_AS_PLAYER_ID_3);
+        assert wilmerAsPlayer3 != null;
+        GameRole ivetteAsPlayer3 = gameRoleService.findById(IVETTE_AS_PLAYER_ID_3);
+        assert ivetteAsPlayer3 != null;
+
+        // Game 1
         Character doc = saraAsPlayer.getCharacters().stream().findFirst().orElseThrow();
-        assert doc != null;
         Character scarlet = johnAsPlayer.getCharacters().stream().findFirst().orElseThrow();
-        assert scarlet != null;
         Character smith = mayaAsPlayer.getCharacters().stream().findFirst().orElseThrow();
-        assert smith != null;
         Character nee = ahmadAsPlayer.getCharacters().stream().findFirst().orElseThrow();
-        assert nee != null;
         Character dog = takeshiAsPlayer.getCharacters().stream().findFirst().orElseThrow();
-        assert dog != null;
         Character batty = maramaAsPlayer.getCharacters().stream().findFirst().orElseThrow();
-        assert batty != null;
         Character vision = wilmerAsPlayer.getCharacters().stream().findFirst().orElseThrow();
-        assert vision != null;
         Character emmy = ivetteAsPlayer.getCharacters().stream().findFirst().orElseThrow();
-        assert emmy != null;
+
+        // Game 7
+        Character docB = saraAsPlayer3.getCharacters().stream().findFirst().orElseThrow();
+        Character scarletB = johnAsPlayer3.getCharacters().stream().findFirst().orElseThrow();
+        Character neeB = ahmadAsPlayer3.getCharacters().stream().findFirst().orElseThrow();
+        Character dogB = takeshiAsPlayer3.getCharacters().stream().findFirst().orElseThrow();
+        Character battyB = maramaAsPlayer3.getCharacters().stream().findFirst().orElseThrow();
+        Character visionB = wilmerAsPlayer3.getCharacters().stream().findFirst().orElseThrow();
+        Character emmyB = ivetteAsPlayer3.getCharacters().stream().findFirst().orElseThrow();
+
 
         // ------------------------------ Doc's Hx --------------------------------- //
         HxStat doc1 = HxStat.builder().id(new ObjectId().toString())
@@ -1443,6 +1582,7 @@ public class MockDataServiceImpl implements MockDataService {
         HxStat doc4 = HxStat.builder().id(new ObjectId().toString())
                 .characterId(dog.getId()).characterName(dog.getName()).hxValue(1).build();
         doc.setHxBlock(List.of(doc1, doc2, doc3, doc4));
+        docB.setHxBlock(List.of(doc1, doc2, doc3, doc4));
 
         // ------------------------------ Scarlet's Hx --------------------------------- //
         HxStat scarlet1 = HxStat.builder().id(new ObjectId().toString())
@@ -1458,6 +1598,7 @@ public class MockDataServiceImpl implements MockDataService {
                 .characterId(dog.getId()).characterName(dog.getName()).hxValue(0).build();
 
         scarlet.setHxBlock(List.of(scarlet1, scarlet2, scarlet3, scarlet4));
+        scarletB.setHxBlock(List.of(scarlet1, scarlet2, scarlet3, scarlet4));
 
         // ------------------------------ Smith's Hx --------------------------------- //
         HxStat smith1 = HxStat.builder().id(new ObjectId().toString())
@@ -1488,6 +1629,7 @@ public class MockDataServiceImpl implements MockDataService {
                 .characterId(dog.getId()).characterName(dog.getName()).hxValue(-1).build();
 
         nee.setHxBlock(List.of(nee1, nee2, nee3, nee4));
+        neeB.setHxBlock(List.of(nee1, nee2, nee3, nee4));
 
         // ------------------------------ Dog's Hx --------------------------------- //
         HxStat dog1 = HxStat.builder().id(new ObjectId().toString())
@@ -1503,6 +1645,7 @@ public class MockDataServiceImpl implements MockDataService {
                 .characterId(nee.getId()).characterName(nee.getName()).hxValue(-1).build();
 
         dog.setHxBlock(List.of(dog1, dog2, dog3, dog4));
+        dogB.setHxBlock(List.of(dog1, dog2, dog3, dog4));
 
         // ------------------------------ Batty's Hx --------------------------------- //
         HxStat batty1 = HxStat.builder().id(new ObjectId().toString())
@@ -1518,6 +1661,7 @@ public class MockDataServiceImpl implements MockDataService {
                 .characterId(nee.getId()).characterName(nee.getName()).hxValue(-1).build();
 
         batty.setHxBlock(List.of(batty1, batty2, batty3, batty4));
+        battyB.setHxBlock(List.of(batty1, batty2, batty3, batty4));
 
         // ------------------------------ Vision's Hx --------------------------------- //
         HxStat vision1 = HxStat.builder().id(new ObjectId().toString())
@@ -1533,6 +1677,7 @@ public class MockDataServiceImpl implements MockDataService {
                 .characterId(nee.getId()).characterName(nee.getName()).hxValue(-1).build();
 
         vision.setHxBlock(List.of(vision1, vision2, vision3, vision4));
+        visionB.setHxBlock(List.of(vision1, vision2, vision3, vision4));
 
         // ------------------------------ Emmy's Hx --------------------------------- //
         HxStat emmy1 = HxStat.builder().id(new ObjectId().toString())
@@ -1548,9 +1693,11 @@ public class MockDataServiceImpl implements MockDataService {
                 .characterId(nee.getId()).characterName(nee.getName()).hxValue(-1).build();
 
         emmy.setHxBlock(List.of(emmy1, emmy2, emmy3, emmy4));
+        emmyB.setHxBlock(List.of(emmy1, emmy2, emmy3, emmy4));
 
         // ------------------------------ Save to db --------------------------------- //
-        characterService.saveAll(List.of(doc, scarlet, smith, nee, dog, batty, vision, emmy));
+        characterService.saveAll(List.of(doc, scarlet, smith, nee, dog, batty, vision, emmy,
+                docB, scarletB, neeB, dogB, battyB, visionB, emmyB));
         gameRoleService.saveAll(List.of(
                 saraAsPlayer,
                 johnAsPlayer,
@@ -1559,18 +1706,27 @@ public class MockDataServiceImpl implements MockDataService {
                 takeshiAsPlayer,
                 maramaAsPlayer,
                 wilmerAsPlayer,
-                ivetteAsPlayer
+                ivetteAsPlayer,
+                saraAsPlayer3,
+                johnAsPlayer3,
+                ahmadAsPlayer3,
+                takeshiAsPlayer3,
+                maramaAsPlayer3,
+                wilmerAsPlayer3,
+                ivetteAsPlayer3
         ));
     }
 
     @Override
     public void loadThreats() {
-        GameRole daveAsMC = gameRoleService.findAllByUserId(KEYCLOAK_ID_1)
+        GameRole daveAsMC = gameRoleService.findAllByUserId(AUTH0_ID_1)
                 .stream().filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).findFirst().orElseThrow();
-        assert daveAsMC != null;
-        GameRole saraAsMC = gameRoleService.findAllByUserId(KEYCLOAK_ID_2)
+        GameRole daveAsMC4 = gameRoleService.findAllByUserId(AUTH0_ID_1)
+                .stream().filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).filter(gameRole -> gameRole.getGameId().equals(MOCK_GAME_7_ID)).findFirst().orElseThrow();
+
+        GameRole saraAsMC = gameRoleService.findAllByUserId(AUTH0_ID_2)
                 .stream().filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).findFirst().orElseThrow();
-        assert saraAsMC != null;
+
         ThreatCreator threatCreator = threatCreatorService.findAll().get(0);
         assert threatCreator != null;
 
@@ -1615,19 +1771,23 @@ public class MockDataServiceImpl implements MockDataService {
 
         daveAsMC.getThreats().add(mockThreat1);
         daveAsMC.getThreats().add(mockThreat2);
+        daveAsMC4.getThreats().add(mockThreat1);
+        daveAsMC4.getThreats().add(mockThreat2);
         saraAsMC.getThreats().add(mockThreat3);
         saraAsMC.getThreats().add(mockThreat4);
-        gameRoleService.saveAll(List.of(daveAsMC, saraAsMC));
+        gameRoleService.saveAll(List.of(daveAsMC, saraAsMC, daveAsMC4));
     }
 
     @Override
     public void loadNpcs() {
-        GameRole daveAsMC = gameRoleService.findAllByUserId(KEYCLOAK_ID_1)
+        GameRole daveAsMC = gameRoleService.findAllByUserId(AUTH0_ID_1)
                 .stream().filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).findFirst().orElseThrow();
-        assert daveAsMC != null;
-        GameRole saraAsMC = gameRoleService.findAllByUserId(KEYCLOAK_ID_2)
+        GameRole daveAsMC4 = gameRoleService.findAllByUserId(AUTH0_ID_1)
+                .stream().filter(gameRole -> gameRole.getRole().equals(RoleType.MC))
+                .filter(gameRole -> gameRole.getGameId().equals(MOCK_GAME_7_ID)).findFirst().orElseThrow();
+        GameRole saraAsMC = gameRoleService.findAllByUserId(AUTH0_ID_2)
                 .stream().filter(gameRole -> gameRole.getRole().equals(RoleType.MC)).findFirst().orElseThrow();
-        assert saraAsMC != null;
+
         ThreatCreator threatCreator = threatCreatorService.findAll().get(0);
         assert threatCreator != null;
 
@@ -1648,9 +1808,11 @@ public class MockDataServiceImpl implements MockDataService {
 
         daveAsMC.getNpcs().add(mockNpc1);
         daveAsMC.getNpcs().add(mockNpc2);
+        daveAsMC4.getNpcs().add(mockNpc1);
+        daveAsMC4.getNpcs().add(mockNpc2);
         saraAsMC.getNpcs().add(mockNpc3);
         saraAsMC.getNpcs().add(mockNpc4);
-        gameRoleService.saveAll(List.of(saraAsMC, daveAsMC));
+        gameRoleService.saveAll(List.of(saraAsMC, daveAsMC, daveAsMC4));
     }
 
     private List<CharacterMove> createAndMergeCharacterMoves(List<Move> choiceMoves, List<Move> defaultMoves) {

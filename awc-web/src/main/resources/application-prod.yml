@@ -1,13 +1,11 @@
-
+auth0:
+  audience: https://graphql.aw-central.com
 spring:
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://keycloak.aw-central.com/auth/realms/awc-realm
-          jwk-set-uri: https://keycloak.aw-central.com/auth/realms/awc-realm/protocol/openid-connect/certs
+          issuer-uri: https://awcentral.au.auth0.com/
   data:
     mongodb:
       uri: mongodb+srv://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@awcentral-cluster-1.nnjlp.mongodb.net/awcentral?retryWrites=true&w=majority
-server:
-  port: 5000

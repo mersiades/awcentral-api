@@ -4,9 +4,11 @@ import com.mersiades.awccontent.enums.PlaybookType;
 import com.mersiades.awccontent.enums.StatType;
 import com.mersiades.awccontent.models.Look;
 import com.mersiades.awcdata.enums.ScriptChangeType;
+import com.mersiades.awcdata.enums.ThreatMapLocation;
 import com.mersiades.awcdata.models.Character;
 import com.mersiades.awcdata.models.*;
 import com.mersiades.awcdata.models.uniques.*;
+import com.mersiades.awcdata.services.CharacterService;
 import com.mersiades.awcdata.services.GameRoleService;
 import com.mersiades.awcdata.services.GameService;
 import com.mersiades.awcweb.models.SystemMessage;
@@ -24,11 +26,17 @@ public class Mutation implements GraphQLMutationResolver {
     private final GameService gameService;
     private final GameRoleService gameRoleService;
     private final CypressTestService cypressTestService;
+    private final CharacterService characterService;
 
-    public Mutation(GameService gameService, GameRoleService gameRoleService, CypressTestService cypressTestService) {
+    public Mutation(
+            GameService gameService,
+            GameRoleService gameRoleService,
+            CypressTestService cypressTestService,
+            CharacterService characterService) {
         this.gameService = gameService;
         this.gameRoleService = gameRoleService;
         this.cypressTestService = cypressTestService;
+        this.characterService = characterService;
     }
 
     // ---------------------------------------------- Game-related -------------------------------------------- //
@@ -97,6 +105,11 @@ public class Mutation implements GraphQLMutationResolver {
     public GameRole addNpc(String gameRoleId, Npc npc) {
         log.info("Adding Npc for GameRole with id: " + gameRoleId);
         return gameRoleService.addNpc(gameRoleId, npc);
+    }
+
+    public Game changeCharacterPosition(String gameId, String gameRoleId, String characterId, ThreatMapLocation newPosition) {
+        log.info("Changing position for Character: " + characterId);
+        return gameService.changeCharacterPosition(gameId, gameRoleId, characterId, newPosition);
     }
 
     // ------------------------------------ Creating and editing characters ---------------------------------- //

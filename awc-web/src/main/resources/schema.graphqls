@@ -169,6 +169,27 @@ enum ScriptChangeType {
     RESUME
 }
 
+enum ThreatMapLocation {
+    CENTER,
+    CLOSER_NORTH,
+    FARTHER_NORTH,
+    CLOSER_UP,
+    FARTHER_UP,
+    CLOSER_EAST,
+    FARTHER_EAST,
+    CLOSER_OUT,
+    FARTHER_OUT,
+    CLOSER_SOUTH,
+    FARTHER_SOUTH,
+    CLOSER_DOWN,
+    FARTHER_DOWN,
+    CLOSER_WEST,
+    FARTHER_WEST,
+    CLOSER_IN,
+    FARTHER_IN,
+    NOT_ASSIGNED
+}
+
 # ---------------------------------------- STATIC GAME CONTENT TYPES -------------------------------------- #
 
 type HoldConditions {
@@ -278,7 +299,7 @@ type PlaybookCreator {
     improvementBlock: ImprovementBlock
 }
 
-    ### ------------- Playbook Unique Creators ------------- ###
+### ------------- Playbook Unique Creators ------------- ###
 
 type PlaybookUniqueCreator {
     id: ID!
@@ -455,7 +476,7 @@ type WorkspaceCreator {
     workspaceItems: [String]!
 }
 
-     ### ------------- Vehicle Creators ------------- ###
+### ------------- Vehicle Creators ------------- ###
 
 type VehicleFrame {
     id: ID!
@@ -506,7 +527,7 @@ type VehicleCreator {
     battleVehicleCreator: BattleVehicleCreator
 }
 
-     ### ------------- Threat Creator ------------- ###
+### ------------- Threat Creator ------------- ###
 
 type ThreatCreatorContent {
     id: ID!
@@ -523,7 +544,7 @@ type ThreatCreator {
     threats: [ThreatCreatorContent]!
 }
 
-     ### ------------- MC CONTENT ------------- ###
+### ------------- MC CONTENT ------------- ###
 
 type ContentItem {
     id: ID!
@@ -679,6 +700,7 @@ type Character {
     allowedImprovements: Int!
     allowedPlaybookMoves: Int!
     allowedOtherPlaybookMoves: Int!
+    mapPosition: ThreatMapLocation!
     isDead: Boolean!
     isRetired: Boolean!
     mustChangePlaybook: Boolean!
@@ -720,7 +742,7 @@ type CharacterMove {
     moveAction: MoveAction
 }
 
-     ### ------------- Playbook Uniques ------------- ###
+### ------------- Playbook Uniques ------------- ###
 
 type PlaybookUniques {
     id: ID!
@@ -863,7 +885,7 @@ type Workspace {
     projects: [Project]
 }
 
-     ### ------------- Vehicles ------------- ###
+### ------------- Vehicles ------------- ###
 
 type Vehicle {
     id: ID!
@@ -1202,6 +1224,11 @@ type Mutation {
     closeFirstSession(gameId: String!): Game
     addThreat(gameRoleId: String!, threat: ThreatInput): GameRole
     addNpc(gameRoleId: String!, npc: NpcInput): GameRole
+    changeCharacterPosition(
+        gameId: String!,
+        gameRoleId: String!,
+        characterId: String!,
+        newPosition: ThreatMapLocation!): Game
 
     # Creating and editing characters
     createCharacter(gameRoleId: String!): Character
