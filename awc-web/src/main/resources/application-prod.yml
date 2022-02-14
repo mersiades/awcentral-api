@@ -1,3 +1,4 @@
+
 auth0:
   audience: https://graphql.aw-central.com
 spring:
@@ -9,3 +10,5 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@awcentral-cluster-1.nnjlp.mongodb.net/awcentral?retryWrites=true&w=majority
+  profiles:
+    active: prod

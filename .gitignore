@@ -114,6 +114,7 @@ Desktop.ini
 /deploy/
 target/
 /digital-ocean
+scripts/
 
 ######################
 # Logs
