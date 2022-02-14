@@ -143,3 +143,5 @@ scripts/
 # ESLint
 ######################
 .eslintcache
+
+.env
