@@ -3,12 +3,33 @@
 # awcentral
 A web interface to play Apocalypse World online
 
+## Structure
+
+This app is a Maven multi-module project, with three modules
+
+1. `awc-web`: Does all the graphql and server stuff
+2. `awc-data`: Does all the database stuff: repositories, models, services
+3. `awc-content`: Provides all the hard-coded content from the Apocalypse World book
+
 ## Development
 
 ### Running the app locally
 
-TODO: Flesh out
-- run `AWCWebApplication` in IDE
+#### For regular development
+
+1. `scripts/run-docker-dev.sh` to run the app in a Docker container.
+2. Create an IDE run configuration. 
+   - VM options: `-Djdk.tls.client.protocols=TLSv1.2`
+   - Use the classpath of the `awc-web` module
+   - Environment variables can be copied from `scripts/run-docker-dev.sh`
+
+#### For end-to-end testing
+
+1. `scripts/run-docker-e2e.sh` to run the app in a Docker container.
+2. Create an IDE run configuration.
+   - VM options: `-Djdk.tls.client.protocols=TLSv1.2`
+   - Use the classpath of the `awc-web` module
+   - Environment variables can be copied from `scripts/run-docker-e2e.sh`
     
 ## Testing
 
