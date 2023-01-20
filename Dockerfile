@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-jre
+FROM --platform=linux/amd64 adoptopenjdk/openjdk11:alpine-jre
 
 RUN mkdir -p /software
 
