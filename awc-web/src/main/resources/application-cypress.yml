@@ -9,8 +9,6 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@awcentral-cluster-1.nnjlp.mongodb.net/cypress-awcentral?retryWrites=true&w=majority
-  profiles:
-    active: cypress
 #logging:
 #  level:
 #    org:
