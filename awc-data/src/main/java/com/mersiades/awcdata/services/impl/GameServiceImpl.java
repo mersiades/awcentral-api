@@ -33,9 +33,6 @@ import static com.mersiades.awccontent.enums.StatType.HX;
 @Service
 public class GameServiceImpl implements GameService {
 
-    @Value("${spring.profiles.active}")
-    private String activeProfiles;
-
     private static final String GANG_CONTENT = "When you have a gang, you can _**sucker someone**_, _**go aggro on them**_, or make a _**battle move**_, using your gang as a weapon.\n" +
             "\n" +
             "When you do, you roll the dice and make your choices, but it’s your gang that inflicts and suffers harm, not you yourself.\n" +
